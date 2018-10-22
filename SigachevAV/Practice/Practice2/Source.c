@@ -4,38 +4,46 @@
 #include <locale.h>
 void main () 
 {
-	setlocale(LC_ALL, "Russian");
-	srand((unsigned int)time(0));
 	int a[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 0};
 	int b[10];
-	int n, t, r, i, i2, B = 0, K = 0;
+	int n, n2, t, r, i, i2, B = 0, K = 0;
 	long int N;
-	printf ("Введите разрядность /n");
+	setlocale(LC_ALL, "Russian");
+	srand((unsigned int)time(0));
+	printf ("Введите разрядность \n");
 	scanf ("%d", &n);
 	for (i = 0; i < 10; i++)
 	{
 		r = rand() % 10;
-		t = a[i];
+		t = a[r];
 		a[r] = a[i];
-		a[r] = t;
+		a[i] = t;
 	}
 	if (a[n-1] == 0)
 	{
-		while (r==0)
+		r=0;
+		do
 		{
 			r = rand() % 10;
-		}
-		t = a[r];
+		} while (r==n-1);
+		t = a[n-1];
 		a[r] = a[n-1];
-		a[n-1] = t;
+		a[i] = t;
 	}
-	while (B != K)
+	n2=1;
+	for ( i = 0; i < n; i++)
 	{
-		printf("Введите число /n");
+		n2 = n2*10;
+	}
+	while (1)
+	{
+		B=0;
+		K=0;
+		printf("Введите число \n");
 		scanf("%d", &N);
-		if (N > 10 * n)
+		if (N > n2)
 		{
-			printf("Неверый ввод /n");
+			printf("Неверый ввод \n");
 			continue;
 		}
 		for (i = 0; i < n - 1; i++)
@@ -56,8 +64,11 @@ void main ()
 				}
 			}
 		}
-		printf("Быков %d /n Коров %d /n", B, K - B);
+		printf("Быков %d \nКоров %d \n", B, K - B);
+		if (B == n)
+		{
+			printf("Вы победили");
+			return;
+		}
 	}
-	printf("Вы победили");
-	return;
 }

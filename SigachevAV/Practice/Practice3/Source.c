@@ -18,7 +18,7 @@ void main ()
 	}
 	if (a==1)
 	{
-		b = rand() % 1001; 
+		b = (rand() % 1000)+1; 
 		while (1)
 		{
 			printf("Введите число \n"); 
@@ -45,21 +45,22 @@ void main ()
 		printf("Загадайте число \n");
 		b = 500;
 		f = '.';
-		while(f != '=')
+		do
 		{
-			c++;
 			printf("Как ваше число относиться к числу %d \n Введите знак отношения (>, <, =) \n", b);
-			scanf("%c", &f);
+			scanf("%*c%c", &f);
 			switch (f)
 			{
 			case '>':
 				{
 					b--;
+					c++;
 					break;
 				}
 			case '<':
 				{
 					b++;
+					c++;
 					break;
 				}
 			default:
@@ -68,8 +69,8 @@ void main ()
 					break;
 				}
 			}
-		}
-		printf("Ваше число %d \n Колличество ходов %d \n", b, c/2);
+		}while(f != '=');
+		printf("Ваше число %d \n Колличество ходов %d \n", b, c++);
 		return;
 	}
 }
