@@ -21,71 +21,70 @@ void main()
 	printf("введите колличество знаков числа");
 	scanf("%d", &n);
 	do { a = rand(); } while ((a < 1) || (a > 9));
-	//printf("a:""%d", a);
+	do {
+		cop = a;
 		do {
-			cop = a;
-			do {
-				c = rand();
-			} while ((c < 0) || (c > 9) || (c == (a % 10)));
-			//printf("c:""%d", c);
-			do {
-				a = a / 10;
-				//printf("a:""%d", a);
-				if ((a % 10) == c)
-				{
-					y = 1;
-					break;
-				}
-				else y = 0;
-				m += 1;
-				//printf("m:""%d", m);
-			} while ((a / 10) != 0);
-			if (y !=1)
+			c = rand();
+		} while ((c < 0) || (c > 9) || (c == (a % 10)));
+		do {
+			a = a / 10;
+			if ((a % 10) == c)
 			{
-				d += 1;
-				a = cop * 10 + c;
-				m = 0;
-				printf("a=""%d", a);
+				y = 1;
+				break;
 			}
-			else
+			else y = 0;
+			m += 1;
+		} while ((a / 10) != 0);
+		if (y != 1)
+		{
+			d += 1;
+			a = cop * 10 + c;
+			m = 0;
+		}
+		else
+		{
+			if (a <= 9)
 			{
-				if (a <= 9)
-				{
-					do { g = rand(); } while ((g < 0) || (g > 9) || (g == a));
-					//printf("AAA""%d", g);
-					a = a * 10 + g;
-					d = 2;
-					printf("a=""%d", a);
-				}
-				else {
-					d = (d - m - 1);
-				}
+				do { g = rand(); } while ((g < 0) || (g > 9) || (g == a));
+				a = a * 10 + g;
+				d = 2;
 			}
-		} while (d < n);
-		//рандомное n значное число сгенерировано
-		printf("a=""%d", a);
-		printf("введите n значное число");
-		for (i = 0; i < n; i++)
-		scanf("%d", &(x[i]));
-		for (j = 0; j < n; j++)
+			else {
+				d = (d - m - 1);
+			}
+		}
+	} while (d < n);
+	//рандомное n значное число сгенерировано
+	//printf("a=""%d", a);
+	for (j = 0; j < n; j++)
 		{
 			z[j] = a % 10;
 			a = a / 10;
-			printf("=""%d", z[j]);
 		}
+	do
+	{
+		printf("введите n значное число");
+		for (i = 0; i < n; i++)
+			scanf("%d", &(x[i]));
 		//массивы образованны
-		//for (v = 0; v< n; v++)
 		for (i = 0; i < n; i++)
 		{
-			//for (u = 0; u < n; u++)
 			for (j = 0; j < n; j++)
 			{
-			if ((z[i] == x[j]) && (i == j))
+				if ((z[i] == x[j]) && (i == j))
 					bull += 1;
-			 if (z[i] == x[j])
+				if (z[i] == x[j])
 					cow += 1;
 			}
 		}
-		printf("колличество коров=""%d", (cow-bull));
-		printf("колличество быков=""%d", bull);	
+		printf("колличество коров=""%d", (cow - bull));
+		printf("колличество быков=""%d", bull);
+		if (bull != n)
+		{
+			cow = 0;
+			bull = 0;
+		}	
+	} while (bull !=n);
+		printf("число отгаданно!");
 }
