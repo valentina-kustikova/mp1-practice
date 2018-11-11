@@ -60,7 +60,7 @@ void main()
     vBok = 2 * h * d * 0.015;
     vKry = 2 * w * d * 0.015;
     vDve = h * w * 0.01;
-    vPol = (h - 2 * 0.015) / (0.4 + 0.015) * (w - 2 * 0.015) * (d - 0.005)
+    vPol = (h - 2 * 0.015) / (0.4 + 0.015) * (w - 2 * 0.015) * (d - 0.005) * 0.015;
     m = vZad * pDvp + vBok * pDsp + vKry * pDsp + vDve * pWood + vPol * pDsp;
     printf("\nМАССА ШКАФА: %.2lf кг\n", m);
 }
