@@ -2,21 +2,22 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <time.h>
-#define ITEMS 5   // количество товаров в базе
-#define RITEMS 100  // макс. количество записей в чеке
-#define NAME_SYM_MAX 4
+#define ITEMS_IN_DB 5      // количество товаров в базе
+#define REC_ITEMS_MAX 100  // макс. количество записей в чеке
+#define NAME_SYM_MAX 4     // макс. количество символов в наименовании
+#define CODE_SYM_MAX 4     // макс. количество символов в коде
 
-char codes[ITEMS][4] = { '0001', '1234', '4385', '7998', '6914' };
-char names[ITEMS][NAME_SYM_MAX] = { 'ХЛЕБ', 'МЛКО', 'ЧАЙ ', 'САХР', 'КОФЕ' };
-int  price[ITEMS]    = { 5, 10, 50, 30, 50 };
-int  sales[ITEMS]    = { 0 };
-int  recp[RITEMS];
+char codes[ITEMS_IN_DB][4] = { '0001', '1234', '4385', '7998', '6914' };
+char names[ITEMS_IN_DB][NAME_SYM_MAX] = { 'ХЛЕБ', 'МЛКО', 'ЧАЙ ', 'САХР', 'КОФЕ' };
+int  price[ITEMS_IN_DB]    = { 5, 10, 50, 30, 50 };
+int  sales[ITEMS_IN_DB]    = { 0 };
+int  recp[REC_ITEMS_MAX];
 int  recs = 0;
 
 void scan();
-int  find_by_code(char code[4]);
+int  find_by_code(char code[]);
 void print_info(int id);
-void add(char code[4]);
+void add(char code[]);
 void compose();
 int  sum();
 
@@ -42,13 +43,13 @@ void scan()
     }
 }
 
-int find_by_code(char code[4])
+int find_by_code(char code[])
 {
     int i;
-    for (i = 0; i < ITEMS; i++) {
+    for (i = 0; i < ITEMS_IN_DB; i++) {
         if (codes[i] == code) break;
     }
-    if (i == ITEMS) {
+    if (i == ITEMS_IN_DB) {
         return -1;
     }
     else {
@@ -65,7 +66,7 @@ void print_info(int id)
     }
 }
 
-void add(char code[4])
+void add(char code[])
 {
     int id = find_by_code(code);
     if (code == -1) {
