@@ -107,7 +107,7 @@ void add(int id)
 float sum_item(int pos) {
 	int id = recp[pos];
 	float sum = 0.0f;
-	sum = price[id] * (float)(1 - (float)(sales[id] / 100)) * recp_num[pos];
+	sum = price[id] * (1 - (float)(sales[id] / 100)) * recp_num[pos];
 	return sum;
 }
 
@@ -119,7 +119,7 @@ void compose()
 	else {
 		int i;
 		printf("======== РЕЖИМ ПЕЧАТИ ТЕКСТА ========\n");
-		printf("Код  | Наименование | Цена  | Скидка | Кол-во | Стоимость со скидкой\n");
+		printf("Код  | Наименование | Цена со скидкой | Кол-во | Стоимость\n");
 		for (i = 0; i < recs; i++) {
 			int j, id = recp[i];
 			prettyprint_code(codes[id]);
@@ -127,7 +127,8 @@ void compose()
 			for (j = 0; j < NAME_SYM_MAX; j++) {
 				printf("%c", names[id][j]);
 			}
-			printf(" | %4dР | %6d | %6d | %4.2f", price[id], sales[id], recp_num[i], sum_item(i));
+			printf(" | %15.2f | %6d | %4.2f", price[id] * (1 - (float)(sales[id] / 100)), 
+				recp_num[i], sum_item(i));
 			printf("\n");
 		}
 		printf("======== КОНЕЦ ПЕЧАТИ ТЕКСТА ========\n");
@@ -162,7 +163,7 @@ void main()
 
 	srand((unsigned)time(0));
 	for (i = 0; i < ITEMS_IN_DB; i++) {
-		sales[i] = rand() % 99 + 1;
+		sales[i] = rand() % 50 + 1;
 	}
 
 	printf("==================================");
