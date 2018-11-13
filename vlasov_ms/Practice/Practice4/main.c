@@ -46,7 +46,7 @@ void print_info(int id)
 
 void scan()
 {
-	int i, code, id;
+	int code, id;
 	printf("Введите код товара: ");
 	scanf("%d", &code);
 	if (code == 0) {
