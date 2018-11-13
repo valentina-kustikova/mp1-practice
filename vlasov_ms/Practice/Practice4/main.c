@@ -5,9 +5,8 @@
 #define ITEMS_IN_DB 5      // количество товаров в базе
 #define REC_ITEMS_MAX 100  // макс. количество записей в чеке
 #define NAME_SYM_MAX 12    // макс. количество символов в наименовании
-#define CODE_SYM_MAX 4     // макс. количество символов в коде
 
-int  codes[ITEMS_IN_DB] = { 1, 1234, 4385, 7998, 6914 };
+int codes[ITEMS_IN_DB] = { 1, 1234, 4385, 7998, 6914 };
 char names[ITEMS_IN_DB][NAME_SYM_MAX] = { 
 	"Хлеб черный ", 
 	"Молоко 1л   ", 
@@ -15,12 +14,12 @@ char names[ITEMS_IN_DB][NAME_SYM_MAX] = {
 	"Чай черный  ", 
 	"Бананы 1кг  " 
 };
-int  price[ITEMS_IN_DB]    = { 5, 10, 50, 30, 50 };
-int  sales[ITEMS_IN_DB]    = { 0 };
-int  recp[REC_ITEMS_MAX];     // иды товаров
-int  recp_num[REC_ITEMS_MAX]; // кол. во товаров
-int  recs = 0;
-int last_id = 0;
+int price[ITEMS_IN_DB]    = { 5, 10, 50, 30, 50 };
+int sales[ITEMS_IN_DB]    = { 0 };
+int recp[REC_ITEMS_MAX];     // иды товаров
+int recp_num[REC_ITEMS_MAX]; // кол-во товаров
+int recs = 0;                // кол-во добавленных в чек
+int last_id = 0;             // последний отсканированный
 
 int find_by_code(int code)
 {
@@ -87,18 +86,29 @@ void add(int id)
 		printf("Неверный код.");
 	}
 	else {
+		int i, found;
+		for (i = 0; i < recs; i++)
+			if (recp[i] == id) break;
+		found = i >= recs ? -1 : i;
+		if (found == -1) {
+			recp[recs] = id;
+			recp_num[recs] = 1;
+			recs++;
+		}
+		else {
+			recp_num[found]++;
+		}
 		printf("Товар ");
 		prettyprint_code(codes[id]);
 		printf(" добавлен.");
-		recp[recs] = id;
-		recp_num[recs] = 1;
-		recs++;
 	}
 }
 
 float sum_item(int pos) {
 	int id = recp[pos];
-	return price[id] * (1 - sales[id] / 100) * recp_num[pos];
+	float sum = 0.0f;
+	sum = price[id] * (float)(1 - (float)(sales[id] / 100)) * recp_num[pos];
+	return sum;
 }
 
 void compose()
@@ -147,8 +157,14 @@ void show_menu()
 
 void main()
 {
-	int menu;
+	int i, menu;
     setlocale(LC_ALL, "Russian");
+
+	srand((unsigned)time(0));
+	for (i = 0; i < ITEMS_IN_DB; i++) {
+		sales[i] = rand() % 99 + 1;
+	}
+
 	printf("==================================");
 	printf(" ЭЛЕКТРОННАЯ КАССА 1С:ПРЕДПРИЯТИЕ 2.0 ");
 	printf("==================================");
@@ -174,6 +190,6 @@ void main()
 		default:
 			show_menu();
 		}
-		printf("\nВведите цифру или нажмите Ctrl+C: ");
+		printf("\nВведите цифру (Ctrl+C, чтобы выйти): ");
 	} while (1);
 }
