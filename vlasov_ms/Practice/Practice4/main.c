@@ -3,8 +3,8 @@
 #include <locale.h>
 #include <time.h>
 #define ITEMS_IN_DB 5      // количество товаров в базе
-#define REC_ITEMS_MAX 100  // макс. количество записей в чеке
 #define NAME_SYM_MAX 12    // макс. количество символов в наименовании
+#define PT_SIGN 37         // код символа процента
 
 int codes[ITEMS_IN_DB] = { 1, 1234, 4385, 7998, 6914 };
 char names[ITEMS_IN_DB][NAME_SYM_MAX] = { 
@@ -16,8 +16,8 @@ char names[ITEMS_IN_DB][NAME_SYM_MAX] = {
 };
 int price[ITEMS_IN_DB]    = { 5, 10, 50, 30, 50 };
 int sales[ITEMS_IN_DB]    = { 0 };
-int recp[REC_ITEMS_MAX];     // иды товаров
-int recp_num[REC_ITEMS_MAX]; // кол-во товаров
+int recp[ITEMS_IN_DB];     // иды товаров
+int recp_num[ITEMS_IN_DB]; // кол-во товаров
 int recs = 0;                // кол-во добавленных в чек
 int last_id = 0;             // последний отсканированный
 
@@ -35,13 +35,31 @@ int find_by_code(int code)
 	}
 }
 
+void prettyprint_code(int code) {
+	if (code < 10) {
+		printf("000%d", code);
+	}
+	else if (code < 100) {
+		printf("00%d", code);
+	}
+	else if (code < 1000) {
+		printf("0%d", code);
+	}
+	else {
+		printf("%d", code);
+	}
+}
+
 void print_info(int id)
 {
 	int i;
-	printf("Наименование товара: ");
+	prettyprint_code(codes[id]);
+	printf(" => ");
 	for (i = 0; i < NAME_SYM_MAX; i++) {
 		printf("%c", names[id][i]);
 	}
+	printf("\nЦена %d (со скидкой %d%c: %.2f)", price[id], sales[id], 
+		PT_SIGN, price[id] * (1 - (float)(sales[id] / 100.00)));
 }
 
 void scan()
@@ -62,21 +80,6 @@ void scan()
 		else {
 			print_info(id);
 		}
-	}
-}
-
-void prettyprint_code(int code) {
-	if (code < 10) {
-		printf("000%d", code);
-	}
-	else if (code < 100) {
-		printf("00%d", code);
-	}
-	else if (code < 1000) {
-		printf("0%d", code);
-	}
-	else {
-		printf("%d", code);
 	}
 }
 
@@ -106,9 +109,9 @@ void add(int id)
 
 float sum_item(int pos) {
 	int id = recp[pos];
-	float sum = 0.0f;
-	sum = price[id] * (1 - (float)(sales[id] / 100)) * recp_num[pos];
-	return sum;
+	float summa = 0.0f;
+	summa += price[id] * (1 - (float)(sales[id] / 100.00)) * recp_num[pos];
+	return summa;
 }
 
 void compose()
@@ -119,7 +122,7 @@ void compose()
 	else {
 		int i;
 		printf("======== РЕЖИМ ПЕЧАТИ ТЕКСТА ========\n");
-		printf("Код  | Наименование | Цена со скидкой | Кол-во | Стоимость\n");
+		printf("Код  | Наименование | Скидка | Цена со скидкой | Кол-во | Стоимость\n");
 		for (i = 0; i < recs; i++) {
 			int j, id = recp[i];
 			prettyprint_code(codes[id]);
@@ -127,7 +130,8 @@ void compose()
 			for (j = 0; j < NAME_SYM_MAX; j++) {
 				printf("%c", names[id][j]);
 			}
-			printf(" | %15.2f | %6d | %4.2f", price[id] * (1 - (float)(sales[id] / 100)), 
+			printf(" | %5d%c | %15.2f | %6d | %4.2f", sales[id], PT_SIGN, 
+				price[id] * (1 - (float)(sales[id] / 100.00)), 
 				recp_num[i], sum_item(i));
 			printf("\n");
 		}
