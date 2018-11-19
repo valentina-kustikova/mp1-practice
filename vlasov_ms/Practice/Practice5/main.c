@@ -20,12 +20,12 @@ void main()
     gen(a, N);
     printf("Исходный массив:        ");
     output(a, N);
-    printf("Алгоритм сортировки:       "); // ДОСТУПНЫЕ АЛГОРИТМЫ:
-    scanf("%d", &algo);                    // 1 - сортировка выбором
+    printf("Алгоритм сортировки:       ");
+    scanf("%d", &algo);
     switch (algo) 
-    {                        // 2 - сортировка простыми вставками
-        case 1:                                // 3 - пузырьковая сортировка
-            choosing_sort(a, N);               // 4 - сортировка подсчетом
+    {
+        case 1:
+            choosing_sort(a, N);
             break;
         case 2:
             insert_sort(a, N);
