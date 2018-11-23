@@ -63,6 +63,6 @@ void main()
     bok = 2 * ((h - 0.03) * (d - 0.015) * 0.015) * pDSP;
     dveri = ((h - 0.03) * w * 0,01) * pDerevo; 
     polki = (((h - 0.03) / (0.4f + 0.015)) * (d - 0.015) * (w - 0.03) * 0.015) * pDSP;
-	Massa = verkh + niz + zad + bok + dveri + polki;
+    Massa = verkh + niz + zad + bok + dveri + polki;
     printf("%lf Massa shkafa\n", Massa);
 }
