@@ -1,13 +1,12 @@
 #include <stdio.h>
 void main()
 {
-    float h, w, d; //vysota(h), shirina(w), glubina(d)
-    float pDVP, pDSP, pDerevo; //plotnosti
-    double zad, bok, verkh, niz, dveri; //komplektuyushhie shkafa
+    double h, w, d, Massa; //vysota(h), shirina(w), glubina(d)
+    double pDVP, pDSP, pDerevo; //plotnosti
+    double zad, bok, verkh, niz, dveri, polki; //komplektuyushhie shkafa
     float x;
-    double a, polki; //kolichestvo polok
-    printf("Vvedite po poryadku vysotu (h), shirinu (w), glubinu(d) \nDannye dolzhny sootvetstvovat' sleduyushhemu: \n180 <= h <= 220; \n80 <= w <= 120; \n50 <= d <= 90; \n");
-    scanf("%f %f %f", &h, &w, &d);
+    printf("Vvedite v sm po poryadku vysotu (h), shirinu (w), glubinu(d) \nDannye dolzhny sootvetstvovat' sleduyushhemu: \n180 <= h <= 220; \n80 <= w <= 120; \n50 <= d <= 90; \n");
+    scanf("%lf %lf %lf", &h, &w, &d);
     
     if ((h < 180) || (220 < h))
     {
@@ -45,8 +44,8 @@ void main()
 
     if (x == 2)
     {
-        printf("Vvedite plotnost' DVP (pDVP); plotnost' DSP (pDSP); plotnost' dereva (pDereva) \n");
-        scanf("%f %f %f", &pDVP, &pDSP, &pDerevo);
+        printf("Vvedite plotnost' DVP (pDVP); plotnost' DSP (pDSP); plotnost' dereva (pDerevo) \n");
+        scanf("%lf %lf %lf", &pDVP, &pDSP, &pDerevo);
 
         if ((pDVP <= 0) || (pDSP <= 0) || (pDerevo <= 0))
         {
@@ -55,16 +54,15 @@ void main()
         }
     }
     
-    w /= 100;
-    d /= 100;
-    h /= 100;
-    verkh = w * d * 0.015 * pDSP; //naklad po verx vsego
-    niz = w * d * 0.015 * pDSP; //naklad po verx vsego
-    zad = (h - 0.03) * w * 0.005 * pDVP;
-    bok = 2 * (h - 0.03) * (d - 0.015) * 0.015 * pDSP;
-    dveri = (h - 0.03) * w * 0,01 * pDerevo;
-    a = floor ((h - 0.03) / 0.4); 
-    polki = a * (d - 0.015) * (w - 0.03) * 0.015 * pDSP;
-
-    printf("Otvet dan v kilogrammakh \nMassa shkafa = %f", zad + bok + verkh + niz + dveri + polki);
+    h *= 0.01;
+    w *= 0.01;
+    d *= 0.01;
+    verkh = (w * d * 0.015) * pDSP; //naklad po verx vsego
+    niz = (w * d * 0.015) * pDSP; //naklad po verx vsego
+    zad = ((h - 0.03) * w * 0.005) * pDVP;
+    bok = 2 * ((h - 0.03) * (d - 0.015) * 0.015) * pDSP;
+    dveri = ((h - 0.03) * w * 0,01) * pDerevo; 
+    polki = (((h - 0.03) / (0.4f + 0.015)) * (d - 0.015) * (w - 0.03) * 0.015) * pDSP;
+	Massa = verkh + niz + zad + bok + dveri + polki;
+    printf("%lf Massa shkafa\n", Massa);
 }
