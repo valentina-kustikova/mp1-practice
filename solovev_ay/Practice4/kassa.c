@@ -190,6 +190,5 @@ int main()
  		default:
  			menu();
  		}
-		
 		}while(flag != 0);
 }
