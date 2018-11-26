@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <locale.h>
-    void main()
-    {
+    	void main()
+    	{
 	float x, x1, y, y1, r, r1, s = 0.0f;
 	setlocale(LC_ALL, "Russian");
  	printf("Введите координаты вида (х:у) первой окружности.\n");
@@ -18,7 +18,7 @@
 	return;
 	}
 	printf("Координаты первой окружности (%.4f:%.4f) радиус=%.4f\n", x, y, r);
-   	printf("Введите координаты вида (х:у) второй  окружности.\n");
+	printf("Введите координаты вида (х:у) второй  окружности.\n");
 	printf("Введите х: ");
 	scanf("%f",&x1);
 	printf("Введите y: ");
