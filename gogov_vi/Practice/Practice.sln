@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Practice0", "..\..\..\..\tmp\gogov\mp1-practice\gogov_vi\Practice\Practice0\Practice0.vcxproj", "{3A1C03D0-3BBA-4BDC-8C93-7B605EB13CA4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Practice1", "Practice1\Practice1.vcxproj", "{A4FC9D10-A33F-42B0-B025-E15B87A49BB4}"
@@ -8,6 +10,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Practice2", "Practice2\Practice2.vcxproj", "{1FDB2DF0-06A4-49CC-86D4-5641BFA4CDD1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Practice3", "Practice3\Practice3.vcxproj", "{EF6E9E00-C357-426B-A7DF-EB8BF371688C}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Practice4", "Practice4\Practice4.vcxproj", "{4C5A2BF0-676F-4DEA-A8D7-B2029F2001FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +51,14 @@ Global
 		{EF6E9E00-C357-426B-A7DF-EB8BF371688C}.Release|Win32.Build.0 = Release|Win32
 		{EF6E9E00-C357-426B-A7DF-EB8BF371688C}.Release|x64.ActiveCfg = Release|x64
 		{EF6E9E00-C357-426B-A7DF-EB8BF371688C}.Release|x64.Build.0 = Release|x64
+		{4C5A2BF0-676F-4DEA-A8D7-B2029F2001FE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4C5A2BF0-676F-4DEA-A8D7-B2029F2001FE}.Debug|Win32.Build.0 = Debug|Win32
+		{4C5A2BF0-676F-4DEA-A8D7-B2029F2001FE}.Debug|x64.ActiveCfg = Debug|x64
+		{4C5A2BF0-676F-4DEA-A8D7-B2029F2001FE}.Debug|x64.Build.0 = Debug|x64
+		{4C5A2BF0-676F-4DEA-A8D7-B2029F2001FE}.Release|Win32.ActiveCfg = Release|Win32
+		{4C5A2BF0-676F-4DEA-A8D7-B2029F2001FE}.Release|Win32.Build.0 = Release|Win32
+		{4C5A2BF0-676F-4DEA-A8D7-B2029F2001FE}.Release|x64.ActiveCfg = Release|x64
+		{4C5A2BF0-676F-4DEA-A8D7-B2029F2001FE}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
