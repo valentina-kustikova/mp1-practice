@@ -60,9 +60,7 @@ void gen(int a[], int n, int min, int max)
     int i;
     srand((unsigned)time(0));
     for (i = 0; i < n; i++) 
-    {
         a[i] = rand() % (max - min + 1) + min;
-    }
 }
 
 // Вывод массива
@@ -70,9 +68,7 @@ void output(int a[], int n)
 {
     int i;
     for (i = 0; i < n - 1; i++) 
-    {
         printf("%4d", a[i]);
-    }
     printf("%4d\n", a[n - 1]);
 }
 
@@ -86,13 +82,11 @@ void choosing_sort(int a[], int n)
         min = a[i];
         minidx = i;
         for (j = i + 1; j < n; j++) 
-        {
             if (a[j] < min) 
             {
                 min = a[j];
                 minidx = j;
             }
-        }
         a[minidx] = a[i];
         a[i] = min;
     }
@@ -119,17 +113,13 @@ void bubble_sort(int a[], int n)
 {
     int i, j, temp;
     for (i = 0; i < n; i++) 
-    {
         for (j = 1; j < n - i; j++) 
-        {
             if (a[j - 1]>a[j]) 
             {
                 temp = a[j];
                 a[j] = a[j - 1];
                 a[j - 1] = temp;
             }
-        }
-    }
 }
 
 // Сортировка подсчетом (с произвольным выделением памяти)
@@ -138,8 +128,10 @@ void counting_sort(int a[], int n)
     int *count;
     int idx = 0, i, j, delta = 0, min = a[0], max = a[0];
     for (i = 1; i < n; i++) {
-        if (a[i] < min) min = a[i];
-        if (a[i] > max) max = a[i];
+        if (a[i] < min) 
+            min = a[i];
+        if (a[i] > max) 
+            max = a[i];
     }
     delta = abs(max - min) + 1;
     //printf("min=%d, max=%d, delta=%d\n", min, max, delta); // debug info
@@ -160,15 +152,18 @@ void quick_sort(int a[], int n1, int n2)
     int m = (n1 + n2) / 2;
     int i = n1, j = n2;
     quick_split(a, &i, &j, a[m]);
-    if (i > n1) quick_sort(a, n1, i);
-    if (j < n2) quick_sort(a, j, n2);
+    if (i > n1) 
+        quick_sort(a, n1, i);
+    if (j < n2) 
+        quick_sort(a, j, n2);
 }
 
 // Сортировка слиянием
 void merge_sort(int a[], int l, int r)
 {
     int m;
-    if (l >= r) return;
+    if (l >= r) 
+        return;
     m = (l + r) / 2;
     merge_sort(a, l, m);
     merge_sort(a, m + 1, r);
@@ -192,8 +187,10 @@ void merge_sorted(int a[], int l, int m, int r)
         else
             merged[s++] = a[j++];
     }
-    while (i < left_length) merged[s++] = a[i++];
-    while (j < right_length) merged[s++] = a[j++];
+    while (i < left_length) 
+        merged[s++] = a[i++];
+    while (j < right_length) 
+        merged[s++] = a[j++];
     for (i = 0; i < total_length; i++)
         a[i] = merged[i];
     free(merged);
