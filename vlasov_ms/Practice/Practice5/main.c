@@ -2,22 +2,26 @@
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
-#define N 10 // количество элементов массива
-#define K 10 // элементы будут генерироваться в диапазоне от 0 до К
+#define N 10     // количество элементов массива
 
-void gen(int a[], int n);
+void gen(int a[], int n, int min, int max);
 void output(int a[], int n);
 
 void choosing_sort(int a[], int n);
 void insert_sort(int a[], int n);
 void bubble_sort(int a[], int n);
 void counting_sort(int a[], int n);
+void quick_sort(int a[], int n1, int n2);
+void merge_sort(int a[], int l, int r);
+
+void quick_split(int a[], int* i, int* j, int p);
+void merge_sorted(int a[], int l, int m, int r);
 
 void main() 
 {
-    int a[N], algo;
+    int a[N], algo, min, max, i;
     setlocale(LC_ALL, "Russian");
-    gen(a, N);
+    gen(a, N, 0, 10);
     printf("Исходный массив:        ");
     output(a, N);
     printf("Алгоритм сортировки:       ");
@@ -36,6 +40,12 @@ void main()
         case 4:
             counting_sort(a, N);
             break;
+        case 5:
+            quick_sort(a, 0, N - 1);
+            break;
+        case 6:
+            merge_sort(a, 0, N - 1);
+            break;
         default:
             printf("Неверный номер.\n");
             return;
@@ -45,13 +55,13 @@ void main()
 }
 
 // Генерация массива
-void gen(int a[], int n) 
+void gen(int a[], int n, int min, int max) 
 {
     int i;
     srand((unsigned)time(0));
     for (i = 0; i < n; i++) 
     {
-        a[i] = rand() % (K - 0 + 1) + 0;
+        a[i] = rand() % (max - min + 1) + min;
     }
 }
 
@@ -65,6 +75,7 @@ void output(int a[], int n)
     }
     printf("%4d\n", a[n - 1]);
 }
+
 
 // Сортировка выбором
 void choosing_sort(int a[], int n)
@@ -121,20 +132,84 @@ void bubble_sort(int a[], int n)
     }
 }
 
-// Сортировка подсчетом
+// Сортировка подсчетом (с произвольным выделением памяти)
 void counting_sort(int a[], int n)
 {
-    int count[K] = { 0 };
-    int idx = 0, i, j;
+    int *count;
+    int idx = 0, i, j, delta = 0, min = a[0], max = a[0];
+    for (i = 1; i < n; i++) {
+        if (a[i] < min) min = a[i];
+        if (a[i] > max) max = a[i];
+    }
+    delta = abs(max - min) + 1;
+    //printf("min=%d, max=%d, delta=%d\n", min, max, delta); // debug info
+    count = (int*)malloc(delta * sizeof(int));
+    for (i = 0; i < delta; i++)
+        count[i] = 0;
     for (i = 0; i < n; i++) 
-    {
-        count[a[i]]++;
-    }
-    for (i = 0; i < K; i++) 
-    {
+        count[a[i] - min]++;
+    for (i = 0; i < delta; i++) 
         for (j = 0; j < count[i]; j++) 
-        {
-            a[idx++] = i;
-        }
+            a[idx++] = i + min;
+    free(count);
+}
+
+// Быстрая сортировка
+void quick_sort(int a[], int n1, int n2)
+{
+    int m = (n1 + n2) / 2;
+    int i = n1, j = n2;
+    quick_split(a, &i, &j, a[m]);
+    if (i > n1) quick_sort(a, n1, i);
+    if (j < n2) quick_sort(a, j, n2);
+}
+
+// Сортировка слиянием
+void merge_sort(int a[], int l, int r)
+{
+    int m;
+    if (l >= r) return;
+    m = (l + r) / 2;
+    merge_sort(a, l, m);
+    merge_sort(a, m + 1, r);
+    merge_sorted(a, l, m, r);
+}
+
+
+// Слияние отсортированных частей массива (с произвольным выделением памяти)
+void merge_sorted(int a[], int l, int m, int r)
+{
+    int i, j, s, *merged, 
+        left_length = m - l + 1, 
+        right_length = r - m, 
+        total_length = r - l + 1;
+    //printf("ll=%d, rl=%d, tl=%d\n", left_length, right_length, total_length);
+    merged = (int*)malloc(total_length * sizeof(int));
+    i = j = s = 0;
+    while ((i < left_length) && (j < right_length)) {
+        if (a[i] < a[j])
+            merged[s++] = a[i++];
+        else
+            merged[s++] = a[j++];
     }
+    while (i < left_length) merged[s++] = a[i++];
+    while (j < right_length) merged[s++] = a[j++];
+    for (i = 0; i < total_length; i++)
+        a[i] = merged[i];
+    free(merged);
+}
+
+// Быстрая перестановка
+void quick_split(int a[], int* i, int* j, int p)
+{
+    do {
+        while (a[*i] < p) (*i)++;
+        while (a[*j] > p) (*j)++;
+        if (*i <= *j) {
+            int tmp = a[*i];
+            a[*i] = a[*j];
+            a[*j] = tmp;
+        }
+        output(a, N);
+    } while (*i < *j);
 }
