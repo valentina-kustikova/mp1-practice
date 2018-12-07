@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #define N 10 
+
 void main()
 {
     int Bull = 0, Cow = 0, Nomer, k, i, j, CHislo, Pr1, Proverka;
@@ -10,7 +11,7 @@ void main()
     int B[N] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
     printf("Dobro pozhalovat' v igru <Bulls and Cows> \nTSel' igry: Otgadat' zagadannoe programmoj chislo \nPravila igry: \n1. Vyberite dlinu chisla 0 < Nomer < 10 \n2. Vvedite chislo dlinnoyu toj tsifry kotoroyu vybrali. TSifry v chisle ne dolzhny povtoryat'sya. \n3. Programma vam vydast chislo Korov i Bykov \n<Korovy> - TSifra ugadana na nevernoj pozitsii \n<Byki> - TSifra ugadana vplot' do pozitsii \n4. Povtoryat' do tekh por poka chislo bykov ne sovpadet s zagadannoj tsifroj ili Programma vydast: <You WIN!!!> \n---------------------------------------------\n");
     srand((unsigned int)time(0));
-
+    
     do 
     {
         printf("Vyberite dlinu chisla 0 < Nomer < 10 \nNomer = ");
@@ -32,9 +33,9 @@ void main()
             i--;
         } 
     }
- 
+    
     printf("\nVvedite chislo dlinnoyu %d tsifry. TSifry v chisle ne dolzhny povtoryat'sya.", Nomer);
-
+    
     do 
     {
         printf("\nCHislo = ");
