@@ -22,30 +22,33 @@ void merge_sorted(int a[], int l, int m, int r);
 int dir_contents(const wchar_t *sDir);
 
 unsigned short* user_input() {
-	unsigned short *string;
-	unsigned short symbol;
-	int i = 0;
-	string = (unsigned short*)malloc(0 * sizeof(unsigned short));
-	do
-	{
-		symbol = (unsigned short)getchar();
-		printf("%c", symbol);
-		string = (unsigned short*)realloc(string, 1 * sizeof(unsigned short));
-		string[++i] = symbol;
-	} while (symbol != '\n');
-	return string;
+    unsigned short *string;
+    unsigned short symbol;
+    int i = 0;
+    string = (unsigned short*)malloc(0 * sizeof(unsigned short));
+    do
+    {
+        symbol = (unsigned short)getchar();
+        printf("%c", symbol);
+        string = (unsigned short*)realloc(string, 1 * sizeof(unsigned short));
+        string[i] = symbol;
+        *(string + i) = *(string + i) >> 8;
+        i++;
+    } while (symbol != '\n');
+    return string;
 }
 
 void main() 
 {
     int a[N], algo, min, max, i;
-	unsigned short *path;
+    unsigned short *path;
     setlocale(LC_ALL, "Russian");
 
-	// Debug - START
-	path = user_input();
-	dir_contents((wchar_t*)path);
-	// Debug - END
+    // Debug - START
+    path = user_input();
+    dir_contents((wchar_t*)path);
+    return;
+    // Debug - END
 
     gen(a, N, 502, 692);
     printf("Исходный массив:        ");
@@ -177,8 +180,8 @@ void quick_sort(int a[], int n1, int n2)
 {
     int m = (n1 + n2) / 2;
     int i = n1, j = n2 + 1;
-	if (n1 == n2)
-		return;
+    if (n1 == n2)
+        return;
     quick_split(a, &i, &j, a[m]);
     quick_sort(a, n1, i);
     quick_sort(a, j, n2);
@@ -187,16 +190,16 @@ void quick_sort(int a[], int n1, int n2)
 // Быстрая перестановка
 void quick_split(int a[], int* i, int* j, int p)
 {
-	do {
-		while (a[*i] < p) (*i)++;
-		while (a[*j] > p) (*j)--;
-		if (*i <= *j) {
-			int tmp = a[*i];
-			a[*i] = a[*j];
-			a[*j] = tmp;
-		}
-		output(a, N);
-	} while (*i < *j);
+    do {
+        while (a[*i] < p) (*i)++;
+        while (a[*j] > p) (*j)--;
+        if (*i <= *j) {
+            int tmp = a[*i];
+            a[*i] = a[*j];
+            a[*j] = tmp;
+        }
+        output(a, N);
+    } while (*i < *j);
 }
 
 // Сортировка слиянием
@@ -217,7 +220,7 @@ void merge_sorted(int a[], int l, int m, int r)
     int i, j, s = 0, *merged, total_length = r - l + 1;
     merged = (int*)malloc(total_length * sizeof(int)); 
     i = l;
-	j = m + 1;
+    j = m + 1;
     while ((i <= m) && (j <= r)) {
         if (a[i] < a[j])
             merged[s++] = a[i++];
@@ -236,29 +239,29 @@ void merge_sorted(int a[], int l, int m, int r)
 // Печать списка файлов и размеров из директории
 int dir_contents(const wchar_t *sDir)
 {
-	WIN32_FIND_DATA fdFile;
-	HANDLE hFind = NULL;
-	wchar_t sPath[2048];
+    WIN32_FIND_DATA fdFile;
+    HANDLE hFind = NULL;
+    wchar_t sPath[2048];
 
-	wsprintf(sPath, L"%s\\*.*", sDir);
-	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
-	{
-		wprintf(L"Path not found: [%s]\n", sDir);
-		return 1;
-	}
+    wsprintf(sPath, L"%s\\*.*", sDir);
+    if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
+    {
+        wprintf(L"Path not found: [%s]\n", sDir);
+        return 1;
+    }
 
-	do
-	{
-		if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
-		{
-			ULONGLONG fileSize = fdFile.nFileSizeHigh;
-			fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
-			fileSize |= fdFile.nFileSizeLow;
+    do
+    {
+        if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
+        {
+            ULONGLONG fileSize = fdFile.nFileSizeHigh;
+            fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
+            fileSize |= fdFile.nFileSizeLow;
 
-			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
-			wprintf(L"File: %s Size: %d\n", sPath, fileSize);
-		}
-	} while (FindNextFile(hFind, &fdFile));
-	FindClose(hFind);
-	return 0;
+            wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
+            wprintf(L"File: %s Size: %d\n", sPath, fileSize);
+        }
+    } while (FindNextFile(hFind, &fdFile));
+    FindClose(hFind);
+    return 0;
 }
