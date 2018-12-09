@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
+#include <windows.h>
+#include <conio.h>
+#define _CRT_SECURE_NO_WARNINGS
 #define N 10     // количество элементов массива
 
 void gen(int a[], int n, int min, int max);
@@ -12,16 +15,39 @@ void insert_sort(int a[], int n);
 void bubble_sort(int a[], int n);
 void counting_sort(int a[], int n);
 void quick_sort(int a[], int n1, int n2);
-void merge_sort(int a[], int l, int r);
-
 void quick_split(int a[], int* i, int* j, int p);
+void merge_sort(int a[], int l, int r);
 void merge_sorted(int a[], int l, int m, int r);
+
+int dir_contents(const wchar_t *sDir);
+
+unsigned short* user_input() {
+	unsigned short *string;
+	unsigned short symbol;
+	int i = 0;
+	string = (unsigned short*)malloc(0 * sizeof(unsigned short));
+	do
+	{
+		symbol = (unsigned short)getchar();
+		printf("%c", symbol);
+		string = (unsigned short*)realloc(string, 1 * sizeof(unsigned short));
+		string[++i] = symbol;
+	} while (symbol != '\n');
+	return string;
+}
 
 void main() 
 {
     int a[N], algo, min, max, i;
+	unsigned short *path;
     setlocale(LC_ALL, "Russian");
-    gen(a, N, 0, 10);
+
+	// Debug - START
+	path = user_input();
+	dir_contents((wchar_t*)path);
+	// Debug - END
+
+    gen(a, N, 502, 692);
     printf("Исходный массив:        ");
     output(a, N);
     printf("Алгоритм сортировки:       ");
@@ -151,11 +177,11 @@ void quick_sort(int a[], int n1, int n2)
 {
     int m = (n1 + n2) / 2;
     int i = n1, j = n2 + 1;
+	if (n1 == n2)
+		return;
     quick_split(a, &i, &j, a[m]);
-    if (i > n1) 
-        quick_sort(a, n1, i);
-    if (j < n2) 
-        quick_sort(a, j, n2);
+    quick_sort(a, n1, i);
+    quick_sort(a, j, n2);
 }
 
 // Быстрая перестановка
@@ -163,7 +189,7 @@ void quick_split(int a[], int* i, int* j, int p)
 {
 	do {
 		while (a[*i] < p) (*i)++;
-		while (a[*j] > p) (*j)++;
+		while (a[*j] > p) (*j)--;
 		if (*i <= *j) {
 			int tmp = a[*i];
 			a[*i] = a[*j];
@@ -205,4 +231,34 @@ void merge_sorted(int a[], int l, int m, int r)
     for (i = l; i <= r; i++)
         a[i] = merged[i - l];
     free(merged);
+}
+
+// Печать списка файлов и размеров из директории
+int dir_contents(const wchar_t *sDir)
+{
+	WIN32_FIND_DATA fdFile;
+	HANDLE hFind = NULL;
+	wchar_t sPath[2048];
+
+	wsprintf(sPath, L"%s\\*.*", sDir);
+	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
+	{
+		wprintf(L"Path not found: [%s]\n", sDir);
+		return 1;
+	}
+
+	do
+	{
+		if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
+		{
+			ULONGLONG fileSize = fdFile.nFileSizeHigh;
+			fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
+			fileSize |= fdFile.nFileSizeLow;
+
+			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
+			wprintf(L"File: %s Size: %d\n", sPath, fileSize);
+		}
+	} while (FindNextFile(hFind, &fdFile));
+	FindClose(hFind);
+	return 0;
 }
