@@ -3,7 +3,7 @@
 #include <time.h>
 #include <locale.h>
 #include <windows.h>
-#include <conio.h>
+#include <string.h>
 #define _CRT_SECURE_NO_WARNINGS
 #define N 10     // количество элементов массива
 
@@ -21,22 +21,38 @@ void merge_sorted(int a[], int l, int m, int r);
 
 int dir_contents(const wchar_t *sDir);
 
-unsigned short* user_input() {
-    unsigned short *string;
-    unsigned short symbol;
+wchar_t* user_input() {
+	wchar_t *string;
+    char symbol;
     int i = 0;
-    string = (unsigned short*)malloc(0 * sizeof(unsigned short));
+    string = (wchar_t*)malloc(0 * sizeof(wchar_t));
     do
     {
-        symbol = (unsigned short)getchar();
+        symbol = getchar();
         printf("%c", symbol);
-        string = (unsigned short*)realloc(string, 1 * sizeof(unsigned short));
-        string[i] = symbol;
-        *(string + i) = *(string + i) >> 8;
+        string = (wchar_t*)realloc(string, 1 * sizeof(wchar_t));
+        //string[i] = symbol >> (sizeof(wchar_t) - sizeof(char)) * 8;
+		string[i] = (wchar_t)symbol;
+        //*(string + i) = *(string + i) >> 8;
         i++;
     } while (symbol != '\n');
     return string;
 }
+
+/*unsigned short* user_input() {
+	unsigned short *wstring;
+	char cstring[2048] = { 0 };
+	int i = 0, length;
+	for (i = 0; cstring[i] != "."; i++) {
+		scanf("%c", &(cstring[i]));
+	}
+	length = strlen(cstring);
+	wstring = (unsigned short*)malloc(length * sizeof(unsigned short));
+	for (i = 0; i < length; i++) {
+		wstring[i] = (unsigned short)cstring[i];
+	}
+	return wstring;
+}*/
 
 void main() 
 {
@@ -249,7 +265,7 @@ int dir_contents(const wchar_t *sDir)
         wprintf(L"Path not found: [%s]\n", sDir);
         return 1;
     }
-
+	wprintf(L"Path: [%s]\n", sDir);
     do
     {
         if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
