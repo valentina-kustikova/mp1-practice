@@ -150,12 +150,27 @@ void counting_sort(int a[], int n)
 void quick_sort(int a[], int n1, int n2)
 {
     int m = (n1 + n2) / 2;
-    int i = n1, j = n2;
+    int i = n1, j = n2 + 1;
     quick_split(a, &i, &j, a[m]);
     if (i > n1) 
         quick_sort(a, n1, i);
     if (j < n2) 
         quick_sort(a, j, n2);
+}
+
+// Быстрая перестановка
+void quick_split(int a[], int* i, int* j, int p)
+{
+	do {
+		while (a[*i] < p) (*i)++;
+		while (a[*j] > p) (*j)++;
+		if (*i <= *j) {
+			int tmp = a[*i];
+			a[*i] = a[*j];
+			a[*j] = tmp;
+		}
+		output(a, N);
+	} while (*i < *j);
 }
 
 // Сортировка слиянием
@@ -170,43 +185,24 @@ void merge_sort(int a[], int l, int r)
     merge_sorted(a, l, m, r);
 }
 
-
 // Слияние отсортированных частей массива (с произвольным выделением памяти)
 void merge_sorted(int a[], int l, int m, int r)
 {
-    int i, j, s, *merged, 
-        left_length = m - l + 1, 
-        right_length = r - m, 
-        total_length = r - l + 1;
-    //printf("ll=%d, rl=%d, tl=%d\n", left_length, right_length, total_length);
-    merged = (int*)malloc(total_length * sizeof(int));
-    i = j = s = 0;
-    while ((i < left_length) && (j < right_length)) {
+    int i, j, s = 0, *merged, total_length = r - l + 1;
+    merged = (int*)malloc(total_length * sizeof(int)); 
+    i = l;
+	j = m + 1;
+    while ((i <= m) && (j <= r)) {
         if (a[i] < a[j])
             merged[s++] = a[i++];
         else
             merged[s++] = a[j++];
     }
-    while (i < left_length) 
+    while (i <= m)
         merged[s++] = a[i++];
-    while (j < right_length) 
+    while (j <= r)
         merged[s++] = a[j++];
-    for (i = 0; i < total_length; i++)
-        a[i] = merged[i];
+    for (i = l; i <= r; i++)
+        a[i] = merged[i - l];
     free(merged);
-}
-
-// Быстрая перестановка
-void quick_split(int a[], int* i, int* j, int p)
-{
-    do {
-        while (a[*i] < p) (*i)++;
-        while (a[*j] > p) (*j)++;
-        if (*i <= *j) {
-            int tmp = a[*i];
-            a[*i] = a[*j];
-            a[*j] = tmp;
-        }
-        output(a, N);
-    } while (*i < *j);
 }
