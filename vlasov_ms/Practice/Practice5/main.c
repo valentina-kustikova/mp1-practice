@@ -30,12 +30,14 @@ void main()
     wchar_t *path;
 	wchar_t **fileNames;
 	ULONGLONG *fileSizes;
+	clock_t start, end;
     setlocale(LC_ALL, "Russian");
 
 	fileNames = (wchar_t**)malloc(MAX_FILES_COUNT * sizeof(wchar_t*));
-	fileSizes = (wchar_t*)malloc(MAX_FILES_COUNT * sizeof(ULONGLONG));
-
+	fileSizes = (ULONGLONG*)malloc(MAX_FILES_COUNT * sizeof(ULONGLONG));
+	
     user_input(&path);
+	start = clock();
 	filesCount = dir_contents(path, fileNames, fileSizes);
 	if (filesCount == -1)
 	{
@@ -45,10 +47,11 @@ void main()
 	filesIdxes = (int*)malloc((filesCount + 1) * sizeof(int));
 	for (i = 0; i < filesCount; i++)
 		filesIdxes[i] = i;
-
-	printf("%d files found.\n", filesCount);
+	printf("%d файлов найдено.\n", filesCount);
 	for(i = 0; i < filesCount; i++)
-		wprintf(L"File: %s Size: %d\n", fileNames[i], fileSizes[i]);
+		wprintf(L"Файл: %s Размер: %d\n", fileNames[i], fileSizes[i]);
+	end = clock();
+	printf("Время выполнения: %.3f с\n", (float)(end - start) / CLOCKS_PER_SEC);
     return;
 
     gen(a, N, 502, 692);
@@ -85,14 +88,14 @@ void main()
 }
 
 // Ввод пути с клавиатуры
-void user_input(wchar_t **str_to_convert)
+void user_input(wchar_t **str_convert_to)
 {
 	char *input;
-	*str_to_convert = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+	*str_convert_to = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
 	input = (char*)malloc(BUFFER_SIZE * sizeof(char));
 	fgets(input, BUFFER_SIZE, stdin);
 	input[strlen(input) - 1] = '\0';
-	swprintf(*str_to_convert, BUFFER_SIZE, L"%hs", input);
+	swprintf(*str_convert_to, BUFFER_SIZE, L"%hs", input);
 }
 
 // Получение списка файлов и размеров из директории
@@ -118,11 +121,10 @@ int dir_contents(const wchar_t *sDir, wchar_t **fileNames,
 			fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
 			fileSize |= fdFile.nFileSizeLow;
 
-			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
-			wsprintf(fileNames[i], L"%s", sPath);
-
 			fileNames[i] = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
 			fileSizes[i] = fileSize;
+			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
+			wsprintf(fileNames[i], L"%s", sPath);
 			i++;
 		}
 	} while (FindNextFile(hFind, &fdFile));
