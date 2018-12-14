@@ -9,13 +9,18 @@
 #define BUFFER_SIZE 2048          // размер буфера
 #define MAX_FILES_COUNT 1000      // предполагаемое кол-во файлов в папке
 
-void gen(int a[], int n, int min, int max);
-void output(int a[], int n);
-int dir_contents(const wchar_t *sDir, wchar_t **fileNames, 
-	             ULONGLONG *fileSizes);
 void user_input(wchar_t **wa);
+int dir_contents(const wchar_t *sDir, wchar_t **fileNames,
+	ULONGLONG *fileSizes);
+void gen(int a[], int n, int min, int max);
+void output(ULONGLONG *a, int n);
+void output_by_idxes(int *filesIdxes, wchar_t **fileNames,
+	 ULONGLONG *fileSizes, int filesCount);
+void swap_int(int *var1, int *var2);
+void swap_ULL(ULONGLONG *var1, ULONGLONG *var2);
+void copy(int **newIdxes, int *idxes, int n);
 
-void choosing_sort(int a[], int n);
+int* choosing_sort(ULONGLONG *a, int *idxes, int n);
 void insert_sort(int a[], int n);
 void bubble_sort(int a[], int n);
 void counting_sort(int a[], int n);
@@ -26,7 +31,7 @@ void merge_sorted(int a[], int l, int m, int r);
 
 void main() 
 {
-    int *a, algo, filesCount, *filesIdxes, i;
+    int *a, algo, filesCount, *filesIdxes, *newIdxes, i;
     wchar_t *path;
 	wchar_t **fileNames;
 	ULONGLONG *fileSizes;
@@ -49,42 +54,43 @@ void main()
 		filesIdxes[i] = i;
 	printf("%d файлов найдено.\n", filesCount);
 	for(i = 0; i < filesCount; i++)
-		wprintf(L"Файл: %s Размер: %d\n", fileNames[i], fileSizes[i]);
+		wprintf(L"Файл: %s Размер: %lld\n", fileNames[i], fileSizes[i]);
 	end = clock();
 	printf("Время выполнения: %.3f с\n", (float)(end - start) / CLOCKS_PER_SEC);
-    return;
+    //return;
 
-    gen(a, N, 502, 692);
+    //gen(a, N, 502, 692);
     printf("Исходный массив:        ");
-    output(a, N);
+    output(fileSizes, filesCount);
     printf("Алгоритм сортировки:       ");
     scanf("%d", &algo);
     switch (algo) 
     {
         case 1:
-            choosing_sort(a, N);
+            newIdxes = choosing_sort(fileSizes, filesIdxes, filesCount);
+			output_by_idxes(newIdxes, fileNames, fileSizes, filesCount);
             break;
         case 2:
-            insert_sort(a, N);
+            insert_sort(fileSizes, filesCount);
             break;
         case 3:
-            bubble_sort(a, N);
+            bubble_sort(fileSizes, filesCount);
             break;
         case 4:
-            counting_sort(a, N);
+            counting_sort(fileSizes, filesCount);
             break;
         case 5:
-            quick_sort(a, 0, N - 1);
+            quick_sort(fileSizes, 0, filesCount - 1);
             break;
         case 6:
-            merge_sort(a, 0, N - 1);
+            merge_sort(fileSizes, 0, filesCount - 1);
             break;
         default:
             printf("Неверный номер.\n");
             return;
     }
     printf("Отсортированный массив: ");
-    output(a, N);
+    output(fileSizes, filesCount);
 }
 
 // Ввод пути с клавиатуры
@@ -142,32 +148,73 @@ void gen(int a[], int n, int min, int max)
 }
 
 // Вывод массива
-void output(int a[], int n) 
+void output(ULONGLONG *a, int n) 
 {
     int i;
     for (i = 0; i < n - 1; i++) 
-        printf("%4d", a[i]);
-    printf("%4d\n", a[n - 1]);
+        printf("%lld ", a[i]);
+    printf("%lld\n", a[n - 1]);
 }
 
+// Вывод списка файлов по карте индексов
+void output_by_idxes(int *filesIdxes, wchar_t **fileNames, 
+	                 ULONGLONG *fileSizes, int filesCount)
+{
+	int i;
+	for (i = 0; i < filesCount; i++)
+		wprintf(L"Файл: %s Размер: %lld\n", fileNames[filesIdxes[i]], 
+			fileSizes[filesIdxes[i]]);
+}
+
+// Обмен значений целочисленных переменных
+void swap_int(int *var1, int *var2)
+{
+	int tmp = *var1;
+	*var2 = (*var1 = *var2, tmp);
+}
+
+// Обмен значений 64-битных переменных
+void swap_ULL(ULONGLONG *var1, ULONGLONG *var2)
+{
+	ULONGLONG tmp = *var1;
+	*var2 = (*var1 = *var2, tmp);
+}
+
+// Копирование целочисленного массива
+void copy(int **newIdxes, int *idxes, int n)
+{
+	int i;
+	for (i = 0; i < n; i++)
+		*(newIdxes[i]) = idxes[i];
+}
 
 // Сортировка выбором
-void choosing_sort(int a[], int n)
+int* choosing_sort(ULONGLONG *a, int *idxes, int n)
 {
-    int i, j, min, minidx;
+    int i, j, minidx, *newIdxes;
+	ULONGLONG min, *sizes;
+	newIdxes = (int*)malloc(n * sizeof(int));
+	sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
+	for (i = 0; i < n; i++)
+	{
+		newIdxes[i] = i;
+		sizes[i] = a[i];
+	}
     for (i = 0; i < n; i++) 
     {
-        min = a[i];
+        min = sizes[i];
         minidx = i;
         for (j = i + 1; j < n; j++) 
-            if (a[j] < min) 
+            if (sizes[j] < min)
             {
-                min = a[j];
+                min = sizes[j];
                 minidx = j;
             }
-        a[minidx] = a[i];
-        a[i] = min;
+		sizes[minidx] = sizes[i];
+		swap_int(&(newIdxes[minidx]), &(newIdxes[i]));
+		sizes[i] = min;
     }
+	free(sizes);
 }
 
 // Сортировка простыми вставками
