@@ -7,9 +7,13 @@
 #define _CRT_SECURE_NO_WARNINGS   // разрешение на исп. scanf
 #define N 50                      // количество элементов массива
 #define BUFFER_SIZE 2048          // размер буфера
+#define MAX_FILES_COUNT 1000      // предполагаемое кол-во файлов в папке
 
 void gen(int a[], int n, int min, int max);
 void output(int a[], int n);
+int dir_contents(const wchar_t *sDir, wchar_t **fileNames, 
+	             ULONGLONG *fileSizes);
+void user_input(wchar_t **wa);
 
 void choosing_sort(int a[], int n);
 void insert_sort(int a[], int n);
@@ -20,29 +24,32 @@ void quick_split(int a[], int* i, int* j, int p);
 void merge_sort(int a[], int l, int r);
 void merge_sorted(int a[], int l, int m, int r);
 
-int dir_contents(const wchar_t *sDir);
-
-void user_input(wchar_t **wa)
-{
-	char *a;
-	*wa = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
-	a = (char*)malloc(BUFFER_SIZE * sizeof(char));
-	fgets(a, BUFFER_SIZE, stdin);
-	a[strlen(a) - 1] = '\0';
-	swprintf(*wa, BUFFER_SIZE, L"%hs", a);
-}
-
 void main() 
 {
-    int a[N], algo;
+    int *a, algo, filesCount, *filesIdxes, i;
     wchar_t *path;
+	wchar_t **fileNames;
+	ULONGLONG *fileSizes;
     setlocale(LC_ALL, "Russian");
 
-    // Debug - START
-    //user_input(&path);
-    //dir_contents(path);
-    //return;
-    // Debug - END
+	fileNames = (wchar_t**)malloc(MAX_FILES_COUNT * sizeof(wchar_t*));
+	fileSizes = (wchar_t*)malloc(MAX_FILES_COUNT * sizeof(ULONGLONG));
+
+    user_input(&path);
+	filesCount = dir_contents(path, fileNames, fileSizes);
+	if (filesCount == -1)
+	{
+		printf("Указанный путь не найден. Проверьте правильность ввода.\n");
+		return;
+	}
+	filesIdxes = (int*)malloc((filesCount + 1) * sizeof(int));
+	for (i = 0; i < filesCount; i++)
+		filesIdxes[i] = i;
+
+	printf("%d files found.\n", filesCount);
+	for(i = 0; i < filesCount; i++)
+		wprintf(L"File: %s Size: %d\n", fileNames[i], fileSizes[i]);
+    return;
 
     gen(a, N, 502, 692);
     printf("Исходный массив:        ");
@@ -75,6 +82,52 @@ void main()
     }
     printf("Отсортированный массив: ");
     output(a, N);
+}
+
+// Ввод пути с клавиатуры
+void user_input(wchar_t **str_to_convert)
+{
+	char *input;
+	*str_to_convert = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+	input = (char*)malloc(BUFFER_SIZE * sizeof(char));
+	fgets(input, BUFFER_SIZE, stdin);
+	input[strlen(input) - 1] = '\0';
+	swprintf(*str_to_convert, BUFFER_SIZE, L"%hs", input);
+}
+
+// Получение списка файлов и размеров из директории
+int dir_contents(const wchar_t *sDir, wchar_t **fileNames, 
+	             ULONGLONG *fileSizes)
+{
+	int i = 0;
+	WIN32_FIND_DATA fdFile;
+	HANDLE hFind = NULL;
+	wchar_t *sPath;
+	sPath = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+    
+	wsprintf(sPath, L"%s\\*.*", sDir);
+	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
+		return -1;
+
+	//wprintf(L"Path: [%s]\n", sDir);
+	do
+	{
+		if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
+		{
+			ULONGLONG fileSize = fdFile.nFileSizeHigh;
+			fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
+			fileSize |= fdFile.nFileSizeLow;
+
+			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
+			wsprintf(fileNames[i], L"%s", sPath);
+
+			fileNames[i] = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+			fileSizes[i] = fileSize;
+			i++;
+		}
+	} while (FindNextFile(hFind, &fdFile));
+	FindClose(hFind);
+	return i;
 }
 
 // Генерация массива
@@ -233,34 +286,4 @@ void merge_sorted(int a[], int l, int m, int r)
     for (i = l; i <= r; i++)
         a[i] = merged[i - l];
     free(merged);
-}
-
-// Печать списка файлов и размеров из директории
-int dir_contents(const wchar_t *sDir)
-{
-    WIN32_FIND_DATA fdFile;
-    HANDLE hFind = NULL;
-    wchar_t sPath[BUFFER_SIZE];
-
-    wsprintf(sPath, L"%s\\*.*", sDir);
-    if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
-    {
-        wprintf(L"Path not found: [%s]\n", sDir);
-        return 1;
-    }
-    wprintf(L"Path: [%s]\n", sDir);
-    do
-    {
-        if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
-        {
-            ULONGLONG fileSize = fdFile.nFileSizeHigh;
-            fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
-            fileSize |= fdFile.nFileSizeLow;
-
-            wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
-            wprintf(L"File: %s Size: %d\n", sPath, fileSize);
-        }
-    } while (FindNextFile(hFind, &fdFile));
-    FindClose(hFind);
-    return 0;
 }
