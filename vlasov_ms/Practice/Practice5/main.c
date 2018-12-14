@@ -11,11 +11,11 @@
 
 void user_input(wchar_t **wa);
 int dir_contents(const wchar_t *sDir, wchar_t **fileNames,
-	ULONGLONG *fileSizes);
+    ULONGLONG *fileSizes);
 void gen(int a[], int n, int min, int max);
 void output(ULONGLONG *a, int n);
 void output_by_idxes(int *filesIdxes, wchar_t **fileNames,
-	 ULONGLONG *fileSizes, int filesCount, int is_format);
+     ULONGLONG *fileSizes, int filesCount, int is_format);
 void output_formatted_size(ULONGLONG size);
 void swap_int(int *var1, int *var2);
 void swap_ULL(ULONGLONG *var1, ULONGLONG *var2);
@@ -33,55 +33,55 @@ void merge_sorted(int a[], int l, int m, int r);
 void main() 
 {
     int algo, i, filesCount;
-	int *filesIdxes, *newIdxes;
+    int *filesIdxes, *newIdxes;
     wchar_t *path;
-	wchar_t **fileNames;
-	ULONGLONG *fileSizes;
-	clock_t start, end;
-	float total_time = 0.0f;
-	int is_format = 0;
+    wchar_t **fileNames;
+    ULONGLONG *fileSizes;
+    clock_t start, end;
+    float total_time = 0.0f;
+    int is_format = 0;
     setlocale(LC_ALL, "Russian");
 
-	fileNames = (wchar_t**)malloc(MAX_FILES_COUNT * sizeof(wchar_t*));
-	fileSizes = (ULONGLONG*)malloc(MAX_FILES_COUNT * sizeof(ULONGLONG));
-	
-	printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
-	printf("\nВведите путь к папке: ");
+    fileNames = (wchar_t**)malloc(MAX_FILES_COUNT * sizeof(wchar_t*));
+    fileSizes = (ULONGLONG*)malloc(MAX_FILES_COUNT * sizeof(ULONGLONG));
+    
+    printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
+    printf("\nВведите путь к папке: ");
     user_input(&path);
-	filesCount = dir_contents(path, fileNames, fileSizes);
-	if (filesCount == -1)
-	{
-		printf("Указанный путь не найден. Проверьте правильность ввода.\n");
-		return;
-	}
-	filesIdxes = (int*)malloc((filesCount + 1) * sizeof(int));
-	for (i = 0; i < filesCount; i++)
-		filesIdxes[i] = i;
-	printf("%d файлов найдено.\n", filesCount);
-	for(i = 0; i < filesCount; i++)
-		wprintf(L"Файл: %s Размер: %lld байт\n", fileNames[i], fileSizes[i]);
+    filesCount = dir_contents(path, fileNames, fileSizes);
+    if (filesCount == -1)
+    {
+        printf("Указанный путь не найден. Проверьте правильность ввода.\n");
+        return;
+    }
+    filesIdxes = (int*)malloc((filesCount + 1) * sizeof(int));
+    for (i = 0; i < filesCount; i++)
+        filesIdxes[i] = i;
+    printf("%d файлов найдено.\n", filesCount);
+    for(i = 0; i < filesCount; i++)
+        wprintf(L"Файл: %s Размер: %lld байт\n", fileNames[i], fileSizes[i]);
 
     //gen(a, N, 502, 692);
     //printf("Исходный массив:        ");
     //output(fileSizes, filesCount);
     printf("Выберите алгоритм сортировки: ");
     scanf("%d", &algo);
-	printf("Отобразить размеры в удобном формате? (0 - нет, 1 - да) ");
-	scanf("%d", &is_format);
-	system("cls");
-	printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
-	printf("\nАлгортим сортировки: %d\nСписок файлов в папке:\n", algo);
-	start = clock();
+    printf("Отобразить размеры в удобном формате? (0 - нет, 1 - да) ");
+    scanf("%d", &is_format);
+    system("cls");
+    printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
+    printf("\nАлгортим сортировки: %d\nСписок файлов в папке:\n", algo);
+    start = clock();
     switch (algo) 
     {
         case 1:
             newIdxes = choosing_sort(fileSizes, filesIdxes, filesCount);
             break;
         case 2:
-			newIdxes = insert_sort(fileSizes, filesIdxes, filesCount);
+            newIdxes = insert_sort(fileSizes, filesIdxes, filesCount);
             break;
         case 3:
-			newIdxes = bubble_sort(fileSizes, filesIdxes, filesCount);
+            newIdxes = bubble_sort(fileSizes, filesIdxes, filesCount);
             break;
         case 4:
             counting_sort(fileSizes, filesCount);
@@ -96,10 +96,10 @@ void main()
             printf("Неверный номер.\n");
             return;
     }
-	end = clock();
-	total_time = (float)(end - start) / CLOCKS_PER_SEC;
-	output_by_idxes(newIdxes, fileNames, fileSizes, filesCount, is_format);
-	printf("Время сортировки: %.3f с\n", total_time);
+    end = clock();
+    total_time = (float)(end - start) / CLOCKS_PER_SEC;
+    output_by_idxes(newIdxes, fileNames, fileSizes, filesCount, is_format);
+    printf("Время сортировки: %.3f с\n", total_time);
     //printf("Отсортированный массив: ");
     //output(fileSizes, filesCount);
 }
@@ -107,46 +107,46 @@ void main()
 // Ввод пути с клавиатуры
 void user_input(wchar_t **str_convert_to)
 {
-	char *input;
-	*str_convert_to = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
-	input = (char*)malloc(BUFFER_SIZE * sizeof(char));
-	fgets(input, BUFFER_SIZE, stdin);
-	input[strlen(input) - 1] = '\0';
-	swprintf(*str_convert_to, BUFFER_SIZE, L"%hs", input);
+    char *input;
+    *str_convert_to = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+    input = (char*)malloc(BUFFER_SIZE * sizeof(char));
+    fgets(input, BUFFER_SIZE, stdin);
+    input[strlen(input) - 1] = '\0';
+    swprintf(*str_convert_to, BUFFER_SIZE, L"%hs", input);
 }
 
 // Получение списка файлов и размеров из директории
 int dir_contents(const wchar_t *sDir, wchar_t **fileNames, 
-	             ULONGLONG *fileSizes)
+                 ULONGLONG *fileSizes)
 {
-	int i = 0;
-	WIN32_FIND_DATA fdFile;
-	HANDLE hFind = NULL;
-	wchar_t *sPath;
-	sPath = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+    int i = 0;
+    WIN32_FIND_DATA fdFile;
+    HANDLE hFind = NULL;
+    wchar_t *sPath;
+    sPath = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
     
-	wsprintf(sPath, L"%s\\*.*", sDir);
-	if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
-		return -1;
+    wsprintf(sPath, L"%s\\*.*", sDir);
+    if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
+        return -1;
 
-	//wprintf(L"Path: [%s]\n", sDir);
-	do
-	{
-		if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
-		{
-			ULONGLONG fileSize = fdFile.nFileSizeHigh;
-			fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
-			fileSize |= fdFile.nFileSizeLow;
+    //wprintf(L"Path: [%s]\n", sDir);
+    do
+    {
+        if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
+        {
+            ULONGLONG fileSize = fdFile.nFileSizeHigh;
+            fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
+            fileSize |= fdFile.nFileSizeLow;
 
-			fileNames[i] = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
-			fileSizes[i] = fileSize;
-			wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
-			wsprintf(fileNames[i], L"%s", sPath);
-			i++;
-		}
-	} while (FindNextFile(hFind, &fdFile));
-	FindClose(hFind);
-	return i;
+            fileNames[i] = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+            fileSizes[i] = fileSize;
+            wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
+            wsprintf(fileNames[i], L"%s", sPath);
+            i++;
+        }
+    } while (FindNextFile(hFind, &fdFile));
+    FindClose(hFind);
+    return i;
 }
 
 // Генерация массива
@@ -169,65 +169,65 @@ void output(ULONGLONG *a, int n)
 
 // Вывод списка файлов по карте индексов
 void output_by_idxes(int *filesIdxes, wchar_t **fileNames, 
-	                 ULONGLONG *fileSizes, int filesCount, int is_format)
+                     ULONGLONG *fileSizes, int filesCount, int is_format)
 {
-	int i;
-	for (i = 0; i < filesCount; i++)
-	{
-		wprintf(L"Файл: %s Размер: ", fileNames[filesIdxes[i]]);
-		if (is_format)
-			output_formatted_size(fileSizes[filesIdxes[i]]);
-		else
-			printf("%lld байт", fileSizes[filesIdxes[i]]);
-		printf("\n");
-	}
+    int i;
+    for (i = 0; i < filesCount; i++)
+    {
+        wprintf(L"Файл: %s Размер: ", fileNames[filesIdxes[i]]);
+        if (is_format)
+            output_formatted_size(fileSizes[filesIdxes[i]]);
+        else
+            printf("%lld байт", fileSizes[filesIdxes[i]]);
+        printf("\n");
+    }
 }
 
 // Вывод форматированного размера
 void output_formatted_size(ULONGLONG size)
 {
-	if (size < 1024)
-		printf("%d байт", (int)size);
-	else if (size < 1024 * 1024)
-		printf("%.2f Кб", (float)size / 1024);
-	else
-		printf("%.2f Мб", (float)size / (1024 * 1024));
+    if (size < 1024)
+        printf("%d байт", (int)size);
+    else if (size < 1024 * 1024)
+        printf("%.2f Кб", (float)size / 1024);
+    else
+        printf("%.2f Мб", (float)size / (1024 * 1024));
 }
 
 // Обмен значений целочисленных переменных
 void swap_int(int *var1, int *var2)
 {
-	int tmp = *var1;
-	*var2 = (*var1 = *var2, tmp);
+    int tmp = *var1;
+    *var2 = (*var1 = *var2, tmp);
 }
 
 // Обмен значений 64-битных переменных
 void swap_ULL(ULONGLONG *var1, ULONGLONG *var2)
 {
-	ULONGLONG tmp = *var1;
-	*var2 = (*var1 = *var2, tmp);
+    ULONGLONG tmp = *var1;
+    *var2 = (*var1 = *var2, tmp);
 }
 
 // Копирование целочисленного массива
 void copy(int *copy_to, int *copy_from, int n)
 {
-	int i;
-	for (i = 0; i < n; i++)
-		copy_to[i] = copy_from[i];
+    int i;
+    for (i = 0; i < n; i++)
+        copy_to[i] = copy_from[i];
 }
 
 // Сортировка выбором
 int* choosing_sort(ULONGLONG *a, int *idxes, int n)
 {
     int i, j, minidx, *newIdxes;
-	ULONGLONG min, *sizes;
-	newIdxes = (int*)malloc(n * sizeof(int));
-	sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
-	for (i = 0; i < n; i++)
-	{
-		newIdxes[i] = i;
-		sizes[i] = a[i];
-	}
+    ULONGLONG min, *sizes;
+    newIdxes = (int*)malloc(n * sizeof(int));
+    sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
+    for (i = 0; i < n; i++)
+    {
+        newIdxes[i] = i;
+        sizes[i] = a[i];
+    }
     for (i = 0; i < n; i++) 
     {
         min = sizes[i];
@@ -238,65 +238,65 @@ int* choosing_sort(ULONGLONG *a, int *idxes, int n)
                 min = sizes[j];
                 minidx = j;
             }
-		sizes[minidx] = sizes[i];
-		swap_int(newIdxes + minidx, newIdxes + i);
-		sizes[i] = min;
+        sizes[minidx] = sizes[i];
+        swap_int(newIdxes + minidx, newIdxes + i);
+        sizes[i] = min;
     }
-	free(sizes);
-	return newIdxes;
+    free(sizes);
+    return newIdxes;
 }
 
 // Сортировка простыми вставками
 int* insert_sort(ULONGLONG *a, int *idxes, int n)
 {
     int i, j, *newIdxes;
-	ULONGLONG temp, *sizes;
-	newIdxes = (int*)malloc(n * sizeof(int));
-	sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
-	for (i = 0; i < n; i++)
-	{
-		newIdxes[i] = i;
-		sizes[i] = a[i];
-	}
+    ULONGLONG temp, *sizes;
+    newIdxes = (int*)malloc(n * sizeof(int));
+    sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
+    for (i = 0; i < n; i++)
+    {
+        newIdxes[i] = i;
+        sizes[i] = a[i];
+    }
     for (i = 1; i < n; i++) 
     {
         temp = sizes[i];
         j = i - 1;
         while ((j >= 0) && (sizes[j]>temp))
         {
-			sizes[j + 1] = sizes[j];
-			newIdxes[j + 1] = newIdxes[j];
-			newIdxes[j] = i;
-			sizes[j--] = temp;
+            sizes[j + 1] = sizes[j];
+            newIdxes[j + 1] = newIdxes[j];
+            newIdxes[j] = i;
+            sizes[j--] = temp;
         }
     }
-	free(sizes);
-	return newIdxes;
+    free(sizes);
+    return newIdxes;
 }
 
 // Пузырьковая сортировка
 int* bubble_sort(ULONGLONG *a, int *idxes, int n)
 {
-	int i, j, *newIdxes;
-	ULONGLONG temp, *sizes;
-	newIdxes = (int*)malloc(n * sizeof(int));
-	sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
-	for (i = 0; i < n; i++)
-	{
-		newIdxes[i] = i;
-		sizes[i] = a[i];
-	}
+    int i, j, *newIdxes;
+    ULONGLONG temp, *sizes;
+    newIdxes = (int*)malloc(n * sizeof(int));
+    sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
+    for (i = 0; i < n; i++)
+    {
+        newIdxes[i] = i;
+        sizes[i] = a[i];
+    }
     for (i = 0; i < n; i++) 
         for (j = 1; j < n - i; j++) 
             if (sizes[j - 1] > sizes[j])
             {
                 temp = sizes[j];
-				sizes[j] = sizes[j - 1];
-				sizes[j - 1] = temp;
-				swap_int(newIdxes + j, newIdxes + j - 1);
+                sizes[j] = sizes[j - 1];
+                sizes[j - 1] = temp;
+                swap_int(newIdxes + j, newIdxes + j - 1);
             }
-	free(sizes);
-	return newIdxes;
+    free(sizes);
+    return newIdxes;
 }
 
 // Сортировка подсчетом (с произвольным выделением памяти)
