@@ -22,7 +22,7 @@ void copy(int *copy_to, int *copy_from, int n);
 
 int* choosing_sort(ULONGLONG *a, int *idxes, int n);
 int* insert_sort(ULONGLONG *a, int *idxes, int n);
-void bubble_sort(int a[], int n);
+int* bubble_sort(ULONGLONG *a, int *idxes, int n);
 void counting_sort(int a[], int n);
 void quick_sort(int a[], int n1, int n2);
 void quick_split(int a[], int* i, int* j, int p);
@@ -72,7 +72,7 @@ void main()
 			newIdxes = insert_sort(fileSizes, filesIdxes, filesCount);
             break;
         case 3:
-            bubble_sort(fileSizes, filesCount);
+			newIdxes = bubble_sort(fileSizes, filesIdxes, filesCount);
             break;
         case 4:
             counting_sort(fileSizes, filesCount);
@@ -248,17 +248,28 @@ int* insert_sort(ULONGLONG *a, int *idxes, int n)
 }
 
 // Пузырьковая сортировка
-void bubble_sort(int a[], int n)
+int* bubble_sort(ULONGLONG *a, int *idxes, int n)
 {
-    int i, j, temp;
+	int i, j, *newIdxes;
+	ULONGLONG temp, *sizes;
+	newIdxes = (int*)malloc(n * sizeof(int));
+	sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
+	for (i = 0; i < n; i++)
+	{
+		newIdxes[i] = i;
+		sizes[i] = a[i];
+	}
     for (i = 0; i < n; i++) 
         for (j = 1; j < n - i; j++) 
-            if (a[j - 1]>a[j]) 
+            if (sizes[j - 1] > sizes[j])
             {
-                temp = a[j];
-                a[j] = a[j - 1];
-                a[j - 1] = temp;
+                temp = sizes[j];
+				sizes[j] = sizes[j - 1];
+				sizes[j - 1] = temp;
+				swap_int(newIdxes + j, newIdxes + j - 1);
             }
+	free(sizes);
+	return newIdxes;
 }
 
 // Сортировка подсчетом (с произвольным выделением памяти)
