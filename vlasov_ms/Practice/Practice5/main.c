@@ -15,7 +15,8 @@ int dir_contents(const wchar_t *sDir, wchar_t **fileNames,
 void gen(int a[], int n, int min, int max);
 void output(ULONGLONG *a, int n);
 void output_by_idxes(int *filesIdxes, wchar_t **fileNames,
-	 ULONGLONG *fileSizes, int filesCount);
+	 ULONGLONG *fileSizes, int filesCount, int is_format);
+void output_formatted_size(ULONGLONG size);
 void swap_int(int *var1, int *var2);
 void swap_ULL(ULONGLONG *var1, ULONGLONG *var2);
 void copy(int *copy_to, int *copy_from, int n);
@@ -37,11 +38,15 @@ void main()
 	wchar_t **fileNames;
 	ULONGLONG *fileSizes;
 	clock_t start, end;
+	float total_time = 0.0f;
+	int is_format = 0;
     setlocale(LC_ALL, "Russian");
 
 	fileNames = (wchar_t**)malloc(MAX_FILES_COUNT * sizeof(wchar_t*));
 	fileSizes = (ULONGLONG*)malloc(MAX_FILES_COUNT * sizeof(ULONGLONG));
 	
+	printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
+	printf("\nВведите путь к папке: ");
     user_input(&path);
 	filesCount = dir_contents(path, fileNames, fileSizes);
 	if (filesCount == -1)
@@ -54,14 +59,18 @@ void main()
 		filesIdxes[i] = i;
 	printf("%d файлов найдено.\n", filesCount);
 	for(i = 0; i < filesCount; i++)
-		wprintf(L"Файл: %s Размер: %lld\n", fileNames[i], fileSizes[i]);
-    //return;
+		wprintf(L"Файл: %s Размер: %lld байт\n", fileNames[i], fileSizes[i]);
 
     //gen(a, N, 502, 692);
-    printf("Исходный массив:        ");
-    output(fileSizes, filesCount);
-    printf("Алгоритм сортировки:       ");
+    //printf("Исходный массив:        ");
+    //output(fileSizes, filesCount);
+    printf("Выберите алгоритм сортировки: ");
     scanf("%d", &algo);
+	printf("Отобразить размеры в удобном формате? (0 - нет, 1 - да) ");
+	scanf("%d", &is_format);
+	system("cls");
+	printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
+	printf("\nАлгортим сортировки: %d\nСписок файлов в папке:\n", algo);
 	start = clock();
     switch (algo) 
     {
@@ -88,8 +97,9 @@ void main()
             return;
     }
 	end = clock();
-	printf("Время выполнения: %.3f с\n", (float)(end - start) / CLOCKS_PER_SEC);
-	output_by_idxes(newIdxes, fileNames, fileSizes, filesCount);
+	total_time = (float)(end - start) / CLOCKS_PER_SEC;
+	output_by_idxes(newIdxes, fileNames, fileSizes, filesCount, is_format);
+	printf("Время сортировки: %.3f с\n", total_time);
     //printf("Отсортированный массив: ");
     //output(fileSizes, filesCount);
 }
@@ -159,12 +169,29 @@ void output(ULONGLONG *a, int n)
 
 // Вывод списка файлов по карте индексов
 void output_by_idxes(int *filesIdxes, wchar_t **fileNames, 
-	                 ULONGLONG *fileSizes, int filesCount)
+	                 ULONGLONG *fileSizes, int filesCount, int is_format)
 {
 	int i;
 	for (i = 0; i < filesCount; i++)
-		wprintf(L"Файл: %s Размер: %lld\n", fileNames[filesIdxes[i]], 
-			fileSizes[filesIdxes[i]]);
+	{
+		wprintf(L"Файл: %s Размер: ", fileNames[filesIdxes[i]]);
+		if (is_format)
+			output_formatted_size(fileSizes[filesIdxes[i]]);
+		else
+			printf("%lld байт", fileSizes[filesIdxes[i]]);
+		printf("\n");
+	}
+}
+
+// Вывод форматированного размера
+void output_formatted_size(ULONGLONG size)
+{
+	if (size < 1024)
+		printf("%d байт", (int)size);
+	else if (size < 1024 * 1024)
+		printf("%.2f Кб", (float)size / 1024);
+	else
+		printf("%.2f Мб", (float)size / (1024 * 1024));
 }
 
 // Обмен значений целочисленных переменных
