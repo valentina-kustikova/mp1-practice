@@ -18,7 +18,7 @@ void output_by_idxes(int *filesIdxes, wchar_t **fileNames,
 	 ULONGLONG *fileSizes, int filesCount);
 void swap_int(int *var1, int *var2);
 void swap_ULL(ULONGLONG *var1, ULONGLONG *var2);
-void copy(int **newIdxes, int *idxes, int n);
+void copy(int *copy_to, int *copy_from, int n);
 
 int* choosing_sort(ULONGLONG *a, int *idxes, int n);
 void insert_sort(int a[], int n);
@@ -31,7 +31,8 @@ void merge_sorted(int a[], int l, int m, int r);
 
 void main() 
 {
-    int *a, algo, filesCount, *filesIdxes, *newIdxes, i;
+    int algo, i, filesCount;
+	int *filesIdxes, *newIdxes;
     wchar_t *path;
 	wchar_t **fileNames;
 	ULONGLONG *fileSizes;
@@ -181,11 +182,11 @@ void swap_ULL(ULONGLONG *var1, ULONGLONG *var2)
 }
 
 // Копирование целочисленного массива
-void copy(int **newIdxes, int *idxes, int n)
+void copy(int *copy_to, int *copy_from, int n)
 {
 	int i;
 	for (i = 0; i < n; i++)
-		*(newIdxes[i]) = idxes[i];
+		copy_to[i] = copy_from[i];
 }
 
 // Сортировка выбором
@@ -211,10 +212,11 @@ int* choosing_sort(ULONGLONG *a, int *idxes, int n)
                 minidx = j;
             }
 		sizes[minidx] = sizes[i];
-		swap_int(&(newIdxes[minidx]), &(newIdxes[i]));
+		swap_int(newIdxes + minidx, newIdxes + i);
 		sizes[i] = min;
     }
 	free(sizes);
+	return newIdxes;
 }
 
 // Сортировка простыми вставками
