@@ -21,7 +21,7 @@ void swap_ULL(ULONGLONG *var1, ULONGLONG *var2);
 void copy(int *copy_to, int *copy_from, int n);
 
 int* choosing_sort(ULONGLONG *a, int *idxes, int n);
-void insert_sort(int a[], int n);
+int* insert_sort(ULONGLONG *a, int *idxes, int n);
 void bubble_sort(int a[], int n);
 void counting_sort(int a[], int n);
 void quick_sort(int a[], int n1, int n2);
@@ -43,7 +43,6 @@ void main()
 	fileSizes = (ULONGLONG*)malloc(MAX_FILES_COUNT * sizeof(ULONGLONG));
 	
     user_input(&path);
-	start = clock();
 	filesCount = dir_contents(path, fileNames, fileSizes);
 	if (filesCount == -1)
 	{
@@ -56,8 +55,6 @@ void main()
 	printf("%d файлов найдено.\n", filesCount);
 	for(i = 0; i < filesCount; i++)
 		wprintf(L"Файл: %s Размер: %lld\n", fileNames[i], fileSizes[i]);
-	end = clock();
-	printf("Время выполнения: %.3f с\n", (float)(end - start) / CLOCKS_PER_SEC);
     //return;
 
     //gen(a, N, 502, 692);
@@ -65,14 +62,14 @@ void main()
     output(fileSizes, filesCount);
     printf("Алгоритм сортировки:       ");
     scanf("%d", &algo);
+	start = clock();
     switch (algo) 
     {
         case 1:
             newIdxes = choosing_sort(fileSizes, filesIdxes, filesCount);
-			output_by_idxes(newIdxes, fileNames, fileSizes, filesCount);
             break;
         case 2:
-            insert_sort(fileSizes, filesCount);
+			newIdxes = insert_sort(fileSizes, filesIdxes, filesCount);
             break;
         case 3:
             bubble_sort(fileSizes, filesCount);
@@ -90,8 +87,11 @@ void main()
             printf("Неверный номер.\n");
             return;
     }
-    printf("Отсортированный массив: ");
-    output(fileSizes, filesCount);
+	end = clock();
+	printf("Время выполнения: %.3f с\n", (float)(end - start) / CLOCKS_PER_SEC);
+	output_by_idxes(newIdxes, fileNames, fileSizes, filesCount);
+    //printf("Отсортированный массив: ");
+    //output(fileSizes, filesCount);
 }
 
 // Ввод пути с клавиатуры
@@ -220,19 +220,31 @@ int* choosing_sort(ULONGLONG *a, int *idxes, int n)
 }
 
 // Сортировка простыми вставками
-void insert_sort(int a[], int n)
+int* insert_sort(ULONGLONG *a, int *idxes, int n)
 {
-    int i, j, temp;
+    int i, j, *newIdxes;
+	ULONGLONG temp, *sizes;
+	newIdxes = (int*)malloc(n * sizeof(int));
+	sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
+	for (i = 0; i < n; i++)
+	{
+		newIdxes[i] = i;
+		sizes[i] = a[i];
+	}
     for (i = 1; i < n; i++) 
     {
-        temp = a[i];
+        temp = sizes[i];
         j = i - 1;
-        while ((j >= 0) && (a[j]>temp)) 
+        while ((j >= 0) && (sizes[j]>temp))
         {
-            a[j + 1] = a[j];
-            a[j--] = temp;
+			sizes[j + 1] = sizes[j];
+			newIdxes[j + 1] = newIdxes[j];
+			newIdxes[j] = i;
+			sizes[j--] = temp;
         }
     }
+	free(sizes);
+	return newIdxes;
 }
 
 // Пузырьковая сортировка
