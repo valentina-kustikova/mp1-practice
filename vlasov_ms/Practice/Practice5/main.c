@@ -10,8 +10,8 @@
 #define MAX_FILES_COUNT 1000      // предполагаемое кол-во файлов в папке
 
 void user_input(wchar_t **wa);
-int dir_contents(const wchar_t *sDir, wchar_t **fileNames,
-    ULONGLONG *fileSizes);
+int dir_contents(const wchar_t *sDir, wchar_t ***fileNames,
+    ULONGLONG **fileSizes);
 void gen(int a[], int n, int min, int max);
 void output(ULONGLONG *a, int n);
 void output_by_idxes(int *filesIdxes, wchar_t **fileNames,
@@ -25,10 +25,15 @@ int* choosing_sort(ULONGLONG *a, int *idxes, int n);
 int* insert_sort(ULONGLONG *a, int *idxes, int n);
 int* bubble_sort(ULONGLONG *a, int *idxes, int n);
 void counting_sort(int a[], int n);
+
+int* start_quickest_sort(ULONGLONG *sizes, int *idxes, int starting, int ending);
+void quickest_sort(ULONGLONG *sizes, int *idxes, int starting, int ending);
 void quick_sort(int a[], int n1, int n2);
 void quick_split(int a[], int* i, int* j, int p);
-void merge_sort(int a[], int l, int r);
-void merge_sorted(int a[], int l, int m, int r);
+
+int* start_merge_sort(ULONGLONG *sizes, int *idxes, int l, int r);
+void merge_sort(ULONGLONG *sizes, int *idxes, int l, int r);
+void merge_sorted(ULONGLONG *sizes, int *idxes, int l, int m, int r);
 
 void main() 
 {
@@ -42,13 +47,13 @@ void main()
     int is_format = 0;
     setlocale(LC_ALL, "Russian");
 
-    fileNames = (wchar_t**)malloc(MAX_FILES_COUNT * sizeof(wchar_t*));
-    fileSizes = (ULONGLONG*)malloc(MAX_FILES_COUNT * sizeof(ULONGLONG));
+    //fileNames = (wchar_t**)malloc(MAX_FILES_COUNT * sizeof(wchar_t*));
+    //fileSizes = (ULONGLONG*)malloc(MAX_FILES_COUNT * sizeof(ULONGLONG));
     
     printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
     printf("\nВведите путь к папке: ");
     user_input(&path);
-    filesCount = dir_contents(path, fileNames, fileSizes);
+    filesCount = dir_contents(path, &fileNames, &fileSizes);
     if (filesCount == -1)
     {
         printf("Указанный путь не найден. Проверьте правильность ввода.\n");
@@ -68,8 +73,8 @@ void main()
     scanf("%d", &algo);
     printf("Отобразить размеры в удобном формате? (0 - нет, 1 - да) ");
     scanf("%d", &is_format);
-    system("cls");
-    printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
+    //system("cls");
+    //printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
     printf("\nАлгортим сортировки: %d\nСписок файлов в папке:\n", algo);
     start = clock();
     switch (algo) 
@@ -90,7 +95,10 @@ void main()
             quick_sort(fileSizes, 0, filesCount - 1);
             break;
         case 6:
-            merge_sort(fileSizes, 0, filesCount - 1);
+            newIdxes = start_merge_sort(fileSizes, filesIdxes, filesIdxes[0], filesIdxes[filesCount - 1]);
+            for (i = 0; i < filesCount; i++) printf("%3d", filesIdxes[i]);
+            printf("\n");
+            for (i = 0; i < filesCount; i++) printf("%3d", newIdxes[i]);
             break;
         default:
             printf("Неверный номер.\n");
@@ -102,6 +110,13 @@ void main()
     printf("Время сортировки: %.3f с\n", total_time);
     //printf("Отсортированный массив: ");
     //output(fileSizes, filesCount);
+
+    for (i = 0; i < filesCount; i++)
+        free(fileNames[i]);
+    free(fileNames);
+    free(fileSizes);
+    free(filesIdxes);
+    free(newIdxes);
 }
 
 // Ввод пути с клавиатуры
@@ -116,8 +131,8 @@ void user_input(wchar_t **str_convert_to)
 }
 
 // Получение списка файлов и размеров из директории
-int dir_contents(const wchar_t *sDir, wchar_t **fileNames, 
-                 ULONGLONG *fileSizes)
+int dir_contents(const wchar_t *sDir, wchar_t ***fileNames, 
+                 ULONGLONG **fileSizes)
 {
     int i = 0;
     WIN32_FIND_DATA fdFile;
@@ -133,19 +148,31 @@ int dir_contents(const wchar_t *sDir, wchar_t **fileNames,
     do
     {
         if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
+            i++;
+    } while (FindNextFile(hFind, &fdFile));
+
+    hFind = FindFirstFile(sPath, &fdFile);
+    *fileNames = (wchar_t**)malloc(i * sizeof(wchar_t*));
+    *fileSizes = (ULONGLONG*)malloc(i * sizeof(ULONGLONG));
+    i = 0;
+    do
+    {
+        if (wcscmp(fdFile.cFileName, L".") != 0 && wcscmp(fdFile.cFileName, L"..") != 0)
         {
             ULONGLONG fileSize = fdFile.nFileSizeHigh;
             fileSize <<= sizeof(fdFile.nFileSizeHigh) * 8;
             fileSize |= fdFile.nFileSizeLow;
 
-            fileNames[i] = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
-            fileSizes[i] = fileSize;
+            (*fileNames)[i] = (wchar_t*)malloc(BUFFER_SIZE * sizeof(wchar_t));
+            (*fileSizes)[i] = fileSize;
             wsprintf(sPath, L"%s\\%s", sDir, fdFile.cFileName);
-            wsprintf(fileNames[i], L"%s", sPath);
+            wsprintf((*fileNames)[i], L"%s", sPath);
             i++;
         }
     } while (FindNextFile(hFind, &fdFile));
     FindClose(hFind);
+
+    free(sPath);
     return i;
 }
 
@@ -225,7 +252,7 @@ int* choosing_sort(ULONGLONG *a, int *idxes, int n)
     sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
     for (i = 0; i < n; i++)
     {
-        newIdxes[i] = i;
+        newIdxes[i] = idxes[i];
         sizes[i] = a[i];
     }
     for (i = 0; i < n; i++) 
@@ -238,9 +265,8 @@ int* choosing_sort(ULONGLONG *a, int *idxes, int n)
                 min = sizes[j];
                 minidx = j;
             }
-        sizes[minidx] = sizes[i];
         swap_int(newIdxes + minidx, newIdxes + i);
-        sizes[i] = min;
+        swap_ULL(sizes + minidx, sizes + i);
     }
     free(sizes);
     return newIdxes;
@@ -255,7 +281,7 @@ int* insert_sort(ULONGLONG *a, int *idxes, int n)
     sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
     for (i = 0; i < n; i++)
     {
-        newIdxes[i] = i;
+        newIdxes[i] = idxes[i];
         sizes[i] = a[i];
     }
     for (i = 1; i < n; i++) 
@@ -267,7 +293,8 @@ int* insert_sort(ULONGLONG *a, int *idxes, int n)
             sizes[j + 1] = sizes[j];
             newIdxes[j + 1] = newIdxes[j];
             newIdxes[j] = i;
-            sizes[j--] = temp;
+            sizes[j] = temp;
+            j--;
         }
     }
     free(sizes);
@@ -278,21 +305,19 @@ int* insert_sort(ULONGLONG *a, int *idxes, int n)
 int* bubble_sort(ULONGLONG *a, int *idxes, int n)
 {
     int i, j, *newIdxes;
-    ULONGLONG temp, *sizes;
+    ULONGLONG *sizes;
     newIdxes = (int*)malloc(n * sizeof(int));
     sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
     for (i = 0; i < n; i++)
     {
-        newIdxes[i] = i;
+        newIdxes[i] = idxes[i];
         sizes[i] = a[i];
     }
     for (i = 0; i < n; i++) 
         for (j = 1; j < n - i; j++) 
             if (sizes[j - 1] > sizes[j])
             {
-                temp = sizes[j];
-                sizes[j] = sizes[j - 1];
-                sizes[j - 1] = temp;
+                swap_ULL(sizes + j, sizes + j - 1);
                 swap_int(newIdxes + j, newIdxes + j - 1);
             }
     free(sizes);
@@ -321,6 +346,33 @@ void counting_sort(int a[], int n)
             a[idx++] = i + min;
     free(count);
 }
+
+// Запуск быстрой сортировки
+int* start_quickest_sort(ULONGLONG *sizes, int *idxes, int starting, int ending)
+{
+
+}
+
+// Новая быстрая сортировка
+void quickest_sort(ULONGLONG *sizes,  int *idxes, int starting, int ending)
+{
+    int l = starting, r = ending;
+    int mid = sizes[(l + r) / 2];
+    while (l <= r)
+    {
+        while (sizes[l] < mid)
+            l++;
+        while (sizes[r] > mid)
+            r--;
+        if (l <= r)
+            swap_int(sizes + l++, sizes + r--);
+    }
+    if (starting < r)
+        quickest_sort(sizes, idxes, starting, r);
+    if (ending > l)
+        quickest_sort(sizes, idxes, l, ending);
+}
+// qsort (arr, 0, n-1);
 
 // Быстрая сортировка
 void quick_sort(int a[], int n1, int n2)
@@ -355,36 +407,83 @@ void quick_split(int a[], int* i, int* j, int p)
     } while (*i <= *j);
 }
 
+// Запуск сортировки слиянием
+int* start_merge_sort(ULONGLONG *sizes, int *idxes, int l, int r)
+{
+    int i, *newIdxes, total_length = r - l + 1;
+    ULONGLONG *newSizes;
+    newIdxes = (int*)malloc(total_length * sizeof(int));
+    newSizes = (ULONGLONG*)malloc(total_length * sizeof(ULONGLONG));
+    for (i = 0; i < total_length; i++)
+    {
+        newIdxes[i] = idxes[i];
+        newSizes[i] = sizes[i];
+    }
+    merge_sort(newSizes, newIdxes, l, r);
+    free(newSizes);
+    return newIdxes;
+}
+
 // Сортировка слиянием
-void merge_sort(int a[], int l, int r)
+void merge_sort(ULONGLONG *sizes, int *idxes, int l, int r)
 {
     int m;
     if (l >= r) 
         return;
     m = (l + r) / 2;
-    merge_sort(a, l, m);
-    merge_sort(a, m + 1, r);
-    merge_sorted(a, l, m, r);
+    merge_sort(sizes, idxes, l, m);
+    merge_sort(sizes, idxes, m + 1, r);
+    merge_sorted(sizes, idxes, l, m, r);
 }
 
 // Слияние отсортированных частей массива (с произвольным выделением памяти)
-void merge_sorted(int a[], int l, int m, int r)
+void merge_sorted(ULONGLONG *sizes, int *idxes, int l, int m, int r)
 {
-    int i, j, s = 0, *merged, total_length = r - l + 1;
-    merged = (int*)malloc(total_length * sizeof(int)); 
+    int i, j, s = 0, *tmpIdxes, total_length = r - l + 1;
+    ULONGLONG *merged;
+    merged = (ULONGLONG*)malloc(total_length * sizeof(ULONGLONG));
+    tmpIdxes = (int*)malloc(total_length * sizeof(int));
     i = l;
     j = m + 1;
     while ((i <= m) && (j <= r)) {
-        if (a[i] <= a[j])
-            merged[s++] = a[i++];
+        if (sizes[i] <= sizes[j])
+        {
+            merged[s] = sizes[i];
+            tmpIdxes[s] = i;
+            s++;
+            i++;
+        }
         else
-            merged[s++] = a[j++];
+        {
+            merged[s] = sizes[j];
+            tmpIdxes[s] = j;
+            s++;
+            j++;
+        }
     }
     while (i <= m)
-        merged[s++] = a[i++];
+    {
+        merged[s] = sizes[i];
+        tmpIdxes[s] = i;
+        s++;
+        i++;
+    }
     while (j <= r)
-        merged[s++] = a[j++];
+    {
+        merged[s] = sizes[j];
+        tmpIdxes[s] = j;
+        s++;
+        j++;
+    }
     for (i = l; i <= r; i++)
-        a[i] = merged[i - l];
+    {
+        sizes[i] = merged[i - l];
+        idxes[i] = tmpIdxes[i - l];
+    }
+
+    output(merged, total_length);
+    output(tmpIdxes, total_length);
+
     free(merged);
+    free(tmpIdxes);
 }
