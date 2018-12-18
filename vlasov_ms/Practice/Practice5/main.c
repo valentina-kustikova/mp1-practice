@@ -421,53 +421,43 @@ void merge_sorted(ULONGLONG *sizes, int *idxes, int l, int m, int r)
     int i, j, s = 0, *tmpIdxes, total_length = r - l + 1;
     ULONGLONG *merged;
     merged = (ULONGLONG*)malloc(total_length * sizeof(ULONGLONG));
-    //tmpIdxes = (int*)malloc(total_length * sizeof(int));
-	//for (i = 0; i < total_length; i++)
-		//tmpIdxes[i] = idxes[i + l];
-	printf("Индексы ");
-	for (i = l; i <= r; i++)
-		printf("%d ", idxes[i]);
-	printf("\n");
+    tmpIdxes = (int*)malloc(total_length * sizeof(int));
+	for (i = 0; i < total_length; i++)
+		tmpIdxes[i] = idxes[i + l];
     i = l;
     j = m + 1;
     while ((i <= m) && (j <= r)) {
         if (sizes[i] <= sizes[j])
         {
             merged[s] = sizes[i];
-			idxes[l + s] = i;
+			tmpIdxes[s] = idxes[i];
 			s++; i++;
         }
         else
         {
             merged[s] = sizes[j];
-			idxes[l + s] = j;
+			tmpIdxes[s] = idxes[j];
 			s++; j++;
         }
     }
     while (i <= m)
     {
         merged[s] = sizes[i];
-		idxes[l + s] = i;
+		tmpIdxes[s] = idxes[i];
 		s++; i++;
     }
     while (j <= r)
     {
         merged[s] = sizes[j];
-		idxes[l + s] = j;
+		tmpIdxes[s] = idxes[j];
 		s++; j++;
     }
     for (i = l; i <= r; i++)
     {
         sizes[i] = merged[i - l];
-        //idxes[i] = tmpIdxes[i - l];
+        idxes[i] = tmpIdxes[i - l];
     }
-	printf("Размеры ");
-	for (i = l; i <= r; i++)
-		printf("%lld ", sizes[i]);
-	printf("\n");
-    //output(merged, total_length);
-    //output(tmpIdxes, total_length);
 
     free(merged);
-    //free(tmpIdxes);
+    free(tmpIdxes);
 }
