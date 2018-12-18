@@ -323,37 +323,44 @@ void counting_sort(int a[], int n)
 int* start_quick_sort(ULONGLONG *sizes, int *idxes, int n1, int n2)
 {
 	int i, *newIdxes, total_length = n2 - n1 + 1;
+	ULONGLONG *newSizes;
 	newIdxes = (int*)malloc(total_length * sizeof(int));
+	newSizes = (ULONGLONG*)malloc(total_length * sizeof(ULONGLONG));
 	for (i = 0; i < total_length; i++)
 	{
 		newIdxes[i] = idxes[i + n1];
+		newSizes[i] = sizes[i + n1];
 	}
-	quick_sort(sizes, newIdxes, n1, n2);
+	quick_sort(newSizes, newIdxes, n1, n2);
+	free(newSizes);
 	return newIdxes;
 }
 
 // Быстрая сортировка
-void quick_sort(ULONGLONG *a, int *idxes, int n1, int n2)
+void quick_sort(ULONGLONG *sizes, int *idxes, int n1, int n2)
 {
-    ULONGLONG comp = a[(n1 + n2) / 2];
+    ULONGLONG comp = sizes[(n1 + n2) / 2];
     int i = n1, j = n2;
 	printf("enter qs ");
 	do {
-		while (a[idxes[i]] < comp)
+		while (sizes[i] < comp)
 			i++;
-		while (a[idxes[j]] > comp)
+		while (sizes[j] > comp)
 			j--;
 		if (i <= j) {
-			if (a[idxes[i]] > a[idxes[j]])
+			if (sizes[i] > sizes[j])
+			{
 				swap_int(idxes + i, idxes + j);
+				swap_ULL(sizes + i, sizes + j);
+			}
 			i++;
 			j--;
 		}
 	} while (i <= j);
     if (i < n2)
-        quick_sort(a, idxes, i, n2);
+        quick_sort(sizes, idxes, i, n2);
     if (j > n1)
-        quick_sort(a, idxes, n1, j);
+        quick_sort(sizes, idxes, n1, j);
 }
 
 // Запуск сортировки слиянием
