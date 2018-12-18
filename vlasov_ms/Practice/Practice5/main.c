@@ -246,14 +246,10 @@ void copy(int *copy_to, int *copy_from, int n)
 int* choosing_sort(ULONGLONG *a, int *idxes, int n)
 {
     int i, j, minidx, *newIdxes;
-    ULONGLONG min, *sizes;
+    ULONGLONG min;
     newIdxes = (int*)malloc(n * sizeof(int));
-    //sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
     for (i = 0; i < n; i++)
-    {
         newIdxes[i] = idxes[i];
-        //sizes[i] = a[i];
-    }
     for (i = 0; i < n; i++) 
     {
         min = a[newIdxes[i]];
@@ -265,9 +261,7 @@ int* choosing_sort(ULONGLONG *a, int *idxes, int n)
                 minidx = j;
             }
         swap_int(newIdxes + minidx, newIdxes + i);
-        //swap_ULL(a + minidx, a + i);
     }
-    //free(sizes);
     return newIdxes;
 }
 
@@ -275,28 +269,21 @@ int* choosing_sort(ULONGLONG *a, int *idxes, int n)
 int* insert_sort(ULONGLONG *a, int *idxes, int n)
 {
     int i, j, *newIdxes;
-    ULONGLONG temp, *sizes;
+    ULONGLONG temp;
     newIdxes = (int*)malloc(n * sizeof(int));
-    sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
     for (i = 0; i < n; i++)
-    {
         newIdxes[i] = idxes[i];
-        sizes[i] = a[i];
-    }
     for (i = 1; i < n; i++) 
     {
-        temp = sizes[i];
+        temp = a[newIdxes[i]];
         j = i - 1;
-        while ((j >= 0) && (sizes[j]>temp))
+        while ((j >= 0) && (a[newIdxes[j]]>temp))
         {
-            sizes[j + 1] = sizes[j];
             newIdxes[j + 1] = newIdxes[j];
             newIdxes[j] = i;
-            sizes[j] = temp;
             j--;
         }
     }
-    free(sizes);
     return newIdxes;
 }
 
@@ -304,22 +291,13 @@ int* insert_sort(ULONGLONG *a, int *idxes, int n)
 int* bubble_sort(ULONGLONG *a, int *idxes, int n)
 {
     int i, j, *newIdxes;
-    ULONGLONG *sizes;
     newIdxes = (int*)malloc(n * sizeof(int));
-    sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
     for (i = 0; i < n; i++)
-    {
         newIdxes[i] = idxes[i];
-        sizes[i] = a[i];
-    }
     for (i = 0; i < n; i++) 
         for (j = 1; j < n - i; j++) 
-            if (sizes[j - 1] > sizes[j])
-            {
-                swap_ULL(sizes + j, sizes + j - 1);
+            if (a[newIdxes[j - 1]] > a[newIdxes[j]])
                 swap_int(newIdxes + j, newIdxes + j - 1);
-            }
-    free(sizes);
     return newIdxes;
 }
 
