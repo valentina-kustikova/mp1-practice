@@ -427,7 +427,7 @@ int* start_merge_sort(ULONGLONG *sizes, int *idxes, int l, int r)
 // Сортировка слиянием
 void merge_sort(ULONGLONG *sizes, int *idxes, int l, int r)
 {
-    int m;
+	ULONGLONG m;
     if (l >= r) 
         return;
     m = (l + r) / 2;
@@ -443,6 +443,8 @@ void merge_sorted(ULONGLONG *sizes, int *idxes, int l, int m, int r)
     ULONGLONG *merged;
     merged = (ULONGLONG*)malloc(total_length * sizeof(ULONGLONG));
     tmpIdxes = (int*)malloc(total_length * sizeof(int));
+	for (i = 0; i < total_length; i++)
+		tmpIdxes[i] = idxes[i + l];
     i = l;
     j = m + 1;
     while ((i <= m) && (j <= r)) {
