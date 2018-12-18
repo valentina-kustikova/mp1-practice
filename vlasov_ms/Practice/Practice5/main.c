@@ -91,7 +91,7 @@ void main()
             counting_sort(fileSizes, filesCount);
             break;
         case 5:
-            quick_sort(fileSizes, 0, filesCount - 1);
+			newIdxes = start_quickest_sort(fileSizes, filesIdxes, 0, filesIdxes[filesCount - 1]);
             break;
         case 6:
             newIdxes = start_merge_sort(fileSizes, filesIdxes, filesIdxes[0], filesIdxes[filesCount - 1]);
@@ -329,7 +329,14 @@ void counting_sort(int a[], int n)
 // Запуск быстрой сортировки
 int* start_quickest_sort(ULONGLONG *sizes, int *idxes, int starting, int ending)
 {
-
+	int i, *newIdxes, total_length = ending - starting + 1;
+	newIdxes = (int*)malloc(total_length * sizeof(int));
+	for (i = 0; i < total_length; i++)
+	{
+		newIdxes[i] = idxes[i];
+	}
+	quickest_sort(sizes, newIdxes, starting, ending);
+	return newIdxes;
 }
 
 // Новая быстрая сортировка
@@ -339,19 +346,18 @@ void quickest_sort(ULONGLONG *sizes,  int *idxes, int starting, int ending)
     ULONGLONG mid = sizes[(l + r) / 2];
     while (l <= r)
     {
-        while (sizes[l] < mid)
+        while (sizes[idxes[l]] < mid)
             l++;
-        while (sizes[r] > mid)
+        while (sizes[idxes[r]] > mid)
             r--;
         if (l <= r)
-            swap_ULL(sizes + l++, sizes + r--);
+            swap_int(idxes + l++, idxes + r--);
     }
     if (starting < r)
         quickest_sort(sizes, idxes, starting, r);
     if (ending > l)
         quickest_sort(sizes, idxes, l, ending);
 }
-// qsort (arr, 0, n-1);
 
 // Быстрая сортировка
 void quick_sort(int a[], int n1, int n2)
