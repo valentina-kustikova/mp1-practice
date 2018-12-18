@@ -25,10 +25,8 @@ int* insert_sort(ULONGLONG *a, int *idxes, int n);
 int* bubble_sort(ULONGLONG *a, int *idxes, int n);
 void counting_sort(int a[], int n);
 
-int* start_quickest_sort(ULONGLONG *sizes, int *idxes, int starting, int ending);
-void quickest_sort(ULONGLONG *sizes, int *idxes, int starting, int ending);
-void quick_sort(int a[], int n1, int n2);
-void quick_split(int a[], int* i, int* j, int p);
+int* start_quick_sort(ULONGLONG *sizes, int *idxes, int n1, int n2);
+void quick_sort(ULONGLONG *a, int *idxes, int n1, int n2);
 
 int* start_merge_sort(ULONGLONG *sizes, int *idxes, int l, int r);
 void merge_sort(ULONGLONG *sizes, int *idxes, int l, int r);
@@ -72,8 +70,6 @@ void main()
     scanf("%d", &algo);
     printf("Отобразить размеры в удобном формате? (0 - нет, 1 - да) ");
     scanf("%d", &is_format);
-    //system("cls");
-    //printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
     printf("\nАлгортим сортировки: %d\nСписок файлов в папке:\n", algo);
     start = clock();
     switch (algo) 
@@ -91,15 +87,12 @@ void main()
             counting_sort(fileSizes, filesCount);
             break;
         case 5:
-			newIdxes = start_quickest_sort(fileSizes, filesIdxes, 0, filesIdxes[filesCount - 1]);
+			newIdxes = start_quick_sort(fileSizes, filesIdxes, filesIdxes[0],
+				filesIdxes[filesCount - 1]);
             break;
         case 6:
-            newIdxes = start_merge_sort(fileSizes, filesIdxes, filesIdxes[0], filesIdxes[filesCount - 1]);
-            for (i = 0; i < filesCount; i++) printf("%3d", filesIdxes[i]);
-            printf("\n");
-            for (i = 0; i < filesCount; i++) printf("%3d", newIdxes[i]);
-			printf("\n");
-			//for (i = 0; i < filesCount; i++) printf("%3d", newIdxes[i]);
+            newIdxes = start_merge_sort(fileSizes, filesIdxes, filesIdxes[0],  
+				filesIdxes[filesCount - 1]);
 			break;
         default:
             printf("Неверный номер.\n");
@@ -327,69 +320,40 @@ void counting_sort(int a[], int n)
 }
 
 // Запуск быстрой сортировки
-int* start_quickest_sort(ULONGLONG *sizes, int *idxes, int starting, int ending)
+int* start_quick_sort(ULONGLONG *sizes, int *idxes, int n1, int n2)
 {
-	int i, *newIdxes, total_length = ending - starting + 1;
+	int i, *newIdxes, total_length = n2 - n1 + 1;
 	newIdxes = (int*)malloc(total_length * sizeof(int));
 	for (i = 0; i < total_length; i++)
 	{
-		newIdxes[i] = idxes[i];
+		newIdxes[i] = idxes[i + n1];
 	}
-	quickest_sort(sizes, newIdxes, starting, ending);
+	quick_sort(sizes, newIdxes, n1, n2);
 	return newIdxes;
 }
 
-// Новая быстрая сортировка
-void quickest_sort(ULONGLONG *sizes,  int *idxes, int starting, int ending)
-{
-    int l = starting, r = ending;
-    ULONGLONG mid = sizes[(l + r) / 2];
-    while (l <= r)
-    {
-        while (sizes[idxes[l]] < mid)
-            l++;
-        while (sizes[idxes[r]] > mid)
-            r--;
-        if (l <= r)
-            swap_int(idxes + l++, idxes + r--);
-    }
-    if (starting < r)
-        quickest_sort(sizes, idxes, starting, r);
-    if (ending > l)
-        quickest_sort(sizes, idxes, l, ending);
-}
-
 // Быстрая сортировка
-void quick_sort(int a[], int n1, int n2)
+void quick_sort(ULONGLONG *a, int *idxes, int n1, int n2)
 {
-    int m = (n1 + n2) / 2;
+    ULONGLONG comp = a[(n1 + n2) / 2];
     int i = n1, j = n2;
-    if (n1 == n2)
-        return;
-    quick_split(a, &i, &j, a[m]);
+	printf("enter qs ");
+	do {
+		while (a[idxes[i]] < comp)
+			i++;
+		while (a[idxes[j]] > comp)
+			j--;
+		if (i <= j) {
+			if (a[idxes[i]] > a[idxes[j]])
+				swap_int(idxes + i, idxes + j);
+			i++;
+			j--;
+		}
+	} while (i <= j);
     if (i < n2)
-        quick_sort(a, i, n2);
+        quick_sort(a, idxes, i, n2);
     if (j > n1)
-        quick_sort(a, n1, j);
-}
-
-// Быстрая перестановка
-void quick_split(int a[], int* i, int* j, int p)
-{
-    do {
-        while (a[*i] < p) (*i)++;
-        while (a[*j] > p) (*j)--;
-        if (*i <= *j) {
-            if (a[*i] > a[*j]) 
-            {
-                int tmp = a[*i];
-                a[*i] = a[*j];
-                a[*j] = tmp;
-            }
-            (*i)++;
-            (*j)--;
-        }
-    } while (*i <= *j);
+        quick_sort(a, idxes, n1, j);
 }
 
 // Запуск сортировки слиянием
