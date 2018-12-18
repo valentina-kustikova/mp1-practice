@@ -11,11 +11,10 @@
 void user_input(wchar_t **wa);
 int dir_contents(const wchar_t *sDir, wchar_t ***fileNames,
     ULONGLONG **fileSizes);
-void gen(int a[], int n, int min, int max);
-void output(ULONGLONG *a, int n);
 void output_by_idxes(int *filesIdxes, wchar_t **fileNames,
      ULONGLONG *fileSizes, int filesCount, int is_format);
 void output_formatted_size(ULONGLONG size);
+int find_by_size(ULONGLONG size, int k, ULONGLONG *sizes, int n);
 void swap_int(int *var1, int *var2);
 void swap_ULL(ULONGLONG *var1, ULONGLONG *var2);
 void copy(int *copy_to, int *copy_from, int n);
@@ -23,11 +22,9 @@ void copy(int *copy_to, int *copy_from, int n);
 int* choosing_sort(ULONGLONG *a, int *idxes, int n);
 int* insert_sort(ULONGLONG *a, int *idxes, int n);
 int* bubble_sort(ULONGLONG *a, int *idxes, int n);
-void counting_sort(int a[], int n);
-
+int* counting_sort(ULONGLONG *a, int *idxes, int n);
 int* start_quick_sort(ULONGLONG *sizes, int *idxes, int n1, int n2);
 void quick_sort(ULONGLONG *a, int *idxes, int n1, int n2);
-
 int* start_merge_sort(ULONGLONG *sizes, int *idxes, int l, int r);
 void merge_sort(ULONGLONG *sizes, int *idxes, int l, int r);
 void merge_sorted(ULONGLONG *sizes, int *idxes, int l, int m, int r);
@@ -43,9 +40,6 @@ void main()
     float total_time = 0.0f;
     int is_format = 0;
     setlocale(LC_ALL, "Russian");
-
-    //fileNames = (wchar_t**)malloc(MAX_FILES_COUNT * sizeof(wchar_t*));
-    //fileSizes = (ULONGLONG*)malloc(MAX_FILES_COUNT * sizeof(ULONGLONG));
     
     printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
     printf("\nВведите путь к папке: ");
@@ -62,10 +56,6 @@ void main()
     printf("%d файлов найдено.\n", filesCount);
     for(i = 0; i < filesCount; i++)
         wprintf(L"Файл: %s Размер: %lld байт\n", fileNames[i], fileSizes[i]);
-
-    //gen(a, N, 502, 692);
-    //printf("Исходный массив:        ");
-    //output(fileSizes, filesCount);
     printf("Выберите алгоритм сортировки: ");
     scanf("%d", &algo);
     printf("Отобразить размеры в удобном формате? (0 - нет, 1 - да) ");
@@ -84,7 +74,7 @@ void main()
             newIdxes = bubble_sort(fileSizes, filesIdxes, filesCount);
             break;
         case 4:
-            counting_sort(fileSizes, filesCount);
+			newIdxes = counting_sort(fileSizes, filesIdxes, filesCount);
             break;
         case 5:
 			newIdxes = start_quick_sort(fileSizes, filesIdxes, filesIdxes[0],
@@ -102,8 +92,6 @@ void main()
     total_time = (float)(end - start) / CLOCKS_PER_SEC;
     output_by_idxes(newIdxes, fileNames, fileSizes, filesCount, is_format);
     printf("Время сортировки: %.3f с\n", total_time);
-    //printf("Отсортированный массив: ");
-    //output(fileSizes, filesCount);
 
     for (i = 0; i < filesCount; i++)
         free(fileNames[i]);
@@ -170,25 +158,7 @@ int dir_contents(const wchar_t *sDir, wchar_t ***fileNames,
     return i;
 }
 
-// Генерация массива
-void gen(int a[], int n, int min, int max) 
-{
-    int i;
-    srand((unsigned)time(0));
-    for (i = 0; i < n; i++) 
-        a[i] = rand() % (max - min + 1) + min;
-}
-
-// Вывод массива
-void output(ULONGLONG *a, int n) 
-{
-    int i;
-    for (i = 0; i < n - 1; i++) 
-        printf("%lld ", a[i]);
-    printf("%lld\n", a[n - 1]);
-}
-
-// Вывод списка файлов по карте индексов
+// Вывод списка файлов по последовательности индексов
 void output_by_idxes(int *filesIdxes, wchar_t **fileNames, 
                      ULONGLONG *fileSizes, int filesCount, int is_format)
 {
@@ -213,6 +183,12 @@ void output_formatted_size(ULONGLONG size)
         printf("%.2f Кб", (float)size / 1024);
     else
         printf("%.2f Мб", (float)size / (1024 * 1024));
+}
+
+// Поиск индекса k-го файла с заданным размером
+int find_by_size(ULONGLONG size, int k, ULONGLONG *sizes, int n)
+{
+
 }
 
 // Обмен значений целочисленных переменных
@@ -297,7 +273,7 @@ int* bubble_sort(ULONGLONG *a, int *idxes, int n)
 }
 
 // Сортировка подсчетом (с произвольным выделением памяти)
-void counting_sort(int a[], int n)
+int* counting_sort(ULONGLONG *a, int *idxes, int n)
 {
     int *count;
     int idx = 0, i, j, delta = 0, min = a[0], max = a[0];
