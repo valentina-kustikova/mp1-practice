@@ -7,7 +7,6 @@
 #define _CRT_SECURE_NO_WARNINGS   // разрешение на исп. scanf
 #define N 50                      // количество элементов массива
 #define BUFFER_SIZE 2048          // размер буфера
-#define MAX_FILES_COUNT 1000      // предполагаемое кол-во файлов в папке
 
 void user_input(wchar_t **wa);
 int dir_contents(const wchar_t *sDir, wchar_t ***fileNames,
@@ -249,26 +248,26 @@ int* choosing_sort(ULONGLONG *a, int *idxes, int n)
     int i, j, minidx, *newIdxes;
     ULONGLONG min, *sizes;
     newIdxes = (int*)malloc(n * sizeof(int));
-    sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
+    //sizes = (ULONGLONG*)malloc(n * sizeof(ULONGLONG));
     for (i = 0; i < n; i++)
     {
         newIdxes[i] = idxes[i];
-        sizes[i] = a[i];
+        //sizes[i] = a[i];
     }
     for (i = 0; i < n; i++) 
     {
-        min = sizes[i];
+        min = a[newIdxes[i]];
         minidx = i;
         for (j = i + 1; j < n; j++) 
-            if (sizes[j] < min)
+            if (a[newIdxes[j]] < min)
             {
-                min = sizes[j];
+                min = a[newIdxes[j]];
                 minidx = j;
             }
         swap_int(newIdxes + minidx, newIdxes + i);
-        swap_ULL(sizes + minidx, sizes + i);
+        //swap_ULL(a + minidx, a + i);
     }
-    free(sizes);
+    //free(sizes);
     return newIdxes;
 }
 
@@ -357,7 +356,7 @@ int* start_quickest_sort(ULONGLONG *sizes, int *idxes, int starting, int ending)
 void quickest_sort(ULONGLONG *sizes,  int *idxes, int starting, int ending)
 {
     int l = starting, r = ending;
-    int mid = sizes[(l + r) / 2];
+    ULONGLONG mid = sizes[(l + r) / 2];
     while (l <= r)
     {
         while (sizes[l] < mid)
@@ -365,7 +364,7 @@ void quickest_sort(ULONGLONG *sizes,  int *idxes, int starting, int ending)
         while (sizes[r] > mid)
             r--;
         if (l <= r)
-            swap_int(sizes + l++, sizes + r--);
+            swap_ULL(sizes + l++, sizes + r--);
     }
     if (starting < r)
         quickest_sort(sizes, idxes, starting, r);
@@ -427,7 +426,7 @@ int* start_merge_sort(ULONGLONG *sizes, int *idxes, int l, int r)
 // Сортировка слиянием
 void merge_sort(ULONGLONG *sizes, int *idxes, int l, int r)
 {
-	ULONGLONG m;
+	int m;
     if (l >= r) 
         return;
     m = (l + r) / 2;
@@ -443,6 +442,9 @@ void merge_sorted(ULONGLONG *sizes, int *idxes, int l, int m, int r)
     ULONGLONG *merged;
     merged = (ULONGLONG*)malloc(total_length * sizeof(ULONGLONG));
     tmpIdxes = (int*)malloc(total_length * sizeof(int));
+	for (i = l; i <= r; i++)
+		printf("%lld ", idxes[i]);
+	printf("\n");
 	for (i = 0; i < total_length; i++)
 		tmpIdxes[i] = idxes[i + l];
     i = l;
@@ -451,31 +453,23 @@ void merge_sorted(ULONGLONG *sizes, int *idxes, int l, int m, int r)
         if (sizes[i] <= sizes[j])
         {
             merged[s] = sizes[i];
-            tmpIdxes[s] = i;
-            s++;
-            i++;
+            tmpIdxes[s++] = i++;
         }
         else
         {
             merged[s] = sizes[j];
-            tmpIdxes[s] = j;
-            s++;
-            j++;
+            tmpIdxes[s++] = j++;
         }
     }
     while (i <= m)
     {
         merged[s] = sizes[i];
-        tmpIdxes[s] = i;
-        s++;
-        i++;
+        tmpIdxes[s++] = i++;
     }
     while (j <= r)
     {
         merged[s] = sizes[j];
-        tmpIdxes[s] = j;
-        s++;
-        j++;
+        tmpIdxes[s++] = j++;
     }
     for (i = l; i <= r; i++)
     {
@@ -483,8 +477,8 @@ void merge_sorted(ULONGLONG *sizes, int *idxes, int l, int m, int r)
         idxes[i] = tmpIdxes[i - l];
     }
 
-    output(merged, total_length);
-    output(tmpIdxes, total_length);
+    //output(merged, total_length);
+    //output(tmpIdxes, total_length);
 
     free(merged);
     free(tmpIdxes);
