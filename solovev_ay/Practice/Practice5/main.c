@@ -8,28 +8,28 @@
 #define MAX_LEN 4048
 #define ROFL 2000
 #define MAX_FILES 1000
-int kolvo=0;
+int kolvo=0;//количество файлов
 #define K 150
 
-void Merge(int *a, ULONGLONG *size, int l, int m, int r) 
+void Merge(int *a, ULONGLONG *size, int l, int m, int r) //слияние
 {
     int i, j = m + 1, h, tmp;
 	ULONGLONG tmp1;
     for (i = l; ((i < r) && (j <= r)); i++)
     {
-        if (size[a[i]] > size[a[j]])
+        if (size[a[i]] > size[a[j]])//сравнение размеров
         {
              tmp = a[j];
             for (h = j; h > i; h--)
                 a[h] = a[h - 1];
-            a[i] = tmp;
+            a[i] = tmp;//замена индексов
             j++;
         }
     }
     
 }
 
-void MergeSort(int *a, ULONGLONG *size, int l, int r)
+void MergeSort(int *a, ULONGLONG *size, int l, int r)//разбиение
 {
     int m;
     if (l >= r) return;
@@ -38,7 +38,7 @@ void MergeSort(int *a, ULONGLONG *size, int l, int r)
     MergeSort(a, size, m + 1, r);
     Merge(a, size, l, m, r);
 }
-void anihilation(ULONGLONG*filesize, ULONGLONG*filesizecopy, int* filesindex, int* newindex, int kolvo)
+void anihilation(ULONGLONG*filesize, ULONGLONG*filesizecopy, int* filesindex, int* newindex, int kolvo)//обнуление перед сортировкой
 {
 	int i;
 	for (i = 0; i < kolvo; i++)
@@ -48,7 +48,7 @@ void anihilation(ULONGLONG*filesize, ULONGLONG*filesizecopy, int* filesindex, in
 
 	}
 }
-int ListDirectoryContents(const wchar_t *sDir, ULONGLONG*filesize, wchar_t **fileNames)
+int ListDirectoryContents(const wchar_t *sDir, ULONGLONG*filesize, wchar_t **fileNames)//вывод списка файлов
 { 
     int i=0;
     WIN32_FIND_DATA fdFile; 
@@ -80,7 +80,7 @@ int ListDirectoryContents(const wchar_t *sDir, ULONGLONG*filesize, wchar_t **fil
     FindClose(hFind);
     return 0; 
 }
-int* quicksort(ULONGLONG* size, int n1, int n2, int n, int* id)
+int* quicksort(ULONGLONG* size, int n1, int n2, int n, int* id)//быстрая сортировка
 {
     ULONGLONG tmp;
     int i = n1, j = n2, p = size[(n1 + n2) / 2], tmp1, k;
@@ -108,11 +108,11 @@ int* quicksort(ULONGLONG* size, int n1, int n2, int n, int* id)
             id = quicksort(size, n1, j, n, id);
         return id;
 }
-void podschetom(ULONGLONG*a, int n, int*newindex)
+void podschetom(ULONGLONG*a, int n, int*newindex)//сортировка подсчетом
 {
     int i, j, b = 0;
-    ULONGLONG *count;
-    ULONGLONG *dopmass;
+    ULONGLONG *count;//массив значений
+    ULONGLONG *dopmass;//доп массив для передачи размеров
     ULONGLONG min=a[0], max=a[n-1], k;
     dopmass=(ULONGLONG*)malloc(n*sizeof(ULONGLONG));
     for (i = 0; i < n; i++)
@@ -154,10 +154,6 @@ void podschetom(ULONGLONG*a, int n, int*newindex)
                 b++;
                 break;
             }
-    }
-    for (i = 0; i < n; i++)
-    {
-        printf("%d", newindex[i]);
     }
 }
 void choose(ULONGLONG* filesize, int kolvo, int*newindex)
@@ -238,6 +234,7 @@ void menu()
     printf("Введите 4 для сортировки подсчетом!\n");
     printf("Введите 5 для быстрой сортировки(сортировки Хоара)!\n");
     printf("Введите 6 для сортировки слиянием!\n");
+	printf("Введите 7 для выхода из программы!");
     printf("Вы выбрали сортировку номер: ");
 }
 void main()
