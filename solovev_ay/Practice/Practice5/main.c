@@ -6,12 +6,38 @@
 #include <locale.h>
 #define N 70
 #define MAX_LEN 4048
-#define CLOCKS_PER_SEC 1000
 #define ROFL 2000
 #define MAX_FILES 1000
 int kolvo=0;
 #define K 150
 
+void Merge(int *a, ULONGLONG *size, int l, int m, int r) 
+{
+    int i, j = m + 1, h, tmp;
+	ULONGLONG tmp1;
+    for (i = l; ((i < r) && (j <= r)); i++)
+    {
+        if (size[a[i]] > size[a[j]])
+        {
+             tmp = a[j];
+            for (h = j; h > i; h--)
+                a[h] = a[h - 1];
+            a[i] = tmp;
+            j++;
+        }
+    }
+    
+}
+
+void MergeSort(int *a, ULONGLONG *size, int l, int r)
+{
+    int m;
+    if (l >= r) return;
+    m = (l + r) / 2;
+    MergeSort(a, size, l, m);
+    MergeSort(a, size, m + 1, r);
+    Merge(a, size, l, m, r);
+}
 void anihilation(ULONGLONG*filesize, ULONGLONG*filesizecopy, int* filesindex, int* newindex, int kolvo)
 {
 	int i;
@@ -210,7 +236,7 @@ void menu()
     printf("Введите 2 для сортировки вставкой!\n");
     printf("Введите 3 для сортировки выбором!");
     printf("Введите 4 для сортировки подсчетом!\n");
-    printf("Введите 5 для быстрой сортировки(сортировки Хоара)!\n");
+    printf("Введите 5 для быстрой сортировки(сортировки ’оара)!\n");
     printf("Введите 6 для сортировки сли¤нием!\n");
     printf("Вы выбрали сортировку номер: \n");
 }
@@ -322,7 +348,21 @@ void main()
             total_time = (float)(end - start) / CLOCKS_PER_SEC;
             printf("Время сортировки: %.3f с\n", total_time);
              break;
-        case 6:
+		case 6:
+			anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
+            start=clock();
+            MergeSort(newindex, filesize, 0, (kolvo - 1));
+            end=clock();
+            for (i = 0; i < kolvo; i++) 
+                { 
+                    vla=newindex[i]; 
+                    wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[newindex[i]]); 
+                    vla=0; 
+                }
+            total_time = (float)(end - start) / CLOCKS_PER_SEC;
+            printf("Время сортировки: %.3f с\n", total_time);
+             break;
+        case 7:
             flag=0;
             break;
          default:
