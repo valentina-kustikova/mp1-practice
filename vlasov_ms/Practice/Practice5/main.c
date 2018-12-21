@@ -62,8 +62,6 @@ void main()
         print_menu();
         printf("Выберите алгоритм сортировки: ");
         scanf("%d", &algo);
-        printf("Отобразить размеры в удобном формате? (0 - нет, 1 - да) ");
-        scanf("%d", &is_format);
         start = clock();
         switch (algo)
         {
@@ -96,12 +94,16 @@ void main()
                     filesIdxes[filesCount - 1]);
                 break;
             default:
+                getchar();
                 printf("Неверный номер.\n");
+                continue;
         }
         end = clock();
         total_time = (float)(end - start) / CLOCKS_PER_SEC;
         if (error == 0)
         {
+            printf("Отобразить размеры в удобном формате? (0 - нет, 1 - да) ");
+            scanf("%d", &is_format);
             printf("Список файлов в папке:\n");
             output_by_idxes(newIdxes, fileNames, fileSizes, filesCount, is_format);
             printf("ВРЕМЯ, ЗАТРАЧЕННОЕ НА СОРТИРОВКУ: %.3f с\n", total_time);
@@ -110,9 +112,9 @@ void main()
         {
             printf("Похоже, что диапазон размеров файлов в папке слишком велик");
             printf(" для сортировки подсчетом.\nПовторите попытку, выбрав");
-            printf(" другой метод сортировки.\n");
+            printf(" другой метод сортировки. Нажмите Enter, чтобы продолжить.\n");
         }
-
+        getchar();
         for (i = 0; i < filesCount; i++)
             free(fileNames[i]);
         free(fileNames);
