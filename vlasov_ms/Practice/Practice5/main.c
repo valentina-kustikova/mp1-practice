@@ -29,27 +29,31 @@ void merge_sorted(ULONGLONG *sizes, int *idxes, int l, int m, int r);
 
 void main() 
 {
-    int algo, i, filesCount, is_error = 0;
+    int algo, i, filesCount, error, is_format = 0;
     int *filesIdxes, *newIdxes;
     wchar_t *path;
     wchar_t **fileNames;
     ULONGLONG *fileSizes;
     clock_t start, end;
     float total_time = 0.0f;
-    int is_format = 0;
-    char barrier;
     setlocale(LC_ALL, "Russian");
     
     printf("====================== ФАЙЛОВЫЙ МЕНЕДЖЕР ======================");
     do {
-        printf("\nДля завершения работы программы нажмите Ctrl+C.");
+        error = 0;
+        printf("\nДля завершения работы программы нажмите Ctrl+C или закройте окно.");
         printf("\nВведите путь к папке: ");
         user_input(&path);
         filesCount = dir_contents(path, &fileNames, &fileSizes);
         if (filesCount == -1)
         {
             printf("Указанный путь не найден. Проверьте правильность ввода.\n");
-            return;
+            continue;
+        }
+        if (filesCount == 0)
+        {
+            printf("Папка не содержит элементов. Укажите другой путь.\n");
+            continue;
         }
         filesIdxes = (int*)malloc((filesCount + 1) * sizeof(int));
         for (i = 0; i < filesCount; i++)
@@ -60,35 +64,34 @@ void main()
         scanf("%d", &algo);
         printf("Отобразить размеры в удобном формате? (0 - нет, 1 - да) ");
         scanf("%d", &is_format);
-        printf("\nАлгортим сортировки: %d\nСписок файлов в папке:\n", algo);
         start = clock();
         switch (algo)
         {
             case 1:
-                scanf("%c", &barrier);
+                getchar();
                 newIdxes = choosing_sort(fileSizes, filesIdxes, filesCount);
                 break;
             case 2:
-                scanf("%c", &barrier);
+                getchar();
                 newIdxes = insert_sort(fileSizes, filesIdxes, filesCount);
                 break;
             case 3:
-                scanf("%c", &barrier);
+                getchar();
                 newIdxes = bubble_sort(fileSizes, filesIdxes, filesCount);
-                if (newIdxes == NULL)
-                    is_error = 1;
                 break;
             case 4:
-                scanf("%c", &barrier);
+                getchar();
                 newIdxes = counting_sort(fileSizes, filesIdxes, filesCount);
+                if (newIdxes == NULL)
+                    error = 1;
                 break;
             case 5:
-                scanf("%c", &barrier);
+                getchar();
                 newIdxes = start_quick_sort(fileSizes, filesIdxes, filesIdxes[0],
                     filesIdxes[filesCount - 1]);
                 break;
             case 6:
-                scanf("%c", &barrier);
+                getchar();
                 newIdxes = start_merge_sort(fileSizes, filesIdxes, filesIdxes[0],
                     filesIdxes[filesCount - 1]);
                 break;
@@ -97,13 +100,18 @@ void main()
         }
         end = clock();
         total_time = (float)(end - start) / CLOCKS_PER_SEC;
-        if (!is_error)
+        if (error == 0)
         {
+            printf("Список файлов в папке:\n");
             output_by_idxes(newIdxes, fileNames, fileSizes, filesCount, is_format);
             printf("ВРЕМЯ, ЗАТРАЧЕННОЕ НА СОРТИРОВКУ: %.3f с\n", total_time);
         }
         else
-            printf("Похоже, что размер файлов слишком велик для этого метода сортировки");
+        {
+            printf("Похоже, что диапазон размеров файлов в папке слишком велик");
+            printf(" для сортировки подсчетом.\nПовторите попытку, выбрав");
+            printf(" другой метод сортировки.\n");
+        }
 
         for (i = 0; i < filesCount; i++)
             free(fileNames[i]);
@@ -201,28 +209,31 @@ void output_formatted_size(ULONGLONG size)
     if (size < 1024)
         printf("%d байт", (int)size);
     else if (size < 1024 * 1024)
-        printf("%.2f Кб", (float)size / 1024);
+        printf("%.2f Кб", size / (float)1024);
+    else if (size < (ULONGLONG)1073741824)
+        printf("%.2lf Мб", size / (double)(1024 * 1024));
     else
-        printf("%.2f Мб", (float)size / (1024 * 1024));
+        printf("%.2lf Гб", size / (long double)1073741824);
 }
 
 // Поиск k-го файла с заданным размером
 int find_by_size(ULONGLONG size, int k, ULONGLONG *sizes, int n)
 {
-    int i, fnd = 0, idx;
+    int i = 0, fnd = 0, idx = -1;
     if (k > n)
         return -2;
-    for (i = 0; (i < n) && (fnd < k); i++)
+    while ((i < n) && (fnd < k))
     {
         if (sizes[i] == size)
         {
             idx = i;
             fnd++;
         }
+        i++;
     }
-    if (i == n)
+    if ((i == n) && (idx == -1))
         return -1;
-    return i;
+    return idx;
 }
 
 // Обмен значений целочисленных переменных
@@ -242,7 +253,8 @@ void swap_ULL(ULONGLONG *var1, ULONGLONG *var2)
 // Сортировка выбором
 int* choosing_sort(ULONGLONG *sizes, int *idxes, int n)
 {
-    int i, j, minidx, *newIdxes;
+    int i, j, minidx;
+    int *newIdxes;
     ULONGLONG min;
     newIdxes = (int*)malloc(n * sizeof(int));
     for (i = 0; i < n; i++)
@@ -265,7 +277,8 @@ int* choosing_sort(ULONGLONG *sizes, int *idxes, int n)
 // Сортировка простыми вставками
 int* insert_sort(ULONGLONG *sizes, int *idxes, int n)
 {
-    int i, j, *newIdxes;
+    int i, j;
+    int *newIdxes;
     ULONGLONG temp;
     newIdxes = (int*)malloc(n * sizeof(int));
     for (i = 0; i < n; i++)
@@ -298,12 +311,12 @@ int* bubble_sort(ULONGLONG *sizes, int *idxes, int n)
     return newIdxes;
 }
 
-// Сортировка подсчетом (с произвольным выделением памяти)
+// Адаптированная сортировка подсчетом
 int* counting_sort(ULONGLONG *sizes, int *idxes, int n)
 {
-    ULONGLONG *newSizes, idx = 0, i, delta = 0, min = sizes[0],
-        max = sizes[0], prev;
-    int *newIdxes, *count, j, p = 0;
+    ULONGLONG delta = 0, min = sizes[0], max = sizes[0];
+    int *newIdxes, *count;
+    int i, j, _i_delta = 0, idx = 0;
     for (i = 1; i < n; i++)
     {
         if (sizes[i] < min)
@@ -312,34 +325,20 @@ int* counting_sort(ULONGLONG *sizes, int *idxes, int n)
             max = sizes[i];
     }
     delta = max - min + 1;
-    if ((delta * sizeof(int)) >= (ULONGLONG)2147483648) // 2*1024*1024*1024
+    if (delta * (ULONGLONG)sizeof(int) > (ULONGLONG)UINT_MAX)
         return NULL;
-    count = (int*)malloc(delta * sizeof(int));
-    newIdxes = (int*)malloc(delta * sizeof(int));
-    newSizes = (ULONGLONG*)malloc(delta * sizeof(ULONGLONG));
-    for (i = 0; i < n; i++)
-    {
-        newIdxes[i] = idxes[i];
-        newSizes[i] = sizes[i];
-    }
-    for (i = 0; i < delta; i++)
+    /*    если будет выполнено условие выше, то delta не выйдет за границы    *
+    * диапазона значений int, поэтому потеря данных при приведении исключена */
+    _i_delta = (int)delta;
+    count = (int*)malloc(_i_delta * sizeof(int));
+    newIdxes = (int*)malloc(n * sizeof(int));
+    for (i = 0; i < _i_delta; i++)
         count[i] = 0;
-    for (i = 0; i < (ULONGLONG)n; i++)
-        count[newSizes[i] - min]++;
-    for (i = 0; i < delta; i++) 
-        for (j = 0; j < count[i]; j++)
-            newSizes[idx++] = i + min;
-    newIdxes[0] = find_by_size(newSizes[0], 1, newSizes, n);
-    prev = newSizes[0];
-    for (j = 1; j < n; j++)
-    {
-        if (newSizes[j] == newSizes[j - 1])
-            p++;
-        else
-            p = 0;
-        newSizes[j] = find_by_size(newSizes[j], p, newSizes, n);
-    }
-    free(newSizes);
+    for (i = 0; i < n; i++)
+        count[sizes[i] - min]++;
+    for (i = 0; i < _i_delta; i++)
+        for (j = 0; j < count[i]; j++, idx++)
+            newIdxes[idx] = find_by_size(i + min, j + 1, sizes, n);
     free(count);
     return newIdxes;
 }
@@ -347,7 +346,8 @@ int* counting_sort(ULONGLONG *sizes, int *idxes, int n)
 // Запуск быстрой сортировки
 int* start_quick_sort(ULONGLONG *sizes, int *idxes, int n1, int n2)
 {
-    int i, *newIdxes, total_length = n2 - n1 + 1;
+    int i, total_length = n2 - n1 + 1;
+    int *newIdxes;
     ULONGLONG *newSizes;
     newIdxes = (int*)malloc(total_length * sizeof(int));
     newSizes = (ULONGLONG*)malloc(total_length * sizeof(ULONGLONG));
@@ -390,7 +390,8 @@ void quick_sort(ULONGLONG *sizes, int *idxes, int n1, int n2)
 // Запуск сортировки слиянием
 int* start_merge_sort(ULONGLONG *sizes, int *idxes, int l, int r)
 {
-    int i, *newIdxes, total_length = r - l + 1;
+    int i, total_length = r - l + 1;
+    int *newIdxes;
     ULONGLONG *newSizes;
     newIdxes = (int*)malloc(total_length * sizeof(int));
     newSizes = (ULONGLONG*)malloc(total_length * sizeof(ULONGLONG));
@@ -416,10 +417,11 @@ void merge_sort(ULONGLONG *sizes, int *idxes, int l, int r)
     merge_sorted(sizes, idxes, l, m, r);
 }
 
-// Слияние отсортированных частей массива (с произвольным выделением памяти)
+// Слияние отсортированных частей массива
 void merge_sorted(ULONGLONG *sizes, int *idxes, int l, int m, int r)
 {
-    int i, j, s = 0, *tmpIdxes, total_length = r - l + 1;
+    int i, j, s = 0, total_length = r - l + 1;
+    int *tmpIdxes;
     ULONGLONG *merged;
     merged = (ULONGLONG*)malloc(total_length * sizeof(ULONGLONG));
     tmpIdxes = (int*)malloc(total_length * sizeof(int));
