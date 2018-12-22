@@ -121,6 +121,7 @@ void main()
         free(fileSizes);
         free(filesIdxes);
         free(newIdxes);
+        free(path);
     } while (1);
 }
 
@@ -141,6 +142,7 @@ void user_input(wchar_t **str_convert_to)
     fgets(input, BUFFER_SIZE, stdin);
     input[strlen(input) - 1] = '\0';
     swprintf(*str_convert_to, BUFFER_SIZE, L"%hs", input);
+    free(input);
 }
 
 // Получение списка файлов и размеров из директории
