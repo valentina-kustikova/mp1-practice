@@ -7,11 +7,11 @@
 #include <time.h>
 #include <locale.h>
 #define N 70
-#define MAX_LEN 4048
+#define MAX_LEN 4048//макс длина для строк
 #define ROFL 2000
-#define MAX_FILES 1000
+#define MAX_FILES 1000//предположительное количество файлов
 int kolvo = 0;//количество файлов
-#define K 150
+#define K 150//для сортировки подсчетом
 
 void Merge(int *a, ULONGLONG *size, int l, int m, int r) //слияние
 {
@@ -60,7 +60,7 @@ int ListDirectoryContents(const wchar_t *sDir, ULONGLONG*filesize, wchar_t **fil
     wsprintf(sPath, L"%s\\*.*", sDir);
     if ((hFind = FindFirstFile(sPath, &fdFile)) == INVALID_HANDLE_VALUE)
     {
-        wprintf(L"Path not found: [%s]\n", sDir);
+        wprintf(L"Путь не найден: [%s]\n", sDir);
         return 1;
     }
     do
@@ -157,7 +157,7 @@ void podschetom(ULONGLONG*a, int n, int*newindex)//сортировка подс
             }
     }
 }
-void choose(ULONGLONG* filesize, int kolvo, int*newindex)
+void choose(ULONGLONG* filesize, int kolvo, int*newindex)//сортировка выбором
 {
     int i, j, minind;
     ULONGLONG min;
@@ -179,7 +179,7 @@ void choose(ULONGLONG* filesize, int kolvo, int*newindex)
         }
     }
 }
-void bubble(ULONGLONG* filesize, int *numer, int kolvo)
+void bubble(ULONGLONG* filesize, int *numer, int kolvo)//сортировка пузырьком
 {
     int i, j, swap;
     ULONGLONG tmp;
@@ -199,7 +199,7 @@ void bubble(ULONGLONG* filesize, int *numer, int kolvo)
         }
     }
 }
-void insert(ULONGLONG* filesize, int *numer, int kolvo)
+void insert(ULONGLONG* filesize, int *numer, int kolvo)//сортировка вставками
 {
     int i, j, swap;
     ULONGLONG tmp;
@@ -218,7 +218,7 @@ void insert(ULONGLONG* filesize, int *numer, int kolvo)
         }
     }
 }
-void print(ULONGLONG* filesize, wchar_t **fileNames, int kolvo)
+void print(ULONGLONG* filesize, wchar_t **fileNames, int kolvo)//печать 
 {
     int i;
     for (i = 0; i < kolvo; i++)
@@ -226,7 +226,7 @@ void print(ULONGLONG* filesize, wchar_t **fileNames, int kolvo)
         wprintf(L"file  %s размер %lld \n", fileNames[i], filesize[i]);
     }
 }
-void menu()
+void menu()//меню
 {
     printf("Меню программы!\n");
     printf("Введите 1 для сортировки пузырьком!\n");
@@ -368,7 +368,7 @@ void main()
 					for (i = 0; i < kolvo; i++)
 					{
 						vla = newindex[i];
-						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[newindex[i]]);
+						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[newindex[i]]);//нестандартный вывод в связи с сортировкой слиянием(вывод от индексов)
 						vla = 0;
 					}
 					total_time = (double)(end - start) / CLOCKS_PER_SEC;
@@ -393,3 +393,4 @@ void main()
 		}
 	}
 }
+
