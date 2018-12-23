@@ -6,7 +6,6 @@
 #include <locale.h>
 #include <time.h>
 #include <locale.h>
-#define N 70
 #define MAX_LEN 4048//макс длина для строк
 #define ROFL 2000
 #define MAX_FILES 1000//предположительное количество файлов
@@ -218,7 +217,7 @@ void insert(ULONGLONG* filesize, int *numer, int kolvo)//сортировка в
         }
     }
 }
-void print(ULONGLONG* filesize, wchar_t **fileNames, int kolvo)//печать 
+void print(ULONGLONG* filesize, wchar_t **fileNames, int kolvo)//печать
 {
     int i;
     for (i = 0; i < kolvo; i++)
@@ -226,7 +225,7 @@ void print(ULONGLONG* filesize, wchar_t **fileNames, int kolvo)//печать
         wprintf(L"file  %s размер %lld \n", fileNames[i], filesize[i]);
     }
 }
-void menu()//меню
+void menu()//
 {
     printf("Меню программы!\n");
     printf("Введите 1 для сортировки пузырьком!\n");
@@ -239,7 +238,7 @@ void menu()//меню
 }
 void main()
 {
-    int i = 0, vla = 0, pognali;
+    int i = 0;
     double total_time;
     char e;
     int choice, flag = 1;
@@ -289,9 +288,7 @@ void main()
 					end = clock();
 					for (i = 0; i < kolvo; i++)
 					{
-						vla = newindex[i];
 						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
-						vla = 0;
 					}
 					total_time = (double)(end - start) / CLOCKS_PER_SEC;
 					printf("Время сортировки: %.3lf с\n", total_time);
@@ -305,9 +302,7 @@ void main()
 					end = clock();
 					for (i = 0; i < kolvo; i++)
 					{
-						vla = newindex[i];
 						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
-						vla = 0;
 					}
 					total_time = (double)(end - start) / CLOCKS_PER_SEC;
 					printf("Время сортировки: %.3lf с\n", total_time);
@@ -321,9 +316,7 @@ void main()
 					end = clock();
 					for (i = 0; i < kolvo; i++)
 					{
-						vla = newindex[i];
 						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
-						vla = 0;
 					}
 					total_time = (double)(end - start) / CLOCKS_PER_SEC;
 					printf("Время сортировки: %.3lf с\n", total_time);
@@ -337,9 +330,7 @@ void main()
 					end = clock();
 					for (i = 0; i < kolvo; i++)
 					{
-						vla = newindex[i];
 						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
-						vla = 0;
 					}
 					total_time = (double)(end - start) / CLOCKS_PER_SEC;
 					printf("Время сортировки: %.3lf с\n", total_time);
@@ -352,9 +343,7 @@ void main()
 					end = clock();
 					for (i = 0; i < kolvo; i++)
 					{
-						vla = newindex[i];
 						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
-						vla = 0;
 					}
 					total_time = (double)(end - start) / CLOCKS_PER_SEC;
 					printf("Время сортировки: %.3lf с\n", total_time);
@@ -367,9 +356,7 @@ void main()
 					end = clock();
 					for (i = 0; i < kolvo; i++)
 					{
-						vla = newindex[i];
-						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[newindex[i]]);//нестандартный вывод в связи с сортировкой слиянием(вывод от индексов)
-						vla = 0;
+						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[newindex[i]]);
 					}
 					total_time = (double)(end - start) / CLOCKS_PER_SEC;
 					printf("Время сортировки: %.3lf с\n", total_time);
@@ -378,18 +365,7 @@ void main()
 					menu();
 					scanf("%d", &choice);
 			}
-
-/*        free(filesize);
-        free(filesindex);
-        for (i = 0; i < kolvo; i++)
-            free(fileNames[i]);
-        free(fileNames);
-        free(filesizemain);
-        free(newindex);*/
-
-       // scanf("%c", &e);
-        kolvo = 0;
-       // scanf("%c", &e);
+			kolvo = 0;
 		}
 	}
 }
