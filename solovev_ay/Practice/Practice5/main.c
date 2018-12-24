@@ -254,7 +254,7 @@ void main()
     printf("Файловый менеджер!\n");
     while (flag = 1)
     {
-        printf("Введите путь!\n");
+    	printf("Введите путь!\n");
         fileNames = (wchar_t**)malloc(ROFL * sizeof(wchar_t*));
         filesindex = (int*)malloc((kolvo + 1) * sizeof(int));
         newindex = (int*)malloc(kolvo * sizeof(int));
@@ -266,107 +266,107 @@ void main()
         a[strlen(a) - 1] = '\0';
         swprintf(ca, MAX_LEN, L"%hs", a);
         ListDirectoryContents(ca, filesize, fileNames);
-		if(kolvo > 0)
+	if(kolvo > 0)
+	{
+		print(filesize, fileNames, kolvo);
+		flag = 1;
+		for (i = 0; i < kolvo; i++)
 		{
-			print(filesize, fileNames, kolvo);
-			flag = 1;
-			for (i = 0; i < kolvo; i++)
-			{
-				filesindex[i] = i;
-				newindex[i] = i;
-			}
-			menu();
-			scanf("%d", &choice);
-			switch (choice)
-			{
-				case 1:
-					scanf("%c", &e);
-					anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
-					start = clock();
-					printf("Сортировка пузырьком!\n");
-					bubble(filesize, newindex, kolvo);
-					end = clock();
-					for (i = 0; i < kolvo; i++)
-					{
-						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
-					}
-					total_time = (double)(end - start) / CLOCKS_PER_SEC;
-					printf("Время сортировки: %.3lf с\n", total_time);
-					break;
-				case 2:
-					scanf("%c", &e);
-					anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
-					start = clock();
-					printf("Сортировка вставкой\n");
-					insert(filesize, newindex, kolvo);
-					end = clock();
-					for (i = 0; i < kolvo; i++)
-					{
-						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
-					}
-					total_time = (double)(end - start) / CLOCKS_PER_SEC;
-					printf("Время сортировки: %.3lf с\n", total_time);
-					break;
-				case 3:
-					scanf("%c", &e);
-					anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
-					start = clock();
-					printf("Сортировка выбором\n");
-					choose(filesize, kolvo, newindex);
-					end = clock();
-					for (i = 0; i < kolvo; i++)
-					{
-						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
-					}
-					total_time = (double)(end - start) / CLOCKS_PER_SEC;
-					printf("Время сортировки: %.3lf с\n", total_time);
-					break;
-				case 4:
-					scanf("%c", &e);
-					anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
-					start = clock();
-					printf("Сортировка подсчетом!");
-					podschetom(filesize, kolvo, newindex);
-					end = clock();
-					for (i = 0; i < kolvo; i++)
-					{
-						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
-					}
-					total_time = (double)(end - start) / CLOCKS_PER_SEC;
-					printf("Время сортировки: %.3lf с\n", total_time);
-					break;
-				case 5:
-					scanf("%c", &e);
-					anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
-					start = clock();
-					newindex = quicksort(filesize, 0, kolvo - 1, kolvo, filesindex);
-					end = clock();
-					for (i = 0; i < kolvo; i++)
-					{
-						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
-					}
-					total_time = (double)(end - start) / CLOCKS_PER_SEC;
-					printf("Время сортировки: %.3lf с\n", total_time);
-					break;
-				case 6:
-					scanf("%c", &e);
-					anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
-					start = clock();
-					MergeSort(newindex, filesize, 0, (kolvo - 1));
-					end = clock();
-					for (i = 0; i < kolvo; i++)
-					{
-						wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[newindex[i]]);
-					}
-					total_time = (double)(end - start) / CLOCKS_PER_SEC;
-					printf("Время сортировки: %.3lf с\n", total_time);
-					break;
-				default:
-					menu();
-					scanf("%d", &choice);
-			}
-			kolvo = 0;
+			filesindex[i] = i;
+			newindex[i] = i;
 		}
+		menu();
+		scanf("%d", &choice);
+		switch (choice)
+		{
+			case 1:
+				scanf("%c", &e);
+				anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
+				start = clock();
+				printf("Сортировка пузырьком!\n");
+				bubble(filesize, newindex, kolvo);
+				end = clock();
+				for (i = 0; i < kolvo; i++)
+				{
+					wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
+				}
+				total_time = (double)(end - start) / CLOCKS_PER_SEC;
+				printf("Время сортировки: %.3lf с\n", total_time);
+				break;
+			case 2:
+				scanf("%c", &e);
+				anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
+				start = clock();
+				printf("Сортировка вставкой\n");
+				insert(filesize, newindex, kolvo);
+				end = clock();
+				for (i = 0; i < kolvo; i++)
+				{
+					wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
+				}
+				total_time = (double)(end - start) / CLOCKS_PER_SEC;
+				printf("Время сортировки: %.3lf с\n", total_time);
+				break;
+			case 3:
+				scanf("%c", &e);
+				anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
+				start = clock();
+				printf("Сортировка выбором\n");
+				choose(filesize, kolvo, newindex);
+				end = clock();
+				for (i = 0; i < kolvo; i++)
+				{
+					wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
+				}
+				total_time = (double)(end - start) / CLOCKS_PER_SEC;
+				printf("Время сортировки: %.3lf с\n", total_time);
+				break;
+			case 4:
+				scanf("%c", &e);
+				anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
+				start = clock();
+				printf("Сортировка подсчетом!");
+				podschetom(filesize, kolvo, newindex);
+				end = clock();
+				for (i = 0; i < kolvo; i++)
+				{
+					wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
+				}
+				total_time = (double)(end - start) / CLOCKS_PER_SEC;
+				printf("Время сортировки: %.3lf с\n", total_time);
+				break;
+			case 5:
+				scanf("%c", &e);
+				anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
+				start = clock();
+				newindex = quicksort(filesize, 0, kolvo - 1, kolvo, filesindex);
+				end = clock();
+				for (i = 0; i < kolvo; i++)
+				{
+					wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[i]);
+				}
+				total_time = (double)(end - start) / CLOCKS_PER_SEC;
+				printf("Время сортировки: %.3lf с\n", total_time);
+				break;
+			case 6:
+				scanf("%c", &e);
+				anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
+				start = clock();
+				MergeSort(newindex, filesize, 0, (kolvo - 1));
+				end = clock();
+				for (i = 0; i < kolvo; i++)
+				{
+					wprintf(L"file %s размер %lld \n", fileNames[newindex[i]], filesize[newindex[i]]);
+				}
+				total_time = (double)(end - start) / CLOCKS_PER_SEC;
+				printf("Время сортировки: %.3lf с\n", total_time);
+				break;
+			default:
+				menu();
+				scanf("%d", &choice);
+		}
+		kolvo = 0;
 	}
+    }
 }
 
