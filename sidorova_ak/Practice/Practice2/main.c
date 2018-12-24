@@ -4,16 +4,17 @@
 
 void main()
 {
-    srand((unsigned int)time(0));
     long long tmp, pc, pl;
     int i, a, b, f, n, k, bulls, cows;
     int player[10];
+    srand((unsigned int)time(0));
 
     printf("\n               \"Bulls and cows\"\n");
     printf("\nCows - the amount of digits in the intended number that do not stand in their place.");
     printf("\nBulls - the amount of digits in the intended number that stand in their place.\n");
 
-    do {                                                                  // Контроль ввода количества цифр числа
+    do                                                                     // Контроль ввода количества цифр числа
+    {                                                                  
         printf("\nEnter a natural number up to 10 inclusive: ");
         scanf("%d", &n);
     } while ((n <= 0) || (n >= 11));
@@ -42,8 +43,10 @@ void main()
 
     printf("\nWell, I have conceived a number. Try to guess :)\n");
 
-    do {                                                                       // Пошел цикл на обработку вводного числа 
-        do {                                                                   // и его сравнения с задуманным
+    do                                                                      // Пошел цикл на обработку вводного числа 
+    {                                                                       // и его сравнения с задуманным
+        do 
+        {                                                                   
             f = i = k = 0;
 
             printf("\nEnter a natural number of non-repeating %d digits: ", n);
