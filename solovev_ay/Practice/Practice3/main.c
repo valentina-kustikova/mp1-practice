@@ -3,7 +3,8 @@
 #include <time.h>
 #include <locale.h> 
 
-void main() {
+void main() 
+{
 	int  ask1, a=0, b, x, y=0, choice, ask2=0, max=1000, min=1, ent;
 	char quest;
 	setlocale(LC_ALL, "Russian"); 
@@ -11,27 +12,25 @@ void main() {
 	printf("Если ты хочешь отгадать число, загаданное компьютером, введи \"1\"!\nЕсли хочешь, чтобы твое число отгадал компьютер, введи \"2\"!\n");
 	scanf("%d", &choice);
 	if (choice == 1)
+	{
+		printf("Отгдай число, которое загадал компьютер!\n");
+		srand((unsigned int)time(0));
+		x= 1 + rand() % 1000;
+		do
 		{
-			printf("Отгдай число, которое загадал компьютер!\n");
-			srand((unsigned int)time(0));
-			x=0;
-			while((x < 1) || (x > 1000))
-				x=rand();
-			do
-			{
-				scanf("%d", &ask1);
-				a++;
-				if(ask1 > x)
-					printf("Загаданное число меньше!\n");
-				if (ask1 <x)
-					printf("Загаданное число больше!\n");
-			}while( ask1 !=x);
-			if (x == ask1)
-			{
-				printf("Вы угадали, загаданное число:%d\nПопыток - %d\n",x, a );
-				return;
-			}
+			scanf("%d", &ask1);
+			a++;
+			if(ask1 > x)
+				printf("Загаданное число меньше!\n");
+			if (ask1 <x)
+				printf("Загаданное число больше!\n");
+		}while( ask1 !=x);
+		if (x == ask1)
+		{
+			printf("Вы угадали, загаданное число:%d\nПопыток - %d\n",x, a );
+			return;
 		}
+	}
 	if(choice == 2)
 	{
 		printf("Загадай число и введи его!\n");
@@ -40,8 +39,7 @@ void main() {
 		printf("В зависимости от того числа, которое вы загадали, используйте символы \">\", \"<\" и \"=\"\nЕсли ваше чило меньше, введите\"<\"!\nЕсли ваше число больше, введите \">\"!\nЕсли компьютер угадал ваше число, то введите \"=\"!\n");
 		b=0;
 		srand((unsigned int)time(0));
-		while((y < 1) || (y > 1000))
-			y=rand();
+		y= 1 + rand() % 1000;
 		printf("Предпологаемое компьютером число - %d!\n", y);
 		do
 		{
@@ -49,7 +47,7 @@ void main() {
 			if(quest == '>')
 			{
 				while((ask2 <= y) || (ask2>max) || (ask2 < min))
-				ask2=rand();
+				ask2 = 1 + rand() % 1000;
 				b=b+1;
 				min=y;
 				y=ask2;
@@ -60,7 +58,7 @@ void main() {
 			if(quest == '<')
 			{
 				while((ask2 >= y) || (ask2 < min) || (ask2 > max))
-				ask2=rand();
+				ask2 = 1 + rand() % 1000;
 				b=b+1;
 				max=y;
 				y=ask2;
@@ -69,8 +67,10 @@ void main() {
 			}
 		}while(y != ent);
 		if(y == ent)
+		{
 			printf("Компьютер угадал ваше число %d за %d попыток!\n", y, b);
-		return;
+			return;
+		}
 	}
 	printf("Этот режим еще не придуман!\n");
 }
