@@ -251,7 +251,7 @@ void main()
     ULONGLONG*filesizemain;
     int*newindex;
     setlocale(LC_ALL, "Russian");
-	printf("Файловый менеджер!\n");
+    printf("Файловый менеджер!\n");
     while (flag = 1)
     {
         printf("Введите путь!\n");
