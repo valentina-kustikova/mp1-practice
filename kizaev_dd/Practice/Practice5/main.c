@@ -93,9 +93,8 @@ void GetContent(const wchar_t *sDir, files *p)
         FindClose(hFind);
     }
 }
-// СОРТИРОВКИ
+// SORTINGS
 
-//ВЫБОРОМ
 void selection_sort (files *p, int n)
 {
     int i, j, minidx;
@@ -111,7 +110,7 @@ void selection_sort (files *p, int n)
             swapfiles (p, i, minidx);
     }
 }
-// ВСТАВКАМИ
+
 void insertion_sort (files *p, int n)
 {
     int i , j;
@@ -127,7 +126,7 @@ void insertion_sort (files *p, int n)
         }
     }
 }
-// ПУЗЫРЬКОВАЯ
+
 void bubble_sort (files *p, int n)
 {
     int i, j;
@@ -136,7 +135,7 @@ void bubble_sort (files *p, int n)
             if (p[j - 1].size > p[j].size)
                 swapfiles (p, j, j-1);
 }
-// ПОДСЧЁТОМ
+
 void counting_sort (files *p, int n)
 {
     int i, imax = 0, imin = 0;
@@ -180,7 +179,7 @@ void counting_sort (files *p, int n)
         p[i] = s[i];
     free (s);
 }
-// БЫСТРАЯ (функция разбиения)
+
 void quick_split (files *p, int *i, int *j, int m)
 {
     do
@@ -198,7 +197,7 @@ void quick_split (files *p, int *i, int *j, int m)
     }
     while ((*i) <= (*j));
 }
-// БЫСТРАЯ (функция сортировки)
+
 void quick_sort (files *p, int left, int right)
 {
     int m = (left + right) / 2;
@@ -211,7 +210,7 @@ void quick_sort (files *p, int left, int right)
     if (i < right)
         quick_sort(p, i, right);
 }
-// СЛИЯНИЕМ (функция слияния)
+
 void merge(files *p, int l, int m, int r) 
 { 
     int i, j, k; 
@@ -257,7 +256,7 @@ void merge(files *p, int l, int m, int r)
     free (L);
     free (R);
 } 
-// СЛИЯНИЕМ (функция сортировки)
+
 void merge_sort (files *p, int l, int r)
 {
     if (l >= r) return;
@@ -282,6 +281,8 @@ void main()
         }
         else
         {
+            files *sorted = (files*)malloc(sizeof(files) * n);
+            method = -1;
             do
             {
                 printf ("Enter folder: \n");
@@ -289,14 +290,12 @@ void main()
                 n = CountFiles (d);
             }
             while (n == -1);
-        
-            files *sorted = (files*)malloc(sizeof(files) * n);
+           
             GetContent(d, sorted);
         
             wprintf (L"\nDirectory: %s \n\n", d);
             printf ("Files: \n");
             outstraight (sorted, n);
-            method = -1;
 
             while (method != 7)
             {    
@@ -362,32 +361,32 @@ void main()
                     break;
 
                     case 7:
-                        flag=1;
+                        flag = 1;
                     break;
-            }
+                }
 
-            if (method != 7)
-            {
-                double t = (double) (t2-t1) / CLOCKS_PER_SEC;
-                int mode = -1;
+                if (method != 7)
+                {
+                    double t = (double) (t2-t1) / CLOCKS_PER_SEC;
+                    int mode = -1;
             
-                printf ("choose sorting order \n");
-                printf ("1 - descending order \n");
-                printf ("2 - ascending order \n");
-                printf ("\n");
+                    printf ("choose sorting order \n");
+                    printf ("1 - descending order \n");
+                    printf ("2 - ascending order \n");
+                    printf ("\n");
     
-                while ((mode > 2) || (mode < 1))
-                    scanf ("%d", &mode);
+                    while ((mode > 2) || (mode < 1))
+                        scanf ("%d", &mode);
 
-                printf ("\n");
-                if (mode == 1) 
-                    outinverted (sorted, n);
-                if (mode == 2)
-                    outstraight (sorted, n);
+                    printf ("\n");
+                    if (mode == 1) 
+                        outinverted (sorted, n);
+                    if (mode == 2)
+                        outstraight (sorted, n);
 
-                printf ("Time: %lf sec \n\n", t);
-            }    
-        }
+                    printf ("Time: %lf sec \n\n", t);
+                }    
+            }
         free (sorted);
         }
     }
