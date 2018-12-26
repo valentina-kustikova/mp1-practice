@@ -387,7 +387,7 @@ void main()
                     printf ("Time: %lf sec \n\n", t);
                 }    
             }
-        free (sorted);
+			free (sorted);
         }
     }
     while (method != 0);
