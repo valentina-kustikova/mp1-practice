@@ -66,41 +66,41 @@ void main()
         {
             case 1:
                 getchar();
-				start = clock();
+                start = clock();
                 choosing_sort(fileSizes, filesIdxes, filesCount);
-				end = clock();
+                end = clock();
                 break;
             case 2:
                 getchar();
-				start = clock();
+                start = clock();
                 insert_sort(fileSizes, filesIdxes, filesCount);
-				end = clock();
+                end = clock();
                 break;
             case 3:
                 getchar();
-				start = clock();
+                start = clock();
                 bubble_sort(fileSizes, filesIdxes, filesCount);
-				end = clock();
+                end = clock();
                 break;
             case 4:
                 getchar();
-				start = clock();
+                start = clock();
                 error = counting_sort(fileSizes, filesIdxes, filesCount);
-				end = clock();
+                end = clock();
                 break;
             case 5:
                 getchar();
-				start = clock();
+                start = clock();
                 start_quick_sort(fileSizes, filesIdxes, filesIdxes[0],
                     filesIdxes[filesCount - 1]);
-				end = clock();
+                end = clock();
                 break;
             case 6:
                 getchar();
-				start = clock();
+                start = clock();
                 start_merge_sort(fileSizes, filesIdxes, filesIdxes[0],
                     filesIdxes[filesCount - 1]);
-				end = clock();
+                end = clock();
                 break;
             default:
                 getchar();
@@ -291,8 +291,8 @@ void insert_sort(ULONGLONG *sizes, int *idxes, int n)
         j = i - 1;
         while ((j >= 0) && (sizes[idxes[j]]>temp))
         {
-			idxes[j + 1] = idxes[j];
-			idxes[j] = i;
+            idxes[j + 1] = idxes[j];
+            idxes[j] = i;
             j--;
         }
     }
@@ -334,9 +334,9 @@ int counting_sort(ULONGLONG *sizes, int *idxes, int n)
         count[sizes[i] - min]++;
     for (i = 0; i < _i_delta; i++)
         for (j = 0; j < count[i]; j++, idx++)
-			idxes[idx] = find_by_size(i + min, j + 1, sizes, n);
+            idxes[idx] = find_by_size(i + min, j + 1, sizes, n);
     free(count);
-	return 0;
+    return 0;
 }
 
 // Запуск быстрой сортировки
