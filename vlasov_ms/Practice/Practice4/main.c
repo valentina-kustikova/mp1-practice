@@ -3,10 +3,10 @@
 #include <locale.h>
 #include <time.h>
 #define ITEMS_IN_DB 5      // количество товаров в базе
-#define NAME_SYM_MAX 12    // макс. количество символов в наименовании
+#define NAME_SYM_MAX 13    // макс. количество символов в наименовании
 #define PT_SIGN 37         // код символа процента
 
-int codes[ITEMS_IN_DB] = { 1, 1234, 4385, 7998, 6914 };
+char codes[ITEMS_IN_DB][5] = { "0001", "1234", "4385", "7998", "6914" };
 char names[ITEMS_IN_DB][NAME_SYM_MAX] = 
 { 
     "Хлеб черный ", 
@@ -28,7 +28,7 @@ int find_by_code(int code)
     int i;
     for (i = 0; i < ITEMS_IN_DB; i++) 
     {
-        if (codes[i] == code) break;
+        if (atoi(codes[i]) == code) break;
     }
     if (i >= ITEMS_IN_DB) 
         return -1;
@@ -36,28 +36,12 @@ int find_by_code(int code)
         return i;
 }
 
-// Функция выводит код товара как 4 символа (добавляет нули в начале)
-void prettyprint_code(int code) 
-{
-    if (code < 10)
-        printf("000%d", code);
-    else if (code < 100)
-        printf("00%d", code);
-    else if (code < 1000)
-        printf("0%d", code);
-    else
-        printf("%d", code);
-}
-
 // Функция выводит информацию о товаре (по индексу)
 void print_info(int id)
 {
     int i;
-    prettyprint_code(codes[id]);
-    printf(" => ");
-    for (i = 0; i < NAME_SYM_MAX; i++)
-        printf("%c", names[id][i]);
-    printf("\nЦена %d (со скидкой %d%c: %.2f)", price[id], sales[id], 
+    printf("%s => %s\n", codes[id], names[id]);
+    printf("Цена %d (со скидкой %d%c: %.2f)", price[id], sales[id], 
         PT_SIGN, price[id] * (1 - (float)(sales[id] / 100.00)));
 }
 
@@ -103,9 +87,7 @@ void add(int id)
         }
         else
             recp_num[found]++;
-        printf("Товар ");
-        prettyprint_code(codes[id]);
-        printf(" добавлен.");
+        printf("Товар %s добавлен.", codes[id]);
     }
 }
 
@@ -151,7 +133,7 @@ float bare_sum()
 void compose()
 {
     if (recs == 0)
-        printf("Чек пустой.\n")
+        printf("Чек пустой.\n");
     else 
     {
         int i;
@@ -160,14 +142,9 @@ void compose()
         for (i = 0; i < recs; i++) 
         {
             int j, id = recp[i];
-            prettyprint_code(codes[id]);
-            printf(" | ");
-            for (j = 0; j < NAME_SYM_MAX; j++)
-                printf("%c", names[id][j]);
-            printf(" | %5d%c | %15.2f | %6d | %4.2f", sales[id], PT_SIGN, 
-                price[id] * (1 - (float)(sales[id] / 100.00)), 
+            printf("%s | %s | %5d%c | %15.2f | %6d | %4.2f\n", codes[id], names[id],
+                sales[id], PT_SIGN, price[id] * (1 - (float)(sales[id] / 100.00)),
                 recp_num[i], sum_item(i));
-            printf("\n");
         }
         printf("======== КОНЕЦ ПЕЧАТИ ТЕКСТА ========\n");
     }
