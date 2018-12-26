@@ -2,9 +2,10 @@
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
+int global=0;
 int cost[10000];
 int skidka[10000];
-int codes[10000];
+char codes[10000][5];
 float costs[10000];
 int numbers[10000]={0};
 int kolvo=0;
@@ -24,7 +25,7 @@ int findcode(int code)
  		if (codes[i] == code) 
 			break;
  	}
- 	if (i >= 10000) 
+ 	if (atoi(codes[i]) == code) 
 	{
  		return -1;
  	}
@@ -43,25 +44,6 @@ void menu()
 	printf("Введите 5, для получения справки!\n");
 	printf("Введите 0 для выхода из программы!");
 }//меню
-void strihcode(int code)
-{
-	if(code <10)
-	{
-	printf("000%d", code);
-	}
-	else if (code < 100)
-	{
-		printf("00%d", code);
-	}
-	else if (code <1000)
-	{
-		printf("0%d", code);
-	}
-	else
-	{
-		printf("%d", code);
-	}
-}//вывод красивого штрихкода
 void info(int id)
 {
 	
@@ -70,9 +52,11 @@ void info(int id)
 }//получение информация о товаре
 int scan()
 {
-	int s;
+	int s, i;
 	printf("Введите номер товара(1-9999): ");
-	scanf("%d", &s);
+	scanf("%s", &codes[global]);
+	s=(atoi(codes[global]));
+	global++;
 	if (s == 0) 
 	{
 		printf("Отмена сканирования");
@@ -91,24 +75,20 @@ int main()
 	srand((unsigned)time(0));
 	for (i = 0; i < 10000; i++)
 	{
-		while((x<10)||(x>15000))
-			x=rand();
-			cost[i]=x;
-			x=0;
+	
+		x= 10 + rand() % 1200;
+		cost[i]=x;
+		x=0;
 		
 	}
 	for (i = 0; i < 10000; i++)
 	{
-		while ((x<2)||(x>50))
-			x=rand();
-			skidka[i]=x;
-			x=0;
+	
+		x= 2 + rand() %50;
+		skidka[i]=x;
+		x=0;
 		
 	}
-	for (i = 0; i < 10000; i++)
-	{
-		codes[i]=i;
-	}//циклы с заполнением массивов скидок цен и номеров
 	for (i = 0; i < 10000; i++)
 	{
 		costs[i]=((100 - skidka[i]) * cost[i])/100;
