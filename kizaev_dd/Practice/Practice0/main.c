@@ -5,8 +5,7 @@
 
 void main()
 {
-    double r1, r2, c1x, c1y, c2x, c2y, dist;
-    r1 = 0; r2 = 0; c1x = 0; c2x = 0; c1y = 0; c2y = 0; dist = 0;
+    double r1 = 0, r2 = 0, c1x = 0, c2x = 0, c1y = 0, c2y = 0, dist = 0;
 
     while ((r1 <= 0) || (r2 <= 0))
     {
@@ -25,44 +24,43 @@ void main()
 
 
     // match
-    if ((c1x == c2x) && (c1y == c2y) && (r1 = r2)) 
+    if ((c1x == c2x) && (c1y == c2y) && (r1 == r2)) 
     {
         printf("circles match \n");
+        return;
     }
-    else
     // no common dots
-        //outside
-        if (dist > r1 + r2)
-        {
-            printf("no common dots \n");
-            printf("one outside another \n");
-        }
-        else
-        //inside
-            if (dist < abs(r1 - r2))
-            {
-                printf("no common dots \n");
-                printf("one inside another \n");
-                if (dist == 0) printf("concentric circles \n");
-            }
-            else
-            // touching
-                // inside
-                if (dist == abs(r1 - r2))
-                {
-                    printf("one touches another internally \n");
-                }
-                else
-                //outside
-                    if (dist == r1 + r2)
-                    {
-                    printf("one touches another externally \n");
-                    }
-                    else
-                        // intersect
-                        if (dist > abs(r1 - r2) && dist < (r1 + r2))
-                            printf("two common dots \n");
-                        else
-                        // any other case is error
-                            printf("error \n");
+    //outside
+    if (dist > r1 + r2)
+    {
+        printf("no common dots \n");
+        printf("one outside another \n");
+        return;
+    }
+    //inside
+    if (dist < fabs(r1 - r2))
+    {
+        printf("no common dots \n");
+        printf("one inside another \n");
+        if (dist == 0) printf("concentric circles \n");
+    }
+    // touching
+    // inside
+    if (dist == fabs(r1 - r2))
+    {
+        printf("one touches another internally \n");
+        return;
+    }
+    //outside
+    if (dist == r1 + r2)
+    {
+        printf("one touches another externally \n");
+        return;
+    }
+    // intersect
+    if (dist > fabs(r1 - r2) && dist < (r1 + r2))
+    {
+        printf("two common dots \n");
+        return;
+    }
 }
