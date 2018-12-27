@@ -1,104 +1,121 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <time.h>
 #include <locale.h>
-#include <math.h>
 
- void name(char a[4][9], int n, char str[])//функция получает на вход массив с элементами слов, штрих-код по которому формируется слоава и массив в который записывается слово
+#define MAX 7
+#define MAX_LEN 17
+
+int codes[MAX] = { 1, 2, 3, 4, 5, 6, 7};
+char names[MAX][MAX_LEN] = { "Хлеб","Мясо","Вода","Сыр","Молоко","Картошка","Горох" };
+int prices[MAX] = { 10, 20, 30, 40, 50, 60, 70 };
+int discounts[MAX] = { 2, 3, 23, 11, 5, 9, 9 };
+int user_choose1;
+int check[100] = {0};
+
+void call_menu()
 {
-	int i, j, q, w;
-	w = 0;
-	for (i = 0; i < 4; i++)
-	{
-		q = n % 10;
-		n /= 10;
-		for (j = 0; j < 9; j++)
-			if (j == q)
-			{
-				str[w]=a[i][j];
-				w++;
-			}
-	}
+	printf("\nМеню функций\n");
+	printf(" 1 - сканировать товар\n 2 - вывод описания отсканированного товара\n");
+	printf(" 3 - добавить данные о товаре в чек\n 4 - сформировать чек\n 5 - расчитать итоговую сумму\n");
+	printf(" 6 - выход из программы\n")
 }
 
+void scan()
+{
+    int q;
+    do{
+        printf("Введите штрих-код\n");
+		scanf("%d", &user_choose1);
+	    q = scan_error(user_choose1);
+	    } while(q == 0);
+}
+
+int scan_error(int user_choose1)
+{
+    int i, q;
+    for (i = 0; i < MAX; i++)
+    {
+        q = 0;
+        if ((user_choose1 < 10000) && (user_choose1 >= 1) && (user_choose1 == codes[i]))
+    	{
+    		q++;
+    		break;
+    	}
+    }
+    if (q == 0)
+    {
+        printf("\nТовара с таким штрих-кодом нет");
+    	printf("\nВведите новый штрих код");
+    }
+	return q;
+}
+
+int search(int user_choose1)
+{
+    int i;
+    for (i = 0; i < MAX; i++)
+    {
+        if(user_choose1 == codes[i])
+        return i;
+    }
+}
+
+void info_items()
+{
+    int q;
+    if (user_choose1 == -1)
+	{
+		printf("\nВы не отсканировали товар\n");
+		return;
+	}
+	q = search(user_choose1);
+	printf ("\nТовар  %s\nскидка на него %d\n", names[q], discounts[q]);
+	printf ("имеет цену без скидки %d\nсо скидкой %.2f", prices[q], prices[q]*(1-discounts[q]*0.01f));
+}
+
+void print_items()
+{
+	int i, q = 0;
+	for (i = 0; i < MAX; i++)
+		{
+			if (check[i]!=0)
+			{
+				q++;
+				printf("%d. %s -- %d -- %d -- %.0f\n", q, names[i], codes[i], check[i], prices[i]*(1-discounts[q]*0.01f));
+			}
+		}
+}
+
+void add()
+{
+    check[search(user_choose1)]++;
+	printf("\nТовар успешно добавлен в чек\n");
+}
+
+total_price()
+{
+	int i = 0;
+	float s = 0;
+	for (i = 0; i < MAX; i++)
+	{
+		s += check[i] * prices[i]*(1-discounts[i]*0.01f);
+	}
+	printf("Общая цена %.0f\n", s);
+}
 void main()
 {
-	char str[100] = {0};
-	float discounts[9999] = {0};//массив скидок
-	int check[9999] = {0};//массив для чека
-	char names[4][9] = //массив с символами для состовления названий
-	{{'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o'}, 
-        {'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'}, 
-	{'z', 'x', 'c', 'v', 'b', 'n', 'm', '1', '2'},
-        {'3', '4', '5', '6', '7', '8', '9', '0', '!'}};
-	int prices[9999];//массив со скидками
-	int i, pick, user_choose, q;
-	float s;
+	int i, pick, q;
 	srand((unsigned int) time(0));
-	s = 0;
 	setlocale(LC_ALL, "Russian");
-	for(i = 1; i < 9999; i++)
-	{
-		prices[i] = rand()%1000;
-	}
-	for(i = 1; i < 9999; i++)
-	{
-		discounts[i] = rand() %50 * 0.01f;
-	}
-	user_choose = -1;
 	do {
-		printf("\nМеню функций\n");
-		printf(" 1 - сканировать товар\n 2 - вывод описания отсканированного товара\n");
-		printf(" 3 - добавить данные о товаре в чек\n 4 - сформировать чек\n 5 - расчитать итоговую сумму\n");
+		call_menu();
 		scanf("%d", &pick);
 		switch (pick)
 		{
-		case 1: 
-			do{ printf("Введите штрих-код\n");
-				scanf("%d",&user_choose);
-				q = 0;
-				if ((user_choose > 10000) || (user_choose < 1))
-				{
-					printf("\nТовара с таким штрих-кодом нет");
-					printf("\nВведите новый штрих код");
-					q++;
-				}
-			} while(q != 0);
-			break;
-		case 2:
-			
-			if (user_choose == -1)
-			{
-				printf("\nВы не отсканировали товар\n");
-				return;
-			}
-			name(names, user_choose, str);
-			printf ("\nТовар  %s\nскидка на него %.2f\n", str, discounts[user_choose], prices[user_choose], discounts[user_choose] * prices[user_choose]);
-			printf ("имеет цену без скидки %d\nсо скидкой %.2f", prices[user_choose], (1 - discounts[user_choose]) * prices[user_choose]);
-			break;
-		case 3:
-			check[user_choose]++;
-			printf("\nТовар успешно добавлен в чек\n");
-			break;
-		case 4:
-			for (i = 1; i < 9999; i++)
-			{
-				if (check[i]!=0)
-				{
-					name(names, i, str);
-					q++;
-					printf("%d. %s -- %.0f -- %d -- %.0f\n", q, str, (1 - discounts[i]) * prices[i], check[i], check[i]*(1-discounts[i]) * prices[i]);
-				}
-			}
-			q = 0;
-			break;
-		case 5:
-			for (i = 1; i < 9999; i++)
-			{
-					s += prices[i] * check[i] * (1 - discounts[i]);
-			}
-			printf("Общая цена %.0f\n", s);
-			break;
+		case 1: scan(); break;
+		case 2: info_items(); break;
+		case 3: add(); break;
+		case 4: print_items(); break;
+		case 5: total_price(); break;
 		}
 	} while(pick != 6);
 }
