@@ -43,7 +43,7 @@ void main ()
     else
         if (mode == 2)
         {
-            char answ;
+            char answ = '!';
             int comp, man, upper, lower;
             comp = 0;
             att = 0;
@@ -61,23 +61,23 @@ void main ()
             printf ("trying to guess \n");
             printf ("\n");
 
-            while (comp != man)
+            while (answ != '=') // (man != comp) makes the user say only true
             {
                 att++;
                 comp = lower + (upper - lower) / 2;
                 printf ("%d \n", comp);
-                scanf (" %c", &answ);
+                scanf ("%*c%c", &answ);
             
                 //write > if your number is > than computer's
                 //write < if your number is < than computer's
 
-                if ((answ == '<') && (comp > man))
+                if (answ == '<') // && (comp > man) // checking makes the user say only true
                     upper = comp;
                 else
-                    if ((answ == '>') && (comp < man))
+                    if (answ == '>') // && (comp < man) // checking makes the user say only true
                         lower = comp;
                     else
-                        if ((answ == '=') && (comp = man))
+                        if (answ == '=') // && (comp = man) // checking makes the user say only true
                             printf ("I win! Number %d in %d attempts \n", comp, att);
                         else
                         {
@@ -90,7 +90,7 @@ void main ()
         else
             if (mode == 3)
             {
-                char answ;
+                char answ = '!';
                 int comp, man, upper, lower, prev;
                 comp = 0;
                 att = 0;
@@ -109,7 +109,7 @@ void main ()
                 printf ("trying to guess \n");
                 printf ("\n");
 
-                while (comp != man)
+                while (answ != '=') // (comp != man) // checking makes the user say only true
                 {
                     att++;
                     do
@@ -117,18 +117,18 @@ void main ()
                     while (comp == prev);
 
                     printf ("%d \n", comp);
-                    scanf (" %c", &answ);
+                    scanf ("%*c%c", &answ);
 
             //write > if your number is > than computer's
             //write < if your number is < than computer's
 
-                    if ((answ == '<') && (comp > man))
+                    if (answ == '<') // && (comp > man)) // checking makes the user say only true
                         upper = comp;
                     else
-                        if ((answ == '>') && (comp < man))
+                        if (answ == '>') // && (comp < man)) // checking makes the user say only true
                             lower = comp;
                         else
-                            if ((answ == '=') && (comp = man))
+                            if (answ == '=') // && (comp = man)) // checking makes the user say only true
                                 printf ("I win! Number %d in %d attempts \n", comp, att);
                             else
                             {
