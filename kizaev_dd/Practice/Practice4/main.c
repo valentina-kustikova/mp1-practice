@@ -11,7 +11,6 @@ struct goods
     int amount;
     int price;
     int discount;
-    int incheck;
 }
 
 goods [9999];
@@ -20,11 +19,22 @@ int lsc = -1; // last scanned code
 
 void scangood() // scanning function
 {
-    int id;
+    int id, dec;
+    char s[10];
     do
     {
+        id = 0; dec = 1;
         printf ("enter code (0001 to 9999) \n");
-        scanf ("%d", &id);
+        scanf ("%s", s);
+
+        for (int j = 3, dec = 1; j >= 0; j--, dec = dec * 10)
+        {
+            int t = s[j] - '0';
+            if ((strlen (s) != 4) || (t > 9) || (t < 0))
+                id = 10000;
+            else
+                id += t * dec;
+        }            
     }
     while ((id > 9999) || (id < 1));
     lsc = id - 1;
@@ -54,12 +64,11 @@ void addtocheck() // function adds 1 unit of last scanned good to the check
     }
     else
     {
-    goods[lsc].incheck = 1;
-    goods[lsc].amount++;
-    printf ("%s: %s added\n", goods[lsc].code, goods[lsc].name);
+        goods[lsc].amount++;
+        printf ("%s: %s added\n", goods[lsc].code, goods[lsc].name);
 
-    printf ("Name: %s | Amount in check: %d \n",
-	goods[lsc].name, goods[lsc].amount);
+        printf ("Name: %s | Amount in check: %d \n",
+        goods[lsc].name, goods[lsc].amount);
 
     }
 }
@@ -69,7 +78,7 @@ void formcheck() // function displays check with all info about added goods
     int empty = 1, tsum = 0;
     float disc = 0.0f;
     for (int i = 0; i < 9999; i++)
-        if (goods[i].incheck == 1)
+        if (goods[i].amount != 0)
         {
             int sum = goods[i].amount * goods[i].price;
             
@@ -95,7 +104,7 @@ void total() // function displays total sums and the total discount
     int empty = 1, tsum = 0;
     float disc = 0.0;
     for (int i = 0; i < 9999; i++)
-        if (goods[i].incheck == 1)
+        if (goods[i].amount != 0)
         {
             int sum = goods[i].amount * goods[i].price;
             tsum += sum;
@@ -118,22 +127,21 @@ void total() // function displays total sums and the total discount
 
 void main()
 {
+    int i, mode = 0;
     time_t t;
     srand ((unsigned) time(&t));
 
-    int i, mode = 0;
     for (i = 0; i < 9999; i++)
     {    
-        sprintf (goods[i].code, "%04d", i+1); 
+        sprintf (goods[i].code, "%04d", i + 1); 
         sprintf (goods[i].name, "product%s", goods[i].code);
-		// generated names instead of printing 9999 real ones
-        goods[i].amount=0;
-		// amount in check
-        goods[i].price=1+rand()%1000;
-        goods[i].discount=1+rand() % 50;
-        goods[i].incheck=0; 		
-		/* existence in the check of this kind of product,
-		without taking into account the amount */
+        // generated names instead of printing 9999 real ones
+        goods[i].amount = 0;
+        // amount in check
+        goods[i].price = 1 + rand() % 1000;
+        goods[i].discount = 1 + rand() % 50;        
+        /* existence in the check of this kind of product,
+        without taking into account the amount */
     }
 
     printf ("Choose operation \n");
@@ -149,7 +157,7 @@ void main()
         printf ("################################################ \n");
         do
         scanf ("%d", &mode);
-        while ((mode<0) || (mode > 5));
+        while ((mode < 0) || (mode > 5));
 
         switch (mode)
         {
@@ -174,5 +182,5 @@ void main()
         break;
         }
     }
-    while (mode!=0);
+    while (mode != 0);
 }
