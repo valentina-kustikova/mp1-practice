@@ -61,49 +61,42 @@ void main()
         printf("%d файлов найдено.\n", filesCount);
         print_menu();
         printf("Выберите алгоритм сортировки: ");
-        scanf("%d", &algo);
+        scanf("%d%*c", &algo);
         switch (algo)
         {
             case 1:
-                getchar();
                 start = clock();
                 choosing_sort(fileSizes, filesIdxes, filesCount);
                 end = clock();
                 break;
             case 2:
-                getchar();
                 start = clock();
                 insert_sort(fileSizes, filesIdxes, filesCount);
                 end = clock();
                 break;
             case 3:
-                getchar();
                 start = clock();
                 bubble_sort(fileSizes, filesIdxes, filesCount);
                 end = clock();
                 break;
             case 4:
-                getchar();
                 start = clock();
                 error = counting_sort(fileSizes, filesIdxes, filesCount);
                 end = clock();
                 break;
             case 5:
-                getchar();
                 start = clock();
                 start_quick_sort(fileSizes, filesIdxes, filesIdxes[0],
                     filesIdxes[filesCount - 1]);
                 end = clock();
                 break;
             case 6:
-                getchar();
                 start = clock();
                 start_merge_sort(fileSizes, filesIdxes, filesIdxes[0],
                     filesIdxes[filesCount - 1]);
                 end = clock();
                 break;
             default:
-                getchar();
                 printf("Неверный номер.\n");
                 continue;
         }
