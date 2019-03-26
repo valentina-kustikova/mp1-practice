@@ -10,6 +10,8 @@ typedef struct
 	double* v;
 } Vector;
 
+// Инициализация
+int v_init(Vector*);
 // Создает вектор с заданной размерностью
 int v_create(size_t, Vector*);
 // Удаляет вектор
@@ -17,8 +19,8 @@ int v_destroy(Vector*);
 
 // Выполняет сложение векторов
 int v_add(Vector, Vector, Vector*);
-// Умножает вектор на -1
-int v_inv(Vector, Vector*);
+// Умножает вектор на число
+int v_mul(Vector, double, Vector*);
 // Выполняет вычитание векторов
 int v_sub(Vector, Vector, Vector*);
 // Выполняет скалярное произведение
@@ -36,6 +38,10 @@ void v_input(Vector);
 // Вывод значений
 void v_output(Vector);
 
+// Проверяет правильность
+int v_check(Vector);
+// Проверяет парную правильность
+int v_check2(Vector, Vector);
 // Выводит заданное сообщение об ошибке
 void v_err(int);
 
