@@ -18,8 +18,8 @@ int v_create(size_t _dim, Vector* result)
 			result->v[i] = 0.0F;
 		return 0;
 	}
-	return 1;
 	result->v = NULL;
+	return 1;
 }
 
 int v_destroy(Vector * _vec)
