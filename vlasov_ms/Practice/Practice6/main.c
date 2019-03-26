@@ -8,28 +8,33 @@ void main()
 {
 	Vector v1, v2, v3;
 	int op;
+	size_t dims = 0;
 	double op2;
 	setlocale(LC_ALL, "Russian");
 	printf("Введите размер первого вектора: ");
-	scanf("%zd", &(v1.dim));
+	scanf("%zd", &dims);
+	v_create(dims, &v1);
 	printf("Введите координаты вектора (через пробел): ");
 	v_input(v1);
 	v_output(v1);
-	printf("1. длина   2. инвертировать  3. ввести v2\nВыберите операцию: ");
+	printf("1. длина  2. ввести v2\nВыберите операцию: ");
 	scanf("%d", &op);
 	switch (op)
 	{
 	case 1:
 		printf("Длина: %lf\n", v_len(v1));
 		break;
-	case 2:
-		printf("Инверт: ");
-		v_inv(v1, &v3);
-		v_output(v3);
-		break;
 	case 3:
+		printf("Инверт: ");
+		if (!v_inv(v1, &v3))
+			v_output(v3);
+		else
+			printf("Не могу инвертировать.\n");
+		break;
+	case 2:
 		printf("Введите размер второго вектора: ");
-		scanf("%zd", &(v2.dim));
+		scanf("%zd", &dims);
+		v_create(dims, &v2);
 		printf("Введите координаты вектора (через пробел): ");
 		v_input(v2);
 		v_output(v2);
@@ -38,11 +43,9 @@ void main()
 		switch (op)
 		{
 		case 1:
-			v_destroy(&v3);
 			v_add(v1, v2, &v3);
 			break;
 		case 2:
-			v_destroy(&v3);
 			v_sub(v1, v2, &v3);
 			break;
 		case 3:

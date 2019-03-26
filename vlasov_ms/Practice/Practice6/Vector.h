@@ -11,9 +11,10 @@ typedef struct
 } Vector;
 
 // Создает вектор с заданной размерностью
-Vector v_create(size_t);
+int v_create(size_t, Vector*);
 // Удаляет вектор
 int v_destroy(Vector*);
+
 // Выполняет сложение векторов
 int v_add(Vector, Vector, Vector*);
 // Умножает вектор на -1
@@ -22,17 +23,20 @@ int v_inv(Vector, Vector*);
 int v_sub(Vector, Vector, Vector*);
 // Выполняет скалярное произведение
 int v_scm(Vector, Vector, double*);
+
 // Возвращает угол между векторами (в рад)
 int v_ang(Vector, Vector, double*);
 // Возвращает угол между векторами (в градусах)
 int v_deg(Vector, Vector, double*);
 // Возвращает длину вектора
 double v_len(Vector);
-// Выводит заданное сообщение об ошибке
-void v_err(int);
+
 // Ввод значений
 void v_input(Vector);
 // Вывод значений
 void v_output(Vector);
+
+// Выводит заданное сообщение об ошибке
+void v_err(int);
 
 #endif
