@@ -49,7 +49,5 @@ void v_output(Vector);
 int v_check(Vector);
 // Проверяет парную правильность
 int v_check2(Vector, Vector);
-// Выводит заданное сообщение об ошибке
-void v_err(int);
 
 #endif

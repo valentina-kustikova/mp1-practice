@@ -111,17 +111,6 @@ double v_len(Vector vec)
 	return sqrt(result);
 }
 
-void v_err(int id)
-{
-	switch (id)
-	{
-	case 0:
-		printf("[WARN] Trying to create vector with 0 dimensions.\n");
-	case 1:
-		printf("[ERR]  Vectors' dimensions are not equal.\n");
-	}
-}
-
 void v_input(Vector vec)
 {
 	size_t i;
