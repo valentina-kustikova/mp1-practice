@@ -38,7 +38,7 @@ int v_ang(Vector, Vector, double*);
 // Возвращает угол между векторами (в градусах)
 int v_deg(Vector, Vector, double*);
 // Возвращает длину вектора
-double v_len(Vector);
+int v_len(Vector, double*);
 
 // Ввод значений
 void v_input(Vector);

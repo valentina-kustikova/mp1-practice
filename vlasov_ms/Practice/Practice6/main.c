@@ -36,8 +36,11 @@ void main()
 
 	printf("Введите размер первого вектора: ");
 	scanf("%zd", &dims);
-	if(v_create(dims, &v1))
-		printf("Вы создали вектор длины 0.\n");
+	if (v_create(dims, &v1) == 1)
+	{
+		printf("Не могу создать вектор.\n");
+		return;
+	}
 	printf("Введите координаты вектора (через пробел): ");
 	v_input(v1);
 	v_output(v1);
@@ -46,7 +49,10 @@ void main()
 	switch (op)
 	{
 	case 1:
-		printf("Длина: %lf\n", v_len(v1));
+		if (!v_len(v1, &op2))
+			printf("%lf\n", op2);
+		else
+			printf("Не могу посчитать длину.\n");
 		break;
 	case 3:
 		printf("Умнож на -1: ");
@@ -58,8 +64,11 @@ void main()
 	case 2:
 		printf("Введите размер второго вектора: ");
 		scanf("%zd", &dims);
-		if(v_create(dims, &v2))
-			printf("Вы создали вектор длины 0.\n");;
+		if (v_create(dims, &v2) == 1)
+		{
+			printf("Не могу создать вектор.\n");
+			return;
+		}
 		printf("Введите координаты вектора (через пробел): ");
 		v_input(v2);
 		v_output(v2);

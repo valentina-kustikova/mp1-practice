@@ -19,7 +19,10 @@ int v_create(size_t _dim, Vector* result)
 		return 0;
 	}
 	result->v = NULL;
-	return 1;
+	if (_dim == 0)
+		return 2;
+	else
+		return 1;
 }
 
 int v_destroy(Vector * _vec)
@@ -84,8 +87,12 @@ int v_ang(Vector v1, Vector v2, double* result)
 		return 1;
 	else
 	{
-		double scal, lens = v_len(v1) * v_len(v2);
-		v_scm(v1, v2, &scal);
+		double l1, l2;
+		if((v_len(v1, &l1)) || (v_len(v2, &l2)))
+			return 1;
+		double scal, lens = l1 * l2;
+		if(v_scm(v1, v2, &scal))
+			return 1;
 		*result = acos(scal / lens);
 		return 0;
 	}
@@ -95,20 +102,22 @@ int v_deg(Vector v1, Vector v2, double* result)
 {
 	double ang;
 	const double pi = 3.141592653589793238462643383279F;
-	v_ang(v1, v2, &ang);
+	if(v_ang(v1, v2, &ang))
+		return 1;
 	*result = (ang * 180.0F) / pi;
 	return 0;
 }
 
-double v_len(Vector vec)
+int v_len(Vector vec, double* result)
 {
-	double result = 0.0F;
 	size_t i;
-	if (!vec.dim)
-		return 0;
+	if (!v_check(vec))
+		return 1;
+	*result = 0.0F;
 	for (i = 0; i < vec.dim; i++)
-		result += vec.v[i] * vec.v[i];
-	return sqrt(result);
+		*result += vec.v[i] * vec.v[i];
+	*result = sqrt(*result);
+	return 0;
 }
 
 void v_input(Vector vec)
