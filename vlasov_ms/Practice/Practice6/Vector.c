@@ -1,4 +1,4 @@
-#include "Vector.h"
+﻿#include "Vector.h"
 
 int v_init(Vector* vec)
 {
@@ -94,7 +94,7 @@ int v_ang(Vector v1, Vector v2, double* result)
 int v_deg(Vector v1, Vector v2, double* result)
 {
 	double ang;
-	const double pi = 3.14159F;
+	const double pi = 3.141592653589793238462643383279F;
 	v_ang(v1, v2, &ang);
 	*result = (ang * 180.0F) / pi;
 	return 0;
