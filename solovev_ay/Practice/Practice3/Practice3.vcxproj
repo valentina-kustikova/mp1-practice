@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D2F97D0D-9750-442A-92C2-D7D744C9CD6F}</ProjectGuid>
+    <ProjectGuid>{16B2F4A8-52A7-4F1D-AC9E-E796D6E4C7A5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Practice4</RootNamespace>
+    <RootNamespace>Practice3</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,7 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="kassa.c" />
+    <ClCompile Include="main.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
