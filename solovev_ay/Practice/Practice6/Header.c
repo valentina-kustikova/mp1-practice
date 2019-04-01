@@ -123,6 +123,5 @@ int Delete(VECTOR a)
 	{
 		free(a.elements);
 	}
-	a.n = NULL;
 	return 0;
 }
