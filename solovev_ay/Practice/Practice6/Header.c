@@ -120,7 +120,9 @@ int Delete(VECTOR a)
 {
 	a.n = 0;
 	if (a.elements)
+	{
 		free(a.elements);
+	}
 	a.n = NULL;
 	return 0;
 }
