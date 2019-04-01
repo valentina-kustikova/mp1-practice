@@ -6,10 +6,10 @@
 void Output(VECTOR a)
 {
 	int i;
-	printf("vot vector:");
+	printf("Its vector:");
 	for (i = 0; i < a.n; i++)
 	{
-		printf("%d, ", a.elements[i]);
+		printf("%d , ", a.elements[i]);
 	}
 }
 VECTOR  input(int _n)
@@ -18,41 +18,63 @@ VECTOR  input(int _n)
 	int i;
 	a.n = _n;
 	a.elements = (int*)malloc(sizeof(int)*_n);
+	printf("Enter");
 	for (i = 0; i < a.n; i++)
 	{
 		scanf("%d", &a.elements[i]);
 	}
-	printf("vash vector: ");
+	printf("vash vector");
 	for (i = 0; i < a.n; i++)
 	{
 		printf("%d", a.elements[i]);
 	}
+	printf("\n");
 	return a;
 }
-void sum(VECTOR a, VECTOR b)
+VECTOR Sum(VECTOR a, VECTOR b)
 {
 	int i;
+	int q;
+	VECTOR c;
+	c.n = a.n;
+	q = a.n;
+	c.elements = (int*)malloc(sizeof(int)*c.n);
+	for (i = 0; i < q; i++)
+	{
+		c.elements[i] = 0;
+	}
 	if (a.n == b.n)
 	{
 		for (i = 0; i < a.n; i++)
 		{
-			a.elements[i] += b.elements[i];
+			c.elements[i] =a.elements[i] + b.elements[i];
 		}
+		return c;
 	}
 	else
 	{
 		printf("dlini ne sovpadayut");
 	}
 }
-void roflan(VECTOR a, VECTOR b)
+VECTOR roflan(VECTOR a, VECTOR b)
 {
+	VECTOR c;
+	int q;
+	q = a.n;
+	c.n = q;
+	c.elements= (int*)malloc(sizeof(int)*q);
 	int i;
+	for ( i = 0; i < q; i++)
+	{
+		c.elements[i] = 0;
+	}
 	if (a.n == b.n)
 	{
 		for (i = 0; i < a.n; i++)
 		{
-			a.elements[i] -= b.elements[i];
+			c.elements[i] =a.elements[i] - b.elements[i];
 		}
+		return c;
 	}
 	else
 	{
@@ -69,7 +91,7 @@ void skalyar(VECTOR a, VECTOR b)
 		{
 			sum += (a.elements[i] * b.elements[i]);
 		}
-		printf("/n %d", sum);
+		printf("\n %d", sum);
 	}
 	else
 	{
@@ -85,6 +107,7 @@ void length(VECTOR a)
 		length += (a.elements[i] * a.elements[i]);
 	}
 	length = sqrt(length);
+	printf("%f", length);
 }
 void corner(VECTOR a, VECTOR b)
 {
@@ -121,6 +144,5 @@ int Delete(VECTOR a)
 	a.n = 0;
 	if (a.elements)
 		free(a.elements);
-	a.n = NULL;
 	return 0;
 }
