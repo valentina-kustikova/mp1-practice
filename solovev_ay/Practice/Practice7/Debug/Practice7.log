@@ -1,0 +1,3 @@
+﻿  Source.cpp
+c:\unn\mp1-practice\solovev_ay\practice\practice7\source.cpp(60): warning C4244: аргумент: преобразование "double" в "int", возможна потеря данных
+  Practice7.vcxproj -> C:\unn\mp1-practice\solovev_ay\Practice\Debug\Practice7.exe
