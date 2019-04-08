@@ -24,13 +24,13 @@ struct Vector
 	double angle(const Vector&) const;
 	double len()                const;
 
-	Vector& operator=  (Vector&);
-	Vector& operator+  (const Vector&);
-	Vector& operator-  (const Vector&);
-	Vector& operator+  (double);
-	Vector& operator-  (double);
-	Vector& operator*  (double);
-	Vector& operator/  (double);
+	const Vector& operator=  (const Vector&);
+	Vector operator+  (const Vector&);
+	Vector operator-  (const Vector&);
+	Vector operator+  (double);
+	Vector operator-  (double);
+	Vector operator*  (double);
+	Vector operator/  (double);
 	double operator*  (const Vector&) const;
 	bool   operator== (const Vector&) const;
 	bool   operator!= (const Vector&) const;
@@ -40,22 +40,24 @@ struct Vector
 	bool   operator< (const Vector&) const;
 	bool   operator<= (const Vector&) const;
 
-	Vector& operator+=  (const Vector&);
-	Vector& operator-=  (const Vector&);
+	Vector& operator+=  (Vector&);
+	Vector& operator-=  (Vector&);
 	Vector& operator*=  (double);
 	Vector& operator/=  (double);
 
-	Vector& operator+ ();
-	Vector& operator- ();
+	Vector operator+ ();
+	Vector operator- ();
 
 	double& operator[](size_t index);
 	const double& operator[](size_t index) const;
 
-	void* operator new(size_t);
+	/*void* operator new(size_t);
 	void  operator delete(void*);
+	void* operator new[](size_t, int);
+	void  operator delete[](void*);*/
 };
 
-Vector& operator*(double, const Vector&);
+Vector operator*(double, const Vector&);
 
 struct VectorBadIndexException {};
 struct VectorDivizionByZero {};

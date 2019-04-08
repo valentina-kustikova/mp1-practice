@@ -21,8 +21,8 @@ int main()
 	std::cout << "Умнож на -1: ";
 	try
 	{
-		v1 *= -1;
-		v1.print();
+		v3 = v1 * -1;
+		v3.print();
 		std::cout << "\n";
 	}
 	catch (VectorUnequalDimensionException)

@@ -108,7 +108,7 @@ double Vector::len() const
 	return sqrt(l);
 }
 
-Vector& Vector::operator=(Vector& _v)
+const Vector& Vector::operator=(const Vector& _v)
 {
 	if (&_v == this)
 		return *this;
@@ -123,42 +123,42 @@ Vector& Vector::operator=(Vector& _v)
 	return *this;
 }
 
-Vector& Vector::operator+(const Vector & _v)
+Vector Vector::operator+(const Vector & _v)
 {
 	if (size != _v.size)
 		throw VectorUnequalDimensionException();
-	Vector* result = new Vector(size);
+	Vector result(size);
 	for (size_t i = 0; i < size; i++)
 	{
-		(*result)[i] = (*this)[i] + _v[i];
+		result[i] = (*this)[i] + _v[i];
 	}
-	return *result;
+	return result;
 }
 
-Vector& Vector::operator-(const Vector& _v)
+Vector Vector::operator-(const Vector& _v)
 {
 	if (size != _v.size)
 		throw VectorUnequalDimensionException();
-	Vector* result = new Vector(size);
+	Vector result(size);
 	for (size_t i = 0; i < size; i++)
 	{
-		(*result)[i] = (*this)[i] - _v[i];
+		result[i] = (*this)[i] - _v[i];
 	}
-	return *result;
+	return result;
 }
 
-Vector & Vector::operator+(double n)
+Vector Vector::operator+(double n)
 {
-	Vector* result = new Vector(size, n);
-	*result += *this;
-	return *result;
+	Vector result(size, n);
+	result += *this;
+	return result;
 }
 
-Vector & Vector::operator-(double n)
+Vector Vector::operator-(double n)
 {
-	Vector* result = new Vector(size, n);
-	*result -= *this;
-	return *result;
+	Vector result(size, n);
+	result -= *this;
+	return result;
 }
 
 double Vector::operator*(const Vector& _v) const
@@ -173,26 +173,26 @@ double Vector::operator*(const Vector& _v) const
 	return result;
 }
 
-Vector& Vector::operator*(double m)
+Vector Vector::operator*(double m)
 {
-	Vector* result = new Vector(*this);
+	Vector result(*this);
 	for (size_t i = 0; i < size; i++)
 	{
-		(*result)[i] *= m;
+		result[i] *= m;
 	}
-	return *result;
+	return result;
 }
 
-Vector& Vector::operator/(double m)
+Vector Vector::operator/(double m)
 {
 	if (m == 0)
 		throw VectorDivizionByZero();
-	Vector* result = new Vector(*this);
+	Vector result(*this);
 	for (size_t i = 0; i < size; i++)
 	{
-		(*result)[i] /= m;
+		result[i] /= m;
 	}
-	return *result;
+	return result;
 }
 
 bool Vector::operator==(const Vector& _v) const
@@ -209,13 +209,13 @@ bool Vector::operator==(const Vector& _v) const
 	return true;
 }
 
-Vector& Vector::operator+=(const Vector& _v)
+Vector& Vector::operator+=(Vector& _v)
 {
 	*this = *this + _v;
 	return *this;
 }
 
-Vector& Vector::operator-=(const Vector& _v)
+Vector& Vector::operator-=(Vector& _v)
 {
 	*this = *this - _v;
 	return *this;
@@ -258,17 +258,17 @@ bool Vector::operator<=(const Vector& _v) const
 	return len() <= _v.len();
 }
 
-Vector& Vector::operator+()
+Vector Vector::operator+()
 {
-	Vector* result = new Vector(*this);
-	return *result;
+	Vector result(*this);
+	return result;
 }
 
-Vector& Vector::operator-()
+Vector Vector::operator-()
 {
-	Vector* result = new Vector(*this);
-	*result *= -1;
-	return *result;
+	Vector result(*this);
+	result *= -1;
+	return result;
 }
 
 double& Vector::operator[](size_t index)
@@ -285,23 +285,39 @@ const double& Vector::operator[](size_t index) const
 	throw VectorBadIndexException();
 }
 
-void* Vector::operator new(size_t _size)
+/*void* Vector::operator new(size_t _size)
 {
-	return (void*)(::new unsigned char[_size]);
+	void* ptr = ::new char[_size];
+	if (!ptr)
+		throw std::bad_alloc();
+	return ptr;
+}
+
+void* Vector::operator new[](size_t _size, int n)
+{
+	void* ptr = ::new char[n * _size];
+	if (!ptr)
+		throw std::bad_alloc();
+	return ptr;
 }
 
 void Vector::operator delete(void* ptr)
 {
-	delete (Vector*)ptr;
+	free(ptr);
 }
 
-Vector& operator*(double m, const Vector& _v)
+void Vector::operator delete[](void* ptr)
 {
-	Vector* result = new Vector(_v);
+	free(ptr);
+}*/
+
+Vector operator*(double m, const Vector& _v)
+{
+	Vector result(_v);
 	size_t size = _v.dim();
 	for (size_t i = 0; i < size; i++)
 	{
-		(*result)[i] *= m;
+		result[i] *= m;
 	}
-	return *result;
+	return result;
 }
