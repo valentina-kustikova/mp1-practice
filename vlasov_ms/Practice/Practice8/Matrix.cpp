@@ -11,8 +11,9 @@ Matrix::Matrix(const Matrix& _m)
 {
 	rows = _m.rows;
 	cols = _m.cols;
-	m = new double[rows * cols];
-	for (unsigned i = 0; i < _m.rows * _m.cols; i++)
+	unsigned elements = rows * cols;
+	m = new double[elements];
+	for (unsigned i = 0; i < elements; i++)
 		m[i] = _m.m[i];
 }
 
@@ -20,8 +21,9 @@ Matrix::Matrix(unsigned _rows, unsigned _cols)
 {
 	rows = _rows;
 	cols = _cols;
-	m = new double[rows * cols];
-	for (unsigned i = 0; i < _rows * _cols; i++)
+	unsigned elements = rows * cols;
+	m = new double[elements];
+	for (unsigned i = 0; i < elements; i++)
 		m[i] = 0;
 }
 
@@ -29,8 +31,9 @@ Matrix::Matrix(double* _m, unsigned _rows, unsigned _cols)
 {
 	rows = _rows;
 	cols = _cols;
-	m = new double[rows * cols];
-	for (unsigned i = 0; i < _rows * _cols; i++)
+	unsigned elements = rows * cols;
+	m = new double[elements];
+	for (unsigned i = 0; i < elements; i++)
 		m[i] = _m[i];
 }
 
@@ -60,7 +63,8 @@ void Matrix::input()
 	std::cin >> cols;
 	*this = Matrix(rows, cols);
 	std::cout << "Enter values by rows (separating with space): ";
-	for (unsigned i = 0; i < rows * cols; i++)
+	unsigned elements = rows * cols;
+	for (unsigned i = 0; i < elements; i++)
 	{
 		std::cin >> m[i];
 	}
@@ -71,7 +75,8 @@ Matrix Matrix::operator+(const Matrix& _m)
 	if ((rows != _m.rows) || (cols != _m.cols))
 		throw MatrixUnequalSizes();
 	Matrix result(rows, cols);
-	for (unsigned i = 0; i < rows * cols; i++)
+	unsigned elements = rows * cols;
+	for (unsigned i = 0; i < elements; i++)
 		result.m[i] = m[i] + _m.m[i];
 	return result;
 }
@@ -81,7 +86,8 @@ Matrix Matrix::operator+(double d)
 	if ((rows == 0) || (cols == 0))
 		return Matrix();
 	Matrix result(rows, cols);
-	for (unsigned i = 0; i < rows * cols; i++)
+	unsigned elements = rows * cols;
+	for (unsigned i = 0; i < elements; i++)
 		result.m[i] = m[i] + d;
 	return result;
 }
@@ -91,17 +97,19 @@ Matrix Matrix::operator-(const Matrix& _m)
 	if ((rows != _m.rows) || (cols != _m.cols))
 		throw MatrixUnequalSizes();
 	Matrix result(rows, cols);
-	for (unsigned i = 0; i < rows * cols; i++)
+	unsigned elements = rows * cols;
+	for (unsigned i = 0; i < elements; i++)
 		result.m[i] = m[i] - _m.m[i];
 	return result;
 }
 
 Matrix Matrix::operator-(double d)
 {
-	if ((rows == 0) || (cols == 0))
+	if (!rows || !cols)
 		return Matrix();
 	Matrix result(rows, cols);
-	for (unsigned i = 0; i < rows * cols; i++)
+	unsigned elements = rows * cols;
+	for (unsigned i = 0; i < elements; i++)
 		result.m[i] = m[i] - d;
 	return result;
 }
@@ -123,7 +131,8 @@ Matrix Matrix::operator*(double d)
 	if ((rows == 0) || (cols == 0))
 		return Matrix();
 	Matrix result(rows, cols);
-	for (unsigned i = 0; i < rows * cols; i++)
+	unsigned elements = rows * cols;
+	for (unsigned i = 0; i < elements; i++)
 		result.m[i] = m[i] * d;
 	return result;
 }
@@ -136,18 +145,19 @@ const Matrix& Matrix::operator=(const Matrix& _m)
 		delete[] m;
 	rows = _m.rows;
 	cols = _m.cols;
-	m = new double[_m.rows * _m.cols];
-	for (unsigned i = 0; i < rows * cols; i++)
+	unsigned elements = rows * cols;
+	m = new double[elements];
+	for (unsigned i = 0; i < elements; i++)
 		m[i] = _m.m[i];
 	return *this;
 }
 
-double& Matrix::operator[](int index)
+double& Matrix::operator[](unsigned index)
 {
 	return m[index * cols + 1];
 }
 
-const double& Matrix::operator[](int index) const
+const double& Matrix::operator[](unsigned index) const
 {
 	return m[index * cols + 1];
 }
