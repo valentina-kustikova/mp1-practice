@@ -99,7 +99,7 @@ const Matrix& Matrix::operator=(const Matrix& _m)
 {
 	if ((runs == _m.runs) && (colc == _m.colc) && (m == _m.m))
 		return *this;
-	if (runs ^ _m.runs ^ colc ^ _m.colc) // сравним все хором
+	if (runs ^ _m.runs ^ colc ^ _m.colc)
 		delete[] m;
 	runs = _m.runs;
 	colc = _m.colc;
@@ -129,14 +129,49 @@ const double Matrix::operator[](int a) const
 void Matrix::PrintMatrix()
 {
 	int kek = 0;
-	for (int i = 0; i < (runs*colc); i++)
+	double count=m[0];
+	for (int i = 0; i < runs*colc; i++)
 	{
-		cout << m[i] << " ";
-		kek++;
-		if (kek == runs)
+		if (m[i] > count)
+			count = m[i];
+	}
+	if (count < 10)
+	{
+		for (int i = 0; i < (runs*colc); i++)
 		{
-			cout << endl;
-			kek = 0;
+			cout << m[i] << " ";
+			kek++;
+			if (kek == runs)
+			{
+				cout << endl;
+				kek = 0;
+			}
+		}
+	}
+	if ((count >10)&&(count<100))
+	{
+		for (int i = 0; i < (runs*colc); i++)
+		{
+			cout << m[i] << "  ";
+			kek++;
+			if (kek == runs)
+			{
+				cout << endl;
+				kek = 0;
+			}
+		}
+	}
+	if ((count > 100) && (count < 1000))
+	{
+		for (int i = 0; i < (runs*colc); i++)
+		{
+			cout << m[i] << "   ";
+			kek++;
+			if (kek == runs)
+			{
+				cout << endl;
+				kek = 0;
+			}
 		}
 	}
 }
@@ -146,13 +181,13 @@ double& Matrix::operator[](unsigned index)
 }
 void Matrix::Inputmatrix()
 {
-	cout << "Enter number of rows: ";
+	cout << "vvedi kolvo strok ";
 	cin >> runs;
-	cout << "Enter number of cols: ";
+	cout << "vvedi kolvo stolbcov: ";
 	cin >> colc;
 	*this = Matrix(runs, colc);
 	unsigned elements = runs * colc;
-	cout << "Enter values by rows (separating with space): ";
+	cout << "vvedi elementi matrix ";
 	for (unsigned i = 0; i < elements; i++)
 	{
 		cin >> m[i];
