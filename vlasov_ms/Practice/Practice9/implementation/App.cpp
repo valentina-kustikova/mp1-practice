@@ -1,5 +1,69 @@
 #include "../headers/App.h"
 
+bool TodoList::app::open(const char* filename)
+{
+	reset();
+	fin.open(filename);
+	if (!fin.is_open())
+		return false;
+	// some processing
+	return true;
+}
+
+bool TodoList::app::create(const char* filename)
+{
+	reset();
+	size_t len = 0;
+	for (; filename[len]; len++);
+	char* tmp = new char[len + 5 + 1]; // "<filename>.todo\0"
+	for (size_t i = 0; tmp[i] = filename[i]; i++);
+	tmp[len + 0] = '.';
+	tmp[len + 1] = 't';
+	tmp[len + 2] = 'o';
+	tmp[len + 3] = 'd';
+	tmp[len + 4] = 'o';
+	tmp[len + 5] = '\0';
+	this->filename = tmp;
+	fin.open(this->filename);
+	bool result = fin.is_open();
+	if (fin.is_open())
+		fin.close();
+	return result;
+}
+
+bool TodoList::app::save()
+{
+	if (fin.is_open())
+		fin.close();
+	fout.open(filename);
+	if (!fout.is_open())
+		return false;
+	for (size_t i = 0; i < tcount; i++)
+	{
+		task::type ttype = tasks[i]->get_type();
+		fout << ttype << ' ';
+		fout << tasks[i]->start.year() << ' ' << tasks[i]->start.get_days() << ' ';
+		if (ttype == task::type::std)
+			fout << tasks[i]->get_duration() << ' ';
+		fout << tasks[i]->title << '\n';
+	}
+	fout.close();
+	return true;
+}
+
+TodoList::app::app()
+{
+	uid_stream = 1;
+	tcount = 0;
+	tasks = nullptr;
+	filename = nullptr;
+}
+
+TodoList::app::~app()
+{
+	reset();
+}
+
 void TodoList::app::start()
 {
 	std::cout << "GOOGLE CALENDAR\n";
@@ -58,7 +122,7 @@ void TodoList::app::start()
 				std::cout << "Enter code of action: ";
 			std::cin >> action;
 		} while ((action < 1) || (action > 4));
-		
+
 		switch (action)
 		{
 		case 1:
@@ -93,4 +157,24 @@ void TodoList::app::start()
 			break;
 		}
 	}
+}
+
+void TodoList::app::reset()
+{
+	if (fin.is_open())
+		fin.close();
+	if (fout.is_open())
+		fout.close;
+	if (tcount > 0)
+	{
+		for (size_t i = 0; i < tcount; i++)
+			delete tasks[i];
+		delete[] tasks;
+	}
+	if (filename)
+		delete[] filename;
+	tasks = nullptr;
+	tcount = 0;
+	filename = nullptr;
+	uid_stream = 1;
 }

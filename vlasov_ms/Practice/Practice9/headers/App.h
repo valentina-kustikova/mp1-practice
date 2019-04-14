@@ -9,8 +9,10 @@ namespace TodoList
 	class app
 	{
 		ctask** tasks;
+		size_t tcount;
 		std::ifstream fin;
 		std::ofstream fout;
+		char* filename;
 		static unsigned uid_stream;
 	public:
 		app();
@@ -29,9 +31,9 @@ namespace TodoList
 		bool open(const char*);
 		bool create(const char*);
 		bool save();
-		bool save(const char*);
 
 		void start();
+		void reset();
 	};
 }
 

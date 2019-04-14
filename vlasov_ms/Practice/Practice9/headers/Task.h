@@ -21,8 +21,8 @@ namespace TodoList
 	{
 		unsigned uid;
 		task::type type;
-		std::string title;
 	public:
+		std::string title;
 		date start;
 
 		ctask();
@@ -30,9 +30,13 @@ namespace TodoList
 		virtual ~ctask();
 
 		void set_title(std::string);
+
+		unsigned get_uid();
 		task::type get_type();
+		virtual unsigned get_duration() = 0;
 
 		virtual void print() = 0;
+		virtual void print(std::ofstream&) = 0;
 		virtual const char* line() = 0;
 	};
 }

@@ -11,9 +11,12 @@ namespace TodoList
 	public:
 		time();
 		time(unsigned, unsigned);
+		time(unsigned);
 
 		time set_hour(unsigned);
 		time set_min(unsigned);
+
+		unsigned get_mins();
 
 		time operator()(unsigned, unsigned);
 		unsigned& operator[](char field);
