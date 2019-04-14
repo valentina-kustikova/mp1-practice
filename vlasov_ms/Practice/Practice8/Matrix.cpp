@@ -152,12 +152,7 @@ const Matrix& Matrix::operator=(const Matrix& _m)
 	return *this;
 }
 
-double& Matrix::operator[](unsigned index)
+double* Matrix::operator[](unsigned index)
 {
-	return m[index * cols + 1];
-}
-
-const double& Matrix::operator[](unsigned index) const
-{
-	return m[index * cols + 1];
+	return m + index * cols;
 }

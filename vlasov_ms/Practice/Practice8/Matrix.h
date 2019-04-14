@@ -25,8 +25,7 @@ public:
 	Matrix operator*(const Matrix&);
 	Matrix operator*(double);
 	
-	double& operator[](unsigned);
-	const double& operator[](unsigned) const;
+	double* operator[](unsigned);
 };
 
 class MatrixUnequalSizes {};
