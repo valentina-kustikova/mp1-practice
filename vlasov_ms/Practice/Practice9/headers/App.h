@@ -16,13 +16,22 @@ namespace TodoList
 		app();
 		~app();
 
-		ctask add();
-		void remove(ctask*);
-		void remove(unsigned);
+		bool add(const char*, const task::type, const date);
+		bool add(const char*, const date, const time);
+		bool add(const char*, const date);
+		bool remove(ctask*);
+		bool remove(unsigned);
+
 		void print();
-		void save();
-		void save(const char*);
-		void open(const char*);
+		void print(const date);
+		void print(unsigned);
+
+		bool open(const char*);
+		bool create(const char*);
+		bool save();
+		bool save(const char*);
+
+		void start();
 	};
 }
 

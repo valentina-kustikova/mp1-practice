@@ -29,11 +29,11 @@ namespace TodoList
 		ctask(const ctask&);
 		virtual ~ctask();
 
-		ctask set_title(std::string);
+		void set_title(std::string);
 		task::type get_type();
 
-		virtual friend std::ostream& operator<<(std::ostream&, const ctask&) = 0;
-		virtual friend std::ofstream& operator<<(std::ofstream&, const ctask&) = 0;
+		virtual void print() = 0;
+		virtual const char* line() = 0;
 	};
 }
 

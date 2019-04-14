@@ -168,6 +168,9 @@
     <ClInclude Include="headers\Time.h" />
     <ClInclude Include="includes.hpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="interface.inl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
