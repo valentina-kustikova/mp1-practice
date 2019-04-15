@@ -42,9 +42,9 @@ bool TodoList::app::save()
 	{
 		task::type ttype = tasks[i]->get_type();
 		fout << ttype << ' ';
-		fout << tasks[i]->start.year() << ' ' << tasks[i]->start.get_days() << ' ';
+		fout << tasks[i]->start;
 		if (ttype == task::type::std)
-			fout << tasks[i]->get_duration() << ' ';
+			fout << tasks[i]->get_start() << ' ' << tasks[i]->get_end() << ' ';
 		fout << tasks[i]->title << '\n';
 	}
 	fout.close();
@@ -66,7 +66,7 @@ TodoList::app::~app()
 
 void TodoList::app::start()
 {
-	std::cout << "GOOGLE CALENDAR\n";
+	/*std::cout << "GOOGLE CALENDAR\n";
 	std::cout << "1. Open list from file\n2. Create new list file\n";
 	int action = 1;
 	do
@@ -156,7 +156,7 @@ void TodoList::app::start()
 				std::cout << "Something went wrong.\n";
 			break;
 		}
-	}
+	}*/
 }
 
 void TodoList::app::reset()
@@ -164,7 +164,7 @@ void TodoList::app::reset()
 	if (fin.is_open())
 		fin.close();
 	if (fout.is_open())
-		fout.close;
+		fout.close();
 	if (tcount > 0)
 	{
 		for (size_t i = 0; i < tcount; i++)

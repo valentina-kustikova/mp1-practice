@@ -9,12 +9,14 @@ namespace TodoList
 		class std : public ctask
 		{
 		public:
-			time duration;
+			time t_start;
+			time t_end;
 			std();
 			std(const std&);
 			~std();
 
-			unsigned get_duration();
+			time get_start();
+			time get_end();
 
 			virtual void print();
 			void print(::std::ofstream&);

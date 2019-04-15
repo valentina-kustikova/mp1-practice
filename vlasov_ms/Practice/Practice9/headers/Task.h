@@ -33,7 +33,8 @@ namespace TodoList
 
 		unsigned get_uid();
 		task::type get_type();
-		virtual unsigned get_duration() = 0;
+		virtual time get_start() = 0;
+		virtual time get_end() = 0;
 
 		virtual void print() = 0;
 		virtual void print(std::ofstream&) = 0;

@@ -13,8 +13,9 @@ namespace TodoList
 			day(const day&);
 			~day();
 
-			unsigned get_duration();
-
+			time get_start();
+			time get_end();
+			
 			virtual void print();
 			void print(::std::ofstream&);
 			virtual const char* line();

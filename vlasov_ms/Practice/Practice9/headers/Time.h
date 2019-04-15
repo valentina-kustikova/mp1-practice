@@ -7,20 +7,22 @@ namespace TodoList
 {
 	class time
 	{
-		unsigned h, m;
+		unsigned m;
 	public:
 		time();
 		time(unsigned, unsigned);
-		time(unsigned);
+		explicit time(unsigned);
+		time(float);  // ;)
+		
+		time& set_hour(unsigned);
+		time& set_min(unsigned);
 
-		time set_hour(unsigned);
-		time set_min(unsigned);
+		unsigned get_hour() const;
+		unsigned get_min() const;
+		unsigned get_mins() const;
 
-		unsigned get_mins();
-
-		time operator()(unsigned, unsigned);
-		unsigned& operator[](char field);
-		time& operator=(time&);
+		time& operator()(unsigned, unsigned);
+		const unsigned operator[](char field) const;
 
 		bool operator==(const time&) const;
 		bool operator!=(const time&) const;
@@ -29,8 +31,16 @@ namespace TodoList
 		bool operator<(const time&) const;
 		bool operator<=(const time&) const;
 
+		const time& operator=(const time&);
+		time operator+(const time&) const;
+		time operator-(const time&) const;
+		const time& operator+=(const time&);
+		const time& operator-=(const time&);
+
 		friend std::ostream& operator<<(std::ostream&, const time&);
 		friend std::ofstream& operator<<(std::ofstream&, const time&);
+
+		operator unsigned() const;
 	};
 }
 
