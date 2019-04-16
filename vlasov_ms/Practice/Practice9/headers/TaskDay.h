@@ -10,18 +10,15 @@ namespace TodoList
 		{
 		public:
 			day();
+			day(::std::string&, date);
 			day(const day&);
 			~day();
 
 			time get_start();
 			time get_end();
 			
-			virtual void print();
+			void print();
 			void print(::std::ofstream&);
-			virtual const char* line();
-
-			friend ::std::ostream& operator<<(::std::ostream&, const day&);
-			friend ::std::ofstream& operator<<(::std::ofstream&, const day&);
 		};
 	}
 }

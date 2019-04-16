@@ -4,16 +4,32 @@
 
 unsigned TodoList::date::fix_day(unsigned d)
 {
+	if ((d > 31U) || (d < 1U))
+	{
+		throw date_exception::bad_day(d);
+		return this->d;
+	}
 	if (d <= 28)
 		return d;
 	if ((this->m == 4U) || (this->m == 6U) || (this->m == 9U) || (this->m == 11U))
-		d = d > 30U ? 30U : d;
+		if (d > 30U)
+		{
+			throw date_exception::bad_day(d);
+			return this->d;
+		}
 	if (this->m == 2)
 		if (bissextile())
-			d = d > 29U ? 29U : d;
+			if (d > 29U)
+			{
+				throw date_exception::bad_day(d);
+				return this->d;
+			}
 		else
-			d = d > 28U ? 28U : d;
-	d = d > 31U ? 31U : d;
+			if (d > 28U)
+			{
+			throw date_exception::bad_day(d);
+			return this->d;
+			}
 	return d;
 }
 
@@ -33,14 +49,20 @@ TodoList::date::date(const date& d)
 
 TodoList::date::date(unsigned d, unsigned m, unsigned y)
 {
-	if ((d > 31U) || (m > 12U) || (y < 1970U))
+	d = 1U;
+	m = 1U;
+	y = 1970U;
+	if ((d > 31U) || (d < 1U))
 	{
-		d = 1U;
-		m = 1U;
-		y = 1970U;
+		throw date_exception::bad_day(d);
 		return;
 	}
 	this->y = y;
+	if (m > 12U || (m < 1U))
+	{
+		throw date_exception::bad_month(m);
+		return;
+	}
 	this->m = m;
 	this->d = fix_day(d);
 }
@@ -53,25 +75,6 @@ TodoList::date::~date()
 bool TodoList::date::bissextile() const
 {
 	return !(y % 400U) || ((y % 100U) && !(y % 4U));
-}
-
-TodoList::date& TodoList::date::set_day(unsigned d)
-{
-	this->d = fix_day(d);
-	return *this;
-}
-
-TodoList::date& TodoList::date::set_month(unsigned m)
-{
-	this->m = m > 12U ? 12U : m;
-	this->d = fix_day(d);
-	return *this;
-}
-
-TodoList::date& TodoList::date::set_year(unsigned y)
-{
-	this->y = y < 1970U ? 1970U : y;
-	return *this;
 }
 
 unsigned TodoList::date::day() const
@@ -174,21 +177,58 @@ bool TodoList::date::operator<=(const date& D) const
 std::ostream& TodoList::operator<<(std::ostream& out, const date& D)
 {
 	out.width(2);
+	out.fill('0');
 	out << D.d;
 	out.width(2);
+	out.fill('0');
 	out << D.m;
 	out.width(4);
+	out.fill('0');
 	out << D.y;
 	return out;
 }
 
-std::ofstream& TodoList::operator<<(std::ofstream& fout, const date& D)
+TodoList::date_exception::bad_day::bad_day()
 {
-	fout.width(2);
-	fout << D.d;
-	fout.width(2);
-	fout << D.m;
-	fout.width(4);
-	fout << D.y;
-	return fout;
+	this->value = 0U;
+}
+
+TodoList::date_exception::bad_day::bad_day(unsigned value)
+{
+	this->value = value;
+}
+
+const char* TodoList::date_exception::bad_day::what() const
+{
+	return what_str.c_str();
+}
+
+TodoList::date_exception::bad_month::bad_month()
+{
+	this->value = 0U;
+}
+
+TodoList::date_exception::bad_month::bad_month(unsigned value)
+{
+	this->value = value;
+}
+
+const char* TodoList::date_exception::bad_month::what() const
+{
+	return what_str.c_str();
+}
+
+TodoList::date_exception::bad_year::bad_year()
+{
+	this->value = 0U;
+}
+
+TodoList::date_exception::bad_year::bad_year(unsigned value)
+{
+	this->value = value;
+}
+
+const char* TodoList::date_exception::bad_year::what() const
+{
+	return what_str.c_str();
 }

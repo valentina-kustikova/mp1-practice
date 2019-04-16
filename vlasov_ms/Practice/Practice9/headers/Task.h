@@ -12,13 +12,14 @@ namespace TodoList
 	{
 		enum type
 		{
-			std,
-			day
+			t_std,
+			t_day
 		};
 	}
 
 	class ctask
 	{
+		static unsigned uid_stream;
 		unsigned uid;
 		task::type type;
 	public:
@@ -27,18 +28,21 @@ namespace TodoList
 
 		ctask();
 		ctask(const ctask&);
+		ctask(std::string&);
+		ctask(std::string&, date);
 		virtual ~ctask();
-
-		void set_title(std::string);
 
 		unsigned get_uid();
 		task::type get_type();
 		virtual time get_start() = 0;
 		virtual time get_end() = 0;
 
+		// You should not call this methods with task::day* pointer - they will not work correctly
+		virtual time set_start(time);
+		virtual time set_end(time);
+
 		virtual void print() = 0;
 		virtual void print(std::ofstream&) = 0;
-		virtual const char* line() = 0;
 	};
 }
 

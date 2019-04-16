@@ -13,17 +13,18 @@ namespace TodoList
 			time t_end;
 			std();
 			std(const std&);
+			std(::std::string&);
+			std(::std::string&, date);
+			std(::std::string&, date, time, time);
 			~std();
 
 			time get_start();
 			time get_end();
+			time set_start(time);
+			time set_end(time);
 
-			virtual void print();
+			void print();
 			void print(::std::ofstream&);
-			virtual const char* line();
-
-			friend ::std::ostream& operator<<(::std::ostream&, const std&);
-			friend ::std::ofstream& operator<<(::std::ofstream&, const std&);
 		};
 	}
 }

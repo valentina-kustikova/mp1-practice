@@ -2,34 +2,33 @@
 #define _TODOLIST_APP_H_
 #include <iostream>
 #include <fstream>
-#include "Task.h"
+#include <list>
+#include "TaskDay.h"
+#include "TaskStd.h"
 
 namespace TodoList
 {
 	class app
 	{
-		ctask** tasks;
+		std::list<ctask*> tasks;
 		size_t tcount;
-		std::ifstream fin;
-		std::ofstream fout;
-		char* filename;
-		static unsigned uid_stream;
+		std::string filename;
 	public:
 		app();
 		~app();
 
-		bool add(const char*, const task::type, const date);
-		bool add(const char*, const date, const time);
-		bool add(const char*, const date);
+		bool add(std::string&, task::type, date);
+		bool add(std::string&, date, time, time);
+		bool add(std::string&, date);
 		bool remove(ctask*);
 		bool remove(unsigned);
 
 		void print();
-		void print(const date);
+		void print(date);
 		void print(unsigned);
 
-		bool open(const char*);
-		bool create(const char*);
+		bool open(std::string&);
+		bool create(std::string&);
 		bool save();
 
 		void start();

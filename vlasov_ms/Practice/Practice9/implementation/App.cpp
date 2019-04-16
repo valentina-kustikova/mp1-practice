@@ -1,51 +1,78 @@
 #include "../headers/App.h"
 
-bool TodoList::app::open(const char* filename)
+bool TodoList::app::open(std::string& filename)
 {
 	reset();
-	fin.open(filename);
+	std::ifstream fin(filename.c_str());
 	if (!fin.is_open())
 		return false;
-	// some processing
+	else
+		this->filename = filename;
+	while (!fin.eof())
+	{
+		std::string line;  // 0 02032019 123 456 Text
+		std::getline(fin, line, '\n');
+		task::type ttype = task::type::t_std;
+		ctask* next_task = nullptr;
+		if (line[0] == '1') // task::type::day
+		{
+			ttype = task::type::t_day;
+			next_task = new task::day();
+		}
+		else // task::type::std
+		{
+			ttype = task::type::t_std;
+			next_task = new task::std();
+		}
+		unsigned long full_date = std::stoul(line.substr(2, 8));
+		next_task->start(unsigned(full_date / 1000000UL), unsigned((full_date / 10000UL) % 100UL), unsigned(full_date % 10000UL));
+		line = line.substr(11);
+		if (ttype = task::t_std)
+		{
+			size_t space_pos = line.find_first_of(' ');
+			unsigned long t_start = std::stoul(line.substr(0, space_pos));
+			line = line.substr(space_pos + 1);
+			space_pos = line.find_first_of(' ');
+			unsigned long t_end = std::stoul(line.substr(0, space_pos));
+			line = line.substr(space_pos + 1);
+			next_task->set_start(time(unsigned(t_start)));
+			next_task->set_end(time(unsigned(t_end)));
+		}
+		next_task->title = line;
+		tasks.push_back(next_task);
+		tcount++;
+	}
 	return true;
 }
 
-bool TodoList::app::create(const char* filename)
+bool TodoList::app::create(std::string& filename)
 {
 	reset();
-	size_t len = 0;
-	for (; filename[len]; len++);
-	char* tmp = new char[len + 5 + 1]; // "<filename>.todo\0"
-	for (size_t i = 0; tmp[i] = filename[i]; i++);
-	tmp[len + 0] = '.';
-	tmp[len + 1] = 't';
-	tmp[len + 2] = 'o';
-	tmp[len + 3] = 'd';
-	tmp[len + 4] = 'o';
-	tmp[len + 5] = '\0';
-	this->filename = tmp;
-	fin.open(this->filename);
-	bool result = fin.is_open();
-	if (fin.is_open())
-		fin.close();
+	filename += ".todo";
+	std::ofstream fout(filename.c_str());
+	bool result = fout.is_open();
+	if (result)
+	{
+		fout.close();
+		this->filename = filename;
+	}
+	tcount = 0;
 	return result;
 }
 
 bool TodoList::app::save()
 {
-	if (fin.is_open())
-		fin.close();
-	fout.open(filename);
+	std::ofstream fout(filename.c_str());
 	if (!fout.is_open())
 		return false;
-	for (size_t i = 0; i < tcount; i++)
+	for (std::list<ctask*>::iterator i = tasks.begin(); i != tasks.end(); ++i)
 	{
-		task::type ttype = tasks[i]->get_type();
+		task::type ttype = (*i)->get_type();
 		fout << ttype << ' ';
-		fout << tasks[i]->start;
-		if (ttype == task::type::std)
-			fout << tasks[i]->get_start() << ' ' << tasks[i]->get_end() << ' ';
-		fout << tasks[i]->title << '\n';
+		fout << (*i)->start;
+		if (ttype == task::type::t_std)
+			fout << (*i)->get_start() << ' ' << (*i)->get_end() << ' ';
+		fout << (*i)->title << '\n';
 	}
 	fout.close();
 	return true;
@@ -53,10 +80,8 @@ bool TodoList::app::save()
 
 TodoList::app::app()
 {
-	uid_stream = 1;
 	tcount = 0;
-	tasks = nullptr;
-	filename = nullptr;
+	filename = "";
 }
 
 TodoList::app::~app()
@@ -64,9 +89,75 @@ TodoList::app::~app()
 	reset();
 }
 
+bool TodoList::app::add(std::string& title, task::type ttype, date start)
+{
+	ctask* next_task;
+	if(ttype == task::type::t_std)
+		next_task = new task::std(title, start);
+	else
+		next_task = new task::day(title, start);
+	tasks.push_back(next_task);
+	tcount++;
+	return true;
+}
+
+bool TodoList::app::add(std::string& title, date start, time t_start, time t_end)
+{
+	ctask* next_task = new task::day(title, start);
+	tasks.push_back(next_task);
+	tcount++;
+	return true;
+}
+
+bool TodoList::app::add(std::string& title, date start)
+{
+	ctask* next_task = new task::day(title, start);
+	tasks.push_back(next_task);
+	tcount++;
+	return true;
+}
+
+bool TodoList::app::remove(ctask* t)
+{
+	return remove(t->get_uid());
+}
+
+bool TodoList::app::remove(unsigned uid)
+{
+	for (std::list<ctask*>::iterator i = tasks.begin(); i != tasks.end(); ++i)
+	{
+		if ((*i)->get_uid() == uid)
+		{
+			i = tasks.erase(i);
+			tcount--;
+			return true;
+		}
+	}
+	return false;
+}
+
+void TodoList::app::print()
+{
+	for (std::list<ctask*>::iterator i = tasks.begin(); i != tasks.end(); ++i)
+	{
+		(*i)->print();
+		std::cout << '\n';
+	}
+}
+
+void TodoList::app::print(date d)
+{
+
+}
+
+void TodoList::app::print(unsigned uid)
+{
+
+}
+
 void TodoList::app::start()
 {
-	/*std::cout << "GOOGLE CALENDAR\n";
+	std::cout << "GOOGLE CALENDAR\n";
 	std::cout << "1. Open list from file\n2. Create new list file\n";
 	int action = 1;
 	do
@@ -78,7 +169,7 @@ void TodoList::app::start()
 		std::cin >> action;
 	} while ((action < 1) || (action > 2));
 
-	char* filename = new char[200];
+	std::string tmp;
 	int attempts = 0;
 	switch (action)
 	{
@@ -89,9 +180,10 @@ void TodoList::app::start()
 				std::cout << "Incorrect file. Try again: ";
 			else
 				std::cout << "Enter path to file: ";
-			std::cin >> filename;
+			//std::getline(std::cin, tmp);
+			std::cin >> tmp;
 			attempts++;
-		} while (!open(filename));
+		} while (!open(tmp));
 		break;
 	case 2:
 		do
@@ -100,15 +192,15 @@ void TodoList::app::start()
 				std::cout << "Incorrect name. Try again: ";
 			else
 				std::cout << "Enter list name (filename will be <your_name>.todo): ";
-			std::cin >> filename;
+			//std::getline(std::cin, tmp);
+			std::cin >> tmp;
 			attempts++;
-		} while (!create(filename));
+		} while (!create(tmp));
 		break;
 	}
 
 	system("cls");
-	std::cout << "GOOGLE CALENDAR :: " << filename << (action == 1 ? "" : ".todo") << '\n';
-	delete[] filename;
+	std::cout << "GOOGLE CALENDAR :: " << this->filename << '\n';
 	while (1)
 	{
 		std::cout << "1. Show tasks     2. Search tasks by date\n";
@@ -156,25 +248,18 @@ void TodoList::app::start()
 				std::cout << "Something went wrong.\n";
 			break;
 		}
-	}*/
+	}
 }
 
 void TodoList::app::reset()
 {
-	if (fin.is_open())
-		fin.close();
-	if (fout.is_open())
-		fout.close();
 	if (tcount > 0)
 	{
-		for (size_t i = 0; i < tcount; i++)
-			delete tasks[i];
-		delete[] tasks;
+		for (std::list<ctask*>::iterator i = tasks.begin(); i != tasks.end(); ++i)
+			delete *i;
+		tasks = std::list<ctask*>();
 	}
-	if (filename)
-		delete[] filename;
-	tasks = nullptr;
+	if (!filename.empty())
+		filename = "";
 	tcount = 0;
-	filename = nullptr;
-	uid_stream = 1;
 }

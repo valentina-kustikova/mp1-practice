@@ -4,26 +4,44 @@
 
 TodoList::time::time()
 {
-	this->m = 0;
+	this->m = 0U;
 }
 
 TodoList::time::time(unsigned h, unsigned m)
 {
-	this->m = 0;
-	h = h > 23 ? 0 : h;
-	m = m > 59 ? 0 : m;
-	this->m = 60 * h + m;
+	this->m = 0U;
+	if (h > 23U)
+	{
+		throw time_exception::bad_hour(h);
+		return;
+	}
+	if (m > 59U)
+	{
+		throw time_exception::bad_min(m);
+		return;
+	}
+	this->m = 60U * h + m;
 }
 
 TodoList::time::time(unsigned m)
 {
-	this->m = 0;
-	this->m = m > 1440 ? 0 : m;
+	this->m = 0U;
+	if (m > 1440U)
+	{
+		throw time_exception::bad_mins(m);
+		return;
+	}
+	this->m = m;
 }
 
 TodoList::time::time(float mask)
 {
-	this->m = 0;
+	this->m = 0U;
+	if ((mask < 00.00f) || (mask > 23.59f))
+	{
+		throw time_exception::bad_mask(mask);
+		return;
+	}
 	int imask = (int)(mask * 100);
 	set_hour(imask / 100);
 	set_min(imask % 100);
@@ -31,15 +49,23 @@ TodoList::time::time(float mask)
 
 TodoList::time& TodoList::time::set_hour(unsigned h)
 {
-	if (h <= 23)
-		this->m = h * 60 + get_min();
+	if (h > 23U)
+	{
+		throw time_exception::bad_hour(h);
+		return *this;
+	}
+	this->m = h * 60U + get_min();
 	return *this;
 }
 
 TodoList::time& TodoList::time::set_min(unsigned m)
 {
-	if (m <= 59)
-		this->m = get_hour() * 60 + m;
+	if (m > 59U)
+	{
+		throw time_exception::bad_min(m);
+		return *this;
+	}
+	this->m = get_hour() * 60U + m;
 	return *this;
 }
 
@@ -129,10 +155,10 @@ const TodoList::time& TodoList::time::operator-=(const time& t)
 	return *this;
 }
 
-TodoList::time::operator unsigned() const
+/*TodoList::time::operator unsigned() const
 {
 	return m;
-}
+}*/
 
 std::ostream& TodoList::operator<<(std::ostream& out, const time& t)
 {
@@ -140,8 +166,62 @@ std::ostream& TodoList::operator<<(std::ostream& out, const time& t)
 	return out;
 }
 
-std::ofstream& TodoList::operator<<(std::ofstream& fout, const time& t)
+TodoList::time_exception::bad_hour::bad_hour()
 {
-	//fout << t.get_hour() << ':' << t.get_min();
-	return fout;
+	this->value = 0U;
+}
+
+TodoList::time_exception::bad_hour::bad_hour(unsigned value)
+{
+	this->value = value;
+}
+
+const char* TodoList::time_exception::bad_hour::what() const
+{
+	return what_str.c_str();
+}
+
+TodoList::time_exception::bad_min::bad_min()
+{
+	this->value = 0U;
+}
+
+TodoList::time_exception::bad_min::bad_min(unsigned value)
+{
+	this->value = value;
+}
+
+const char* TodoList::time_exception::bad_min::what() const
+{
+	return what_str.c_str();
+}
+
+TodoList::time_exception::bad_mins::bad_mins()
+{
+	this->value = 0U;
+}
+
+TodoList::time_exception::bad_mins::bad_mins(unsigned value)
+{
+	this->value = value;
+}
+
+const char* TodoList::time_exception::bad_mins::what() const
+{
+	return what_str.c_str();
+}
+
+TodoList::time_exception::bad_mask::bad_mask()
+{
+	this->value = 0.f;
+}
+
+TodoList::time_exception::bad_mask::bad_mask(float value)
+{
+	this->value = value;
+}
+
+const char* TodoList::time_exception::bad_mask::what() const
+{
+	return what_str.c_str();
 }

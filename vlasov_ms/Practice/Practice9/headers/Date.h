@@ -16,10 +16,6 @@ namespace TodoList
 		~date();
 
 		bool bissextile() const;
-		date& set_day(unsigned);
-		date& set_month(unsigned);
-		date& set_year(unsigned);
-
 		unsigned day() const;
 		unsigned month() const;
 		unsigned year() const;
@@ -36,8 +32,40 @@ namespace TodoList
 		bool operator<=(const date&) const;
 
 		friend std::ostream& operator<<(std::ostream&, const date&);
-		friend std::ofstream& operator<<(std::ofstream&, const date&);
 	};
+
+	namespace date_exception
+	{
+		class bad_day : std::exception
+		{
+			const std::string what_str = "Incorrect day.";
+			unsigned value;
+		public:
+			bad_day();
+			bad_day(unsigned);
+			const char* what() const;
+		};
+
+		class bad_month : std::exception
+		{
+			const std::string what_str = "Incorrect month.";
+			unsigned value;
+		public:
+			bad_month();
+			bad_month(unsigned);
+			const char* what() const;
+		};
+
+		class bad_year : std::exception
+		{
+			const std::string what_str = "Incorrect year.";
+			unsigned value;
+		public:
+			bad_year();
+			bad_year(unsigned);
+			const char* what() const;
+		};
+	}
 }
 
 #endif
