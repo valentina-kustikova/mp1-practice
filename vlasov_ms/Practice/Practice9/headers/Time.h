@@ -2,6 +2,7 @@
 #define _TODOLIST_TIME_H_
 #include <iostream>
 #include <fstream>
+#include <string>
 
 namespace TodoList
 {
@@ -17,8 +18,8 @@ namespace TodoList
 		time& set_hour(unsigned);
 		time& set_min(unsigned);
 
-		unsigned get_hour() const;
-		unsigned get_min() const;
+		unsigned hour() const;
+		unsigned min() const;
 		unsigned get_mins() const;
 
 		time& operator()(unsigned, unsigned);
@@ -38,8 +39,7 @@ namespace TodoList
 		const time& operator-=(const time&);
 
 		friend std::ostream& operator<<(std::ostream&, const time&);
-
-		//operator unsigned() const;
+		operator std::string();
 	};
 
 	namespace time_exception
@@ -57,8 +57,8 @@ namespace TodoList
 		class bad_min : std::exception
 		{
 			const std::string what_str = "Incorrect minutes.";
-			unsigned value;
 		public:
+			unsigned value;
 			bad_min();
 			bad_min(unsigned);
 			const char* what() const;
@@ -67,8 +67,8 @@ namespace TodoList
 		class bad_mins : std::exception
 		{
 			const std::string what_str = "Incorrect timestamp.";
-			unsigned value;
 		public:
+			unsigned value;
 			bad_mins();
 			bad_mins(unsigned);
 			const char* what() const;
@@ -77,8 +77,8 @@ namespace TodoList
 		class bad_mask : std::exception
 		{
 			const std::string what_str = "Incorrect float-mask.";
-			float value;
 		public:
+			float value;
 			bad_mask();
 			bad_mask(float);
 			const char* what() const;

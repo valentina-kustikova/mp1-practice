@@ -34,10 +34,10 @@ TodoList::time TodoList::task::day::get_end()
 
 void TodoList::task::day::print()
 {
-	::std::cout << '[' << get_uid() << '] ' << start << ' ' << title << '\n';
+	::std::cout << '[' << uid << "] " << ::std::string(start) << ' ' << title << '\n';
 }
 
 void TodoList::task::day::print(::std::ofstream& fout)
 {
-	fout << get_uid() << ' ' << start << ' ' << title << '\n';
+	fout << "1 " << start << ' ' << title << '\n';
 }

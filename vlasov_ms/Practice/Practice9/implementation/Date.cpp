@@ -49,15 +49,20 @@ TodoList::date::date(const date& d)
 
 TodoList::date::date(unsigned d, unsigned m, unsigned y)
 {
-	d = 1U;
-	m = 1U;
-	y = 1970U;
+	this->d = 1U;
+	this->m = 1U;
+	this->y = 1970U;
+	if (y > 9999U)
+	{
+		throw date_exception::bad_year(y);
+		return;
+	}
+	this->y = y;
 	if ((d > 31U) || (d < 1U))
 	{
 		throw date_exception::bad_day(d);
 		return;
 	}
-	this->y = y;
 	if (m > 12U || (m < 1U))
 	{
 		throw date_exception::bad_month(m);
@@ -94,9 +99,27 @@ unsigned TodoList::date::year() const
 
 TodoList::date& TodoList::date::operator()(unsigned d, unsigned m, unsigned y)
 {
+	this->d = 1U;
+	this->m = 1U;
+	this->y = 1970U;
+	if (y > 9999U)
+	{
+		throw date_exception::bad_year(y);
+		return *this;
+	}
 	this->y = y;
+	if ((d > 31U) || (d < 1U))
+	{
+		throw date_exception::bad_day(d);
+		return *this;
+	}
+	if (m > 12U || (m < 1U))
+	{
+		throw date_exception::bad_month(m);
+		return *this;
+	}
 	this->m = m;
-	this->d = d;
+	this->d = fix_day(d);
 	return *this;
 }
 
@@ -176,16 +199,37 @@ bool TodoList::date::operator<=(const date& D) const
 
 std::ostream& TodoList::operator<<(std::ostream& out, const date& D)
 {
-	out.width(2);
-	out.fill('0');
-	out << D.d;
-	out.width(2);
-	out.fill('0');
-	out << D.m;
-	out.width(4);
-	out.fill('0');
-	out << D.y;
+	::std::string result = "";
+	if (D.d < 10)
+		result += '0';
+	result += std::to_string(D.d);
+	if (D.m < 10)
+		result += '0';
+	result += std::to_string(D.m);
+	if (D.y < 10)
+		result += "000";
+	else if (D.y < 100)
+		result += "00";
+	else if (D.y < 1000)
+		result += '0';
+	result += std::to_string(D.y);
+	out << result;
 	return out;
+}
+
+TodoList::date::operator std::string()
+{
+	::std::string result = "";
+	if (d < 10)
+		result += '0';
+	result += std::to_string(d);
+	result += '.';
+	if (m < 10)
+		result += '0';
+	result += std::to_string(m);
+	result += '.';
+	result += std::to_string(y);
+	return result;
 }
 
 TodoList::date_exception::bad_day::bad_day()

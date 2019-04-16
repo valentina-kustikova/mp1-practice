@@ -54,7 +54,7 @@ TodoList::time& TodoList::time::set_hour(unsigned h)
 		throw time_exception::bad_hour(h);
 		return *this;
 	}
-	this->m = h * 60U + get_min();
+	this->m = h * 60U + min();
 	return *this;
 }
 
@@ -65,16 +65,16 @@ TodoList::time& TodoList::time::set_min(unsigned m)
 		throw time_exception::bad_min(m);
 		return *this;
 	}
-	this->m = get_hour() * 60U + m;
+	this->m = hour() * 60U + m;
 	return *this;
 }
 
-unsigned TodoList::time::get_hour() const
+unsigned TodoList::time::hour() const
 {
 	return m / 60U;
 }
 
-unsigned TodoList::time::get_min() const
+unsigned TodoList::time::min() const
 {
 	return m % 60U;
 }
@@ -155,14 +155,22 @@ const TodoList::time& TodoList::time::operator-=(const time& t)
 	return *this;
 }
 
-/*TodoList::time::operator unsigned() const
+TodoList::time::operator std::string()
 {
-	return m;
-}*/
+	::std::string result = "";
+	if (hour() < 10)
+		result += '0';
+	result += std::to_string(hour());
+	result += ':';
+	if (min() < 10)
+		result += '0';
+	result += std::to_string(min());
+	return result;
+}
 
 std::ostream& TodoList::operator<<(std::ostream& out, const time& t)
 {
-	out << t.get_hour() << ':' << t.get_min();
+	out << t.hour() << ':' << t.min();
 	return out;
 }
 

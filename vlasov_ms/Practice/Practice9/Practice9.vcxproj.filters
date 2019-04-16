@@ -58,9 +58,4 @@
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="interface.inl">
-      <Filter>Main Source</Filter>
-    </None>
-  </ItemGroup>
 </Project>

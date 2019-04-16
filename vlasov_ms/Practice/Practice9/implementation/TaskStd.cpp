@@ -60,10 +60,10 @@ TodoList::time TodoList::task::std::set_end(time t)
 
 void TodoList::task::std::print()
 {
-	::std::cout << '[' << get_uid() << '] ' << start << ' ' << t_start.get_mins() << ' ' << t_end.get_mins() << ' ' << title << '\n';
+	::std::cout << '[' << uid << "] " << ::std::string(start) << ' ' << ::std::string(t_start) << ' ' << ::std::string(t_end) << ' ' << title << '\n';
 }
 
 void TodoList::task::std::print(::std::ofstream& fout)
 {
-	fout << get_uid() << ' ' << start << ' ' << t_start.get_mins() << ' ' << t_end.get_mins() << ' ' << title << '\n';
+	fout << "0 " << start << ' ' << t_start.get_mins() << ' ' << t_end.get_mins() << ' ' << title << '\n';
 }

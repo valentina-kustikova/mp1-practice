@@ -19,6 +19,7 @@ namespace TodoList
 
 	class ctask
 	{
+	protected:
 		static unsigned uid_stream;
 		unsigned uid;
 		task::type type;
@@ -37,7 +38,7 @@ namespace TodoList
 		virtual time get_start() = 0;
 		virtual time get_end() = 0;
 
-		// You should not call this methods with task::day* pointer - they will not work correctly
+		// Do not call this methods with task::day* pointer - they will not work correctly
 		virtual time set_start(time);
 		virtual time set_end(time);
 

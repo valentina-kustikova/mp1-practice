@@ -2,6 +2,7 @@
 #define _TODOLIST_DATE_H_
 #include <iostream>
 #include <fstream>
+#include <string>
 
 namespace TodoList
 {
@@ -32,6 +33,7 @@ namespace TodoList
 		bool operator<=(const date&) const;
 
 		friend std::ostream& operator<<(std::ostream&, const date&);
+		operator std::string();
 	};
 
 	namespace date_exception
@@ -39,8 +41,8 @@ namespace TodoList
 		class bad_day : std::exception
 		{
 			const std::string what_str = "Incorrect day.";
-			unsigned value;
 		public:
+			unsigned value;
 			bad_day();
 			bad_day(unsigned);
 			const char* what() const;
@@ -49,8 +51,8 @@ namespace TodoList
 		class bad_month : std::exception
 		{
 			const std::string what_str = "Incorrect month.";
-			unsigned value;
 		public:
+			unsigned value;
 			bad_month();
 			bad_month(unsigned);
 			const char* what() const;
@@ -59,8 +61,8 @@ namespace TodoList
 		class bad_year : std::exception
 		{
 			const std::string what_str = "Incorrect year.";
-			unsigned value;
 		public:
+			unsigned value;
 			bad_year();
 			bad_year(unsigned);
 			const char* what() const;
