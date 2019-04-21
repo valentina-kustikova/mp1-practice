@@ -57,3 +57,13 @@ TodoList::time TodoList::ctask::set_end(time t)
 {
 	return time();
 }
+
+bool TodoList::ctask::operator>(const ctask& t) const
+{
+	return start > t.start;
+}
+
+bool TodoList::ctask::operator<(const ctask& t) const
+{
+	return start < t.start;
+}

@@ -1,7 +1,5 @@
 #include "../headers/TaskStd.h"
 
-// code here...
-
 TodoList::task::std::std() : ctask()
 {
 	t_start = 00.00;
@@ -66,4 +64,28 @@ void TodoList::task::std::print()
 void TodoList::task::std::print(::std::ofstream& fout)
 {
 	fout << "0 " << start << ' ' << t_start.get_mins() << ' ' << t_end.get_mins() << ' ' << title << '\n';
+}
+
+bool TodoList::task::std::operator>(const day& t) const
+{
+	return start > t.start;
+}
+
+bool TodoList::task::std::operator>(const std& t) const
+{
+	if (start == t.start)
+		return t_start > t.t_start;
+	return start > t.start;
+}
+
+bool TodoList::task::std::operator<(const day& t) const
+{
+	return start < t.start;
+}
+
+bool TodoList::task::std::operator<(const std& t) const
+{
+	if (start == t.start)
+		return t_start < t.t_start;
+	return start < t.start;
 }

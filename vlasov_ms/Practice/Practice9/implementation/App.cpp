@@ -60,7 +60,8 @@ bool TodoList::app::open(std::string& filename)
 			successful = false;
 			return false;
 		}
-		tasks.push_back(next_task);
+		//tasks.push_back(next_task);
+		tasks.insert(get_before_date(next_task->start), next_task);
 		tcount++;
 	}
 	return successful;
@@ -101,6 +102,19 @@ bool TodoList::app::save()
 	return true;
 }
 
+std::list<TodoList::ctask*>::iterator TodoList::app::get_before_date(date d)
+{
+	std::list<ctask*>::iterator i, prev = tasks.begin();
+	for (i = tasks.begin(); i != tasks.end(); ++i)
+	{
+		prev = i;
+		if ((*i)->start > d)
+			break;
+
+	}
+	return i;
+}
+
 TodoList::app::app()
 {
 	tcount = 0;
@@ -119,7 +133,8 @@ bool TodoList::app::add(std::string& title, task::type ttype, date start)
 		next_task = new task::std(title, start);
 	else
 		next_task = new task::day(title, start);
-	tasks.push_back(next_task);
+	//tasks.push_back(next_task);
+	tasks.insert(get_before_date(next_task->start), next_task);
 	tcount++;
 	return true;
 }
@@ -127,7 +142,8 @@ bool TodoList::app::add(std::string& title, task::type ttype, date start)
 bool TodoList::app::add(std::string& title, date start, time t_start, time t_end)
 {
 	ctask* next_task = new task::std(title, start, t_start, t_end);
-	tasks.push_back(next_task);
+	//tasks.push_back(next_task);
+	tasks.insert(get_before_date(next_task->start), next_task);
 	tcount++;
 	return true;
 }
@@ -135,7 +151,8 @@ bool TodoList::app::add(std::string& title, date start, time t_start, time t_end
 bool TodoList::app::add(std::string& title, date start)
 {
 	ctask* next_task = new task::day(title, start);
-	tasks.push_back(next_task);
+	//tasks.push_back(next_task);
+	tasks.insert(get_before_date(next_task->start), next_task);
 	tcount++;
 	return true;
 }
@@ -188,7 +205,7 @@ void TodoList::app::print(date d)
 		}
 	}
 	if (!k)
-		std::cout << "There is no tasks on this date.\n";
+		std::cout << "There is no tasks on " << std::string(d) << ".\n";
 	std::cout << "---------------------------------------------------------\n";
 }
 
@@ -205,10 +222,15 @@ void TodoList::app::print(unsigned uid)
 	throw app_exception::bad_uid(uid);
 }
 
+std::string TodoList::app::get_filename()
+{
+	return filename;
+}
+
 void TodoList::app::start()
 {
-	std::cout << "GOOGLE CALENDAR\n";
-	std::cout << "1. Open list from file\n2. Create new list file\n";
+	std::cout << "TODO LIST (Vlasov Development)\n";
+	std::cout << "1. Open list from file\n2. Create new list\n";
 	int action = 1;
 	do
 	{
@@ -224,52 +246,45 @@ void TodoList::app::start()
 	switch (action)
 	{
 	case 1:
-f1inp:	try
+		std::cout << "Enter path to file: ";
+		do
 		{
-			do
+			std::cin >> tmp;
+			try
 			{
-				if (attempts > 0)
-					std::cout << " Try again: ";
-				else
-					std::cout << "Enter path to file: ";
-				std::cin >> tmp;
-				attempts++;
-			} while (!open(tmp));
-		}
-		catch (app_exception::file_open e)
-		{
-			std::cout << "[ERROR] " << e.what();
-			goto f1inp;
-		}
+				open(tmp);
+				break;
+			}
+			catch (app_exception::file_open e)
+			{
+				std::cout << "[ERROR] " << e.what() << " Try again: ";
+			}
+		} while (1);
 		break;
 	case 2:
-f2inp:  try
+		std::cout << "Enter list name (filename will be <your_name>.todo): ";
+		do
 		{
-			do
+			std::cin >> tmp;
+			try
 			{
-				if (attempts > 0)
-					std::cout << " Try again: ";
-				else
-					std::cout << "Enter list name (filename will be <your_name>.todo): ";
-				std::cin >> tmp;
-				attempts++;
-			} while (!create(tmp));
-		}
-		catch (app_exception::file_write e)
-		{
-			std::cout << "[ERROR] " << e.what() << '\n';
-			goto f2inp;
-		}
-		catch (app_exception::parsing e)
-		{
-			std::cout << "[ERROR] " << e.what() << '\n';
-			goto f2inp;
-		}
+				create(tmp);
+				break;
+			}
+			catch (app_exception::file_write e)
+			{
+				std::cout << "[ERROR] " << e.what() << " Try again: ";
+			}
+			catch (app_exception::parsing e)
+			{
+				std::cout << "[ERROR] " << e.what() << " Try again: ";
+			}
+		} while (1);
 		break;
 	}
 
 	system("cls");
-	std::cout << "GOOGLE CALENDAR :: " << this->filename << '\n';
+	std::cout << "TODO LIST :: " << this->filename << '\n';
 	unsigned d, m, y, h;
 	while (1)
 	{
@@ -295,98 +310,109 @@ f2inp:  try
 			break;
 		case 2:
 			std::cout << "Enter day, month, year (separating with spaces): ";
-d2inp:		std::cin >> d >> m >> y;
-			try
+			do
 			{
-				print(date(d, m, y));
-			}
-			catch (date_exception::bad_day e)
-			{
-				std::cout << "[ERROR] " << e.what() << " Try again: ";
-				goto d2inp;
-			}
-			catch (date_exception::bad_month e)
-			{
-				std::cout << "[ERROR] " << e.what() << " Try again: ";
-				goto d2inp;
-			}
-			catch (date_exception::bad_year e)
-			{
-				std::cout << "[ERROR] " << e.what() << " Try again: ";
-				goto d2inp;
-			}
+				std::cin >> d >> m >> y;
+				try
+				{
+					print(date(d, m, y));
+					break;
+				}
+				catch (date_exception::bad_day e)
+				{
+					std::cout << "[ERROR] " << e.what() << " Try again: ";
+				}
+				catch (date_exception::bad_month e)
+				{
+					std::cout << "[ERROR] " << e.what() << " Try again: ";
+				}
+				catch (date_exception::bad_year e)
+				{
+					std::cout << "[ERROR] " << e.what() << " Try again: ";
+				}
+			} while (1);
 			break;
 		case 3:
 			int type;
 			type = 1;
 			do
 			{
-				if ((type < 0) || (type > 1))
+				if ((type < 0) || (type > 2))
 					std::cout << "Wrong type. Try again: ";
 				else
-					std::cout << "Enter type of task (0 - with start and end time, 1 - for whole day): ";
+					std::cout << "Enter type of task (1 - with start and end time, 2 - for whole day, 0 - cancel): ";
 				std::cin >> type;
-			} while ((type < 0) || (type > 1));
-			std::cout << "Enter day, month, year (separating with spaces): ";
-d3inp:		std::cin >> d >> m >> y;
-			try
-			{
-				t_date(d, m, y);
-			}
-			catch (date_exception::bad_day e)
-			{
-				std::cout << "[ERROR] " << e.what() << " Try again: ";
-				goto d3inp;
-			}
-			catch (date_exception::bad_month e)
-			{
-				std::cout << "[ERROR] " << e.what() << " Try again: ";
-				goto d3inp;
-			}
-			catch (date_exception::bad_year e)
-			{
-				std::cout << "[ERROR] " << e.what() << " Try again: ";
-				goto d3inp;
-			}
+			} while ((type < 0) || (type > 2));
 			if (type == 0)
 			{
+				std::cout << "Action cancelled.\n";
+				break;
+			}
+			std::cout << "Enter day, month, year (separating with spaces): ";
+			do
+			{
+				std::cin >> d >> m >> y;
+				try
+				{
+					t_date(d, m, y);
+					break;
+				}
+				catch (date_exception::bad_day e)
+				{
+					std::cout << "[ERROR] " << e.what() << " Try again: ";
+				}
+				catch (date_exception::bad_month e)
+				{
+					std::cout << "[ERROR] " << e.what() << " Try again: ";
+				}
+				catch (date_exception::bad_year e)
+				{
+					std::cout << "[ERROR] " << e.what() << " Try again: ";
+				}
+			} while (1);
+			if (type == 1)
+			{
 				std::cout << "Enter hour, min of start (separating with spaces): ";
-t3_sinp: 		std::cin >> h >> m;
-				try
+				do
 				{
-					t_start(h, m);
-				}
-				catch (time_exception::bad_hour e)
-				{
-					std::cout << "[ERROR] " << e.what() << " Try again: ";
-					goto t3_sinp;
-				}
-				catch (time_exception::bad_min e)
-				{
-					std::cout << "[ERROR] " << e.what() << " Try again: ";
-					goto t3_sinp;
-				}
+					std::cin >> h >> m;
+					try
+					{
+						t_start(h, m);
+						break;
+					}
+					catch (time_exception::bad_hour e)
+					{
+						std::cout << "[ERROR] " << e.what() << " Try again: ";
+					}
+					catch (time_exception::bad_min e)
+					{
+						std::cout << "[ERROR] " << e.what() << " Try again: ";
+					}
+				} while (1);
 				std::cout << "Enter hour, min of end (separating with spaces): ";
-t3_einp: 		std::cin >> h >> m;
-				try
+				do
 				{
-					t_end(h, m);
-				}
-				catch (time_exception::bad_hour e)
-				{
-					std::cout << "[ERROR] " << e.what() << " Try again: ";
-					goto t3_einp;
-				}
-				catch (time_exception::bad_min e)
-				{
-					std::cout << "[ERROR] " << e.what() << " Try again: ";
-					goto t3_einp;
-				}
+					std::cin >> h >> m;
+					try
+					{
+						t_end(h, m);
+						break;
+					}
+					catch (time_exception::bad_hour e)
+					{
+						std::cout << "[ERROR] " << e.what() << " Try again: ";
+					}
+					catch (time_exception::bad_min e)
+					{
+						std::cout << "[ERROR] " << e.what() << " Try again: ";
+					}
+				} while (1);
 			}
 			std::cout << "Enter title or description of task: ";
 			getchar();
 			getline(std::cin, title);
-			if (type == 0)
+			if (type == 1)
 				add(title, t_date, t_start, t_end);
 			else
 				add(title, t_date);
@@ -394,34 +420,40 @@ t3_einp: 		std::cin >> h >> m;
 			break;
 		case 4:
 			unsigned uid;
-			std::cout << "Enter uid of task you want to delete: ";
-i_inp:		std::cin >> uid;
-			try
+			std::cout << "Enter uid of task you want to delete (0 - cancel): ";
+			do
 			{
-				if (remove(uid))
-					std::cout << "Task successfully deleted.\n";
-			}
-			catch (app_exception::bad_uid e)
-			{
-				std::cout << "[ERROR] " << e.what() << " Try again: ";
-				goto i_inp;
-			}
+				std::cin >> uid;
+				if (uid == 0U)
+				{
+					std::cout << "Action cancelled.\n";
+					break;
+				}
+				try
+				{
+					if (remove(uid))
+						std::cout << "Task successfully deleted.\n";
+					break;
+				}
+				catch (app_exception::bad_uid e)
+				{
+					std::cout << "[ERROR] " << e.what() << " Try again: ";
+				}
+			} while (1);
 			break;
 		case 5:
 			try
 			{
 				save();
+				std::cout << "All changes saved. Have a nice day!\n";
+				return;
 			}
 			catch (app_exception::file_write e)
 			{
 				std::cout << "[ERROR] " << e.what() << '\n';
-				goto s_brk;
 			}
-			std::cout << "All changes saved. Have a nice day!\n";
-			return;
-s_brk:		break;
+			break;
 		}
-		std::cout << '\n';
 	}
 }
 
@@ -438,62 +470,7 @@ void TodoList::app::reset()
 	tcount = 0;
 }
 
-TodoList::app_exception::parsing::parsing()
-{
-	value = "";
-}
-
-TodoList::app_exception::parsing::parsing(std::string value)
-{
-	this->value = value;
-}
-
-const char* TodoList::app_exception::parsing::what() const
-{
-	return what_str.c_str();
-}
-
-TodoList::app_exception::file_open::file_open()
-{
-	value = "";
-}
-
-TodoList::app_exception::file_open::file_open(std::string value)
-{
-	this->value = value;
-}
-
-const char* TodoList::app_exception::file_open::what() const
-{
-	return what_str.c_str();
-}
-
-TodoList::app_exception::file_write::file_write()
-{
-	value = "";
-}
-
-TodoList::app_exception::file_write::file_write(std::string value)
-{
-	this->value = value;
-}
-
-const char* TodoList::app_exception::file_write::what() const
-{
-	return what_str.c_str();
-}
-
-TodoList::app_exception::bad_uid::bad_uid()
-{
-	value = 0U;
-}
-
-TodoList::app_exception::bad_uid::bad_uid(unsigned value)
-{
-	this->value = value;
-}
-
-const char* TodoList::app_exception::bad_uid::what() const
-{
-	return what_str.c_str();
-}
+TodoList::app_exception::parsing::parsing(std::string value)       : exception_string("File can't be parsed because of syntax error.", value) {}
+TodoList::app_exception::file_open::file_open(std::string value)   : exception_string("File can't be opened (it may not exist).", value)      {}
+TodoList::app_exception::file_write::file_write(std::string value) : exception_string("File can't be overwritten (it may not exist).", value) {}
+TodoList::app_exception::bad_uid::bad_uid(unsigned value)          : exception_uint("UID not found in this list.", value)                     {}

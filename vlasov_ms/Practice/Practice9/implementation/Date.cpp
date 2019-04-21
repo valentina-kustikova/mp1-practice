@@ -1,7 +1,5 @@
 #include "../headers/Date.h"
 
-// code here...
-
 unsigned TodoList::date::fix_day(unsigned d)
 {
 	if ((d > 31U) || (d < 1U))
@@ -232,47 +230,6 @@ TodoList::date::operator std::string()
 	return result;
 }
 
-TodoList::date_exception::bad_day::bad_day()
-{
-	this->value = 0U;
-}
-
-TodoList::date_exception::bad_day::bad_day(unsigned value)
-{
-	this->value = value;
-}
-
-const char* TodoList::date_exception::bad_day::what() const
-{
-	return what_str.c_str();
-}
-
-TodoList::date_exception::bad_month::bad_month()
-{
-	this->value = 0U;
-}
-
-TodoList::date_exception::bad_month::bad_month(unsigned value)
-{
-	this->value = value;
-}
-
-const char* TodoList::date_exception::bad_month::what() const
-{
-	return what_str.c_str();
-}
-
-TodoList::date_exception::bad_year::bad_year()
-{
-	this->value = 0U;
-}
-
-TodoList::date_exception::bad_year::bad_year(unsigned value)
-{
-	this->value = value;
-}
-
-const char* TodoList::date_exception::bad_year::what() const
-{
-	return what_str.c_str();
-}
+TodoList::date_exception::bad_day::bad_day(unsigned value)     : exception_uint("Incorrect day.", value)   {}
+TodoList::date_exception::bad_month::bad_month(unsigned value) : exception_uint("Incorrect month.", value) {}
+TodoList::date_exception::bad_year::bad_year(unsigned value)   : exception_uint("Incorrect year.", value)  {}

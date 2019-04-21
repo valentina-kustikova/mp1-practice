@@ -1,6 +1,6 @@
 #ifndef _TODOLIST_TASKSTD_H_
 #define _TODOLIST_TASKSTD_H_
-#include "Task.h"
+#include "TaskDay.h"
 
 namespace TodoList
 {
@@ -25,6 +25,11 @@ namespace TodoList
 
 			void print();
 			void print(::std::ofstream&);
+
+			bool operator>(const day&) const;
+			bool operator>(const std&) const;
+			bool operator<(const day&) const;
+			bool operator<(const std&) const;
 		};
 	}
 }

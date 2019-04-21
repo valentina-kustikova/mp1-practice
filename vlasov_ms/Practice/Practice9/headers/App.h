@@ -3,8 +3,9 @@
 #include <iostream>
 #include <fstream>
 #include <list>
-#include "TaskDay.h"
+#include <iterator>
 #include "TaskStd.h"
+#include "Exceptions.h"
 
 namespace TodoList
 {
@@ -13,6 +14,7 @@ namespace TodoList
 		std::list<ctask*> tasks;
 		size_t tcount;
 		std::string filename;
+		std::list<ctask*>::iterator get_before_date(date);
 	public:
 		app();
 		~app();
@@ -26,6 +28,7 @@ namespace TodoList
 		void print();
 		void print(date);
 		void print(unsigned);
+		std::string get_filename();
 
 		bool open(std::string&);
 		bool create(std::string&);
@@ -37,44 +40,28 @@ namespace TodoList
 
 	namespace app_exception
 	{
-		class parsing : std::exception
+		class parsing : public exception_string
 		{
-			const std::string what_str = "File can't be parsed because of syntax error.";
 		public:
-			std::string value;
-			parsing();
 			parsing(std::string);
-			const char* what() const;
 		};
 
-		class file_open : std::exception
+		class file_open : public exception_string
 		{
-			const std::string what_str = "File can't be opened (it may not exist).";
 		public:
-			std::string value;
-			file_open();
 			file_open(std::string);
-			const char* what() const;
 		};
 
-		class file_write : std::exception
+		class file_write : public exception_string
 		{
-			const std::string what_str = "File can't be overwritten (it may not exist).";
 		public:
-			std::string value;
-			file_write();
 			file_write(std::string);
-			const char* what() const;
 		};
 
-		class bad_uid : std::exception
+		class bad_uid : public exception_uint
 		{
-			const std::string what_str = "UID not found in this list.";
-			unsigned value;
 		public:
-			bad_uid();
 			bad_uid(unsigned);
-			const char* what() const;
 		};
 	}
 }

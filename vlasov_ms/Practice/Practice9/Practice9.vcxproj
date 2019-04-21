@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClCompile Include="implementation\App.cpp" />
     <ClCompile Include="implementation\Date.cpp" />
+    <ClCompile Include="implementation\Exceptions.cpp" />
     <ClCompile Include="implementation\Task.cpp" />
     <ClCompile Include="implementation\TaskDay.cpp" />
     <ClCompile Include="implementation\TaskStd.cpp" />
@@ -162,6 +163,7 @@
   <ItemGroup>
     <ClInclude Include="headers\App.h" />
     <ClInclude Include="headers\Date.h" />
+    <ClInclude Include="headers\Exceptions.h" />
     <ClInclude Include="headers\Task.h" />
     <ClInclude Include="headers\TaskDay.h" />
     <ClInclude Include="headers\TaskStd.h" />

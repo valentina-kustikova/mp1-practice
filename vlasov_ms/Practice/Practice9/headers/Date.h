@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "Exceptions.h"
 
 namespace TodoList
 {
@@ -38,34 +39,22 @@ namespace TodoList
 
 	namespace date_exception
 	{
-		class bad_day : std::exception
+		class bad_day : public exception_uint
 		{
-			const std::string what_str = "Incorrect day.";
 		public:
-			unsigned value;
-			bad_day();
 			bad_day(unsigned);
-			const char* what() const;
 		};
 
-		class bad_month : std::exception
+		class bad_month : public exception_uint
 		{
-			const std::string what_str = "Incorrect month.";
 		public:
-			unsigned value;
-			bad_month();
 			bad_month(unsigned);
-			const char* what() const;
 		};
 
-		class bad_year : std::exception
+		class bad_year : public exception_uint
 		{
-			const std::string what_str = "Incorrect year.";
 		public:
-			unsigned value;
-			bad_year();
 			bad_year(unsigned);
-			const char* what() const;
 		};
 	}
 }

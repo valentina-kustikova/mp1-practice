@@ -34,6 +34,9 @@
     <ClCompile Include="implementation\Time.cpp">
       <Filter>implementation</Filter>
     </ClCompile>
+    <ClCompile Include="implementation\Exceptions.cpp">
+      <Filter>implementation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="includes.hpp">
@@ -55,6 +58,9 @@
       <Filter>headers</Filter>
     </ClInclude>
     <ClInclude Include="headers\Time.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="headers\Exceptions.h">
       <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>

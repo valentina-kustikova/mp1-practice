@@ -1,7 +1,5 @@
 #include "../headers/Time.h"
 
-// code here...
-
 TodoList::time::time()
 {
 	this->m = 0U;
@@ -174,62 +172,7 @@ std::ostream& TodoList::operator<<(std::ostream& out, const time& t)
 	return out;
 }
 
-TodoList::time_exception::bad_hour::bad_hour()
-{
-	this->value = 0U;
-}
-
-TodoList::time_exception::bad_hour::bad_hour(unsigned value)
-{
-	this->value = value;
-}
-
-const char* TodoList::time_exception::bad_hour::what() const
-{
-	return what_str.c_str();
-}
-
-TodoList::time_exception::bad_min::bad_min()
-{
-	this->value = 0U;
-}
-
-TodoList::time_exception::bad_min::bad_min(unsigned value)
-{
-	this->value = value;
-}
-
-const char* TodoList::time_exception::bad_min::what() const
-{
-	return what_str.c_str();
-}
-
-TodoList::time_exception::bad_mins::bad_mins()
-{
-	this->value = 0U;
-}
-
-TodoList::time_exception::bad_mins::bad_mins(unsigned value)
-{
-	this->value = value;
-}
-
-const char* TodoList::time_exception::bad_mins::what() const
-{
-	return what_str.c_str();
-}
-
-TodoList::time_exception::bad_mask::bad_mask()
-{
-	this->value = 0.f;
-}
-
-TodoList::time_exception::bad_mask::bad_mask(float value)
-{
-	this->value = value;
-}
-
-const char* TodoList::time_exception::bad_mask::what() const
-{
-	return what_str.c_str();
-}
+TodoList::time_exception::bad_hour::bad_hour(unsigned value) : exception_uint("Incorrect hours.", value)       {}
+TodoList::time_exception::bad_min::bad_min(unsigned value)   : exception_uint("Incorrect minutes.", value)     {}
+TodoList::time_exception::bad_mins::bad_mins(unsigned value) : exception_uint("Incorrect timestamp.", value)   {}
+TodoList::time_exception::bad_mask::bad_mask(float value)    : exception_float("Incorrect float mask.", value) {}

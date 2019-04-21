@@ -44,6 +44,11 @@ namespace TodoList
 
 		virtual void print() = 0;
 		virtual void print(std::ofstream&) = 0;
+
+		virtual bool operator>(const ctask&) const;
+		virtual bool operator<(const ctask&) const;
+		//virtual bool operator>=(const ctask&) const;
+		//virtual bool operator<=(const ctask&) const;
 	};
 }
 

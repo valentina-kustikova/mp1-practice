@@ -1,7 +1,5 @@
 #include "../headers/TaskDay.h"
 
-// code here...
-
 TodoList::task::day::day() : ctask()
 {
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include "Exceptions.h"
 
 namespace TodoList
 {
@@ -23,7 +24,6 @@ namespace TodoList
 		unsigned get_mins() const;
 
 		time& operator()(unsigned, unsigned);
-		const unsigned operator[](char field) const;
 
 		bool operator==(const time&) const;
 		bool operator!=(const time&) const;
@@ -44,44 +44,28 @@ namespace TodoList
 
 	namespace time_exception
 	{
-		class bad_hour : std::exception
+		class bad_hour : public exception_uint
 		{
-			const std::string what_str = "Incorrect hours.";
-			unsigned value;
 		public:
-			bad_hour();
 			bad_hour(unsigned);
-			const char* what() const;
 		};
 
-		class bad_min : std::exception
+		class bad_min : public exception_uint
 		{
-			const std::string what_str = "Incorrect minutes.";
 		public:
-			unsigned value;
-			bad_min();
 			bad_min(unsigned);
-			const char* what() const;
 		};
 
-		class bad_mins : std::exception
+		class bad_mins : public exception_uint
 		{
-			const std::string what_str = "Incorrect timestamp.";
 		public:
-			unsigned value;
-			bad_mins();
 			bad_mins(unsigned);
-			const char* what() const;
 		};
 
-		class bad_mask : std::exception
+		class bad_mask : public exception_float
 		{
-			const std::string what_str = "Incorrect float-mask.";
 		public:
-			float value;
-			bad_mask();
 			bad_mask(float);
-			const char* what() const;
 		};
 	}
 }
