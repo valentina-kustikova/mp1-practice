@@ -255,7 +255,7 @@ void TodoList::app::start()
 				open(tmp);
 				break;
 			}
-			catch (app_exception::file_open e)
+			catch (app_exception::file_open& e)
 			{
 				std::cout << "[ERROR] " << e.what() << " Try again: ";
 			}
@@ -271,11 +271,11 @@ void TodoList::app::start()
 				create(tmp);
 				break;
 			}
-			catch (app_exception::file_write e)
+			catch (app_exception::file_write& e)
 			{
 				std::cout << "[ERROR] " << e.what() << " Try again: ";
 			}
-			catch (app_exception::parsing e)
+			catch (app_exception::parsing& e)
 			{
 				std::cout << "[ERROR] " << e.what() << " Try again: ";
 			}
@@ -318,15 +318,15 @@ void TodoList::app::start()
 					print(date(d, m, y));
 					break;
 				}
-				catch (date_exception::bad_day e)
+				catch (date_exception::bad_day& e)
 				{
 					std::cout << "[ERROR] " << e.what() << " Try again: ";
 				}
-				catch (date_exception::bad_month e)
+				catch (date_exception::bad_month& e)
 				{
 					std::cout << "[ERROR] " << e.what() << " Try again: ";
 				}
-				catch (date_exception::bad_year e)
+				catch (date_exception::bad_year& e)
 				{
 					std::cout << "[ERROR] " << e.what() << " Try again: ";
 				}
@@ -357,56 +357,63 @@ void TodoList::app::start()
 					t_date(d, m, y);
 					break;
 				}
-				catch (date_exception::bad_day e)
+				catch (date_exception::bad_day& e)
 				{
 					std::cout << "[ERROR] " << e.what() << " Try again: ";
 				}
-				catch (date_exception::bad_month e)
+				catch (date_exception::bad_month& e)
 				{
 					std::cout << "[ERROR] " << e.what() << " Try again: ";
 				}
-				catch (date_exception::bad_year e)
+				catch (date_exception::bad_year& e)
 				{
 					std::cout << "[ERROR] " << e.what() << " Try again: ";
 				}
 			} while (1);
 			if (type == 1)
 			{
-				std::cout << "Enter hour, min of start (separating with spaces): ";
 				do
 				{
-					std::cin >> h >> m;
-					try
+					std::cout << "Enter hour, min of start (separating with spaces): ";
+					do
 					{
-						t_start(h, m);
+						std::cin >> h >> m;
+						try
+						{
+							t_start(h, m);
+							break;
+						}
+						catch (time_exception::bad_hour& e)
+						{
+							std::cout << "[ERROR] " << e.what() << " Try again: ";
+						}
+						catch (time_exception::bad_min& e)
+						{
+							std::cout << "[ERROR] " << e.what() << " Try again: ";
+						}
+					} while (1);
+					std::cout << "Enter hour, min of end (separating with spaces): ";
+					do
+					{
+						std::cin >> h >> m;
+						try
+						{
+							t_end(h, m);
+							break;
+						}
+						catch (time_exception::bad_hour& e)
+						{
+							std::cout << "[ERROR] " << e.what() << " Try again: ";
+						}
+						catch (time_exception::bad_min& e)
+						{
+							std::cout << "[ERROR] " << e.what() << " Try again: ";
+						}
+					} while (1);
+					if (t_end < t_start)
+						std::cout << "[ERROR] End time cannot be before start time. Try again.\n";
+					else
 						break;
-					}
-					catch (time_exception::bad_hour e)
-					{
-						std::cout << "[ERROR] " << e.what() << " Try again: ";
-					}
-					catch (time_exception::bad_min e)
-					{
-						std::cout << "[ERROR] " << e.what() << " Try again: ";
-					}
-				} while (1);
-				std::cout << "Enter hour, min of end (separating with spaces): ";
-				do
-				{
-					std::cin >> h >> m;
-					try
-					{
-						t_end(h, m);
-						break;
-					}
-					catch (time_exception::bad_hour e)
-					{
-						std::cout << "[ERROR] " << e.what() << " Try again: ";
-					}
-					catch (time_exception::bad_min e)
-					{
-						std::cout << "[ERROR] " << e.what() << " Try again: ";
-					}
 				} while (1);
 			}
 			std::cout << "Enter title or description of task: ";
@@ -435,7 +442,7 @@ void TodoList::app::start()
 						std::cout << "Task successfully deleted.\n";
 					break;
 				}
-				catch (app_exception::bad_uid e)
+				catch (app_exception::bad_uid& e)
 				{
 					std::cout << "[ERROR] " << e.what() << " Try again: ";
 				}
@@ -448,7 +455,7 @@ void TodoList::app::start()
 				std::cout << "All changes saved. Have a nice day!\n";
 				return;
 			}
-			catch (app_exception::file_write e)
+			catch (app_exception::file_write& e)
 			{
 				std::cout << "[ERROR] " << e.what() << '\n';
 			}
