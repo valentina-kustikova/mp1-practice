@@ -15,12 +15,6 @@ Date::Date(int day, int month, int year)
 	this->month = month;
 	this->year = year;
 }
-Date::Date(const Date& t)
-{
-	day = t.day;
-	month = t.month;
-	year = t.year;
-}
 Date ::~Date()
 {
 	day = 0;
@@ -34,6 +28,10 @@ bool Date ::operator == (const Date &date1)const
 	else
 		return false;
 }
+void Date::PrintDate()const
+{
+	cout << "Date is: " << day << "." << month << "." << year << endl;
+}
 const Date& Date::operator=(const Date & t)
 {
 	if (*this == t)
@@ -42,8 +40,4 @@ const Date& Date::operator=(const Date & t)
 	month = t.month;
 	year = t.year;
 	return *this;
-}
-void Date::PrintDate()const
-{
-	cout << "Date is: " << day << "." << month << "." << year << endl;
 }
