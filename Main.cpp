@@ -4,6 +4,7 @@
 #include"ToDoList.h"
 #include"TaskTypes.h"
 #include <fstream>
+#include <string>
 using namespace std;
 
 void main()
