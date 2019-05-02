@@ -1,6 +1,8 @@
 #pragma once
 #include "Time.h"
 #include"Date.h"
+#include <string>
+using 
 
 class Tasks 
 {
@@ -8,12 +10,11 @@ public:
 	Tasks();
 	virtual ~Tasks();
 	virtual void Print()const = 0;
-	//virtual const Tasks& operator=(const Tasks& t);
 	Date GetDate()const {
 		return date;
-	};
+	}
 protected:
-	char* description;
+	string description;
 	Date date;
 };
 
@@ -21,7 +22,7 @@ class Type1: public Tasks
 {
 public:
 	Type1();
-	Type1(char* description, Date date);
+	Type1(string description, Date date);
 	~Type1();
 	void Print()const;
 	const Type1& operator= (const Type1& t);
@@ -34,9 +35,10 @@ private:
 	Time time;
 public:
 	Type2();
-	Type2(char* description, Date date, unsigned duration, Time time);
+	Type2(string description, Date date, unsigned duration, Time time);
 	~Type2();
 	void Print()const;
 	const Type2& operator= (const Type2& t);
 };
+
 
