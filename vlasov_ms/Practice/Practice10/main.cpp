@@ -1,4 +1,4 @@
-﻿#include "StupidContainer.h"
+﻿#include "ContainerC++11.h"
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
@@ -170,15 +170,15 @@ int random()
 void print(Container<int> c)
 {
 	std::cout << "{ ";
-	for (int i = 0; i < c.size(); i++)
-		std::cout << c[i] << ' ';
+	for (int i : c)
+		std::cout << i << ' ';
 	std::cout << "}\n";
 }
 
 void print(Container<int*> c)
 {
 	std::cout << "{ ";
-	for (int i = 0; i < c.size(); i++)
-		std::cout << *(c[i]) << ' ';
+	for (int* i : c)
+		std::cout << *i << ' ';
 	std::cout << "}\n";
 }
