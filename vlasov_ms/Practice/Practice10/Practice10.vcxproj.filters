@@ -23,5 +23,8 @@
     <ClInclude Include="Container.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="StupidContainer.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
