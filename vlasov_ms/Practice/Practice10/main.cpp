@@ -1,8 +1,14 @@
-﻿#include "ContainerC++11.h"
-#include <iostream>
+﻿#include <iostream>
 #include <ctime>
 #include <cstdlib>
 #include <vector>
+#define USE_CPP11
+
+#ifdef USE_CPP11
+#include "ContainerC++11.h"
+#else
+#include "Container.h"
+#endif
 
 void generate(int*, int);
 int random();
@@ -170,15 +176,25 @@ int random()
 void print(Container<int> c)
 {
 	std::cout << "{ ";
+#ifdef USE_CPP11
 	for (int i : c)
 		std::cout << i << ' ';
+#else
+	for (ContainerIterator<int> i = c.begin(); i != c.end; ++i)
+		std::cout << *i << ' ';
+#endif
 	std::cout << "}\n";
 }
 
 void print(Container<int*> c)
 {
 	std::cout << "{ ";
+#ifdef USE_CPP11
 	for (int* i : c)
 		std::cout << *i << ' ';
+#else
+	for (ContainerIterator<int*> i = c.begin(); i != c.end; ++i)
+		std::cout << *(*i) << ' ';
+#endif
 	std::cout << "}\n";
 }

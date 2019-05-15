@@ -2,6 +2,53 @@
 #define _CONTAINER_H_
 #include <exception>
 
+template <typename iT>
+class ContainerIterator
+{
+	iT* ptr;
+	template <typename T> friend class Container;
+	ContainerIterator<iT>(iT*);
+public:
+	ContainerIterator<iT>(const ContainerIterator<iT>&);
+	bool operator==(const ContainerIterator<iT>&) const;
+	bool operator!=(const ContainerIterator<iT>&) const;
+	iT& operator*() const;
+	ContainerIterator<iT>& operator++();
+};
+
+template <typename iT>
+ContainerIterator<iT>::ContainerIterator(iT* ptr) : ptr(ptr) {}
+
+template <typename iT>
+ContainerIterator<iT>::ContainerIterator(const ContainerIterator<iT>& it) : ptr(it.ptr) {}
+
+template <typename iT>
+bool ContainerIterator<iT>::operator==(const ContainerIterator<iT>& it) const
+{
+	return ptr == it.ptr;
+}
+
+template <typename iT>
+bool ContainerIterator<iT>::operator!=(const ContainerIterator<iT>& it) const
+{
+	return ptr != it.ptr;
+}
+
+template <typename iT>
+iT& ContainerIterator<iT>::operator*() const
+{
+	return *ptr;
+}
+
+template <typename iT>
+ContainerIterator<iT>& ContainerIterator<iT>::operator++()
+{
+	++p;
+	return *this;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
 template <typename T>
 class Container
 {
@@ -31,6 +78,9 @@ public:
 	const Container<T>& operator=(const Container<T>&);
 	T& operator[](int);
 	const T& operator[](int) const;
+
+	ContainerIterator<T> begin() const;
+	ContainerIterator<T> end() const;
 };
 
 template<typename T>
@@ -205,6 +255,18 @@ const T & Container<T>::operator[](int index) const
 	return set[index];
 };
 
+template<typename T>
+ContainerIterator<T> Container<T>::begin() const
+{
+	return ContainerIterator(set);
+};
+
+template<typename T>
+ContainerIterator<T> Container<T>::end() const
+{
+	return ContainerIterator(set + size);
+};
+
 ///////////////////////////////////////////////////////////////////////////////
 
 template <typename T>
@@ -236,7 +298,10 @@ public:
 
 	const Container<T*>& operator=(const Container<T*>&);
 	T*& operator[](int);
-	//const T*& operator[](int) const;
+	const T*& operator[](int) const;
+
+	ContainerIterator<T*> begin() const;
+	ContainerIterator<T*> end() const;
 };
 
 template<typename T>
@@ -422,13 +487,25 @@ T*& Container<T*>::operator[](int index)
 	return set[index];
 };
 
-/*template<typename T>
+template<typename T>
 const T*& Container<T*>::operator[](int index) const
 {
 	if ((index >= csize) || (index < 0))
 		throw std::out_of_range("Container does not contain element with that"
 			"index.");
 	return set[index];
-};*/
+};
+
+template<typename T>
+ContainerIterator<T*> Container<T*>::begin() const
+{
+	return ContainerIterator(set);
+};
+
+template<typename T>
+ContainerIterator<T*> Container<T*>::end() const
+{
+	return ContainerIterator(set + size);
+};
 
 #endif
