@@ -186,7 +186,7 @@ inline int Container<T*, maxsize>::Find(T * a) const
 	for (int i = 0; i < count; i++)
 		if (*arr[i] == *a)
 			return i;
-	return - 1;
+	return -1;
 }
 template<typename T, int maxsize>
 inline void Container<T*, maxsize>::Add(T * a)
@@ -198,6 +198,7 @@ inline void Container<T*, maxsize>::Add(T * a)
 	}
 	arr[count] = new T;
 	*arr[count++] = *a;
+
 
 
 }
