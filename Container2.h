@@ -7,21 +7,20 @@ class Container
 {
 private:
     T** arr;
-    int n;
+    int count;
 public:
-    Container();//по умолчанию
+    Container();//РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
     Container(int x);
-    Container(const Container& temp);//конструктор копирования
+    Container(const Container& temp);//РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
     ~Container();
 
-    bool IsFull()const;//проверки
-    bool IsEmpty()const;//проверки
+    bool IsFull()const;//РїСЂРѕРІРµСЂРєРё
+    bool IsEmpty()const;//РїСЂРѕРІРµСЂРєРё
 
-    int Find(T a)const;// поиск
-    void Add(T a);//вставка
-    void Remove(T a);//удаление
+    int Find(T a)const;// РїРѕРёСЃРє
+    void Add(T a);//РІСЃС‚Р°РІРєР°
+    void Remove(T a);//СѓРґР°Р»РµРЅРёРµ
     T* operator[](int i);
-    void Sort();
 
     void Print()const;
     void Fill();
@@ -30,16 +29,16 @@ public:
 template <typename T, int maxsize>
 Container<T, maxsize>::Container()
 {
-    n = 0;
+    count = 0;
     arr = new T*[maxsize];
 }
 
 template <typename T, int maxsize>
-Container<T, maxsize>::Container(int x)
+Container<T, maxsize>::Container(int count)
 {
-    n = x;
+    this-> count = count;
     arr = new T*[maxsize];
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < count; i++)
     {
         arr[i] = new T;
     }
@@ -48,9 +47,9 @@ Container<T, maxsize>::Container(int x)
 template <typename T, int maxsize>
 Container<T, maxsize>::Container(const Container& temp)
 {
-    n = temp.n;
+    this->count = temp.count;
     arr = new T*[maxsize];
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < count; i++)
     {
         arr[i] = new T;
         (*arr[i]) = temp.*arr[i];
@@ -60,30 +59,30 @@ Container<T, maxsize>::Container(const Container& temp)
 template <typename T, int maxsize>
 Container<T, maxsize>::~Container()
 {
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < count; i++)
     {
         delete arr[i];
     }
     delete arr;
-    n = 0;
+    count = 0;
 }
 
 template <typename T, int maxsize>
 bool Container<T, maxsize>::IsFull()const
 {
-    return (n == maxsize);
+    return (count == maxsize);
 }
 
 template <typename T, int maxsize>
 bool Container<T, maxsize>::IsEmpty()const
 {
-    return (n == 0);
+    return (count == 0);
 }
 
 template <typename T, int maxsize>
 int Container<T, maxsize>::Find(T a)const
 {
-    for (int i = 0; i < n; i++)
+    for (int i = 0; i < count; i++)
         if (*(arr[i]) == a)
             return i;
     return -1;
@@ -92,192 +91,54 @@ int Container<T, maxsize>::Find(T a)const
 template <typename T, int maxsize>
 void Container<T, maxsize>::Add(T a)
 {
-    try
-    {
         if (this->IsFull())
-            throw 2;
-        n++;
-        arr[n - 1] = new T;
-        *arr[n - 1] = a;
-    }
-    catch (int i)
-    {
-        switch (i)
-        {
-        case 1:
-            cout << "Container is empty" << endl;
-            break;
-        case 2:
-            cout << "Container is full" << endl;
-            break;
-        case 3:
-            cout << "No elem" << endl;
-            break;
-        default:
-            cout << "Error" << endl;
-        }
-    }
+            throw "Container is full";
+        count++;
+        arr[count - 1] = new T;
+        *arr[count - 1] = a;
 }
 
 template <typename T, int maxsize>
 void Container<T, maxsize>::Remove(T a)
 {
-    try
-    {
+   
         if (this->IsEmpty())
-            throw 1;
+            throw "Container is empty";
         int j = Find(a);
         if (j == -1)
-            throw 3;
-        *arr[j] = *arr[n - 1];
-        delete arr[n - 1];
-        n--;
-    }
-    catch (int i)
-    {
-        switch (i)
-        {
-        case 1:
-            cout << "Container is empty" << endl;
-            break;
-        case 2:
-            cout << "Container is full" << endl;
-            break;
-        case 3:
-            cout << "No elem" << endl;
-            break;
-        default:
-            cout << "Error" << endl;
-        }
-    }
+            throw "Element does not exist";
+        *arr[j] = *arr[count - 1];
+        delete arr[count - 1];
+        count--;
 }
 
 template <typename T, int maxsize>
 T* Container<T, maxsize>::operator[](int i)
 {
-    try
-    {
-        if ((i < 0) || (i >= n))
-            throw 3;
-        return arr[i];
-    }
-    catch (int i)
-    {
-        switch (i)
-        {
-        case 1:
-            cout << "Container is empty" << endl;
-            break;
-        case 2:
-            cout << "Container is full" << endl;
-            break;
-        case 3:
-            cout << "No elem" << endl;
-            break;
-        default:
-            cout << "Error" << endl;
-        }
-    }
+	if ((i < 0) || (i >= count))
+       throw "Element does not exist";
+    return arr[i];
 }
 
 template <typename T, int maxsize>
 void Container<T, maxsize>::Print()const
 {
-    try
+	if (this->IsEmpty())
+		throw "Container is empty";
+    for (int i = 0; i < count; i++)
     {
-        if ((*this).IsEmpty())
-            throw 1;
-        for (int i = 0; i < n; i++)
-        {
-            cout << *(arr[i]) << " ";
-        }
-        cout << endl;
+        cout << *(arr[i]) << " ";
     }
-    catch (int i)
-    {
-        switch (i)
-        {
-        case 1:
-            cout << "Container is empty" << endl;
-            break;
-        case 2:
-            cout << "Container is full" << endl;
-            break;
-        case 3:
-            cout << "No elem" << endl;
-            break;
-        default:
-            cout << "Error" << endl;
-        }
-    }
+	cout << endl;
 }
 
 template <typename T, int maxsize>
 void Container<T, maxsize>::Fill()
 {
-    try
-    {
-        if ((*this).IsEmpty())
-            throw 1;
-        for (int i = 0; i < n; i++)
+	if (this->IsEmpty())
+            throw "Container is empty";
+        for (int i = 0; i < count; i++)
         {
             cin >> *(arr[i]);
         }
-    }
-    catch (int i)
-    {
-        switch (i)
-        {
-        case 1:
-            cout << "Container is empty" << endl;
-            break;
-        case 2:
-            cout << "Container is full" << endl;
-            break;
-        case 3:
-            cout << "No elem" << endl;
-            break;
-        default:
-            cout << "Error" << endl;
-        }
-    }
 }
-
-template <typename T, int maxsize>
-void Container<T, maxsize>::Sort()
-{
-    try
-    {
-        if (this->IsEmpty())
-            throw 1;
-        int i, j, tmp;
-        for (i = 1; i < n; i++)
-        {
-            tmp = *arr[i];
-            j = i - 1;
-            while ((j >= 0) && (*arr[j] > tmp))
-            {
-                *arr[j + 1] = *arr[j];
-                *arr[j] = tmp;
-                j--;
-            }
-        }
-    }
-    catch (int i)
-    {
-        switch (i)
-        {
-        case 1:
-            cout << "Container is empty" << endl;
-            break;
-        case 2:
-            cout << "Container is full" << endl;
-            break;
-        case 3:
-            cout << "No elem" << endl;
-            break;
-        default:
-            cout << "Error" << endl;
-        }
-    }
-} 
