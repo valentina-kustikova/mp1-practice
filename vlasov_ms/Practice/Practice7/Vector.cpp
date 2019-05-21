@@ -209,13 +209,13 @@ bool Vector::operator==(const Vector& _v) const
 	return true;
 }
 
-Vector& Vector::operator+=(Vector& _v)
+Vector& Vector::operator+=(const Vector& _v)
 {
 	*this = *this + _v;
 	return *this;
 }
 
-Vector& Vector::operator-=(Vector& _v)
+Vector& Vector::operator-=(const Vector& _v)
 {
 	*this = *this - _v;
 	return *this;
@@ -275,17 +275,17 @@ double& Vector::operator[](size_t index)
 {
 	if ((index < size) && (index >= 0))
 		return v[index];
-	throw VectorBadIndexException();
+	throw std::out_of_range("No element with that index.");
 }
 
 const double& Vector::operator[](size_t index) const
 {
 	if ((index < size) && (index >= 0))
 		return v[index];
-	throw VectorBadIndexException();
+	throw std::out_of_range("No element with that index.");
 }
 
-/*void* Vector::operator new(size_t _size)
+void* Vector::operator new(size_t _size)
 {
 	void* ptr = ::new char[_size];
 	if (!ptr)
@@ -309,7 +309,7 @@ void Vector::operator delete(void* ptr)
 void Vector::operator delete[](void* ptr)
 {
 	free(ptr);
-}*/
+}
 
 Vector operator*(double m, const Vector& _v)
 {
@@ -320,4 +320,14 @@ Vector operator*(double m, const Vector& _v)
 		result[i] *= m;
 	}
 	return result;
+}
+
+const char* VectorDivizionByZero::what() const
+{
+	return what_str.c_str();
+}
+
+const char* VectorUnequalDimensionException::what() const
+{
+	return what_str.c_str();
 }

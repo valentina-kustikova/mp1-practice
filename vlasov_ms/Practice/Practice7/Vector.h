@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <math.h>
+#include <string>
 
 struct Vector
 {
@@ -40,27 +41,37 @@ struct Vector
 	bool   operator< (const Vector&) const;
 	bool   operator<= (const Vector&) const;
 
-	Vector& operator+=  (Vector&);
-	Vector& operator-=  (Vector&);
+	Vector& operator+=  (const Vector&);
+	Vector& operator-=  (const Vector&);
 	Vector& operator*=  (double);
 	Vector& operator/=  (double);
 
 	Vector operator+ ();
 	Vector operator- ();
 
-	double& operator[](size_t index);
-	const double& operator[](size_t index) const;
-
-	/*void* operator new(size_t);
+	void* operator new(size_t);
 	void  operator delete(void*);
 	void* operator new[](size_t, int);
-	void  operator delete[](void*);*/
+	void  operator delete[](void*);
+
+	double& operator[](size_t index);
+	const double& operator[](size_t index) const;
 };
 
 Vector operator*(double, const Vector&);
 
-struct VectorBadIndexException {};
-struct VectorDivizionByZero {};
-struct VectorUnequalDimensionException {};
+class VectorDivizionByZero : std::exception
+{
+	const std::string what_str = "Divizion by zero";
+public:
+	const char* what() const;
+};
+
+class VectorUnequalDimensionException : std::exception
+{
+	const std::string what_str = "Unequal dimension";
+public:
+	const char* what() const;
+};
 
 #endif
