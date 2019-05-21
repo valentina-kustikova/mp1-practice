@@ -83,25 +83,22 @@ int v_scm(Vector v1, Vector v2, double* result)
 
 int v_ang(Vector v1, Vector v2, double* result)
 {
+	double l1, l2, scal, lens;
 	if (!v_check2(v1, v2))
 		return 1;
-	else
-	{
-		double l1, l2;
-		if((v_len(v1, &l1)) || (v_len(v2, &l2)))
-			return 1;
-		double scal, lens = l1 * l2;
-		if(v_scm(v1, v2, &scal))
-			return 1;
-		*result = acos(scal / lens);
-		return 0;
-	}
+	if((v_len(v1, &l1)) || (v_len(v2, &l2)))
+		return 1;
+	lens = l1 * l2;
+	if(v_scm(v1, v2, &scal))
+		return 1;
+	*result = acos(scal / lens);
+	return 0;
 }
 
 int v_deg(Vector v1, Vector v2, double* result)
 {
 	double ang;
-	const double pi = 3.141592653589793238462643383279F;
+	const double pi = 3.141592653589793238462643383279;
 	if(v_ang(v1, v2, &ang))
 		return 1;
 	*result = (ang * 180.0F) / pi;
