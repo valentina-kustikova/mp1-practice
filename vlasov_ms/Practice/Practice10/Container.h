@@ -43,7 +43,7 @@ iT& ContainerIterator<iT>::operator*() const
 template <typename iT>
 ContainerIterator<iT>& ContainerIterator<iT>::operator++()
 {
-	++p;
+	++ptr;
 	return *this;
 }
 
@@ -67,11 +67,10 @@ public:
 
 	int size() const;
 	bool empty() const;
-	int find(T) const;
+	int find(const T) const;
 
-	Container<T>& add(T);
-	Container<T>& add(T*);
-	Container<T>& remove(T);
+	Container<T>& add(const T);
+	Container<T>& remove(const T);
 	Container<T>& iremove(int);
 	Container<T>& remove_all();
 
@@ -160,7 +159,7 @@ bool Container<T>::empty() const
 };
 
 template<typename T>
-int Container<T>::find(T elem) const
+int Container<T>::find(const T elem) const
 {
 	for (int i = 0; i < csize; i++)
 		if (set[i] == elem)
@@ -169,7 +168,7 @@ int Container<T>::find(T elem) const
 };
 
 template<typename T>
-Container<T> & Container<T>::add(T elem)
+Container<T> & Container<T>::add(const T elem)
 {
 	alloc_for(1);
 	set[csize] = elem;
@@ -178,13 +177,7 @@ Container<T> & Container<T>::add(T elem)
 };
 
 template<typename T>
-Container<T>& Container<T>::add(T* elem)
-{
-	return add(*elem);
-}
-
-template<typename T>
-Container<T>& Container<T>::remove(T object)
+Container<T>& Container<T>::remove(const T object)
 {
 	bool flag = false;
 	for (int i = 0; i < csize; i++)
@@ -258,14 +251,61 @@ const T & Container<T>::operator[](int index) const
 template<typename T>
 ContainerIterator<T> Container<T>::begin() const
 {
-	return ContainerIterator(set);
+	return ContainerIterator<T>(set);
 };
 
 template<typename T>
 ContainerIterator<T> Container<T>::end() const
 {
-	return ContainerIterator(set + size);
+	return ContainerIterator<T>(set + size);
 };
+
+///////////////////////////////////////////////////////////////////////////////
+
+template <typename iT>
+class ContainerIterator<iT*>
+{
+	iT** ptr;
+	template <typename T> friend class Container;
+	ContainerIterator<iT*>(iT**);
+public:
+	ContainerIterator<iT*>(const ContainerIterator<iT*>&);
+	bool operator==(const ContainerIterator<iT*>&) const;
+	bool operator!=(const ContainerIterator<iT*>&) const;
+	iT*& operator*() const;
+	ContainerIterator<iT*>& operator++();
+};
+
+template <typename iT>
+ContainerIterator<iT*>::ContainerIterator(iT** ptr) : ptr(ptr) {}
+
+template <typename iT>
+ContainerIterator<iT*>::ContainerIterator(const ContainerIterator<iT*>& it) : ptr(it.ptr) {}
+
+template <typename iT>
+bool ContainerIterator<iT*>::operator==(const ContainerIterator<iT*>& it) const
+{
+	return ptr == it.ptr;
+}
+
+template <typename iT>
+bool ContainerIterator<iT*>::operator!=(const ContainerIterator<iT*>& it) const
+{
+	return ptr != it.ptr;
+}
+
+template <typename iT>
+iT*& ContainerIterator<iT*>::operator*() const
+{
+	return *ptr;
+}
+
+template <typename iT>
+ContainerIterator<iT*>& ContainerIterator<iT*>::operator++()
+{
+	++ptr;
+	return *this;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -287,12 +327,10 @@ public:
 
 	int size() const;
 	bool empty() const;
-	int find(T) const;
-	int find(T*) const;
+	int find(const T) const;
 
-	Container<T*>& add(T);
-	Container<T*>& add(T*);
-	Container<T*>& remove(T);
+	Container<T*>& add(const T*);
+	Container<T*>& remove(const T);
 	Container<T*>& iremove(int);
 	Container<T*>& remove_all();
 
@@ -383,7 +421,7 @@ bool Container<T*>::empty() const
 };
 
 template<typename T>
-int Container<T*>::find(T elem) const
+int Container<T*>::find(const T elem) const
 {
 	for (int i = 0; i < csize; i++)
 		if (*(set[i]) == elem)
@@ -392,34 +430,16 @@ int Container<T*>::find(T elem) const
 };
 
 template<typename T>
-int Container<T*>::find(T* ptr) const
-{
-	for (int i = 0; i < csize; i++)
-		if (set[i] == ptr)
-			return i;
-	return -1;
-};
-
-template<typename T>
-Container<T*>& Container<T*>::add(T elem)
+Container<T*>& Container<T*>::add(const T* ptr)
 {
 	alloc_for(1);
-	set[csize] = new T(elem);
-	csize += 1;
-	return *this;
-};
-
-template<typename T>
-Container<T*>& Container<T*>::add(T* ptr)
-{
-	alloc_for(1);
-	set[csize] = ptr;
+	set[csize] = new T(*ptr);
 	csize += 1;
 	return *this;
 }
 
 template<typename T>
-Container<T*>& Container<T*>::remove(T elem)
+Container<T*>& Container<T*>::remove(const T elem)
 {
 	bool flag = false;
 	for (int i = 0; i < csize; i++)
@@ -499,13 +519,13 @@ const T*& Container<T*>::operator[](int index) const
 template<typename T>
 ContainerIterator<T*> Container<T*>::begin() const
 {
-	return ContainerIterator(set);
+	return ContainerIterator<T*>(set);
 };
 
 template<typename T>
 ContainerIterator<T*> Container<T*>::end() const
 {
-	return ContainerIterator(set + size);
+	return ContainerIterator<T*>(set + size);
 };
 
 #endif

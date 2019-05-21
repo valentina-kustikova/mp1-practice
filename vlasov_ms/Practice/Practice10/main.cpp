@@ -2,13 +2,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <vector>
-#define USE_CPP11
-
-#ifdef USE_CPP11
-#include "ContainerC++11.h"
-#else
 #include "Container.h"
-#endif
 
 void generate(int*, int);
 int random();
@@ -84,7 +78,7 @@ int main()
 	Container<int*> c2;
 	std::cout << "Adding: ";
 	for (int i = 0; i < 5; i++)
-		c2.add(example[i]), std::cout << *(c2[i]) << ' ';
+		c2.add(example + i), std::cout << *(c2[i]) << ' ';
 	for (int i = 5; i < 9; i++)
 	{
 		int* ptr = new int(example[i]);
@@ -112,12 +106,6 @@ int main()
 		std::cout << "found on index " << index << '\n';
 	else
 		std::cout << "not found\n";
-	std::cout << "Find (pointer to element [9] = " << ptr << "): ";
-	index = c2.find(ptr);
-	if (index != -1)
-		std::cout << "found on index " << index << '\n';
-	else
-		std::cout << "not found" << (needle == 9 ? " (it is removed above)\n" : "\n");
 
 	std::cout << "Remove (value = " << needle2 << "): ";
 	try
@@ -176,25 +164,15 @@ int random()
 void print(Container<int> c)
 {
 	std::cout << "{ ";
-#ifdef USE_CPP11
-	for (int i : c)
-		std::cout << i << ' ';
-#else
-	for (ContainerIterator<int> i = c.begin(); i != c.end; ++i)
+	for (ContainerIterator<int> i = c.begin(); i != c.end(); ++i)
 		std::cout << *i << ' ';
-#endif
 	std::cout << "}\n";
 }
 
 void print(Container<int*> c)
 {
 	std::cout << "{ ";
-#ifdef USE_CPP11
-	for (int* i : c)
-		std::cout << *i << ' ';
-#else
-	for (ContainerIterator<int*> i = c.begin(); i != c.end; ++i)
+	for (ContainerIterator<int*> i = c.begin(); i != c.end(); ++i)
 		std::cout << *(*i) << ' ';
-#endif
 	std::cout << "}\n";
 }
