@@ -1,6 +1,8 @@
 #ifndef _MATRIX_H_
 #define _MATRIX_H_
 #include <iostream>
+#include <string>
+#include <cstring>
 
 class Matrix
 {
@@ -28,7 +30,18 @@ public:
 	double* operator[](unsigned);
 };
 
-class MatrixUnequalSizes {};
-class MatrixProductionUndefined {};
+class MatrixUnequalSizes : std::exception
+{
+	const std::string what_str = "Unequal sizes";
+public:
+	const char* what() const;
+};
+
+class MatrixProductionUndefined : std::exception
+{
+	const std::string what_str = "Production is undefined";
+public:
+	const char* what() const;
+};
 
 #endif

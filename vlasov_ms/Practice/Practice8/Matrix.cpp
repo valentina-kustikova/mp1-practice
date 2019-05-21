@@ -13,8 +13,7 @@ Matrix::Matrix(const Matrix& _m)
 	cols = _m.cols;
 	unsigned elements = rows * cols;
 	m = new double[elements];
-	for (unsigned i = 0; i < elements; i++)
-		m[i] = _m.m[i];
+	memcpy(m, _m.m, sizeof(unsigned) * elements);
 }
 
 Matrix::Matrix(unsigned _rows, unsigned _cols)
@@ -23,8 +22,7 @@ Matrix::Matrix(unsigned _rows, unsigned _cols)
 	cols = _cols;
 	unsigned elements = rows * cols;
 	m = new double[elements];
-	for (unsigned i = 0; i < elements; i++)
-		m[i] = 0;
+	memset(m, 0, sizeof(unsigned) * elements);
 }
 
 Matrix::Matrix(double* _m, unsigned _rows, unsigned _cols)
@@ -33,8 +31,7 @@ Matrix::Matrix(double* _m, unsigned _rows, unsigned _cols)
 	cols = _cols;
 	unsigned elements = rows * cols;
 	m = new double[elements];
-	for (unsigned i = 0; i < elements; i++)
-		m[i] = _m[i];
+	memcpy(m, _m, sizeof(unsigned) * elements);
 }
 
 Matrix::~Matrix()
@@ -141,7 +138,7 @@ const Matrix& Matrix::operator=(const Matrix& _m)
 {
 	if ((rows == _m.rows) && (cols == _m.cols) && (m == _m.m))
 		return *this;
-	if (rows ^ _m.rows ^ cols ^ _m.cols) // сравним все хором
+	if ((rows != _m.rows) || (cols != _m.cols))
 		delete[] m;
 	rows = _m.rows;
 	cols = _m.cols;
@@ -155,4 +152,14 @@ const Matrix& Matrix::operator=(const Matrix& _m)
 double* Matrix::operator[](unsigned index)
 {
 	return m + index * cols;
+}
+
+const char* MatrixUnequalSizes::what() const
+{
+	return what_str.c_str();
+}
+
+const char* MatrixProductionUndefined::what() const
+{
+	return what_str.c_str();
 }
