@@ -1,10 +1,11 @@
 #include "container.h"
+#include <iostream>
 using namespace std;
 
 int main()
 {
-	Container<int, 4> c1;
-	Container<int, 4> c2;
+	Container<int> c1;
+	Container<int> c2;
 	cout << "sozdal 2 containers c1, c2 pustie" << endl;
 	try
 	{
@@ -19,7 +20,7 @@ int main()
 		}
 		cout << endl;
 		cout << "proverka c2 na plnotu" << endl;
-		std::cout << c2.IsFull() << std::endl;
+		//std::cout << c2.IsFull() << std::endl;
 		cout << "proverka c2 na pustotu" << endl;
 		std::cout << c2.IsEmpty() << std::endl;
 		cout << "dobavil k c2 3" << endl;
@@ -79,8 +80,8 @@ int main()
 	}
 	std::cout << std::endl << "konec probi 1" << std::endl << std::endl;
 	cout << "part 2" << endl;
-	Container<int*, 3> rofl;
-	Container<int*, 10> kek;
+	Container<int*> rofl;
+	Container<int*> kek;
 	cout << "sozdam 2 pustyh containers rofl+kek" << endl;
 	int*a1 = new int;
 	*a1 = 7;

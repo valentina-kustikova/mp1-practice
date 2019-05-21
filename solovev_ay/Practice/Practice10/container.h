@@ -1,15 +1,14 @@
 #include <iostream>
 #pragma once
-template <typename T, int maxsize>
+template <typename T>
 class Container {
 	int count;
 	T*arr;
 public:
 	Container();
-	Container(const Container<T, maxsize>& a);
+	Container(const Container<T>& a);
 	~Container();
 
-	bool IsFull() const;
 	bool IsEmpty() const;
 	int Find(T a) const;
 	void Add(T a);
@@ -19,14 +18,14 @@ public:
 	const T& operator [] (int index) const;
 	void print();
 };
-template<typename T, int maxsize>
-inline Container<T, maxsize>::Container()
+template<typename T>
+inline Container<T>::Container()
 {
-	count = 0;
-	arr = new T[maxsize];
+	count = 1;
+	arr = new T[count];
 }
-template<typename T, int maxsize>
-Container <T, maxsize>::Container(const Container<T, maxsize> &a)
+template<typename T>
+Container <T>::Container(const Container<T> &a)
 {
 	count = a.count;
 	if (count == 0)
@@ -43,26 +42,22 @@ Container <T, maxsize>::Container(const Container<T, maxsize> &a)
 		}
 	}
 }
-template<typename T, int maxsize>
-inline Container<T, maxsize>::~Container()
+template<typename T>
+inline Container<T>::~Container()
 {
 	delete[]arr;
 	count = 0;
 }
 
-template<typename T, int maxsize>
-inline bool Container<T, maxsize>::IsFull() const
-{
-	return (count == maxsize) ? true : false;
-}
-template<typename T, int maxsize>
-inline bool Container<T, maxsize>::IsEmpty() const
+
+template<typename T>
+inline bool Container<T>::IsEmpty() const
 {
 	return (count == 0) ? true : false;
 }
 
-template<typename T, int maxsize>
-inline int Container<T, maxsize>::Find(T a) const
+template<typename T>
+inline int Container<T>::Find(T a) const
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -72,25 +67,20 @@ inline int Container<T, maxsize>::Find(T a) const
 	std::cout << "takogo elementa net" << std::endl;
 	return -1;
 }
-template<typename T, int maxsize>
-inline void Container<T, maxsize>::Add(T a)
+template<typename T>
+inline void Container<T>::Add(T a)
 {
-	if (IsFull())
-		throw "massiv polon";
-	if (IsEmpty())
-	{
-		count++;
-		delete[] arr;
-		arr = new T[count];
-		arr[0] = a;
-		return;
-	}
-	arr[count] = a;
+	Container<T> tmp(*this);
 	count++;
-
+	arr = new T[count];
+	for (int i = 0; i < count - 1; i++)
+	{
+		arr[i] = tmp[i];
+	}
+	arr[count - 1] = a;
 }
-template<typename T, int maxsize>
-inline void Container<T, maxsize>::Delete(T a)
+template<typename T>
+inline void Container<T>::Delete(T a)
 {
 	if (IsEmpty())
 		throw "nechego udalat";
@@ -116,29 +106,29 @@ inline void Container<T, maxsize>::Delete(T a)
 	delete[] tmp;
 }
 
-template<typename T, int maxsize>
-inline int Container<T, maxsize>::getcount()
+template<typename T>
+inline int Container<T>::getcount()
 {
 	return count;
 }
 
-template<typename T, int maxsize>
-inline T & Container<T, maxsize>::operator[](int index)
+template<typename T>
+inline T & Container<T>::operator[](int index)
 {
 	if ((index < 0) || (index >= count))
 		throw "ne tot index";
 	return arr[index];
 }
 
-template<typename T, int maxsize>
-inline const T & Container<T, maxsize>::operator[](int index) const
+template<typename T>
+inline const T & Container<T>::operator[](int index) const
 {
 	if ((index < 0) || (index >= count))
 		throw "ne tot index";
 	return arr[index];
 }
-template<typename T, int maxsize>
-inline void Container<T, maxsize>::print()
+template<typename T>
+inline void Container<T>::print()
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -146,17 +136,17 @@ inline void Container<T, maxsize>::print()
 		std::cout << arr[i] << std::endl;
 	}
 }
-template <typename T, int maxsize>
-class Container <T*, maxsize>
+template <typename T>
+class Container <T*>
 {
 	int count;
 	T**arr;
 public:
 	Container();
-	Container(const Container<T*, maxsize>& a);
+	Container(const Container<T*>& a);
 	~Container();
 
-	bool IsFull() const;
+
 	bool IsEmpty() const;
 	int Find(T* a) const;
 	void Add(T* a);
@@ -166,44 +156,40 @@ public:
 	T* const operator[] (int index) const;
 	void print();
 };
-template<typename T, int maxsize>
-Container<T*, maxsize>::Container()
+template<typename T>
+Container<T*>::Container()
 {
 	count = 0;
-	arr = new T*[maxsize];
+	arr = new T*;
 };
-template<typename T, int maxsize>
-Container<T*, maxsize>::~Container()
+template<typename T>
+Container<T*>::~Container()
 {
 	for (int i = 0; i < count; i++)
 		delete arr[i];
 	delete arr;
 	count = 0;
 };
-template<typename T, int maxsize>
-inline int Container<T*, maxsize>::Find(T * a) const
+template<typename T>
+inline int Container<T*>::Find(T * a) const
 {
 	for (int i = 0; i < count; i++)
 		if (*arr[i] == *a)
 			return i;
 	return -1;
 }
-template<typename T, int maxsize>
-inline void Container<T*, maxsize>::Add(T * a)
+template<typename T>
+inline void Container<T*>::Add(T * a)
 {
-	if (IsFull())
-	{
-		std::cout << "massiv polon" << std::endl;
-		return;
-	}
+
 	arr[count] = new T;
 	*arr[count++] = *a;
 
 
 
 }
-template<typename T, int maxsize>
-inline void Container<T*, maxsize>::Delete(T * a)
+template<typename T>
+inline void Container<T*>::Delete(T * a)
 {
 	if (IsEmpty())
 		throw "nechego udalat";
@@ -211,34 +197,30 @@ inline void Container<T*, maxsize>::Delete(T * a)
 	delete arr[--count];
 }
 
-template<typename T, int maxsize>
-void Container<T*, maxsize>::print()
+template<typename T>
+void Container<T*>::print()
 {
 	for (int i = 0; i < count; i++)
 	{
 		std::cout << *arr[i] << std::endl;
 	}
 }
-template<typename T, int maxsize>
-bool Container<T*, maxsize>::IsEmpty() const
+template<typename T>
+bool Container<T*>::IsEmpty() const
 {
 	return (count == 0) ? true : false;
 }
-template<typename T, int maxsize>
-bool Container<T*, maxsize>::IsFull() const
-{
-	return (count == maxsize) ? true : false;
-}
-template<typename T, int maxsize>
-T* Container<T*, maxsize>::operator[](int index)
+
+template<typename T>
+T* Container<T*>::operator[](int index)
 {
 	if ((index < 0) || (index >= count))
 		throw "ne tot index";
 	return arr[index];
 }
 
-template<typename T, int maxsize>
-T* const Container<T*, maxsize>::operator[](int index) const
+template<typename T>
+T* const Container<T*>::operator[](int index) const
 {
 	if ((index < 0) || (index >= count))
 		throw "ne tot index";
