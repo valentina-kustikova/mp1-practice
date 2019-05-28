@@ -7,7 +7,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Krugi.c">
+    <ClCompile Include="Shkaf.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
