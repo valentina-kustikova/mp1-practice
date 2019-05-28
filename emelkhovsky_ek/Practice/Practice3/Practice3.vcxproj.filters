@@ -7,7 +7,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Krugi.c">
+    <ClCompile Include="Dvarezima.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
