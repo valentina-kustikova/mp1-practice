@@ -5,10 +5,10 @@ private:
     int dim;      
     double *x; 
 public:
-    Vector(); //по умолчвнию
-    Vector(int _dim); //с параметром
-    Vector(const Vector& v); //копирования
-    ~Vector();//деструктор
+    Vector(); //РїРѕ СѓРјРѕР»С‡РІРЅРёСЋ
+    Vector(int _dim); //СЃ РїР°СЂР°РјРµС‚СЂРѕРј
+    Vector(const Vector& v); //РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+    ~Vector();//РґРµСЃС‚СЂСѓРєС‚РѕСЂ
 
     
     Vector& operator= (const Vector & v);
