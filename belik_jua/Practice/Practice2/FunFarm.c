@@ -19,6 +19,7 @@ void main()
     m = 9.0 / RAND_MAX * rand() + 1;
     num[0] = m;
     sam[m] = -1;
+  
     while (i > 0)
     {
         m = 10.0 / RAND_MAX * rand();
