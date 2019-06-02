@@ -1,6 +1,7 @@
 #ifndef _TODOLIST_EXCEPTIONS_H_
 #define _TODOLIST_EXCEPTIONS_H_
 #include <string>
+#include <stdexcept>
 
 namespace TodoList
 {

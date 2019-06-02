@@ -25,24 +25,41 @@ bool TodoList::app::open(const std::string& filename)
 		if (line.empty())
 			continue;
 		task::type ttype = task::type::t_std;
-		ctask* next_task = nullptr;
-		try
+		if (line[0] == '1') // task::type::day
 		{
-			if (line[0] == '1') // task::type::day
+			try
 			{
 				ttype = task::type::t_day;
-				next_task = new task::day();
+				task::day* next_task = new task::day();
+
+				unsigned long full_date = std::stoul(line.substr(2, 8));
+				next_task->start(unsigned(full_date / 1000000UL), unsigned((full_date / 10000UL) % 100UL), unsigned(full_date % 10000UL));
+				line = line.substr(11);
+
+				next_task->title = line;
+
+				//tasks.push_back(next_task);
+				tasks.insert(get_before_date(next_task->start), next_task); // nearly-sorted
+				tcount++;
 			}
-			else // task::type::std
+			catch (std::out_of_range)
+			{
+				throw app_exception::parsing(filename);
+				successful = false;
+				return false;
+			}
+		}
+		else // task::type::std
+		{
+			try
 			{
 				ttype = task::type::t_std;
-				next_task = new task::std();
-			}
-			unsigned long full_date = std::stoul(line.substr(2, 8));
-			next_task->start(unsigned(full_date / 1000000UL), unsigned((full_date / 10000UL) % 100UL), unsigned(full_date % 10000UL));
-			line = line.substr(11);
-			if (ttype == task::t_std)
-			{
+				task::std* next_task = new task::std();
+
+				unsigned long full_date = std::stoul(line.substr(2, 8));
+				next_task->start(unsigned(full_date / 1000000UL), unsigned((full_date / 10000UL) % 100UL), unsigned(full_date % 10000UL));
+				line = line.substr(11);
+
 				size_t space_pos = line.find_first_of(' ');
 				unsigned long t_start = std::stoul(line.substr(0, space_pos));
 				line = line.substr(space_pos + 1);
@@ -51,18 +68,20 @@ bool TodoList::app::open(const std::string& filename)
 				line = line.substr(space_pos + 1);
 				next_task->set_start(time(unsigned(t_start)));
 				next_task->set_end(time(unsigned(t_end)));
+
+				next_task->title = line;
+
+				//tasks.push_back(next_task);
+				tasks.insert(get_before_date(next_task->start), next_task); // nearly-sorted
+				tcount++;
 			}
-			next_task->title = line;
+			catch (std::out_of_range)
+			{
+				throw app_exception::parsing(filename);
+				successful = false;
+				return false;
+			}
 		}
-		catch (std::out_of_range)
-		{
-			throw app_exception::parsing(filename);
-			successful = false;
-			return false;
-		}
-		//tasks.push_back(next_task);
-		tasks.insert(get_before_date(next_task->start), next_task);
-		tcount++;
 	}
 	return successful;
 }
