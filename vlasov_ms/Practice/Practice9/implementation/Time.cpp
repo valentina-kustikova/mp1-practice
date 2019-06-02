@@ -11,12 +11,10 @@ TodoList::time::time(unsigned h, unsigned m)
 	if (h > 23U)
 	{
 		throw time_exception::bad_hour(h);
-		return;
 	}
 	if (m > 59U)
 	{
 		throw time_exception::bad_min(m);
-		return;
 	}
 	this->m = 60U * h + m;
 }
@@ -27,7 +25,6 @@ TodoList::time::time(unsigned m)
 	if (m > 1440U)
 	{
 		throw time_exception::bad_mins(m);
-		return;
 	}
 	this->m = m;
 }
@@ -36,10 +33,7 @@ TodoList::time::time(float mask)
 {
 	this->m = 0U;
 	if ((mask < 00.00f) || (mask > 23.59f))
-	{
 		throw time_exception::bad_mask(mask);
-		return;
-	}
 	int imask = (int)(mask * 100);
 	set_hour(imask / 100);
 	set_min(imask % 100);
@@ -48,10 +42,7 @@ TodoList::time::time(float mask)
 TodoList::time& TodoList::time::set_hour(unsigned h)
 {
 	if (h > 23U)
-	{
 		throw time_exception::bad_hour(h);
-		return *this;
-	}
 	this->m = h * 60U + min();
 	return *this;
 }
@@ -59,10 +50,7 @@ TodoList::time& TodoList::time::set_hour(unsigned h)
 TodoList::time& TodoList::time::set_min(unsigned m)
 {
 	if (m > 59U)
-	{
 		throw time_exception::bad_min(m);
-		return *this;
-	}
 	this->m = hour() * 60U + m;
 	return *this;
 }

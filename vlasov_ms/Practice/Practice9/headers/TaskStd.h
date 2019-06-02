@@ -13,9 +13,9 @@ namespace TodoList
 			time t_end;
 			std();
 			std(const std&);
-			std(::std::string&);
-			std(::std::string&, date);
-			std(::std::string&, date, time, time);
+			std(const ::std::string&);
+			std(const ::std::string&, date);
+			std(const ::std::string&, date, time, time);
 			~std();
 
 			time get_start();

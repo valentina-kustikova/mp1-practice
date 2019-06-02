@@ -14,19 +14,18 @@ TodoList::ctask::ctask()
 TodoList::ctask::ctask(const ctask& t)
 {
 	uid = ++uid_stream;
-	type = t.type;
 	title = t.title;
 	start = t.start;
 }
 
-TodoList::ctask::ctask(std::string& title)
+TodoList::ctask::ctask(const std::string& title)
 {
 	uid = ++uid_stream;
 	start(1U, 1U, 1970U);
 	this->title = title;
 }
 
-TodoList::ctask::ctask(std::string& title, date start)
+TodoList::ctask::ctask(const std::string& title, date start)
 {
 	uid = ++uid_stream;
 	this->start = start;
@@ -38,24 +37,9 @@ TodoList::ctask::~ctask()
 
 }
 
-unsigned TodoList::ctask::get_uid()
+unsigned TodoList::ctask::get_uid() const
 {
 	return uid;
-}
-
-TodoList::task::type TodoList::ctask::get_type()
-{
-	return type;
-}
-
-TodoList::time TodoList::ctask::set_start(time t)
-{
-	return time();
-}
-
-TodoList::time TodoList::ctask::set_end(time t)
-{
-	return time();
 }
 
 bool TodoList::ctask::operator>(const ctask& t) const

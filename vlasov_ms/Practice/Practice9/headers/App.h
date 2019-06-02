@@ -19,19 +19,19 @@ namespace TodoList
 		app();
 		~app();
 
-		bool add(std::string&, task::type, date);
-		bool add(std::string&, date, time, time);
-		bool add(std::string&, date);
+		bool add(const std::string&, task::type, date);
+		bool add(const std::string&, date, time, time);
+		bool add(const std::string&, date);
 		bool remove(ctask*);
 		bool remove(unsigned);
 
-		void print();
-		void print(date);
-		void print(unsigned);
-		std::string get_filename();
+		void print() const;
+		void print(date) const;
+		void print(unsigned) const;
+		std::string get_filename() const;
 
-		bool open(std::string&);
-		bool create(std::string&);
+		bool open(const std::string&);
+		bool create(const std::string&);
 		bool save();
 
 		void start();

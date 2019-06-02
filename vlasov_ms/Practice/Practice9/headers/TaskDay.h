@@ -10,12 +10,9 @@ namespace TodoList
 		{
 		public:
 			day();
-			day(::std::string&, date);
+			day(const ::std::string&, date);
 			day(const day&);
 			~day();
-
-			time get_start();
-			time get_end();
 			
 			void print();
 			void print(::std::ofstream&);

@@ -1,6 +1,6 @@
 #include "../headers/App.h"
 
-bool TodoList::app::open(std::string& filename)
+bool TodoList::app::open(const std::string& filename)
 {
 	reset();
 	bool successful = true;
@@ -67,10 +67,10 @@ bool TodoList::app::open(std::string& filename)
 	return successful;
 }
 
-bool TodoList::app::create(std::string& filename)
+bool TodoList::app::create(const std::string& flname)
 {
 	reset();
-	filename += ".todo";
+	std::string filename = flname + ".todo";
 	std::ofstream fout(filename.c_str());
 	tcount = 0;
 	bool result = fout.is_open();
@@ -126,7 +126,7 @@ TodoList::app::~app()
 	reset();
 }
 
-bool TodoList::app::add(std::string& title, task::type ttype, date start)
+bool TodoList::app::add(const std::string& title, task::type ttype, date start)
 {
 	ctask* next_task;
 	if(ttype == task::type::t_std)
@@ -139,7 +139,7 @@ bool TodoList::app::add(std::string& title, task::type ttype, date start)
 	return true;
 }
 
-bool TodoList::app::add(std::string& title, date start, time t_start, time t_end)
+bool TodoList::app::add(const std::string& title, date start, time t_start, time t_end)
 {
 	ctask* next_task = new task::std(title, start, t_start, t_end);
 	//tasks.push_back(next_task);
@@ -148,7 +148,7 @@ bool TodoList::app::add(std::string& title, date start, time t_start, time t_end
 	return true;
 }
 
-bool TodoList::app::add(std::string& title, date start)
+bool TodoList::app::add(const std::string& title, date start)
 {
 	ctask* next_task = new task::day(title, start);
 	//tasks.push_back(next_task);
@@ -177,7 +177,7 @@ bool TodoList::app::remove(unsigned uid)
 	return false;
 }
 
-void TodoList::app::print()
+void TodoList::app::print() const
 {
 	if (!tcount)
 	{
@@ -185,18 +185,20 @@ void TodoList::app::print()
 		return;
 	}
 	std::cout << "---------------------------------------------------------\n";
-	for (std::list<ctask*>::iterator i = tasks.begin(); i != tasks.end(); ++i)
+	std::list<ctask*>::const_iterator i = tasks.begin();
+	for (; i != tasks.end(); ++i)
 	{
 		(*i)->print();
 	}
 	std::cout << "---------------------------------------------------------\n";
 }
 
-void TodoList::app::print(date d)
+void TodoList::app::print(date d) const
 {
 	std::cout << "---------------------------------------------------------\n";
 	int k = 0;
-	for (std::list<ctask*>::iterator i = tasks.begin(); i != tasks.end(); ++i)
+	std::list<ctask*>::const_iterator i = tasks.begin();
+	for (; i != tasks.end(); ++i)
 	{
 		if ((*i)->start == d)
 		{
@@ -209,9 +211,10 @@ void TodoList::app::print(date d)
 	std::cout << "---------------------------------------------------------\n";
 }
 
-void TodoList::app::print(unsigned uid)
+void TodoList::app::print(unsigned uid) const
 {
-	for (std::list<ctask*>::iterator i = tasks.begin(); i != tasks.end(); ++i)
+	std::list<ctask*>::const_iterator i = tasks.begin();
+	for (; i != tasks.end(); ++i)
 	{
 		if ((*i)->get_uid() == uid)
 		{
@@ -222,7 +225,7 @@ void TodoList::app::print(unsigned uid)
 	throw app_exception::bad_uid(uid);
 }
 
-std::string TodoList::app::get_filename()
+std::string TodoList::app::get_filename() const
 {
 	return filename;
 }

@@ -3,31 +3,19 @@
 unsigned TodoList::date::fix_day(unsigned d)
 {
 	if ((d > 31U) || (d < 1U))
-	{
 		throw date_exception::bad_day(d);
-		return this->d;
-	}
 	if (d <= 28)
 		return d;
 	if ((this->m == 4U) || (this->m == 6U) || (this->m == 9U) || (this->m == 11U))
 		if (d > 30U)
-		{
 			throw date_exception::bad_day(d);
-			return this->d;
-		}
 	if (this->m == 2)
 		if (bissextile())
 			if (d > 29U)
-			{
 				throw date_exception::bad_day(d);
-				return this->d;
-			}
 		else
 			if (d > 28U)
-			{
-			throw date_exception::bad_day(d);
-			return this->d;
-			}
+				throw date_exception::bad_day(d);
 	return d;
 }
 
@@ -51,21 +39,12 @@ TodoList::date::date(unsigned d, unsigned m, unsigned y)
 	this->m = 1U;
 	this->y = 1970U;
 	if (y > 9999U)
-	{
 		throw date_exception::bad_year(y);
-		return;
-	}
 	this->y = y;
 	if ((d > 31U) || (d < 1U))
-	{
 		throw date_exception::bad_day(d);
-		return;
-	}
 	if (m > 12U || (m < 1U))
-	{
 		throw date_exception::bad_month(m);
-		return;
-	}
 	this->m = m;
 	this->d = fix_day(d);
 }
@@ -101,21 +80,12 @@ TodoList::date& TodoList::date::operator()(unsigned d, unsigned m, unsigned y)
 	this->m = 1U;
 	this->y = 1970U;
 	if (y > 9999U)
-	{
 		throw date_exception::bad_year(y);
-		return *this;
-	}
 	this->y = y;
 	if ((d > 31U) || (d < 1U))
-	{
 		throw date_exception::bad_day(d);
-		return *this;
-	}
 	if (m > 12U || (m < 1U))
-	{
 		throw date_exception::bad_month(m);
-		return *this;
-	}
 	this->m = m;
 	this->d = fix_day(d);
 	return *this;
