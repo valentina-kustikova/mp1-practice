@@ -1,30 +1,32 @@
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
 #include <time.h>
 #include <locale.h>
-int cost[10000];
-int skidka[10000];
-int codes[10000];
-float costs[10000];
-int numbers[10000]={0};
+#define N 8
+int cost[N];
+int skidka[N];
+int codes[N][5] = {"1234", "1235", "1236", "2341","1434", "6235", "7236", "8341"};
+float costs[N];
+int numbers[N]={0};
 int kolvo=0;
-int povtorov[10000];
-char name[8][20]=
+int povtorov[N];
+char name[N][20]=
 {
 	"default", "Cервелат Финский", "Филе куриное", "Фарш домашний", "Окорок куриный", "Стейк из свинины",
 	"Филе грудки индейки", "Филе грудки индейки"
 };//имена только от 1-7, при вводе других, получим тоже товары, но без имени!
 
 
-int findcode(int code)
+int findcode(char* code)
 {
  	int i;
- 	for (i = 0; i < 10000; i++) 
+ 	for (i = 0; i < N; i++) 
 	{
- 		if (codes[i] == code) 
+ 		if (strcmp(codes[i], code)) 
 			break;
  	}
- 	if (i >= 10000) 
+ 	if (i >= N) 
 	{
  		return -1;
  	}
@@ -43,37 +45,17 @@ void menu()
 	printf("Введите 5, для получения справки!\n");
 	printf("Введите 0 для выхода из программы!");
 }//меню
-void strihcode(int code)
+
+void info(char* code)
 {
-	if(code <10)
-	{
-	printf("000%d", code);
-	}
-	else if (code < 100)
-	{
-		printf("00%d", code);
-	}
-	else if (code <1000)
-	{
-		printf("0%d", code);
-	}
-	else
-	{
-		printf("%d", code);
-	}
-}//вывод красивого штрихкода
-void info(int id)
-{
-	
-	strihcode(id);
-	printf("Название  %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c Цена %d Скидка %d Цена со скидкой: %2.f\n",name[id][0], name[id][1], name[id][2], name[id][3], name[id][4], name[id][5], name[id][6], name[id][7], name[id][8], name[id][9], name[id][10], name[id][11], name[id][12], name[id][13], name[id][14], name[id][15], name[id][16], name[id][17], name[id][18], name[id][19], cost[id], skidka[id], costs[id]);
+	printf("%s Название  %s Цена %d Скидка %d Цена со скидкой: %2.f\n", code, name[id], cost[id], skidka[id], costs[id]);
 }//получение информация о товаре
 int scan()
 {
-	int s;
+	char s[5];
 	printf("Введите номер товара(1-9999): ");
-	scanf("%d", &s);
-	if (s == 0) 
+	scanf("%s", &s);
+	if ((s[1] == '0')&&(s[2]== '0')&&(s[3]== '0')&&(s[4]== '0'))   
 	{
 		printf("Отмена сканирования");
 		return;
@@ -85,31 +67,30 @@ int scan()
 int main()
 {
 	int nomer=0, i=0, x=0, flag=1, choice, b, j=0,  vla=0, kat=0, love=0, rofl=0, lasttry=0, superflag=0;
-	int kolvopovtorov[10000]={1};
+	int kolvopovtorov[N]={1};
 	float sum=0, taktaev=0;
 	setlocale(LC_ALL, "Russian");
 	srand((unsigned)time(0));
-	for (i = 0; i < 10000; i++)
+	for (i = 0; i < N; i++)
 	{
-		while((x<10)||(x>15000))
-			x=rand();
-			cost[i]=x;
-			x=0;
-		
+		x = 10 + rand() % (15000 - 10 + 1);
+		cost[i]=x;
+		x=0;
+
 	}
-	for (i = 0; i < 10000; i++)
+	for (i = 0; i < N; i++)
 	{
-		while ((x<2)||(x>50))
-			x=rand();
-			skidka[i]=x;
-			x=0;
-		
+
+		x= 2 + rand() % (50 - 10 + 1);
+		skidka[i]=x;
+		x=0;
+
 	}
-	for (i = 0; i < 10000; i++)
+	for (i = 0; i < N; i++)
 	{
 		codes[i]=i;
 	}//циклы с заполнением массивов скидок цен и номеров
-	for (i = 0; i < 10000; i++)
+	for (i = 0; i < N; i++)
 	{
 		costs[i]=((100 - skidka[i]) * cost[i])/100;
 	}
