@@ -1,4 +1,4 @@
-﻿#include <stdio.h>
+#include <stdio.h>
 void main() 
 {
     double V1, V2, V3, V4, V5, m1, m2, m3, m4, m5, M;
