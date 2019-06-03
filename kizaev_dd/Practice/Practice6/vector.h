@@ -6,8 +6,8 @@
 
 typedef struct
 {
-	int dim;
-	double *coord;
+    int dim;
+    double *coord;
 } vect;
 
 

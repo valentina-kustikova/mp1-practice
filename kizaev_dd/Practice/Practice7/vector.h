@@ -2,18 +2,18 @@
 
 class vect
 {
-	private:
-		int dim;
-		double* coord;
-	public:
-		vect ();
-		vect(int dim0);
-		vect(const vect& v0);
-		~vect();
+    private:
+        int dim;
+        double* coord;
+    public:
+        vect ();
+        vect(int dim0);
+        vect(const vect& v0);
+        ~vect();
 
-	vect operator+ (const vect& v) const;
+    vect operator+ (const vect& v) const;
     vect operator- (const vect& v) const;
-	double operator* (const vect& v) const;
+    double operator* (const vect& v) const;
 
     vect operator+ (double d) const;
     vect operator- (double d) const;
@@ -38,4 +38,4 @@ class vect
     void vect_read ();
 
     int operator==(const vect & v) const;
-};	
+};    

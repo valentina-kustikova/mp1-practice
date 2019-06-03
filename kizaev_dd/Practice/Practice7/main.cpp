@@ -4,33 +4,33 @@ using namespace std;
 
 int main()
 {
-	int dim1, dim2;
-	double scp, len1, eof;
+    int dim1, dim2;
+    double scp, len1, eof;
 
-	cout << "enter dimensions of vectors" << endl;
-	cin >> dim1 >> dim2;
+    cout << "enter dimensions of vectors" << endl;
+    cin >> dim1 >> dim2;
 
-	vect v1 (dim1);
-	vect v2 (dim2);
-	vect v3;
+    vect v1 (dim1);
+    vect v2 (dim2);
+    vect v3;
 
 
-	cout << "enter v1" << endl;
-	v1.vect_read();
-	cout << "enter v2" << endl;
-	v2.vect_read();
-		
-	cout << "check: v1 is "<< endl;
-	v1.vect_print();
+    cout << "enter v1" << endl;
+    v1.vect_read();
+    cout << "enter v2" << endl;
+    v2.vect_read();
+        
+    cout << "check: v1 is "<< endl;
+    v1.vect_print();
 
-	cout << "check: v2 is "<< endl;
-	v2.vect_print();
+    cout << "check: v2 is "<< endl;
+    v2.vect_print();
 
-	try 
+    try 
     {
         v3 = v1 + v2;
         cout << "v1 + v2" << endl;
-		v3.vect_print();
+        v3.vect_print();
     }
     catch (const char* text)
     {
@@ -41,42 +41,42 @@ int main()
     {
         v3 = v1 - v2;
         cout << "v1 - v2" << endl;
-		v3.vect_print();
+        v3.vect_print();
     }
     catch (const char* text)
     {
         cout << text << endl;
     }
 
-	cout << "v1" << endl;
-	v1.vect_print();
+    cout << "v1" << endl;
+    v1.vect_print();
     v1 -= 1;
     cout << "v1 -= 1" << endl;
-	v1.vect_print();
+    v1.vect_print();
 
-	cout << "v1" << endl;
-	v1.vect_print();
+    cout << "v1" << endl;
+    v1.vect_print();
     v1 += 7;
     cout << "v1 += 7" << endl;
-	v1.vect_print();
+    v1.vect_print();
 
-	cout << "v1" << endl;
-	v1.vect_print();
+    cout << "v1" << endl;
+    v1.vect_print();
     v1 *= 4;
     cout << "v1 *= 4" << endl;
-	v1.vect_print();
+    v1.vect_print();
 
-	cout << "v2" << endl;
-	v2.vect_print();
+    cout << "v2" << endl;
+    v2.vect_print();
     v1 = v2 + 100;
     cout << "v1 = v2 + 100" << endl;
-	v1.vect_print();
+    v1.vect_print();
     
-	cout << "v1" << endl;
-	v1.vect_print();
-	cout << "v1" << endl;
-	v2.vect_print();
-	try
+    cout << "v1" << endl;
+    v1.vect_print();
+    cout << "v1" << endl;
+    v2.vect_print();
+    try
     {
         scp = v1 * v2;
     }
@@ -93,14 +93,14 @@ int main()
     {
         cout << "v2[1] = " << v2[1] << endl;
         v2[1] = 55.0;
-		cout << "changing to 55.." << endl;
+        cout << "changing to 55.." << endl;
         cout << "v2[1] = " << v2[1] << endl;
     }
     catch (const char* text)
     {
         cout << text << endl;
     }
-	cout << "v2" << endl;
+    cout << "v2" << endl;
     v2.vect_print();
 
     cin >> eof;   

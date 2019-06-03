@@ -44,7 +44,7 @@ vect vect::operator- (const vect & v) const
 {
     if (dim != v.dim)
         throw "difference error: different dimensions";
-	vect sum(*this);
+    vect sum(*this);
     for (int i = 0; i < dim; i++)
         sum.coord[i] = sum.coord[i] - v.coord[i];
     return sum;
@@ -89,9 +89,9 @@ const vect& vect::operator= (const vect & v)
     {
         return *this;
     }
-	
-	delete[] coord;
-	dim = v.dim;
+    
+    delete[] coord;
+    dim = v.dim;
     coord = new double[dim];
     for (int i = 0; i < dim; i++)
         coord[i] = v.coord[i];
@@ -169,7 +169,7 @@ int vect::operator==(const vect & v) const
     for (int i = 0; i < dim; i++)
     {
         if (coord[i] != v.coord[i]) check = 1;
-		if (check == 1) return 0;
+        if (check == 1) return 0;
     }
-	return 1;
+    return 1;
 }
