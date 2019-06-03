@@ -43,37 +43,19 @@ void menu()
 	printf("Введите 5, для получения справки!\n");
 	printf("Введите 0 для выхода из программы!");
 }//меню
-void strihcode(int code)
-{
-	if(code <10)
-	{
-	printf("000%d", code);
-	}
-	else if (code < 100)
-	{
-		printf("00%d", code);
-	}
-	else if (code <1000)
-	{
-		printf("0%d", code);
-	}
-	else
-	{
-		printf("%d", code);
-	}
-}//вывод красивого штрихкода
-void info(int id)
+
+void info(char* code)
 {
 	
-	strihcode(id);
-	printf("Название  %c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c Цена %d Скидка %d Цена со скидкой: %2.f\n",name[id][0], name[id][1], name[id][2], name[id][3], name[id][4], name[id][5], name[id][6], name[id][7], name[id][8], name[id][9], name[id][10], name[id][11], name[id][12], name[id][13], name[id][14], name[id][15], name[id][16], name[id][17], name[id][18], name[id][19], cost[id], skidka[id], costs[id]);
+	
+	printf("%s Название  %s Цена %d Скидка %d Цена со скидкой: %2.f\n", code, name[id], cost[id], skidka[id], costs[id]);
 }//получение информация о товаре
 int scan()
 {
-	int s;
+	char s[5];
 	printf("Введите номер товара(1-9999): ");
-	scanf("%d", &s);
-	if (s == 0) 
+	scanf("%s", &s);
+	if ((s[1] == '0')&&(s[2]== '0')&&(s[3]== '0')&&(s[4]== '0'))   
 	{
 		printf("Отмена сканирования");
 		return;
@@ -91,18 +73,17 @@ int main()
 	srand((unsigned)time(0));
 	for (i = 0; i < 10000; i++)
 	{
-		while((x<10)||(x>15000))
-			x=rand();
-			cost[i]=x;
-			x=0;
+		x = 10 + rand() % (15000 - 10 + 1);
+		cost[i]=x;
+		x=0;
 		
 	}
 	for (i = 0; i < 10000; i++)
 	{
-		while ((x<2)||(x>50))
-			x=rand();
-			skidka[i]=x;
-			x=0;
+		
+		x= 2 + rand() % (50 - 10 + 1);
+		skidka[i]=x;
+		x=0;
 		
 	}
 	for (i = 0; i < 10000; i++)
