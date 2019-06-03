@@ -1,0 +1,7 @@
+6
+2 28.04.2019 12:00 12:10 Get up
+2 28.04.2019 12:10 16:00 Play some games
+2 28.04.2019 16:00 19:00 Go for a walk
+2 28.04.2019 19:00 23:50 Prepare this program for release and release it
+1 22.02.2001 Be born
+1 22.02.2019 Reach the age of majority
