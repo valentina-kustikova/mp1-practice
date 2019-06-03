@@ -3,8 +3,7 @@
 #include <time.h>
 #include <locale.h> 
 
-void main() 
-{
+void main() {
 	int  ask1, a=0, b, x, y=0, choice, ask2=0, max=1000, min=1, ent;
 	char quest;
 	setlocale(LC_ALL, "Russian"); 
@@ -15,7 +14,8 @@ void main()
 	{
 		printf("Отгдай число, которое загадал компьютер!\n");
 		srand((unsigned int)time(0));
-		x= 1 + rand() % 1000;
+		x=0;
+		x= 1 +rand() % 1000;
 		do
 		{
 			scanf("%d", &ask1);
@@ -39,7 +39,7 @@ void main()
 		printf("В зависимости от того числа, которое вы загадали, используйте символы \">\", \"<\" и \"=\"\nЕсли ваше чило меньше, введите\"<\"!\nЕсли ваше число больше, введите \">\"!\nЕсли компьютер угадал ваше число, то введите \"=\"!\n");
 		b=0;
 		srand((unsigned int)time(0));
-		y= 1 + rand() % 1000;
+		y= 1 +rand() % 1000;
 		printf("Предпологаемое компьютером число - %d!\n", y);
 		do
 		{
@@ -47,7 +47,7 @@ void main()
 			if(quest == '>')
 			{
 				while((ask2 <= y) || (ask2>max) || (ask2 < min))
-				ask2 = 1 + rand() % 1000;
+				ask2=rand();
 				b=b+1;
 				min=y;
 				y=ask2;
@@ -58,7 +58,7 @@ void main()
 			if(quest == '<')
 			{
 				while((ask2 >= y) || (ask2 < min) || (ask2 > max))
-				ask2 = 1 + rand() % 1000;
+				ask2=rand();
 				b=b+1;
 				max=y;
 				y=ask2;
@@ -67,10 +67,8 @@ void main()
 			}
 		}while(y != ent);
 		if(y == ent)
-		{
 			printf("Компьютер угадал ваше число %d за %d попыток!\n", y, b);
-			return;
-		}
+		return;
 	}
 	printf("Этот режим еще не придуман!\n");
 }
