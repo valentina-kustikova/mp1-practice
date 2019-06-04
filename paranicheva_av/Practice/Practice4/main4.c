@@ -69,7 +69,7 @@ void main()
     		scan[i][3] = i % 10 + '0';
     		scan[i][2] = (i / 10) % 10 + '0';
     		scan[i][1] = (i / 100) % 10 + '0';
-    		scan[i][0] = (i / 1000) + '0';
+		scan[i][0] = (i / 1000) + '0';
 	}
 
 	kolvo = (int*)malloc(max * sizeof(int));

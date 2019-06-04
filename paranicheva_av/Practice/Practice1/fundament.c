@@ -16,7 +16,7 @@ void main()
 			md = (h * w * 0.01 * pder);
 			mp = (floor((h - 2 * 0.015) / (0.4 + 0.015)) * (w - 2 * 0.015) * (d - 0.005) * 0.015 * pdsp);
 			M = (mzst + mbok + mvn + md + mp);
-			printf ("Massa shkapha %lf kg", M);
+	    printf ("Massa shkapha %lf kg", M);
 		}
 		else 
 		{
