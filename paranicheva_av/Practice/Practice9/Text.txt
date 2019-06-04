@@ -1,0 +1,6 @@
+5
+Type 2    12/08/2019   10:30   "feed the cat"  15
+Type 2    14/09/2019    12:45   "print some photos"   20
+Type 1   12/10/2019    "Veronika's Birthday"
+Type 2   06/06/2019   10:00  "receive the parcel"  30
+Type 1   01/06/2019 "Exam" 
