@@ -38,6 +38,9 @@ public:
 	void operator*=(int k);
 	void operator*=(Vector a);
 	void Delete();
+	friend istream& operator>> (istream&, Vector&); // Ввод
+	friend ostream& operator<< (ostream&, const Vector&); // Вывод
+	const double& operator[](int) const;
 };
 
 struct exeption
@@ -49,4 +52,3 @@ struct exeption
 		exp_type = type;
 	}
 };
-
