@@ -94,22 +94,29 @@ void Vector::Delete()
 		elements[i] = 0;
 	}
 }
+const double & Vector::operator[](int index) const
+{
+	if ((index < 0) || (index >= size))
+		throw exeption(BadIndex);
+
+	return elements[index];
+}
 ;
 void Vector::Input()
 {
-		int _size;
-		cout << "Input vector size ";
-		do {
-			cin >> size;
-		} while (size <= 0);
-		delete[] elements;
-		elements = new double[size];
-		cout << "Input vector" << endl;
-		for (int i = 0; i < size; i++)
-		{
-			cin >> elements[i];
-		}
-	
+	int _size;
+	cout << "Input vector size ";
+	do {
+		cin >> size;
+	} while (size <= 0);
+	delete[] elements;
+	elements = new double[size];
+	cout << "Input vector" << endl;
+	for (int i = 0; i < size; i++)
+	{
+		cin >> elements[i];
+	}
+
 };
 Vector::Vector(Vector& tmp)
 {
@@ -345,7 +352,7 @@ bool Vector::operator<=(double k)
 bool Vector::operator<=(Vector & x)
 {
 	bool a;
-	if (size<x.size)
+	if (size < x.size)
 	{
 		throw exeption(BadLength);
 	}
@@ -383,9 +390,9 @@ Vector Vector::operator-(const Vector & x)
 		return *this;
 	}
 	else
-		
-			throw exeption(BadLength);
-		
+
+		throw exeption(BadLength);
+
 };
 Vector Vector::operator+(double k)
 {
@@ -405,3 +412,28 @@ double& Vector::operator[](int index)
 	return elements[index];
 }
 
+istream & operator>>(istream &in, Vector &_vector)
+{
+	for (int i = 0; i < _vector.size; i++)
+		in >> _vector.elements[i];
+
+	return in;
+}
+
+ostream & operator<<(ostream &out, const Vector &_vector)
+{
+	if (_vector.size == 0)
+	{
+		out << "Empty vector.";
+		return out;
+	}
+
+	out << "(";
+
+	for (int i = 0; i < _vector.size; i++)
+		out << _vector[i] << ", ";
+
+	out << _vector[_vector.size - 1] << ")";
+
+	return out;
+}
