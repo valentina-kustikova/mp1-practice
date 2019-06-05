@@ -74,3 +74,9 @@ date::date(int a, int b, int c)
 	month = b;
 	year = c;
 }
+
+ostream & operator<<(ostream & out, const date & a)
+{
+	out << a.day << "." << a.month << "." << a.year << endl;
+	return out;
+}
