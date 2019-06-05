@@ -2,9 +2,9 @@
 enum exeption_type { Badparametrs, BadIndex };
 class Matrix
 {
+public:
 	double *m;
 	int runs, colc;
-public:
 	Matrix();
 	Matrix(const Matrix&);
 	Matrix(int a, int b);
@@ -17,10 +17,12 @@ public:
 	Matrix operator*(const Matrix&a);
 	const Matrix& operator=(const Matrix&a);
 	Matrix operator*(double);
-	const double operator[](int) const;
+	const double* operator[](int index_rows) const;
 	void PrintMatrix();
-	double & operator[](unsigned index);
+	double* operator[](int index_rows);
 	void Inputmatrix();
+	friend istream& operator>> (istream&, Matrix&); // Ввод
+	friend ostream& operator<< (ostream&, const Matrix&); // Вывод
 };
 struct exeption
 {
