@@ -120,12 +120,15 @@ Matrix Matrix::operator*(double k)
 	}
 	return result;
 }
-const double Matrix::operator[](int a) const
+
+const double * Matrix::operator[](int index_rows) const
 {
-	if (a > (colc*runs))
-		throw exeption(BadIndex);
-	return m[a * colc + 1];
+	if ((index_rows < 0) || (index_rows >= runs))
+		throw exeption(Badparametrs);
+
+	return(m + colc * index_rows);
 }
+
 void Matrix::PrintMatrix()
 {
 	int kek = 0;
@@ -175,10 +178,14 @@ void Matrix::PrintMatrix()
 		}
 	}
 }
-double& Matrix::operator[](unsigned index)
+double * Matrix::operator[](int index_runs)
 {
-	return m[index * colc + 1];
+	if ((index_runs < 0) || (index_runs >= runs))
+		throw exeption(Badparametrs);
+
+	return(m + colc * index_runs);
 }
+
 void Matrix::Inputmatrix()
 {
 	cout << "vvedi kolvo strok ";
@@ -192,4 +199,33 @@ void Matrix::Inputmatrix()
 	{
 		cin >> m[i];
 	}
+}
+
+istream & operator>>(istream &input, Matrix &_matrix)
+{
+	for (int i = 0; i < (_matrix.runs * _matrix.colc); i++)
+		input >> _matrix.m[i];
+
+	return input;
+}
+ostream & operator<<(ostream &out, const Matrix &_matrix)
+{
+	if ((_matrix.runs * _matrix.colc) == 0)
+	{
+		out << "Empty matrix.";
+		return out;
+	}
+
+	for (int i = 0; i < (_matrix.runs * _matrix.colc); i++)
+	{
+		if (i % _matrix.colc == 0)
+			out << "| ";
+
+		out << _matrix.m[i] << " ";
+
+		if ((i + 1) % _matrix.colc == 0)
+			out << "|" << endl;
+	}
+
+	return out;
 }
