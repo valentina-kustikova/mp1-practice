@@ -94,6 +94,13 @@ void Vector::Delete()
 		elements[i] = 0;
 	}
 }
+const double & Vector::operator[](int index) const
+{
+	if ((index < 0) || (index >= size))
+		throw exeption(BadIndex);
+
+	return elements[index];
+}
 ;
 void Vector::Input()
 {
@@ -403,4 +410,30 @@ double& Vector::operator[](int index)
 	}
 
 	return elements[index];
+}
+
+istream & operator>>(istream &in, Vector &_vector)
+{
+	for (int i = 0; i < _vector.size; i++)
+		in >> _vector.elements[i];
+
+	return in;
+}
+
+ostream & operator<<(ostream &out, const Vector &_vector)
+{
+	if (_vector.size == 0)
+	{
+		out << "Empty vector.";
+		return out;
+	}
+
+	out << "(";
+
+	for (int i = 0; i < _vector.size; i++)
+		out << _vector[i] << ", ";
+
+	out << _vector[_vector.size - 1] << ")";
+
+	return out;
 }
