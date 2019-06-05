@@ -16,4 +16,5 @@ public:
 	date(const date&tmp);
 	~date();
 	date(int, int, int);
+	friend ostream& operator<< (ostream& out, const date& a);
 };
