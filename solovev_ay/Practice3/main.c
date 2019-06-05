@@ -1,77 +1,66 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <locale.h> 
-
-void main() {
-    int  ask1, a=0, b, x, y=0, choice, ask2=0, max=1000, min=1, ent;
-    char quest;
-    setlocale(LC_ALL, "Russian"); 
-    printf("Игра \"Угадай число от 1 до 1000!\", с двумя режимами!\n");
-    printf("Если ты хочешь отгадать число, загаданное компьютером, введи \"1\"!\nЕсли хочешь, чтобы твое число отгадал компьютер, введи \"2\"!\n");
-    scanf("%d", &choice);
-    if (choice == 1)
-        {
-            printf("Отгдай число, которое загадал компьютер!\n");
-            srand((unsigned int)time(0));
-            x=0;
-            while((x < 1) || (x > 1000))
-                x=rand();
-            do
-            {
-                scanf("%d", &ask1);
-                a++;
-                if(ask1 > x)
-                    printf("Загаданное число меньше!\n");
-                if (ask1 <x)
-                    printf("Загаданное число больше!\n");
-            }while( ask1 !=x);
-            if (x == ask1)
-            {
-                printf("Вы угадали, загаданное число:%d\nПопыток - %d\n",x, a );
-                return;
-            }
-        }
-    if(choice == 2)
+#include <locale.h>
+#define N 10
+void main ()
+{
+	int randommas[N];
+	int osnova[N]={0, 1, 2, 3, 4, 5, 6, 7, 8, 9};//ввел массив как базу для создания рандомных чисел
+	int otvet[N];
+	int i=0, kolvoznakov=0, kolvokorov=0, kolvobykov=0, x=100, y, z, score=0;
+	setlocale(LC_ALL, "Russian");
+	srand((unsigned int)time(0));
+	printf("Введите количество знаков от 1 до 10\n");
+	while((kolvoznakov < 1) || (kolvoznakov > 10))
+		scanf("%d", &kolvoznakov);//проверка на ввод количества знаков
+	printf("Компьютер загадал %d значное число!", kolvoznakov);
+	//генерирую случайный массив randommas
+	i=kolvoznakov;
+	while (i>0)
+	{
+		x = 10.0/RAND_MAX * rand();
+		if (i == kolvoznakov) 
+			x=9.0/RAND_MAX * rand() +1;
+		//со второго знака генерирую от 0 до 9
+		if (osnova[x] != -1) //выполняется при начале работы с еще не задействованным эл-том osnova
+		{
+			randommas[i] = osnova[x];
+			osnova[x]=-1;//принимаю рандомные значения в массив//исключаю повторы
+			i--;
+		} 
+	}
+    do 
     {
-        printf("Загадай число и введи его!\n");
-        scanf("%d",&ent);
-        printf("Загаданное вами число - %d\n",ent);
-        printf("В зависимости от того числа, которое вы загадали, используйте символы \">\", \"<\" и \"=\"\nЕсли ваше чило меньше, введите\"<\"!\nЕсли ваше число больше, введите \">\"!\nЕсли компьютер угадал ваше число, то введите \"=\"!\n");
-        b=0;
-        srand((unsigned int)time(0));
-        while((y < 1) || (y > 1000))
-            y=rand();
-        printf("Предпологаемое компьютером число - %d!\n", y);
-        do
-        {
-            scanf("%c", &quest);
-            if(quest == '>')
+		x = 0;
+		printf("Введи число без повторяющихся цифр = ");
+		kolvobykov=0;
+        kolvokorov=0;//обнулил счетчики количества животных 
+		scanf("%d", &y);
+        score++;//записываю число попыток
+        for (i = kolvoznakov; i >0; i--)
+		{
+			otvet[i] = y % 10;
+			y = y / 10;
+        }//конвертирую вводимое пользователем число в массив вида 
+		for (i = kolvoznakov; i > 0; i--)
+		{
+            for (y = (i - 1); y > 0; y--)
+			{
+				if (otvet[i] == otvet[y]) x++;
+			}
+		} while (x != 0);
+        for (i = kolvoznakov; i >0; i--) 
+        { 
+            for (y = kolvoznakov; y >0 ; y--) 
             {
-                while((ask2 <= y) || (ask2>max) || (ask2 < min))
-                ask2=rand();
-                b=b+1;
-                min=y;
-                y=ask2;
-                ask2=0;
-                printf("Предпологаемое компьютером число - %d!\n", y);
-    
-            }
-            if(quest == '<')
-            {
-                while((ask2 >= y) || (ask2 < min) || (ask2 > max))
-                ask2=rand();
-                b=b+1;
-                max=y;
-                y=ask2;
-                ask2=0;
-                printf("Предпологаемое компьютером число - %d!\n", y);
-            }
-        }while(y != ent);
-        if(y == ent)
-            printf("Компьютер угадал ваше число %d за %d попыток!\n", y, b);
-        return;
-    }
-    printf("Этот режим еще не придуман!\n");
+                if ((randommas[i] == otvet[y]) && (i == y)) 
+                    kolvobykov++; //высчитываю быков
+                if ((randommas[i] == otvet[y]) && (i != y)) 
+                    kolvokorov++; //высчитываю коров
+            } 
+        }
+        printf("Коров = %d и Быков = %d \n", kolvokorov, kolvobykov);
+    } while (kolvobykov != kolvoznakov);
+	printf("Ты выиграл! Число попыток - %d!", score);
 }
-
