@@ -13,4 +13,5 @@ public:
 	void printtime();
 	int gethour();
 	int getmin();
+	friend ostream& operator<< (ostream& out, const time& a);
 };
