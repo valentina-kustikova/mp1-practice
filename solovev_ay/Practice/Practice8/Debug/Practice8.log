@@ -1,7 +1,0 @@
-﻿  Matrix.cpp
-c:\unn\mp1-practice\solovev_ay\practice\practice8\matrix.cpp(96): warning C4018: <: несоответствие типов со знаком и без знака
-c:\unn\mp1-practice\solovev_ay\practice\practice8\matrix.cpp(97): warning C4018: <: несоответствие типов со знаком и без знака
-c:\unn\mp1-practice\solovev_ay\practice\practice8\matrix.cpp(98): warning C4018: <: несоответствие типов со знаком и без знака
-c:\unn\mp1-practice\solovev_ay\practice\practice8\matrix.cpp(57): warning C4172: возвращение адреса локальной или временной переменной : result
-c:\unn\mp1-practice\solovev_ay\practice\practice8\matrix.cpp(80): warning C4172: возвращение адреса локальной или временной переменной : result
-  Practice8.vcxproj -> C:\unn\mp1-practice\solovev_ay\Practice\Debug\Practice8.exe
