@@ -47,3 +47,9 @@ int time::getmin()
 {
 	return min;
 }
+
+ostream & operator<<(ostream & out, const time & a)
+{
+	out << a.hour << ":" << a.min << " ";
+	return out;
+}
