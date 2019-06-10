@@ -90,8 +90,8 @@ void main ()
     do
     {
         result = game (dig, num , n, att);
-		att++;
-	}
+        att++;
+    }
     while (result != 0);
 
     system ("pause");
