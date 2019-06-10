@@ -3,10 +3,61 @@
 #include <stdlib.h>
 #include <time.h>
 
+int game (int* dig, int* num, int n, int att)
+{
+    int inp, flag = 0, i = 0, k;
+
+        printf ("enter your number \n");
+        scanf ("%d", &inp);
+
+        k = inp;
+
+        do
+        {
+            dig[n - 1 - i] = k % 10;
+            k = k / 10;
+            i++;
+        }
+        while (k != 0);
+        
+        if (i != n)
+        {
+            printf ("wrong length, try again \n");
+            return 1;
+        }
+        
+        for (i = 0; i <n ; i++)
+            for (int j = i + 1; j < n; j++)
+                if ((dig [i] == dig[j]))
+                {
+                    printf ("use a number with different digits \n");
+                    return 2;
+                }
+
+        int b = 0, c = 0;
+            for (i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    if ((num [i] == dig[j]))
+                        if (i == j)
+                            b++;
+                        else
+                            c++;
+        if (b == n)
+        {
+            printf ("You win! Number %d in %d attempts \n", inp, att);
+            return 0;
+        }
+        else
+        {
+            printf ("%d bulls, %d cows \n", b, c);
+            return 3;
+        }
+}
+
 void main ()
 {
     int dig[10], num [10];
-    int n = 0, k = 0, i, j, inp, flag, att;
+    int n = 0, k = 0, i, result;
     time_t t;
 
     srand ((unsigned) time(&t));
@@ -19,7 +70,7 @@ void main ()
     
     //creating a number with different digits
     for (i = 0; i <= 9; i++)
-        dig[i]=i; //array of unused digits
+        dig[i] = i; //array of unused digits
     
     num[0] = 1 + rand() % 9;
     dig[num[0]] = -1;
@@ -33,70 +84,15 @@ void main ()
         num[i] = dig[k];
         dig[k] = -1;
     }
-    /*
 
-    //show machine's number (debug)
-    for (i = 0; i < n; i++)
-    {
-        printf ("%d", num[i]);
-    }
-    printf ("\n");
-    printf ("try to guess! \n");
+	int att = 1;
 
-    */
-
-    //GAME
-    att = 0;
     do
     {
-        flag = 0;
-        printf ("enter your number \n");
-        scanf ("%d", &inp);
-        att++;
-        i = 0;
-        k = inp;
-        do
-        {
-            dig[n - 1 - i] = k % 10;
-            k = k / 10;
-            i++;
-        }
-        while (k != 0);
-        
-        //looking for wrong input
-        
-        if (i != n)
-            flag = 1;
-        else
-            for (i = 0; i <n ; i++)
-                for (j = i + 1; j < n; j++)
-                    if ((dig [i] == dig[j]))
-                        flag = 2;
-        
-        //error reports OR game
-        if (flag == 1)
-            printf ("wrong length, try again \n");
-        else
-            if (flag == 2)
-                printf ("use a number with different digits \n");
-            else
-            {
-                int b = 0, c = 0;
-                for (i = 0; i < n; i++)
-                    for (j = 0; j < n; j++)
-                        if ((num [i] == dig[j]))
-                            if (i == j)
-                                b++;
-                            else
-                                c++;    
-                if (b == n)
-                {
-                    printf ("You win! Number %d in %d attempts \n", inp, att);
-                    flag = 9;
-                }
-                else
-                    printf ("%d bulls, %d cows \n", b, c);
-            }        
-    }
-    while (flag != 9);
+        result = game (dig, num , n, att);
+		att++;
+	}
+    while (result != 0);
+
+    system ("pause");
 }
