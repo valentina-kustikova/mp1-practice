@@ -3,15 +3,136 @@
 #include <stdlib.h>
 #include <time.h>
 
+void game_1 ()
+{    
+    int att = 1, man = 1001, comp = 1 + rand() % 999;
+
+    while (man != comp)
+    {
+        printf ("enter your number \n");
+        scanf ("%d", &man);
+        att++;
+        if (man < comp)
+            printf ("Too little \n");
+        else
+            if (man > comp)
+                printf ("Too much \n");
+    }
+    printf ("You win! Number %d in %d attempts \n", comp, att);
+}
+
+void game_2 ()
+{
+    char answ = '!';
+    int comp = 0, att = 0, upper = 1001, lower = 1, man = 1001;
+
+    do
+    {
+        printf ("enter your number \n");
+        scanf ("%d", &man);
+    }
+    while ((man < 1) || (man > 1000));
+
+    printf ("trying to guess \n");
+    printf ("\n");
+
+    while (answ != '=') // (man != comp) makes the user say only true
+    {
+        att++;
+        comp = lower + (upper - lower) / 2;
+        printf ("%d \n", comp);
+        scanf ("%*c%c", &answ);
+
+                //write > if your number is > than computer's
+                //write < if your number is < than computer's
+
+        switch (answ)
+        {
+            case '<':
+                upper = comp;
+            break;
+            
+            case '>':
+                lower = comp;
+            break;
+
+            case '=':
+                printf ("I win! Number %d in %d attempts \n", comp, att);
+            break;
+
+            default:
+            {
+                printf("enter only >, <, = and don't lie :) \n");
+                printf("try again \n");
+            }
+            break;
+        }
+    }
+}
+
+void game_3 ()
+{
+    char answ = '!';
+    int comp = 0, att = 0, man = 1001, upper = 1001, lower = 1, prev = -1;
+
+    do
+    {
+        printf ("enter your number \n");
+        scanf ("%d", &man);
+    }
+    while ((man < 1) || (man > 1000));
+
+    printf ("trying to guess \n");
+    printf ("\n");
+
+    while (answ != '=') // (comp != man) // checking makes the user say only true
+    {
+        att++;
+        do
+            comp = lower + rand() % (upper - lower);
+        while (comp == prev);
+
+        printf ("%d \n", comp);
+        scanf ("%*c%c", &answ);
+
+        //write > if your number is > than computer's
+        //write < if your number is < than computer's
+
+        switch (answ)
+        {
+            case '<':
+                upper = comp;
+            break;
+
+            case '>':
+                lower = comp;
+            break;
+
+            case '=':
+                printf ("I win! Number %d in %d attempts \n", comp, att);
+            break;
+
+            default:
+            {
+                printf("enter only >, <, = and don't lie :) \n");
+                printf("try again \n");
+                break;
+            }
+        }
+    prev = comp;
+    }
+}
+
 void main ()
 {
-    int mode, att;
+    int mode;
     time_t t;
     
     mode = 0;
     srand ((unsigned) time(&t));
     
     printf ("choose game mode \n");
+
     do
     {
         printf ("1 - you guess \n");
@@ -21,122 +142,18 @@ void main ()
     } 
     while ((mode != 2) && (mode != 1) && (mode != 3));
     
-    if (mode == 1)
-    {
-        int man, comp;
-        comp = 1 + rand() % 999;
-        man = 1001;
-        att = 1;
-        while (man != comp)
-        {
-            printf ("enter your number \n");
-            scanf ("%d", &man);
-            att++;
-            if (man < comp)
-                printf ("Too little \n");
-            else
-                if (man > comp)
-                    printf ("Too much \n");
-        }
-        printf ("You win! Number %d in %d attempts \n", comp, att);
+    switch (mode)
+    {    
+        case 1:
+            game_1();
+        break;
+
+        case 2:
+            game_2();
+        break;
+        case 3:
+            game_3();
+        break;
     }
-    else
-        if (mode == 2)
-        {
-            char answ = '!';
-            int comp, man, upper, lower;
-            comp = 0;
-            att = 0;
-            upper = 1001;
-            lower = 1;
-            man = 1001;
-
-            do
-            {
-                printf ("enter your number \n");
-                scanf ("%d", &man);
-            }
-            while ((man < 1) || (man > 1000));
-
-            printf ("trying to guess \n");
-            printf ("\n");
-
-            while (answ != '=') // (man != comp) makes the user say only true
-            {
-                att++;
-                comp = lower + (upper - lower) / 2;
-                printf ("%d \n", comp);
-                scanf ("%*c%c", &answ);
-            
-                //write > if your number is > than computer's
-                //write < if your number is < than computer's
-
-                if (answ == '<') // && (comp > man) // checking makes the user say only true
-                    upper = comp;
-                else
-                    if (answ == '>') // && (comp < man) // checking makes the user say only true
-                        lower = comp;
-                    else
-                        if (answ == '=') // && (comp = man) // checking makes the user say only true
-                            printf ("I win! Number %d in %d attempts \n", comp, att);
-                        else
-                        {
-                            printf("enter only >, <, = and don't lie :) \n");
-                            printf("try again \n");
-                            break;
-                        }
-            }
-        }
-        else
-            if (mode == 3)
-            {
-                char answ = '!';
-                int comp, man, upper, lower, prev;
-                comp = 0;
-                att = 0;
-                upper = 1001;
-                lower = 1;
-                man = 1001;
-                prev = -1;
-
-                do
-                {
-                    printf ("enter your number \n");
-                    scanf ("%d", &man);
-                }
-                while ((man < 1) || (man > 1000));
-
-                printf ("trying to guess \n");
-                printf ("\n");
-
-                while (answ != '=') // (comp != man) // checking makes the user say only true
-                {
-                    att++;
-                    do
-                        comp = lower + rand() % (upper - lower);
-                    while (comp == prev);
-
-                    printf ("%d \n", comp);
-                    scanf ("%*c%c", &answ);
-
-            //write > if your number is > than computer's
-            //write < if your number is < than computer's
-
-                    if (answ == '<') // && (comp > man)) // checking makes the user say only true
-                        upper = comp;
-                    else
-                        if (answ == '>') // && (comp < man)) // checking makes the user say only true
-                            lower = comp;
-                        else
-                            if (answ == '=') // && (comp = man)) // checking makes the user say only true
-                                printf ("I win! Number %d in %d attempts \n", comp, att);
-                            else
-                            {
-                                printf("enter only >, <, = and don't lie :) \n");
-                                printf("try again \n");
-                                break;
-                            }
-                prev = comp;
-                }
-            }
+    system ("pause");
 }
