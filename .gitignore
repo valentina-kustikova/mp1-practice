@@ -1,0 +1,12 @@
+
+*.tlog
+*.pdb
+*.obj
+*.log
+*.idb
+*.user
+*.exe
+*.ipch
+*.ilk
+*.db
+zoreev_mv/Practice/.vs/Practice/v15/.suo
