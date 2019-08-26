@@ -7,8 +7,8 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Krugi.c">
+    <ClCompile Include="Korov.c">
       <Filter>Файлы исходного кода</Filter>
     </ClCompile>
   </ItemGroup>
-</Project>
+</Project> 
