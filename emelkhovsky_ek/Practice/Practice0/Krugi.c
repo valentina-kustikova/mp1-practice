@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <math.h>
-#include <locale.h>
+
 
 void main()
 {
@@ -44,3 +42,4 @@ void main()
         return;
     }
 }
+

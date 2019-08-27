@@ -19,9 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{C07F35C6-4FC1-4234-8E8F-36262E58CAC5}</ProjectGuid>
+    <ProjectGuid>{2EFD4A1D-A996-4072-9583-22A111AAE4C6}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Practice0</RootNamespace>
+    <RootNamespace>Practice8</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -142,7 +142,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Krugi.c" />
+    <ClInclude Include="matrix.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="matrix.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
