@@ -1,9 +1,0 @@
-﻿  Header.c
-c:\unn\mp1-practice\solovev_ay\practice\practice6\header.c(87): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-c:\unn\mp1-practice\solovev_ay\practice\practice6\header.c(107): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-c:\unn\mp1-practice\solovev_ay\practice\practice6\header.c(108): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-c:\unn\mp1-practice\solovev_ay\practice\practice6\header.c(111): warning C4244: =: преобразование "double" в "float", возможна потеря данных
-c:\unn\mp1-practice\solovev_ay\practice\practice6\header.c(124): warning C4047: =: "int" отличается по уровням косвенного обращения от "void *"
-  Source.c
-  Создание кода...
-  Practice6.vcxproj -> C:\unn\mp1-practice\solovev_ay\Practice\Debug\Practice6.exe
