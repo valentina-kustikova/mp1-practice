@@ -8,36 +8,33 @@ class Vector {
 	double* elements;
 public:
 	Vector();//po umolch
-	void Input();//vvod
 	Vector(Vector& tmp);//copy
 	Vector(int _size);
 	Vector(int n, double*array);
 	~Vector();//destr
-	Vector operator=(const Vector&x);
+	const Vector& operator=(const Vector&x);
 	Vector operator+(double k);
 	double & operator[](int index);
-	Vector operator*(double k);
-	Vector operator*(const Vector&x);//umnozheniye peregr
-	Vector operator+(const Vector&x);//peregruzhen +
-	Vector operator=(double k);
-	bool operator>(Vector&x);
-	bool operator>(double k);
-	bool operator<(Vector & x);
-	bool operator<(double k);
-	bool operator>=(double k);
-	bool operator>=(Vector & x);
-	bool operator<=(double k);
-	bool operator<=(Vector& x);
+	const Vector& operator*(double k);
+	const Vector& operator*(const Vector&x);//umnozheniye peregr
+	const Vector& operator+(const Vector&x);//peregruzhen +
+	const Vector& operator=(double k);
+	bool operator>(const Vector&x)const;
+	bool operator>(const double k)const;
+	bool operator<(const Vector & x)const;
+	bool operator<(const double k)const;
+	bool operator>=(const double k)const;
+	bool operator>=(const Vector & x)const;
+	bool operator<=(const double k)const;
+	bool operator<=(const Vector& x)const;
 	Vector operator-(double k);//peregruzhen -
 	Vector operator-(const Vector & x);
-	void PrintVector();
-	double Skalyar(Vector b);
-	double Length();//length
-	void operator+=(int k);
-	void operator-=(int k);
+	double Skalyar(const Vector& b);
+	const double Length();//length
+	void operator+=(double k);
+	void operator-=(double k);
 	void operator*=(int k);
-	void operator*=(Vector a);
-	void Delete();
+	void operator*=(Vector& a);
 	friend istream& operator>> (istream&, Vector&); // Ввод
 	friend ostream& operator<< (ostream&, const Vector&); // Вывод
 	const double& operator[](int) const;
