@@ -13,8 +13,7 @@ Matrix::Matrix(const Matrix &rofl)
 	colc = rofl.colc;
 	unsigned elements = runs * colc;
 	m = new double[elements];
-	for (unsigned i = 0; i < elements; i++)
-		m[i] = rofl.m[i];
+	memcpy(m, rofl.m, elements);
 }
 Matrix::Matrix(int a, int b)
 {
@@ -23,7 +22,7 @@ Matrix::Matrix(int a, int b)
 	m = new double[runs*colc];
 	for (int i = 0; i < (runs*colc); i++)
 	{
-		m[i] = 0;
+		memset(m, 0, runs*colc);
 	}
 }
 Matrix::Matrix(double * am, int a, int b)
@@ -33,7 +32,7 @@ Matrix::Matrix(double * am, int a, int b)
 	m = new double[runs*colc];
 	for (int i = 0; i < (a*b); i++)
 	{
-		m[i] = am[i];
+		memcpy(m, am, runs*colc);
 	}
 }
 Matrix::~Matrix()
@@ -105,8 +104,7 @@ const Matrix& Matrix::operator=(const Matrix& _m)
 	colc = _m.colc;
 	int elements = runs * colc;
 	m = new double[elements];
-	for (unsigned i = 0; i < elements; i++)
-		m[i] = _m.m[i];
+	memcpy(m, _m.m, runs*colc);
 	return *this;
 }
 Matrix Matrix::operator*(double k)
@@ -129,77 +127,6 @@ const double * Matrix::operator[](int index_rows) const
 	return(m + colc * index_rows);
 }
 
-void Matrix::PrintMatrix()
-{
-	int kek = 0;
-	double count=m[0];
-	for (int i = 0; i < runs*colc; i++)
-	{
-		if (m[i] > count)
-			count = m[i];
-	}
-	if (count < 10)
-	{
-		for (int i = 0; i < (runs*colc); i++)
-		{
-			cout << m[i] << " ";
-			kek++;
-			if (kek == runs)
-			{
-				cout << endl;
-				kek = 0;
-			}
-		}
-	}
-	if ((count >10)&&(count<100))
-	{
-		for (int i = 0; i < (runs*colc); i++)
-		{
-			cout << m[i] << "  ";
-			kek++;
-			if (kek == runs)
-			{
-				cout << endl;
-				kek = 0;
-			}
-		}
-	}
-	if ((count > 100) && (count < 1000))
-	{
-		for (int i = 0; i < (runs*colc); i++)
-		{
-			cout << m[i] << "   ";
-			kek++;
-			if (kek == runs)
-			{
-				cout << endl;
-				kek = 0;
-			}
-		}
-	}
-}
-double * Matrix::operator[](int index_runs)
-{
-	if ((index_runs < 0) || (index_runs >= runs))
-		throw exeption(Badparametrs);
-
-	return(m + colc * index_runs);
-}
-
-void Matrix::Inputmatrix()
-{
-	cout << "vvedi kolvo strok ";
-	cin >> runs;
-	cout << "vvedi kolvo stolbcov: ";
-	cin >> colc;
-	*this = Matrix(runs, colc);
-	unsigned elements = runs * colc;
-	cout << "vvedi elementi matrix ";
-	for (unsigned i = 0; i < elements; i++)
-	{
-		cin >> m[i];
-	}
-}
 
 istream & operator>>(istream &input, Matrix &_matrix)
 {
