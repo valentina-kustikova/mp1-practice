@@ -91,7 +91,7 @@ void skalyar(VECTOR a, VECTOR b)
 		{
 			sum += (a.elements[i] * b.elements[i]);
 		}
-		printf("\n %d", sum);
+		return sum;
 	}
 	else
 	{
@@ -132,7 +132,7 @@ void corner(VECTOR a, VECTOR b)
 		znam = lengthb * lengtha;
 		cosinius = skalur / znam;
 		otv = acos(cosinius);
-		printf("ugol %f rad, %f gradusov, cos = %f", otv, otv*(180 / 3.14), cosinius);
+		return otv;
 	}
 	else
 	{
