@@ -4,14 +4,7 @@ class date
 {
 public:
 	int day, month, year;
-	void input();
-	int getday();
-	int getmonth();
-	int getyear();
-	void setday(int a);
-	void setmonth(int a);
-	void setyear(int a);
-	bool operator==(const date&);
+	bool operator==(const date&)const;
 	date();
 	date(const date&tmp);
 	~date();
