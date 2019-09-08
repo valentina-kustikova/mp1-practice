@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <math.h>
 #include <stdlib.h>
 #include "rofl.h"
@@ -26,39 +26,39 @@ int main() {
 			{
 			case 1:
 				c = a + b;
-				c.PrintVector();
+				cout << c << endl;
 				break;
 			case 2:
 				c = a + m;
-				c.PrintVector();
+				cout << c << endl;
 				break;
 			case 3:
 				a += 6;
-				a.PrintVector();
+				cout << a << endl;
 				break;
 			case 4:
 				c = a - b;
-				c.PrintVector();
+				cout << c << endl;
 				break;
 			case 5:
 				c = a - m;
-				c.PrintVector();
+				cout << c << endl;
 				break;
 			case 6:
 				a -= 6;
-				a.PrintVector();
+				cout << a << endl;
 				break;
 			case 7:
 				a * b;
-				a.PrintVector();
+				cout << a << endl;
 				break;
 			case 8:
 				c = a * m;
-				c.PrintVector();
+				cout << c << endl;
 				break;
 			case 9:
 				c *= m;
-				c.PrintVector();
+				cout << c << endl;
 				break;
 			case 10:
 				cout << "1)vector a\n2)vector b" << endl;
