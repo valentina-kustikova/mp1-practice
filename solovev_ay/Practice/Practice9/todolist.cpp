@@ -1,4 +1,4 @@
-﻿#include "tasktime.h"
+#include "tasktime.h"
 #include "todolist.h"
 #include "task.h"
 #include "taskall.h"
@@ -114,20 +114,20 @@ void list::print_tasks()
 	for (int i = 0; i < number; i++)
 		lists[i]->print();
 }
-void list::print_task_date()
+void list::print_task_date(int a, int b, int c)
 {
 	date tmp;
 	int _tmp;
 	cout << "zadaci po konkretnoi date" << endl;
 	cout << "vvedi den': ";
 	cin >> _tmp;
-	tmp.setday(_tmp);
+	tmp.day=a;
 	cout << "vvedi mesac: ";
 	cin >> _tmp;
-	tmp.setmonth(_tmp);
+	tmp.month=b;
 	cout << "vvedi god: ";
 	cin >> _tmp;
-	tmp.setyear(_tmp);
+	tmp.year=c;
 	int flag = 0;
 	for (int i = 0; i < number; i++)
 	{
