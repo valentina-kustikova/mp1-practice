@@ -64,3 +64,4 @@ void main()
 	} while (kolvobykov != kolvoznakov);
 	printf("Ты выиграл! Число попыток - %d!", score);
 }
+
