@@ -8,20 +8,13 @@ Vector::Vector()
 	this->elements = new double[size];
 	for (int i = 0; i < this->size; i++)
 	{
-		elements[i] = 0;
+		memset(elements, i, 0);
 	}
 };
-void Vector::PrintVector()
-{
-	for (int i = 0; i < this->size; i++)
-	{
-		std::cout << elements[i] << std::endl;
-	}
-};
-double Vector::Skalyar(Vector b)
+double Vector::Skalyar(const Vector& b)
 {
 	int i;
-	if (size < b.size)
+	if (size != b.size)
 	{
 		throw exeption(BadLength);
 	}
@@ -40,7 +33,7 @@ double Vector::Skalyar(Vector b)
 		printf("dlini ne sovpadayut");
 	}
 }
-double Vector::Length()
+const double Vector::Length()
 {
 	double length = 0, lengthout = 0;
 	for (int i = 0; i < this->size; i++)
@@ -50,14 +43,14 @@ double Vector::Length()
 	lengthout = sqrt(length);
 	return lengthout;
 };
-void Vector::operator+=(int k)
+void Vector::operator+=(double k)
 {
 	for (int i = 0; i < this->size; i++)
 	{
 		this->elements[i] = this->elements[i] + k;
 	}
 }
-void Vector::operator-=(int k)
+void Vector::operator-=(double k)
 {
 	for (int i = 0; i < this->size; i++)
 	{
@@ -71,53 +64,26 @@ void Vector::operator*=(int k)
 		this->elements[i] = this->elements[i] * k;
 	}
 }
-void Vector::operator*=(Vector a)
+void Vector::operator*=(Vector& a)
 {
-	if (this->size == a.size)
+	if (size != a.size)
 	{
-		for (int i = 0; i < this->size; i++)
-		{
-			this->elements[i] = this->elements[i] * a.elements[i];
-		}
+		throw exeption(BadLength);
 	}
-	else
+	for (int i = 0; i < this->size; i++)
 	{
-		{
-			throw exeption(BadLength);
-		}
+		this->elements[i] = this->elements[i] * a.elements[i];
 	}
 }
-void Vector::Delete()
-{
-	for (int i = 0; i < size; i++)
-	{
-		elements[i] = 0;
-	}
-}
+
 const double & Vector::operator[](int index) const
 {
 	if ((index < 0) || (index >= size))
 		throw exeption(BadIndex);
 
 	return elements[index];
-}
-;
-void Vector::Input()
-{
-	int _size;
-	cout << "Input vector size ";
-	do {
-		cin >> size;
-	} while (size <= 0);
-	delete[] elements;
-	elements = new double[size];
-	cout << "Input vector" << endl;
-	for (int i = 0; i < size; i++)
-	{
-		cin >> elements[i];
-	}
-
 };
+
 Vector::Vector(Vector& tmp)
 {
 	this->size = tmp.size;
@@ -154,21 +120,18 @@ Vector::~Vector()
 		size = 0;
 	}
 };
-Vector Vector::operator=(const Vector & x)
+const Vector& Vector::operator=(const Vector & x)
 {
-	if (size < x.size)
+	if (size != x.size)
 	{
 		throw exeption(BadLength);
 	}
 	this->size = x.size;
 	elements = new double[size];
-	for (int i = 0; i < size; i++)
-	{
-		elements[i] = x.elements[i];
-	}
+	memcpy(this->elements, x.elements, x.size);
 	return *this;
 };
-Vector Vector::operator*(double k)
+const Vector& Vector::operator*(double k)
 {
 	for (int i = 0; i < size; i++)
 	{
@@ -176,9 +139,9 @@ Vector Vector::operator*(double k)
 	}
 	return *this;
 }
-Vector Vector::operator*(const Vector & x)
+const Vector& Vector::operator*(const Vector & x)
 {
-	if (size < x.size)
+	if (size != x.size)
 	{
 		throw exeption(BadLength);
 	}
@@ -188,7 +151,7 @@ Vector Vector::operator*(const Vector & x)
 	}
 	return *this;
 };
-Vector Vector::operator+(const Vector & x)
+const Vector& Vector::operator+(const Vector & x)
 {
 	if (size < x.size)
 	{
@@ -205,7 +168,7 @@ Vector Vector::operator+(const Vector & x)
 	else
 		cout << "error";
 };
-Vector Vector::operator=(double k)
+const Vector& Vector::operator=(double k)
 {
 	for (int i = 0; i < size; i++)
 	{
@@ -213,10 +176,10 @@ Vector Vector::operator=(double k)
 	}
 	return *this;
 };
-bool Vector::operator>(Vector & x)
+bool Vector::operator>(const Vector & x)const
 {
 	bool a;
-	if (size < x.size)
+	if (size != x.size)
 	{
 		throw exeption(BadLength);
 	}
@@ -231,10 +194,9 @@ bool Vector::operator>(Vector & x)
 	if (konec > roflan)
 		return true;
 	else
-		printf("error");
-	return false;
+		return false;
 };
-bool Vector::operator>(double k)
+bool Vector::operator>(double k)const
 {
 	int ko = 0, konec;
 	for (int i = 0; i < size; i++)
@@ -249,11 +211,10 @@ bool Vector::operator>(double k)
 	}
 	else
 	{
-		printf("false");
 		return false;
 	}
 };
-bool Vector::operator<(Vector & x)
+bool Vector::operator<(const Vector & x)const
 {
 	if (size < x.size)
 	{
@@ -273,7 +234,7 @@ bool Vector::operator<(Vector & x)
 		printf("error");
 	return false;
 };
-bool Vector::operator<(double k)
+bool Vector::operator<(double k)const
 {
 	int ko = 0, konec;
 	for (int i = 0; i < size; i++)
@@ -293,7 +254,7 @@ bool Vector::operator<(double k)
 	}
 	return 0;
 }
-bool Vector::operator>=(double k)
+bool Vector::operator>=(double k)const
 {
 	int ko = 0, konec;
 	for (int i = 0; i < size; i++)
@@ -312,7 +273,7 @@ bool Vector::operator>=(double k)
 		return false;
 	}
 }
-bool Vector::operator>=(Vector &x)
+bool Vector::operator>=(const Vector &x)const
 {
 	bool a;
 	if (size < x.size)
@@ -332,7 +293,7 @@ bool Vector::operator>=(Vector &x)
 	else
 		return false;
 }
-bool Vector::operator<=(double k)
+bool Vector::operator<=(double k)const
 {
 	int ko = 0, konec;
 	for (int i = 0; i < size; i++)
@@ -349,7 +310,7 @@ bool Vector::operator<=(double k)
 	}
 }
 ;
-bool Vector::operator<=(Vector & x)
+bool Vector::operator<=(const Vector & x)const
 {
 	bool a;
 	if (size < x.size)
