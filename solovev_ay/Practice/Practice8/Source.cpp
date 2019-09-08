@@ -12,12 +12,12 @@ int main() {
 	cin >> d;
 	cout << "vvod matrix 1";
 	Matrix m1;
-	m1.Inputmatrix();
-	m1.PrintMatrix();
+	cin >> m1;
+	cout << m1;
 	cout << "vvod matrix 2";
 	Matrix m2;
-	m2.Inputmatrix();
-	m2.PrintMatrix();
+	cin >> m2;
+	cout << m2;
 	Matrix m3;
 	cout << "1)1+2\n2)m1+d\n3)m1-m2\n4)m1-d\n5)m1*m2" << endl;
 	do {
@@ -28,23 +28,23 @@ int main() {
 			{
 			case 1:
 				m3 = m1 + m2;
-				m3.PrintMatrix();
+				cout << m3;
 				break;
 			case 2:
 				m3 = m1 + d;
-				m3.PrintMatrix();
+				cout << m3;
 				break;
 			case 3:
 				m3 = m1 - m2;
-				m3.PrintMatrix();
+				cout << m3;
 				break;
 			case 4:
 				m3 = m1 - d;
-				m3.PrintMatrix();
+				cout << m3;
 				break;
 			case 5:
 				m3 = m1 * m2;
-				m3.PrintMatrix();
+				cout << m3;
 				break;
 				}
 			}
