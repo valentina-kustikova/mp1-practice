@@ -6,11 +6,13 @@
 #include <locale.h>
 #include <time.h>
 #include <locale.h>
+#define _CRT_SECURE_NO_WARNINGS
 #define MAX_LEN 4048//макс длина для строк
 #define ROFL 2000
 #define MAX_FILES 1000//предположительное количество файлов
 int kolvo = 0;//количество файлов
 #define K 150//для сортировки подсчетом
+
 void Merge(int *a, ULONGLONG *size, int l, int m, int r) //слияние
 {
 	int i, j = m + 1, h, tmp;
@@ -26,7 +28,9 @@ void Merge(int *a, ULONGLONG *size, int l, int m, int r) //слияние
 			j++;
 		}
 	}
+
 }
+
 void MergeSort(int *a, ULONGLONG *size, int l, int r)//разбиение
 {
 	int m;
@@ -43,6 +47,7 @@ void anihilation(ULONGLONG*filesize, ULONGLONG*filesizecopy, int* filesindex, in
 	{
 		filesize[i] = filesizecopy[i];
 		newindex[i] = filesindex[i];
+
 	}
 }
 int ListDirectoryContents(const wchar_t *sDir, ULONGLONG*filesize, wchar_t **fileNames)//вывод списка файлов
@@ -160,6 +165,7 @@ void choose(ULONGLONG* filesize, int kolvo, int*newindex)//сортировка 
 	{
 		min = filesize[i];
 		minind = i;
+
 		for (j = i + 1; j < kolvo; j++)
 		{
 			if (filesize[j] < min)
@@ -277,8 +283,8 @@ void main()
 			case 1:
 				scanf("%c", &e);
 				anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
-				start = clock();
 				printf("Сортировка пузырьком!\n");
+				start = clock();
 				bubble(filesize, newindex, kolvo);
 				end = clock();
 				for (i = 0; i < kolvo; i++)
@@ -291,8 +297,8 @@ void main()
 			case 2:
 				scanf("%c", &e);
 				anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
-				start = clock();
 				printf("Сортировка вставкой\n");
+				start = clock();
 				insert(filesize, newindex, kolvo);
 				end = clock();
 				for (i = 0; i < kolvo; i++)
@@ -305,8 +311,8 @@ void main()
 			case 3:
 				scanf("%c", &e);
 				anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
-				start = clock();
 				printf("Сортировка выбором\n");
+				start = clock();
 				choose(filesize, kolvo, newindex);
 				end = clock();
 				for (i = 0; i < kolvo; i++)
@@ -319,8 +325,8 @@ void main()
 			case 4:
 				scanf("%c", &e);
 				anihilation(filesizemain, filesize, filesindex, newindex, kolvo);
-				start = clock();
 				printf("Сортировка подсчетом!");
+				start = clock();
 				podschetom(filesize, kolvo, newindex);
 				end = clock();
 				for (i = 0; i < kolvo; i++)
