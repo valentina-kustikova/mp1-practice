@@ -13,11 +13,6 @@ public:
 	time a;
 	time aend;
 	date proverka();
-	void settime(time);
-	void settimeend(time);
-	void setend(time);
-	void input();
-	void print();
 	void fwrite(ofstream& file);
 	tasktime();
 	~tasktime();
