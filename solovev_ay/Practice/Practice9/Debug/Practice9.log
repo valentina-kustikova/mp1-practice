@@ -1,4 +1,0 @@
-﻿  todolist.cpp
-c:\users\sasha\mp1-practice\solovev_ay\practice\practice9\todolist.cpp(48): warning C4018: <: несоответствие типов со знаком и без знака
-c:\users\sasha\mp1-practice\solovev_ay\practice\practice9\todolist.cpp(69): warning C4715: list::read_number: значение возвращается не при всех путях выполнения
-  Practice9.vcxproj -> C:\Users\Sasha\mp1-practice\solovev_ay\Practice\Debug\Practice9.exe
