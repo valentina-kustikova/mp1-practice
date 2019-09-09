@@ -173,3 +173,17 @@ int vect::operator==(const vect & v) const
     }
     return 1;
 }
+
+istream& operator>>(istream &in, vect &v)
+{
+    for (int i = 0; i < v.dim; i++)
+        in >> v.coord [i];
+    return in;
+}
+
+ostream& operator<<(ostream &out, const vect& v)
+{
+    for (int i = 0; i < v.dim; i++)
+        out << v.coord[i] << " ";
+    return out;
+}

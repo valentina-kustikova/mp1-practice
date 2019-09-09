@@ -38,4 +38,7 @@ class vect
     void vect_read ();
 
     int operator==(const vect & v) const;
+
+    friend istream& operator>> (istream& stream, vect& v);
+    friend ostream& operator<< (ostream& stream, const vect& v);
 };    
