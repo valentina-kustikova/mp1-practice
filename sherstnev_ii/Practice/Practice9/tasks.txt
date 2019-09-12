@@ -1,0 +1,5 @@
+[Type 1][04:12:1990] - qwe
+[Type 2][03:03:1995][02:30] - ewq 
+[Type 2][03:03:1995][25:30] - task description
+[Type 1][04:17:1990] - task description
+~
