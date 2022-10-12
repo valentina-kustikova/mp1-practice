@@ -19,8 +19,8 @@ int main() {
 		return 1;
 	}
 	shelves = (int)h / 40;
-	mass = (dvp * h * w * 0.5f) + (dsp * 2 * h * d * 1.5f) + (dsp * 2 * w * d * 1.5f) + (wood * h * w) + (dsp * shelves * d * w * 1.5);
-	printf("%f", mass);
+	mass = ((dvp * h * w * 0.5f) + (dsp * 2 * h * d * 1.5f) + (dsp * 2 * w * d * 1.5f) + (wood * h * w) + (dsp * shelves * d * w * 1.5f)) / 10;
+	printf("%f\n", mass);
 
 	return 0;
 }
