@@ -16,11 +16,11 @@ int main() {
         int guessed;
         int num = rand() % 1000 + 1, moves = 0;
         
-        printf("Guess number in [0, 1000]\n");
+        printf("Guess number in [1, 1000]\n");
         do {
             scanf("%d", &guessed);
             while (guessed < 0 || guessed > 1000) {
-                printf("Number out of [0, 1000]\n");
+                printf("Number out of [1, 1000]\n");
                 scanf("%d", &guessed);
             }
 
