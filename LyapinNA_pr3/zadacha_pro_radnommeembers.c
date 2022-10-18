@@ -65,6 +65,7 @@ int main(){
             do{
                 printf("Its %d? (y, >, <)\n", guess);
                 scanf("%c", &a);
+                getchar();
                 switch(a){
                     case 'y':
                         printf("YEEEAH, I FOUND VALUE\n");
