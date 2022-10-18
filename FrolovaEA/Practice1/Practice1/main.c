@@ -37,7 +37,7 @@ int main()
 	k = (int)(h / 0.4);
 	v1 = h * w * t_dvp;
 	v2 = 2 * h * d * t_dsp;
-	v3 = 2 * w * d * t_dsp;
+	v3 = 2 * ( w - 2 * t_dsp ) * d * t_dsp;
 	v4 = 2 * w * h * t_wood;
 	v5 = k * ( w - 2 * t_dsp ) * d * t_dsp;
 	v_dsp = v2 + v3 + v5;
