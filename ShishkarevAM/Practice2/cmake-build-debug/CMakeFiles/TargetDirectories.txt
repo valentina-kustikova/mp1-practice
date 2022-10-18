@@ -1,0 +1,3 @@
+/Users/shkrvoff/CLionProjects/ShishkarevAM/Practice2/cmake-build-debug/CMakeFiles/Practice2.dir
+/Users/shkrvoff/CLionProjects/ShishkarevAM/Practice2/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/shkrvoff/CLionProjects/ShishkarevAM/Practice2/cmake-build-debug/CMakeFiles/rebuild_cache.dir
