@@ -3,7 +3,7 @@
 int main() {
 	int shelves;
 	float w, h, d, mass;
-	float wood = 1.54f, dsp = 1.0f, dvp = 0.95f;
+	float wood = 0.55f, dsp = 0.65f, dvp = 0.8f;
 	printf("Enter w, h, d ");
 	scanf_s("%f %f %f", &w, &h, &d);
 	if (h < 180 || h > 220) {
@@ -19,7 +19,7 @@ int main() {
 		return 1;
 	}
 	shelves = (int)h / 40;
-	mass = ((dvp * h * w * 0.5f) + (dsp * 2 * h * d * 1.5f) + (dsp * 2 * w * d * 1.5f) + (wood * h * w) + (dsp * shelves * d * w * 1.5f)) / 10;
+	mass = ((dvp * h * w * 0.5f) + (dsp * 2 * h * d * 1.5f) + (dsp * 2 * w * d * 1.5f) + (wood * h * w) + (dsp * shelves * d * (w - 3) * 1.5f)) / 1000;
 	printf("%f\n", mass);
 
 	return 0;
