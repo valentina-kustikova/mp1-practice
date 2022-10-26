@@ -64,27 +64,19 @@ int main() {
 	else {
 		int n1, number, r = 1000, l = 1, z = 0;
 		char q;
-		
 		printf("Input a number and I`ll try to guess it   ");
 		scanf("%d", &number);
 		getchar();
 
-		while (z == 0) {
-
-					
+		while (z == 0) {		
 			n1 = random_function(l, r);
-
-			printf("Print >, < or = if my variant is bigger or smoller pls \n ");
-			printf("It is a my number:\n %d", n1);
-			printf("It is bigger, smoller or mb i guessed? \n");
+			printf("Print >, < or = if my variant is bigger or smoller pls   \n ");
+			printf("It is a my number:\n %d  ", n1);
+			printf(" It is bigger, smaller or mb i guessed?  \n");
 			scanf("%c", &q);
 			getchar();
-			
-			
 			if (q == '>') r = n1;
-
 			else if (q == '<') l = n1;
-
 			else if (q == '=') {
 				printf("I new that! GG");
 				z = 1;
