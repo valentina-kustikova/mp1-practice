@@ -20,14 +20,14 @@ int main()
 	d *= 0.01;
 	back_wall = h * w * 0.005 * density_DVP;
 	side_wall = h * d * 0.015 * 2 * density_DSP;
-	upper_wall = (w-0.03) * d * 0.015 * 2 * density_DSP;
+	upper_wall = w * d * 0.015 * 2 * density_DSP;
 	doors = h * w * 0.01 * density_wood;
 	while (k >= 41.5)
 	{
 		k -= 41.5;
 		i++;
 	}
-	shelves = d * (w-0.03) * 0.015 * i * density_DSP;
+	shelves = d * w * 0.015 * i * density_DSP;
 	printf("overall wardrobe weight is %lf", back_wall + side_wall + upper_wall + shelves + doors);
 	return 0;
 }
