@@ -3,9 +3,9 @@
 int main()
 {
 	double h, w, d, back_wall, side_wall, upper_wall, shelves, doors, k;
-	double density_wood = 680;
+	double density_wood = 550;
 	double density_DSP = 650;
-	double density_DVP = 850;
+	double density_DVP = 800;
 	int i = 0;
 	printf("Enter wardrobe dimensions: height, width, depth: \n"); 
 	scanf_s("%lf %lf %lf", &h, &w, &d); 
