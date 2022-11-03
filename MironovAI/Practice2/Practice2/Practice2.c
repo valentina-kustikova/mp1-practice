@@ -70,7 +70,7 @@ int main() {
 		getchar();
 
 		while (z == 0) {		
-			n1 = random_function(l, r);
+			n1 = random_function(l+1,r-1);
 
 			if (number == n1) {
 				printf("OHHH, wait I GUESSED for %d attempts! ", count);
