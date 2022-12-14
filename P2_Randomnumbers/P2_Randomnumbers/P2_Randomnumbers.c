@@ -5,25 +5,26 @@
 
 void main() {
 	srand(time(NULL));
-	int gamemode, try = 1, x = 0, y = 1000, answer, guess, result;
+	int gamemode, try, x = 0, y = 1000, answer, guess, result;
 	char sign;
 
 	printf("\t\t\tHello, player!\n");
 
 	do {
 		printf("Choose gamemode (1 - bot guess the number, 2 - user guess the number)\n");
-		scanf_s("%d\n", &gamemode);
+		scanf_s("%d", &gamemode);
 	} while ((gamemode != 1) && (gamemode != 2));
 
 	switch (gamemode) {
 	case 1:
-		result = 0;
+		result = 0; try = 0;
 		answer = rand() % 1000;
 		printf("Enter the value\n");
 
 		do {
 			getchar();
 			scanf_s("%d", &guess);
+			try++;
 			while ((guess > 1000) || (guess < 0)) {
 				printf("\n>>> You entered wrong value! <<<\n");
 				scanf_s("%d", &guess);
@@ -40,8 +41,6 @@ void main() {
 				printf("Your value more of answer. Try again!\t");
 			}
 
-			try++;
-
 		} while (result != 1);
 
 		break;
@@ -50,9 +49,9 @@ void main() {
 
 
 	case 2:
-			result = 0;
+		result = 0; try = 0;
 		
-			printf("Enter the value, which you want to guess");
+			printf("Enter the value, which you want to guess\t");
 			getchar();
 			scanf_s("%d", &answer);
 			while ((answer < 0) || (answer > 1000)) {
@@ -64,7 +63,9 @@ void main() {
 ent:	do {
 			printf("Its %d? (y, >, <)\n", guess);
 			getchar();
-			scanf_s("%c", &sign);
+			do {
+				scanf_s("%c", &sign);
+			} while ((sign != '<') && (sign != 'y') && (sign != '>'));
 			switch (sign) {
 			case 'y':
 				printf("I FOUND VALUE\n");
