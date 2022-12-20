@@ -22,7 +22,7 @@ int main()
 	// Finding sizes
 	size_backwall = h * w * 0.5f;
 	size_sidewalls = 2 * h * d * 1.5f;
-	size_updownwalls = 2 * w * d * 1.5f;
+	size_updownwalls = 2 * (w - 3) * d * 1.5f;
 	size_doors = h * w;
 	size_shelves = shelves_count * (w - 3) * d * 1.5f;
 
