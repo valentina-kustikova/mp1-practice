@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{845F7BDF-C004-45D0-8EE0-D269E99E4D5D}</ProjectGuid>
-    <RootNamespace>P4KassApp</RootNamespace>
+    <ProjectGuid>{C348207D-BA86-40CB-82E7-ADE449847403}</ProjectGuid>
+    <RootNamespace>P5FileManager</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -76,6 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <PreprocessorDefinitions>_MBCS;%(PreprocessorDefinitions);CRT_NO_SECURE_WARNINGS</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -123,7 +124,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="P4_KassApp.c" />
+    <ClCompile Include="MAIN.c" />
+    <ClCompile Include="SORT.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="SORT.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
