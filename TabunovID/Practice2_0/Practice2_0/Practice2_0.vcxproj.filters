@@ -18,12 +18,12 @@
     <ClCompile Include="main.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="vector.c">
+    <ClCompile Include="matrix.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="vector.h">
+    <ClInclude Include="matrix.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
