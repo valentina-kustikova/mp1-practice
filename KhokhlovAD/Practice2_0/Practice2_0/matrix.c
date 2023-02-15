@@ -4,29 +4,33 @@
 
 void allocate_matrix(TMatrix** matrix, int n)
 {
-	(*matrix) = (TMatrix*)malloc(sizeof(TMatrix) * 10);
+	(*matrix) = (TMatrix*)malloc(sizeof(TMatrix) * 1);
 	(*matrix)->n = n*n;
-	(*matrix)->x = (int*)malloc(sizeof(int) * n);
+	(*matrix)->x = (int*)malloc(sizeof(int) * n * n);
 }
 
-void fill_matrix(TMatrix* matrix)
+void fill_matrix(TMatrix* matrix, int n)
 {
 	int i = 0;
-	for (i = 0; i < matrix->n; i++);
-	{
-		scanf("%d", &(matrix->x[i]));
+	for (; i < n; i++) {
+		int j = 0;
+		for (; j < n; j++) {
+			scanf("%d", &(matrix->x[i * n + j]));
+		}
 	}
+	printf("\n");
 }
 
 void print_matrix(TMatrix* matrix, int n)
 {
-	int i = 0;
-	for (; i < matrix->n; i++)
+	int j = 0;
+	for (; j < n; j++)
 	{
-		if (i % n == 0)
-			printf("\n");
-		printf("%d", matrix->x[i]);
-		
+		for (int i = 0; i < n; i++)
+		{
+			printf("%d ", matrix->x[j * n + i]);
+		}
+		printf("\n");
 	}
 	printf("\n");
 }
@@ -37,11 +41,11 @@ void free_matrix(TMatrix** matrix)
 	free(*matrix);
 }
 
-TMatrix* add_matrix(TMatrix* matrix1, TMatrix* matrix2)
+TMatrix* add_matrix(TMatrix* matrix1, TMatrix* matrix2, int n)
 {
 	TMatrix* res;
 	int i = 0;
-	allocate_matrix(&res, matrix1->n);
+	allocate_matrix(&res, n);
 	for (; i < res->n; i++)
 	{
 		res->x[i] = matrix1->x[i] + matrix2->x[i];
@@ -73,17 +77,22 @@ TMatrix* multi_const(TMatrix* matrix, int n)
 	return res;
 }
 
-TMatrix* multi_matrix(TMatrix* matrix1, TMatrix* matrix2)
+TMatrix* multi_matrix(TMatrix* matrix1, TMatrix* matrix2, int n)
 {
 	TMatrix* res;
-	int i = 0, j = 0;
+	int count = 0, k = 0, l = 0;
 	allocate_matrix(&res, matrix1->n);
-	for (; i < res->n; i++)
+	while (count < matrix1->n)
 	{
-		for (; j < res->n; j++)
+		int i = 0, j = 0, flag = 0;
+		while (flag < n)
 		{
-
+			res->x[count] += matrix1->x[k * n + i++] * matrix2->x[j++ * n + l];
+			flag++;
 		}
+		k++;
+		l++;
+		count++;
 	}
 	return res;
 }
