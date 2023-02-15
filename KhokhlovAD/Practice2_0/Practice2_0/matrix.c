@@ -87,7 +87,7 @@ TMatrix* multi_matrix(TMatrix* matrix1, TMatrix* matrix2, int n)
 		int i = 0, j = 0, flag = 0;
 		while (flag < n)
 		{
-			res->x[count] += matrix1->x[k * n + i++] * matrix2->x[j++ * n + l];
+			res->x[count] += matrix1->x[k * n + i++] * matrix2->x[j++ * n + l];   //i dont know why it isnt working
 			flag++;
 		}
 		k++;
