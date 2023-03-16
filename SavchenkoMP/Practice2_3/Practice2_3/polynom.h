@@ -3,10 +3,12 @@
 
 #include <fstream> 
 
-struct TPolynom {
+class TPolynom {
+private:
 	int degree;
 	float* coeff;
 
+public:
 	TPolynom(void);				// По умолчанию
 	TPolynom(const TPolynom& p);// Копирование
 	TPolynom(int _degree);		// Инициализатор (Преобразование типа?)
@@ -26,6 +28,9 @@ struct TPolynom {
 	TPolynom& operator+=(const TPolynom& p);
 	TPolynom& operator-=(const TPolynom& p);
 	TPolynom& operator*=(const TPolynom& p);
+
+	int& Degree();
+	float& Coeff(int ind);
 
 	void Fill_hand();		// Заполнение от руки
 	void Copy(const TPolynom& p);
@@ -47,13 +52,13 @@ struct TPolynom {
 		return out;
 	}
 
-
 	TPolynom Diff(const TPolynom& p);
 	TPolynom& DiffEq();
 
-
 	void Rebuffer(int newDegree);
 	void Rebuffer();
+
+private:
 	void Resize(int newDegree);
 	void _coeffcopy(float* c1, float* c2);
 };

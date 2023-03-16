@@ -126,9 +126,9 @@ int main() {
 	}
 	catch (const char* exc) {
 		cout << exc << endl;
-		return 1;
+		delete[] p;
+		return 1337;
 	}
-
 
 	delete[] p;
 	return 0;

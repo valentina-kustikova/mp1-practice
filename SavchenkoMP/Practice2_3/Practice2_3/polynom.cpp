@@ -80,7 +80,7 @@ TPolynom TPolynom::operator+(const TPolynom& p) {
 }
 TPolynom TPolynom::operator-(const TPolynom& p) {
 	TPolynom res(max_d(degree, p.degree));
-	
+
 	for (int i = res.degree; i >= 0; i--)
 		res.coeff[i] = 0.f;
 
@@ -172,15 +172,21 @@ void read_file(TPolynom** p, int& n) {
 		(*p)[i].Rebuffer(dgr);
 	}
 	for (int i = 0; i < n; i++) {
-		for (int j = (*p)[i].degree; j >= 0; j--)
-			file >> (*p)[i].coeff[j];
-		if (!(*p)[i].coeff[(*p)[i].degree])
+		for (int j = (*p)[i].Degree(); j >= 0; j--)
+			file >> (*p)[i].Coeff(j);
+		if (!(*p)[i].Coeff((*p)[i].Degree()))
 			(*p)[i].Rebuffer();
 	}
 
 	file.close();
 }
 
+int& TPolynom::Degree() {
+	return degree;
+}
+float& TPolynom::Coeff(int ind) {
+	return coeff[ind];
+}
 
 void TPolynom::Fill_hand() {
 	for (int i = degree; i >= 0; i--) {
@@ -189,22 +195,6 @@ void TPolynom::Fill_hand() {
 	}
 	cout << endl;
 }
-//void TPolynom::Show() {
-//	cout << coeff[degree];
-//	if (!coeff[degree]) {
-//		cout << "x^0" << endl;
-//		return;
-//	}
-//
-//	cout << "x^" << degree << " ";
-//	for (int i = degree - 1; i >= 0; i--) {
-//		if (coeff[i] > 0)
-//			cout << "+ " << coeff[i] << "x^" << i << " ";
-//		else if (coeff[i] < 0)
-//			cout << "- " << -coeff[i] << "x^" << i << " ";
-//	}
-//	cout << endl;
-//}
 void TPolynom::Copy(const TPolynom& p) {
 	this->Rebuffer(p.degree);
 	for (int i = degree; i >= 0; i--)
