@@ -2,22 +2,14 @@
 
 
 
-
-
-
 FILE* open_stream(const char* path) {
 	FILE* read;
 	read = fopen(path, "r");
 
-	if (read == NULL) {
-		printf("Файл не найден!");
-		return 0;
-	}
+	if (read == NULL) 
+		return NULL;
 	return read;
 }
-
-
-
 
 
 
@@ -30,13 +22,10 @@ int count_vacancy(FILE* read) {
 			lines_count++;
 	}
 
-	vacancy_count = (lines_count + 1) / 5;
+	vacancy_count = (lines_count + 1) / N;
 	printf("%d\n\n", vacancy_count);
 	return vacancy_count;
 }
-
-
-
 
 
 
@@ -46,48 +35,30 @@ void allocate_memory(vacancy** Vacancy, int countVacancy) {
 
 
 
-
-
-
 vacancy* fill_structures(FILE* file, int vacancyCount) {
 	vacancy* Vacancy;
-	allocate_memory(&Vacancy, vacancyCount);
-	int stringCount = vacancyCount * 5, j = 0, positionOnList = 1, v = 0, i = 1;
+	int stringCount = vacancyCount * N, j = 0, v = 0, i = 1;
 	char* text = (char*)malloc(100);
+	allocate_memory(&Vacancy, vacancyCount);
 	fseek(file, 0, SEEK_SET);
-	while ( j < stringCount ) {
 
-		if (i > 5) {
-			i = 1;
-			v++;
-		}
 
+	for (i = 0; i < vacancyCount; i++) {
 		fgets(text, 100, file);
-
-		if (i == 1) {
-			strcpy(Vacancy[v].employee, text);
-			Vacancy[v].ind = v + 1;
-		}
-		else if (i == 2)
-			strcpy(Vacancy[v].name_company, text);
-		else if (i == 3)
-			strcpy(Vacancy[v].salary, text);
-		else if (i == 4)
-			strcpy(Vacancy[v].work_cond, text);
-		else
-			strcpy(Vacancy[v].request, text);
-
-		//printf("\n %s", text);
-		j++; i++; 
+		strcpy(Vacancy[i].employee, text);
+		fgets(text, 100, file);
+		strcpy(Vacancy[i].name_company, text);
+		fgets(text, 100, file);
+		strcpy(Vacancy[i].salary, text);
+		fgets(text, 100, file);
+		strcpy(Vacancy[i].work_cond, text);
+		fgets(text, 100, file);
+		strcpy(Vacancy[i].request, text);
 	}
-
-	//printf("%s", text);
+	
 	free(text);
 	return Vacancy;
 }
-
-
-
 
 
 
@@ -100,20 +71,21 @@ int* search_employee(vacancy* Vacancy, int countVacancy) {
 	printf("Какую должность вы ищете?\t");
 	gets(str);
 	str2 = strcat(str, "\n");
+
 	for (; i < countVacancy; i++) {
+		res[i] = -1;
 		if (strcmp(str2, Vacancy[i].employee) == 0)
 		{
-			res[j] = Vacancy[i].ind;
+			res[j] = i;
 			j++;
 		}
 	}
 
-	
+	if (res[0] == -1)
+		return NULL;
+
 	return res;
 }
-
-
-
 
 
 
@@ -121,7 +93,7 @@ void output_info(vacancy* Vacancy, int* ind, int countVacancy) {
 	int sizeMas = 0;
 
 	for (int i = 0; i < countVacancy; i++) {
-		if ((ind[i] > 0) && (ind[i] <= Vacancy[countVacancy - 1].ind)) {
+		if (ind[i] != -1) {
 			sizeMas++;
 		}
 		else
@@ -129,22 +101,13 @@ void output_info(vacancy* Vacancy, int* ind, int countVacancy) {
 	}
 	printf("\n\nКоличество найденных вакансий: %d", sizeMas);
 	for (int i = 0; i < sizeMas; i++) {
-		printf("\nДолжность: %s Компания: %s Заработная плата: %s ", Vacancy[ind[i] - 1].employee, Vacancy[ind[i] - 1].name_company, Vacancy[ind[i] - 1].salary);
-		printf("Условия работы: %s Требования к вакансии: %s \n", Vacancy[ind[i] - 1].work_cond, Vacancy[ind[i] - 1].request);
+		printf("\nДолжность: %s Компания: %s Заработная плата: %s ", Vacancy[ind[i]].employee, Vacancy[ind[i]].name_company, Vacancy[ind[i]].salary);
+		printf("Условия работы: %s Требования к вакансии: %s \n", Vacancy[ind[i]].work_cond, Vacancy[ind[i]].request);
 	}
 }
-
-
 
 
 
 void free_memory(vacancy* Vacancy) {
 	free(Vacancy);
 }
-
-
-
-
-
-
-

@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define N 5
 
 typedef struct {
 	char employee[20], name_company[20], salary[10], work_cond[100], request[100];
-	unsigned char ind;
 }vacancy;
 
 FILE* open_stream(const char* path);
