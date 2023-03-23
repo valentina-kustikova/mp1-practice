@@ -22,7 +22,7 @@ int count_vacancy(FILE* read) {
 			lines_count++;
 	}
 
-	vacancy_count = (lines_count + 1) / N;
+	vacancy_count = (lines_count) / N;
 	printf("%d\n\n", vacancy_count);
 	return vacancy_count;
 }

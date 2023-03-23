@@ -29,5 +29,6 @@ int main() {
 
 	output_info(Vacancy, a, countVacancy);
 	free_memory(Vacancy);
+	fclose(file);
 	return 0;
 }
