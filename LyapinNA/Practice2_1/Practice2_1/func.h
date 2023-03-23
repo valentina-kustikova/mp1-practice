@@ -6,12 +6,12 @@
 #define N 5
 
 typedef struct {
-	char employee[20], name_company[20], salary[10], work_cond[100], request[100];
+	char* employee, name_company, salary, work_cond, request;
 }vacancy;
 
 FILE* open_stream(const char* path);
 int count_vacancy(FILE* read);
-void allocate_memory(vacancy** Vacancy, int countVacancy);
+void allocate_memory(vacancy* Vacancy, int countVacancy);
 vacancy* fill_structures(FILE* file, int vacancyCount);
 int* search_employee(vacancy* Vacancy, int countVacancy);
 void output_info(vacancy* Vacancy, int* ind, int countVacancy);

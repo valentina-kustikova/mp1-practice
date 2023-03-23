@@ -5,7 +5,7 @@
 int main() {
 	system("chcp 1251");
 	vacancy* Vacancy;
-	char* path = "list.txt";
+	const char* path = "list.txt";
 	FILE* file;
 
 	if (!(file = open_stream(path))) {
@@ -20,7 +20,8 @@ int main() {
 	}
 
 	int* a = (int*)malloc(sizeof(int) * countVacancy);
-	allocate_memory(&Vacancy, countVacancy);
+	Vacancy = (vacancy*)malloc(sizeof(vacancy) * countVacancy);
+	allocate_memory(Vacancy, countVacancy);
 	Vacancy = fill_structures(file, countVacancy);
 	if (!(a = search_employee(Vacancy, countVacancy))) {
 		printf("Вакансий по вашему запросу не было найдено!");
@@ -29,6 +30,7 @@ int main() {
 
 	output_info(Vacancy, a, countVacancy);
 	free_memory(Vacancy);
+	free(a);
 	fclose(file);
 	return 0;
 }

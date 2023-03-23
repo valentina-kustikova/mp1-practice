@@ -29,8 +29,15 @@ int count_vacancy(FILE* read) {
 
 
 
-void allocate_memory(vacancy** Vacancy, int countVacancy) {
-	(*Vacancy) = (vacancy*)malloc(sizeof(vacancy) * countVacancy);
+void allocate_memory(vacancy* Vacancy, int countVacancy) {
+	//Vacancy = (vacancy*)malloc(sizeof(vacancy) * countVacancy);
+	for (int i = 0; i < countVacancy; i++) {
+	     Vacancy[i].employee = (char*)malloc(100);
+		 Vacancy[i].name_company = (char*)malloc(100);
+		 Vacancy[i].salary = (char*)malloc(100);
+		 Vacancy[i].work_cond = (char*)malloc(100);
+		 Vacancy[i].request = (char*)malloc(100);
+	}
 }
 
 
