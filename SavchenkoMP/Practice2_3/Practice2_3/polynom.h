@@ -63,7 +63,7 @@ private:
 	void _coeffcopy(float* c1, float* c2);
 };
 
-void read_file(TPolynom*& p, int& n);
+void read_file(TPolynom*& p, int& n, std::string& f);
 
 inline int max_d(int a, int b) {
 	return (a > b) ? a : b;

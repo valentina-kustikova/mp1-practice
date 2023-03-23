@@ -26,8 +26,12 @@ int main() {
 	TPolynom* p;
 	TPolynom res;
 
+	string file;
+	cout << "¬ведите им€ файла с данными: ";
+	cin >> file;
+
 	try {
-		read_file(p, n);
+		read_file(p, n, file);
 
 		while (ans) {
 			system("cls");
