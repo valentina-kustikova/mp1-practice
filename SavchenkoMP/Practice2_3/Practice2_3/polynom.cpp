@@ -148,7 +148,7 @@ TPolynom& TPolynom::operator*=(const TPolynom& p) {
 	return *this;
 }
 
-void read_file(TPolynom** p, int& n) {
+void read_file(TPolynom*& p, int& n) {
 	/*
 	Чтение происходит из файла "data.txt"
 	-В первой строке - количество полиномов
@@ -166,16 +166,16 @@ void read_file(TPolynom** p, int& n) {
 		throw "Файл данных не открыт";
 
 	file >> n;
-	*p = new TPolynom[n];
+	p = new TPolynom[n];
 	for (int i = 0; i < n; i++) {
 		file >> dgr;
-		(*p)[i].Rebuffer(dgr);
+		p[i].Rebuffer(dgr);
 	}
 	for (int i = 0; i < n; i++) {
-		for (int j = (*p)[i].Degree(); j >= 0; j--)
-			file >> (*p)[i].Coeff(j);
-		if (!(*p)[i].Coeff((*p)[i].Degree()))
-			(*p)[i].Rebuffer();
+		for (int j = p[i].Degree(); j >= 0; j--)
+			file >> p[i].Coeff(j);
+		if (!p[i].Coeff(p[i].Degree()))
+			p[i].Rebuffer();
 	}
 
 	file.close();
@@ -291,10 +291,3 @@ float power(float x, int n) {
 		res *= x;
 	return res;
 }
-int max_d(int a, int b) {
-	return (a > b) ? a : b;
-}
-int min_d(int a, int b) {
-	return (a < b) ? a : b;
-}
-

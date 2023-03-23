@@ -27,7 +27,7 @@ int main() {
 	TPolynom res;
 
 	try {
-		read_file(&p, n);
+		read_file(p, n);
 
 		while (ans) {
 			system("cls");
@@ -124,7 +124,7 @@ int main() {
 			}
 		}
 	}
-	catch (const char* exc) {
+	catch (const char& exc) {
 		cout << exc << endl;
 		delete[] p;
 		return 1337;
