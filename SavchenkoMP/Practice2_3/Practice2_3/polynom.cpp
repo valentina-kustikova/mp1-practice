@@ -148,7 +148,7 @@ TPolynom& TPolynom::operator*=(const TPolynom& p) {
 	return *this;
 }
 
-void read_file(TPolynom*& p, int& n, string& f) {
+void read_file(TPolynom*& p, int& n) {
 	/*
 	Чтение происходит из файла "data.txt"
 	-В первой строке - количество полиномов
@@ -160,6 +160,10 @@ void read_file(TPolynom*& p, int& n, string& f) {
 
 	int dgr;
 	ifstream file;
+
+	string f;
+	cout << "Введите имя файла с данными: ";
+	cin >> f;
 
 	file.open(f);
 	if (!file.is_open())
