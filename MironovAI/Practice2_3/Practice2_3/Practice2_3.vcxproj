@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{3efb3003-48b2-4c81-b745-bbdfae9ab1bf}</ProjectGuid>
-    <RootNamespace>Practice22</RootNamespace>
+    <ProjectGuid>{820fc624-8cdb-4bda-81d9-24bc41fb8366}</ProjectGuid>
+    <RootNamespace>Practice23</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -127,14 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Maincpp.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Header.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header_banks.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\..\data.txt" />
+    <ClInclude Include="Header.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
