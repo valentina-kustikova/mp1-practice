@@ -30,6 +30,15 @@ int count_vacancy(FILE* read) {
 
 
 void allocate_memory(vacancy* Vacancy, int countVacancy) {
+<<<<<<< HEAD
+	for (int i = 0; i < countVacancy; i++)
+	{
+		Vacancy[i].employee = (char*)malloc(sizeof(char)*20);
+		Vacancy[i].name_company = (char*)malloc(sizeof(char)*20);
+		Vacancy[i].salary = (char*)malloc(sizeof(char)*20);
+		Vacancy[i].request = (char*)malloc(sizeof(char)*100);
+		Vacancy[i].work_cond = (char*)malloc(sizeof(char)*100);
+=======
 	//Vacancy = (vacancy*)malloc(sizeof(vacancy) * countVacancy);
 	for (int i = 0; i < countVacancy; i++) {
 	     Vacancy[i].employee = (char*)malloc(100);
@@ -37,6 +46,7 @@ void allocate_memory(vacancy* Vacancy, int countVacancy) {
 		 Vacancy[i].salary = (char*)malloc(100);
 		 Vacancy[i].work_cond = (char*)malloc(100);
 		 Vacancy[i].request = (char*)malloc(100);
+>>>>>>> a848c5f5844147b41727f04ad07b86707e541eec
 	}
 }
 
@@ -45,24 +55,26 @@ void allocate_memory(vacancy* Vacancy, int countVacancy) {
 vacancy* fill_structures(FILE* file, int vacancyCount) {
 	vacancy* Vacancy;
 	int stringCount = vacancyCount * N, j = 0, v = 0, i = 1;
-	char* text = (char*)malloc(100);
-	allocate_memory(&Vacancy, vacancyCount);
+	char* text = (char*)malloc(101);
+	Vacancy = (vacancy*)malloc(sizeof(vacancy) * vacancyCount);
+	allocate_memory(Vacancy, vacancyCount);
 	fseek(file, 0, SEEK_SET);
 
 
 	for (i = 0; i < vacancyCount; i++) {
-		fgets(text, 100, file);
+		fgets(text, 21, file);
 		strcpy(Vacancy[i].employee, text);
-		fgets(text, 100, file);
+		fgets(text, 21, file);
 		strcpy(Vacancy[i].name_company, text);
-		fgets(text, 100, file);
+		fgets(text, 21, file);
 		strcpy(Vacancy[i].salary, text);
-		fgets(text, 100, file);
+		fgets(text, 101, file);
 		strcpy(Vacancy[i].work_cond, text);
-		fgets(text, 100, file);
+		fgets(text, 101, file);
 		strcpy(Vacancy[i].request, text);
 	}
 	
+
 	free(text);
 	return Vacancy;
 }

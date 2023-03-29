@@ -1,1 +1,5 @@
+<<<<<<< HEAD
+C:\Users\Никита\mp1-practice\LyapinNA\Practice2_1\Practice2_1\x64\Debug\Practice2_1c.2try.exe
+=======
 C:\Users\itmm-y23b\Desktop\rep\mp1-practice\LyapinNA\Practice2_1\Practice2_1\x64\Debug\Practice2_1c.2try.exe
+>>>>>>> a848c5f5844147b41727f04ad07b86707e541eec

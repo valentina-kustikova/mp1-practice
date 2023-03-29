@@ -6,7 +6,17 @@
 #define N 5
 
 typedef struct {
+<<<<<<< HEAD
+	char* employee;
+	char* name_company;
+	char* salary;
+	char* work_cond;
+	char* request;
+	//char employee[20], name_company[20], salary[20], work_cond[100], request[100];
+	
+=======
 	char* employee, name_company, salary, work_cond, request;
+>>>>>>> a848c5f5844147b41727f04ad07b86707e541eec
 }vacancy;
 
 FILE* open_stream(const char* path);
