@@ -4,12 +4,7 @@
 
 int main() {
 	system("chcp 1251");
-<<<<<<< HEAD
-	char* path = "list.txt";
-=======
-	vacancy* Vacancy;
 	const char* path = "list.txt";
->>>>>>> a848c5f5844147b41727f04ad07b86707e541eec
 	FILE* file;
 
 	if (!(file = open_stream(path))) {
@@ -24,10 +19,8 @@ int main() {
 	}
 
 	int* a = (int*)malloc(sizeof(int) * countVacancy);
-<<<<<<< HEAD
+
 	vacancy* Vacancy;
-=======
->>>>>>> a848c5f5844147b41727f04ad07b86707e541eec
 	Vacancy = (vacancy*)malloc(sizeof(vacancy) * countVacancy);
 	allocate_memory(Vacancy, countVacancy);
 	Vacancy = fill_structures(file, countVacancy);
