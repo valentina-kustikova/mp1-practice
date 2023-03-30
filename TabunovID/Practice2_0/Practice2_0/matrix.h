@@ -17,4 +17,5 @@ TMatrix* add_const(TMatrix* matrix, float c);
 TMatrix* multi_matrix(TMatrix* matrix1, TMatrix* matrix2);
 TMatrix* multi_const(TMatrix* matrix, float c);
 
+void main_action();
 #endif
