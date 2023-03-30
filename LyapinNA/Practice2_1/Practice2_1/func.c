@@ -13,6 +13,13 @@ FILE* open_stream(const char* path) {
 
 
 
+char* enter_path() {
+	char* path = (char*)malloc(100);
+	printf("¬ведите путь: \t");
+	gets(path);
+	return path;
+}
+
 int count_vacancy(FILE* read) {
 	int vacancy_count = 0, lines_count = 1;
 

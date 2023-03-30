@@ -4,8 +4,10 @@
 
 int main() {
 	system("chcp 1251");
-	const char* path = "list.txt";
 	FILE* file;
+	char* path;
+
+	path = enter_path();
 
 	if (!(file = open_stream(path))) {
 		printf("Файл не найден!");

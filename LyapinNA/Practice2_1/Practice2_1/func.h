@@ -16,6 +16,7 @@ typedef struct {
 
 }vacancy;
 
+char* enter_path();
 FILE* open_stream(const char* path);
 int count_vacancy(FILE* read);
 void allocate_memory(vacancy* Vacancy, int countVacancy);
