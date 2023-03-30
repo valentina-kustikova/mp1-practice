@@ -11,7 +11,7 @@ int main() {
     int n;
     int* p = &n;
     BanksData* data;
-    int q ;
+    int q;
 
     do {
         q = BanksData::read(data, p, path);

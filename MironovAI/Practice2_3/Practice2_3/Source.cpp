@@ -9,7 +9,7 @@ using namespace std;
 
 //Input data
 int BanksData::read(BanksData*& data, int* p, const string& path) {
-    
+
     ifstream infile(path);
     if (!infile) {
         cout << "This file isn`t exist" << endl;
@@ -22,12 +22,12 @@ int BanksData::read(BanksData*& data, int* p, const string& path) {
         data = new BanksData[n];
         for (int i = 0; i < n; i++) {
             infile >> data[i];
-            
+
         }
         infile.close();
         return 0;
     }
-    
+
 
     return 0;
 }
@@ -49,7 +49,7 @@ ifstream& operator>>(ifstream& buf, BanksData& data)
 {
     buf >> data.name >> data.ownership >> data.count;
     data.deposits.resize(data.count);
-   
+
     for (int j = 0; j < data.count; j++) {
         buf >> data.deposits[j];
     }
@@ -167,5 +167,4 @@ string Deposit::get_name() const
 {
     return name;
 }
-
 
