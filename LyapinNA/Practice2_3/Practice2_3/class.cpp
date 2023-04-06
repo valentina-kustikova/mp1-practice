@@ -101,10 +101,10 @@ void output_info(vacancy* Vacancy, int* ind, int searchedVacancy)
 	for (int i = 0; i < searchedVacancy; i++) {
 		cout << "\n-------------------------------------------\n";
 		cout << Vacancy[ind[i]].GetEmployee() << endl;
-		cout << Vacancy[ind[i]].GetNameCompany() << endl;
-		cout << Vacancy[ind[i]].GetSalary() << endl;
-		cout << Vacancy[ind[i]].GetWorkCond() << endl;
-		cout << Vacancy[ind[i]].GetRequest() << endl;
+		cout << "Название компании: " << Vacancy[ind[i]].GetNameCompany() << endl;
+		cout << "Оплата труда: " << Vacancy[ind[i]].GetSalary() << " в месяц." << endl;
+		cout << "Условия труда: " << Vacancy[ind[i]].GetWorkCond() << endl;
+		cout << "Требования к соискателю: " << Vacancy[ind[i]].GetRequest() << endl;
 	}
 }
 
@@ -133,7 +133,6 @@ vacancy::vacancy(string employee, string nameCompany, string salary, string work
 //Определения геттеров
 string vacancy::GetNameCompany()
 {
-	
 	return nameCompany;
 }
 
