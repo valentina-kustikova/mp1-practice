@@ -3,13 +3,7 @@
 // количеством игроков.Среди множества спортивных команд определить команду,
 // которая имеет максимальное количество очков.
 
-
-#include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include "comand.h"
-#include "scan.h"
-#define STRLEN 10
 
 int main() {
 	output();

@@ -4,6 +4,11 @@
 // которая имеет максимальное количество очков.
 
 #pragma once
+
+#include <stdlib.h>
+
+#define STRLEN 10
+
 typedef struct comand{
 	char* Name;
 	char* City;
@@ -11,6 +16,7 @@ typedef struct comand{
 	int Points;
 	int Players;
 } Scommand;
+
 typedef struct commandbook {
 	Scommand* comands;
 	size_t length;

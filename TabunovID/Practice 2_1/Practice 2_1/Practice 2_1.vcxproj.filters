@@ -29,8 +29,5 @@
     <ClInclude Include="comand.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\git\mp1-practice\TabunovID\Practice 2_1\Practice 2_1\scan.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>
