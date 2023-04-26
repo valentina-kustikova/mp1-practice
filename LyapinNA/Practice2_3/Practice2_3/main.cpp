@@ -1,4 +1,4 @@
-#include "class.h"
+#include "stdafx.h"
 
 int main() {
 	system("chcp 1251");
@@ -27,10 +27,21 @@ int main() {
 	ind = new int[count]; //cout << count;
 	Vacancy = new vacancy[count];
 	Vacancy = fill_class(read, count);
-	if (!(ind = search_vacancy(Vacancy, count)))
+
+
+	auto srchVacancy = search_vacancy(Vacancy, count);
+	int searchedVacancy = get<1>(srchVacancy);
+	if (searchedVacancy == NULL)
 	{
 		cerr << "Искомых вакансий не было найдено!" << endl;
+		delete[] Vacancy;
+		delete[] ind;
+		read.close();
 		return 1;
+	}
+	else
+	{
+		output_info(get<0>(srchVacancy), get<1>(srchVacancy));
 	}
 		
 
