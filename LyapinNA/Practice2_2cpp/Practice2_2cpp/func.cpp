@@ -4,6 +4,33 @@
 
 
 
+ostream& operator<<(ostream& os, const vacancy& vac)
+{
+	os << "Профессия: " << vac.employee << endl;
+	os << "Название компании: " << vac.nameCompany << endl;
+	os << "Зарплата: " << vac.salary << endl;
+	os << "Условия труда: " << vac.workCond << endl;
+	os << "Требования к соискателю: " << vac.request << endl;
+	return os;
+}
+
+
+
+istream& operator>>(istream& is, vacancy& vac)
+{
+	string umpty;
+	getline(is, vac.employee);
+	getline(is, vac.nameCompany);
+	getline(is, vac.salary);
+	getline(is,	vac.workCond);
+	getline(is, vac.request);
+	getline(is, umpty);
+	return is;
+}
+
+
+
+
 //Функция открытия потока для чтения
 ifstream read_list(string path) {
 	ifstream read(path);
@@ -28,7 +55,7 @@ int count_vacancy(ifstream& read) {
 		++count;
 
 	//Определение числа вакансий
-	countVacancy = count / N;
+	countVacancy = (count + 1 )/ N;
 	if (countVacancy == 0) {
 		cerr << "Error: Число вакансий не может быть равным 0!";
 		return 1;
@@ -49,14 +76,7 @@ vacancy* fill_struct(ifstream& read, int countVacancy) {
 	read.clear();
 	read.seekg(0);
 	int i = 0;
-	for (; i < countVacancy; i++) {
-		getline(read, Vacancy[i].employee);
-		getline(read, Vacancy[i].nameCompany);
-		getline(read, Vacancy[i].salary);
-		getline(read, Vacancy[i].workCond);
-		getline(read, Vacancy[i].request);
-	}
-
+	for (; i < countVacancy; i++) read >> Vacancy[i];
 	return Vacancy;
 }
 
@@ -64,12 +84,13 @@ vacancy* fill_struct(ifstream& read, int countVacancy) {
 
 
 
-int search_vacancy(vacancy* Vacancy, int countVacancy) {
+vacancy* search_vacancy(vacancy* Vacancy, int countVacancy) {
 	int j = 0, k = 0;
 	string search;
+	vacancy* searchedVacancy;
 	int* index = new int[countVacancy];
 	cout << "Введите название профессии, которую вы ищете: " << endl;
-	cin >> search;
+	getline(cin, search);
 
 
 	for (; j < countVacancy; j++) {
@@ -84,25 +105,24 @@ int search_vacancy(vacancy* Vacancy, int countVacancy) {
 		return NULL;
 	}
 
-	print_info(Vacancy, k, index, countVacancy);
-	return 1;
+
+	searchedVacancy = new vacancy[k+1];
+	
+	for (j = 0; j < k; j++)	searchedVacancy[j] = Vacancy[index[j]];
+
+	searchedVacancy[k].employee = " "; //для обозначения конца массива
+
+	return searchedVacancy;
 }
 
 
 
 
-
-
-void print_info(vacancy* Vacancy, int countSearchedVacancy, int* indexes, int countVacancy) {
+void print_info(vacancy* Vacancy) {
 	int j = 0;
-	cout << "\nМы нашли вакансии (" << countSearchedVacancy << "шт) по Вашему запросу:" << "\n\n";
-	for (j = 0; (indexes[j] != -1) && (j < countVacancy); j++) {
-		cout << "\n-----------------------------------\n";
-		cout << "Профессия: " << Vacancy[indexes[j]].employee << endl;
-		cout << "Название компании: " << Vacancy[indexes[j]].nameCompany << endl;
-		cout << "Зарплата: " << Vacancy[indexes[j]].salary << endl;
-		cout << "Условия труда: " << Vacancy[indexes[j]].workCond << endl;
-		cout << "Требования к соискателю: " << Vacancy[indexes[j]].request << endl;
-	}
-		
+	for (j = 0; Vacancy[j].employee != " "; j++) {
+		cout << "\n\n-----------------------------------\n";
+		cout << Vacancy[j];
+		cout << "-----------------------------------\n";
+	}	
 }

@@ -16,20 +16,23 @@ int main() {
 	read = read_list(path);
 	countVacancy = count_vacancy(read);
 	vacancy* Vacancy = new vacancy[countVacancy];
-	Vacancy = fill_struct(read, countVacancy);
-	
-	
+	Vacancy = fill_struct(read, countVacancy);	
 
-
+	
 
 	//Поиск по названию
-	if (!(search_vacancy(Vacancy, countVacancy))) {
+	vacancy* srchVacancy;
+	if (!(srchVacancy = search_vacancy(Vacancy, countVacancy))) {
 		cerr << "Вакансий не было найдено!";
+		return 1;
 	}
-
+	
+	cout << "\nМы нашли вакансии по Вашему запросу:" << "\n\n";
+	print_info(srchVacancy);
 
 
 	read.close();
+	delete[] srchVacancy;
 	delete [] Vacancy;
 	system("pause");
 	return 0;
