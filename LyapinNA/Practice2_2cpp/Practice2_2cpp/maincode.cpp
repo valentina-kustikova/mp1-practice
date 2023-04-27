@@ -2,27 +2,14 @@
 
 int main() {
 	system("chcp 1251");
-	  
-
-
-	int countVacancy = 0;
-	string path = "list.txt";
-	ifstream read;
-
-
-
-
-	//Функции открытия потока, подсчета вакансий и заполнения структур 
-	read = read_list(path);
-	countVacancy = count_vacancy(read);
-	vacancy* Vacancy = new vacancy[countVacancy];
-	Vacancy = fill_struct(read, countVacancy);	
-
+	  	
+	string path;
+	path = input_path();
+	vacancyLib Vacancy(path);
 	
-
 	//Поиск по названию
-	vacancy* srchVacancy;
-	if (!(srchVacancy = search_vacancy(Vacancy, countVacancy))) {
+	vacancyLib srchVacancy = search_vacancy(Vacancy);
+	if (srchVacancy.countVacancy == 0) {
 		cerr << "Вакансий не было найдено!";
 		return 1;
 	}
@@ -31,9 +18,6 @@ int main() {
 	print_info(srchVacancy);
 
 
-	read.close();
-	delete[] srchVacancy;
-	delete [] Vacancy;
 	system("pause");
 	return 0;
 }
