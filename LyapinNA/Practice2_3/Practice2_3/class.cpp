@@ -9,6 +9,19 @@ vacancy::vacancy()
 	workCond = " ";
 }
 
+string vacancy::getInfoVacancy(int select)
+{
+	switch (select) {
+	case 1: return employee;
+	case 2: return nameCompany;
+	case 3: return to_string(salary);
+	case 4: return workCond;
+	case 5: return request;
+	default: return "Неправильный ввод параметра";
+	}
+}
+
+
 ostream& operator<<(ostream& os, const vacancy& vac)
 {
 	os << vac.employee << endl;
@@ -44,7 +57,7 @@ string enter_path()
 
 
 
-ifstream read_list(string path)
+ifstream read_list(const string& path)
 {
 	ifstream read(path);
 	if (!read)	cerr << "Файл не удалось открыть!" << endl;
@@ -71,7 +84,6 @@ int count_vacancy(ifstream& stream)
 vacancy* fill_class(ifstream& stream, int countVacancy)
 {
 	vacancy* Vacancy = new vacancy[countVacancy];
-	string empty, salary;
 	int i = 0;
 	stream.clear();
 	stream.seekg(0);
@@ -86,53 +98,104 @@ vacancy* fill_class(ifstream& stream, int countVacancy)
 
 
 
-tuple <vacancy*, int> search_vacancy(vacancy* Vacancy, int countVacancy)
+ostream& operator<<(ostream& os, const vacancyLib& vacLib)
+{
+	for (int i = 0; i < vacLib.count; i++) {
+		os << "----------------------------------------" << endl;
+
+		os << vacLib.Vacancy[i];
+		os << "----------------------------------------" << endl << endl << endl;
+	}
+	return os;
+}
+
+
+
+vacancyLib search_vacancy(vacancyLib& vaclib)
 {
 	string search;
-	int i = 0, count = 0, j = 0;
+	int i = 0, j = 0;
 	cout << "Введите название профессии, которую вы ищете: ";
 	getchar();
 	getline(cin, search);
 
-	int* index = new int[countVacancy];
+	int* index = new int[vaclib.count];
 
-	for (int k = 0; k < countVacancy; k++) 
+	for (int k = 0; k < vaclib.count; k++) 
 		index[k] = -1;
 
-	while (i < countVacancy) {
-		if (Vacancy[i].employee.compare(search) == 0) {
+	while (i < vaclib.count) {
+		if (vaclib.Vacancy[i].getInfoVacancy(1).compare(search) == 0) {
 			index[j] = i;
 			j++;
 		}
 		i++;
-	}
+	} 
 
 	vacancy* srchVacancy = new vacancy[j];
-
-	for (i = 0; i < j; i++) srchVacancy[i] = Vacancy[index[i]];
-
-	if (j == 0)
-		return make_tuple(srchVacancy, NULL);
-
-	return make_tuple(srchVacancy, j);
-}
-
-
-
-
-void output_info(vacancy* Vacancy, int searchedVacancy)
-{
-	if (searchedVacancy == 1)
-		cout << "По Вашему запросу была найдена 1 вакансия: ";
-	else if (searchedVacancy > 4)
-		cout << "По Вашему запросу было найдено " << searchedVacancy << " вакансий: ";
-	else
-		cout << "По Вашему запросу было найдно " << searchedVacancy << " вакансии: ";
-
-
-	for (int i = 0; i < searchedVacancy; i++) {
-		cout << "\n-------------------------------------------\n";
-		cout << Vacancy[i];
+	for (i = 0; i < j; i++)
+	{
+		srchVacancy[i] = vaclib.Vacancy[index[i]];
+		//cout << srchVacancy[i];
 	}
+	vacancyLib res(srchVacancy, j);
+	return res;
 }
 
+
+
+
+
+vacancyLib::vacancyLib()
+{
+	count = 0;
+	Vacancy = nullptr;
+}
+
+
+
+vacancyLib::vacancyLib(const string& path)
+{
+	ifstream read;
+	read = read_list(path);
+	count = count_vacancy(read);
+	Vacancy = new vacancy[count];
+	Vacancy = fill_class(read, count);
+	read.close();
+}
+
+vacancyLib::vacancyLib(vacancy* OutVacancy, int OutCount)
+{
+	count = OutCount;
+	Vacancy = new vacancy[count];
+	for (int i = 0; i < count; i++) Vacancy[i] = OutVacancy[i];
+}
+
+vacancyLib::vacancyLib(const vacancyLib& vac_copy)
+{
+	Vacancy = new vacancy[vac_copy.count];
+	count = vac_copy.count;
+	for (int i = 0; i < count; i++) Vacancy[i] = vac_copy.Vacancy[i];
+}
+
+vacancyLib::~vacancyLib()
+{
+	delete[] Vacancy;
+}
+
+vacancyLib& vacancyLib::operator= (const vacancyLib& cp_vac)
+{
+	if (this == &cp_vac) { // проверяем, что мы не присваиваем объект самому себе
+		return *this;
+	}
+	if (count != cp_vac.count) { // проверяем, если количество элементов изменилось, то освобождаем память и выделяем новую
+		delete[] Vacancy;
+		count = cp_vac.count;
+		Vacancy = new vacancy[count];
+	}
+	for (int i = 0; i < count; i++) { // копируем значения из объекта cp_vac в текущий
+		Vacancy[i] = cp_vac.Vacancy[i];
+	}
+	return *this; // возвращаем ссылку на текущий объект
+
+}
