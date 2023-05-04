@@ -23,28 +23,9 @@ vacancyLib::vacancyLib(const string& path)
  
 	ifstream read;
 	countVacancy = 0;
+	read = read_list(path);
+	
 
-	/*if (!(read = read_list(path)))
-	{
-		cout << "Невозможно открыть файл!";
-		Vacancy = nullptr;
-	}
-	else 
-	{
-		countVacancy = count_vacancy(read);
-		Vacancy = new vacancy[countVacancy];
-		Vacancy = fill_struct(read, countVacancy);
-	}*/
-
-	try
-	{
-		read = read_list(path);
-	}
-	catch (const int ex)
-	{
-		cout << "Путь был введен неверно или файла не существует!" << endl;
-		Vacancy = nullptr;
-	}
 	countVacancy = count_vacancy(read);
 	Vacancy = new vacancy[countVacancy];
 	Vacancy = fill_struct(read, countVacancy);
@@ -94,6 +75,16 @@ istream& operator>>(istream& is, vacancy& vac)
 }
 
 
+ostream& operator<<(ostream& os, const vacancyLib vac)
+{
+	for (int j = 0; j < vac.countVacancy; j++) {
+		cout << "\n\n-----------------------------------\n";
+		cout << vac.Vacancy[j];
+		cout << "-----------------------------------\n";
+	}
+	return os;
+}
+
 
 
 string input_path()
@@ -108,22 +99,21 @@ string input_path()
 
 
 //Функция открытия потока для чтения
-ifstream read_list(const string path) {
+ifstream vacancyLib::read_list(const string path) {
 	ifstream read(path);
 
 	if (!read)
 	{
 		throw -1;
-		return read;
 	}
-	else return read;
+	else { return read; }
 
 }
 
 
 
 
-int count_vacancy(ifstream& read) {
+int vacancyLib::count_vacancy(ifstream& read) {
 	string line;
 	int count = 0, countVacancy = 0;
 	while (getline(read, line)) ++count;
@@ -143,7 +133,7 @@ int count_vacancy(ifstream& read) {
 
 
 
-vacancy* fill_struct(ifstream& read, int countVacancy) {
+vacancy* vacancyLib::fill_struct(ifstream& read, int countVacancy) {
 	vacancy* Vacancy = new vacancy[countVacancy];
 	read.clear();
 	read.seekg(0);
@@ -158,17 +148,17 @@ vacancy* fill_struct(ifstream& read, int countVacancy) {
 
 
 
-vacancyLib search_vacancy(vacancyLib InVacancyLibrary) {
+vacancyLib vacancyLib::search_vacancy() {
 	string search;
 	vacancy* searchedVacancy;
-	int* index = new int[InVacancyLibrary.countVacancy];
+	int* index = new int[countVacancy];
 	cout << "Введите название профессии, которую вы ищете: " << endl;
 	getchar();
 	getline(cin, search);
 	int j = 0, k = 0;
-	for (; j < InVacancyLibrary.countVacancy; j++) {
+	for (; j < countVacancy; j++) {
 		index[j] = -1;
-		if (InVacancyLibrary.Vacancy[j].employee.compare(search) == 0) {
+		if (Vacancy[j].employee.compare(search) == 0) {
 			index[k] = j;
 			k++;
 		}
@@ -178,22 +168,11 @@ vacancyLib search_vacancy(vacancyLib InVacancyLibrary) {
 		return empty;
 	}
 	searchedVacancy = new vacancy[k];
-	for (j = 0; j < k; j++)	searchedVacancy[j] = InVacancyLibrary.Vacancy[index[j]];
+	for (j = 0; j < k; j++)	searchedVacancy[j] = Vacancy[index[j]];
 	vacancyLib res(searchedVacancy, k);
 
 
 	return res;
 }
 
-
-
-
-void print_info(vacancyLib VacancyLib) {
-	int j = 0;
-	for (j = 0; j < VacancyLib.countVacancy; j++) {
-		cout << "\n\n-----------------------------------\n";
-		cout << VacancyLib.Vacancy[j];
-		cout << "-----------------------------------\n";
-	}	
-}
 

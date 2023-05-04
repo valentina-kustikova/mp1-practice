@@ -32,13 +32,15 @@ struct vacancyLib {
 	vacancyLib(const string& path);
 	vacancyLib(const vacancyLib& copy_vac);
 	~vacancyLib();
+
+	friend ostream& operator << (ostream& os, const vacancyLib vac);
+
+	ifstream read_list(const string path); 
+	int count_vacancy(ifstream& read);
+	vacancy* fill_struct(ifstream& read, int countVacancy);
+	vacancyLib search_vacancy();
 };
 
 
 
 string input_path();
-ifstream read_list(const string path); 
-int count_vacancy(ifstream& read);
-vacancy* fill_struct(ifstream& read, int countVacancy);
-vacancyLib search_vacancy(vacancyLib Vacancy);
-void print_info(vacancyLib VacancyLib);

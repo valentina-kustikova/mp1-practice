@@ -5,17 +5,27 @@ int main() {
 	  	
 	string path;
 	path = input_path();
-	vacancyLib Vacancy(path);
+
+	try
+	{
+		vacancyLib VacancyBase(path);
+		//cout << VacancyBase;
+		vacancyLib srchVacancy = VacancyBase.search_vacancy();
+
+		if (srchVacancy.countVacancy == 0) {
+			cerr << "Вакансий не было найдено!";
+			return 1;
+		}
 	
-	//Поиск по названию
-	vacancyLib srchVacancy = search_vacancy(Vacancy);
-	if (srchVacancy.countVacancy == 0) {
-		cerr << "Вакансий не было найдено!";
-		return 1;
+		cout << "\nМы нашли вакансии по Вашему запросу:" << "\n\n";
+		cout << srchVacancy << endl;
+	}
+	catch (const int ex) 
+	{
+		cout << "Путь был введен неверно или файла не существует!" << endl;
+		return 1;			
 	}
 	
-	cout << "\nМы нашли вакансии по Вашему запросу:" << "\n\n";
-	print_info(srchVacancy);
 
 
 	system("pause");
