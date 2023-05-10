@@ -2,15 +2,19 @@
 
 int main() {
 	system("chcp 1251");
-	string path = enter_path();
-	vacancyLib vacancyData(path);
-	cout << vacancyData;
-	cout << "\n\n\n\n\n";
 
+	try
+	{
+		string path = enter_path();
+		vacancyLib vacancyData(path);
+		vacancyLib searchedVacancyData;
+		searchedVacancyData = vacancyData.search_vacancy();
+		cout << searchedVacancyData;
+	}
+	catch (const int ex)
+	{
+		return 1;
+	}
 
-	vacancyLib searchedVacancyData;
-	searchedVacancyData = search_vacancy(vacancyData);
-
-	cout << searchedVacancyData;
 	return 0;
 }

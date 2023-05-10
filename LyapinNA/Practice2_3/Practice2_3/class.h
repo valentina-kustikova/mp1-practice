@@ -15,9 +15,6 @@ public:
 
 	string getInfoVacancy(int select);
 
-	friend vacancy* fill_class(ifstream& stream, int countVacancy);
-	//friend vacancyLib& search_vacancy(vacancyLib vaclib);
-
 	friend ostream& operator << (ostream& os, const vacancy& vac);
 	friend istream& operator >> (istream& is, vacancy& vac);
 };
@@ -38,8 +35,12 @@ public:
 	~vacancyLib();
 	vacancyLib& operator= (const vacancyLib& cp_vac);
 
+	vacancy* fill_from_txt(ifstream& stream, int countVacancy);
+	ifstream read_list(const string& path);
+	int count_vacancy(ifstream& stream);
+	vacancyLib search_vacancy();
+
 	friend ostream& operator << (ostream& os, const vacancyLib& vacLib);
-	friend vacancyLib search_vacancy(vacancyLib& vaclib);
 };
 
 
@@ -47,8 +48,4 @@ public:
 
 
 
-vacancy* fill_class(ifstream& stream, int countVacancy);
 string enter_path();
-ifstream read_list(const string& path);
-int count_vacancy(ifstream& stream);
-vacancyLib search_vacancy(vacancyLib& vaclib);

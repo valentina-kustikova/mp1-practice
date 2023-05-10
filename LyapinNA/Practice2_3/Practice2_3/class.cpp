@@ -57,7 +57,7 @@ string enter_path()
 
 
 
-ifstream read_list(const string& path)
+ifstream vacancyLib::read_list(const string& path)
 {
 	ifstream read(path);
 	if (!read)	cerr << "‘айл не удалось открыть!" << endl;
@@ -67,7 +67,7 @@ ifstream read_list(const string& path)
 
 
 
-int count_vacancy(ifstream& stream)
+int vacancyLib::count_vacancy(ifstream& stream)
 {
 	string text;
 	int count = 1;
@@ -81,7 +81,7 @@ int count_vacancy(ifstream& stream)
 
 
 
-vacancy* fill_class(ifstream& stream, int countVacancy)
+vacancy* vacancyLib::fill_from_txt(ifstream& stream, int countVacancy)
 {
 	vacancy* Vacancy = new vacancy[countVacancy];
 	int i = 0;
@@ -97,6 +97,38 @@ vacancy* fill_class(ifstream& stream, int countVacancy)
 }
 
 
+vacancyLib vacancyLib::search_vacancy()
+{
+	string search;
+	int i = 0, j = 0;
+	cout << "¬ведите название профессии, которую вы ищете: ";
+	getchar();
+	getline(cin, search);
+
+	int* index = new int[count];
+
+	for (int k = 0; k < count; k++) 
+		index[k] = -1;
+
+	while (i < count) {
+		if (Vacancy[i].getInfoVacancy(1).compare(search) == 0) {
+			index[j] = i;
+			j++;
+		}
+		i++;
+	} 
+
+	vacancy* srchVacancy = new vacancy[j];
+	for (i = 0; i < j; i++)
+	{
+		srchVacancy[i] = Vacancy[index[i]];
+		//cout << srchVacancy[i];
+	}
+
+	vacancyLib res(srchVacancy, j);
+	return res;
+}
+
 
 ostream& operator<<(ostream& os, const vacancyLib& vacLib)
 {
@@ -111,36 +143,6 @@ ostream& operator<<(ostream& os, const vacancyLib& vacLib)
 
 
 
-vacancyLib search_vacancy(vacancyLib& vaclib)
-{
-	string search;
-	int i = 0, j = 0;
-	cout << "¬ведите название профессии, которую вы ищете: ";
-	getchar();
-	getline(cin, search);
-
-	int* index = new int[vaclib.count];
-
-	for (int k = 0; k < vaclib.count; k++) 
-		index[k] = -1;
-
-	while (i < vaclib.count) {
-		if (vaclib.Vacancy[i].getInfoVacancy(1).compare(search) == 0) {
-			index[j] = i;
-			j++;
-		}
-		i++;
-	} 
-
-	vacancy* srchVacancy = new vacancy[j];
-	for (i = 0; i < j; i++)
-	{
-		srchVacancy[i] = vaclib.Vacancy[index[i]];
-		//cout << srchVacancy[i];
-	}
-	vacancyLib res(srchVacancy, j);
-	return res;
-}
 
 
 
@@ -158,9 +160,11 @@ vacancyLib::vacancyLib(const string& path)
 {
 	ifstream read;
 	read = read_list(path);
+	if (!read) throw - 1;
+
 	count = count_vacancy(read);
 	Vacancy = new vacancy[count];
-	Vacancy = fill_class(read, count);
+	Vacancy = fill_from_txt(read, count);
 	read.close();
 }
 
