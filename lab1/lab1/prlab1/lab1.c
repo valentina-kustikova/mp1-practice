@@ -7,6 +7,16 @@ void main()
 	double d;
 	printf("Input x1, y1, x2, y2, r1, r2\n");
 	scanf_s("%d %d %d %d %d %d", &x1, &y1, &x2, &y2, &r1, &r2);
+	if (r1 <= 0)
+	{
+		printf("1 Not a circle\n");
+		return;
+	}
+	if (r2 <= 0)
+	{
+		printf("2 Not a circle\n");
+		return;
+	}
 	d = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	if (x1 == x2 && y1 == y2 && r1 == r2)
 	{
