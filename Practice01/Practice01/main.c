@@ -21,19 +21,32 @@ int main()
     if ((x1 == x2) && (y1 == y2) && (r1 == r2))
     {
         printf("The circles coincide with each other");
-    };
-    if (d > (r1 + r2) || ((0 < d) && (d < (r1 - r2))))
+        return 0;
+    }
+    if (d > (r1 + r2))
     {
         printf("The circles are separated");
-    };
-    if (d == (r1 + r2) && (r1 != r2) || (d == (r1 - r2)) && ((r1 != r2)))
+        return 0;
+    }
+    if ((0 <= d) && (d < (r1 - r2)))
+    {
+        printf("The circles are separated");
+        return 0;
+    }
+    if (d == (r1 + r2) && (r1 != r2))
     {
         printf("The circles touch each other in one dot");
-    };
-    if (d > (r1 - r2) && (d < (r1 + r2)))
+        return 0;
+    }
+    if (d == (r1 - r2) && (r1 != r2))
+    {
+        printf("The circles touch each other in one dot");
+        return 0;
+    }
     {
         printf("The circles are crossed");
-    };
-return 0;
+        return 0;
+    }
+    return 0;
 
 }
