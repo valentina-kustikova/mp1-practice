@@ -3,7 +3,7 @@
 #include <time.h>
 int main()
 {
-    int mode, num, guess, attempts = 0, new;
+    int mode, num, guess, attempts = 0, end = 1000, start = 1;
     char hint;
     printf("select mode 1 or mode 2: ");
     scanf("%d", &mode);
@@ -11,7 +11,7 @@ int main()
     if (mode == 1)
     {
         srand((unsigned int)time(0));
-        num = ((1000 - 1) * rand()) / RAND_MAX + 1;
+        num = ((end - start) * rand()) / RAND_MAX + start;
         do
         {
             attempts += 1;
@@ -36,7 +36,7 @@ int main()
     {
         printf("input your number: \n");
         scanf("%d", &num);
-        guess = ((1000 - 1) * rand()) / RAND_MAX + 1;
+        guess = ((end - start) * rand()) / RAND_MAX + start;
         do
         {
             attempts += 1;
@@ -48,13 +48,19 @@ int main()
             {
                 printf("guess is: %d. Give a hint please \n", guess);
                 scanf("%c", &hint);
-                new = guess;
-                switch (hint)
+                if (hint == '>')
                 {
-                case '<': guess = ((1000 - new) * rand()) / RAND_MAX + new;
-                    break;
-                case '>': guess = ((new - 1) * rand()) / RAND_MAX + 1;
-                    break;
+                    start = guess;
+                    guess = ((end - start) * rand()) / RAND_MAX + start;
+                }
+                if (hint == '<')
+                {
+                    end = guess;
+                    guess = ((end - start) * rand()) / RAND_MAX + start;
+                }
+                if (hint == '=')
+                {
+                    printf("lol");
                 }
 
             }
