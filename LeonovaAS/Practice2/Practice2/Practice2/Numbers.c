@@ -37,35 +37,30 @@ int main()
         printf("input your number: \n");
         scanf("%d", &num);
         guess = ((end - start) * rand()) / RAND_MAX + start;
-        do
+        while (guess != num)
         {
             attempts += 1;
-            if (guess == num)
+            printf("guess is: %d. Give a hint please \n", guess);
+            getchar();
+            scanf("%c", &hint);
+            if (hint == '>')
             {
-                printf("computer won! his attempts: %d\n", attempts);
+                start = guess;
+                guess = ((end - start) * rand()) / RAND_MAX + start;
             }
-            else
+            if (hint == '<')
             {
-                printf("guess is: %d. Give a hint please \n", guess);
-                scanf("%c", &hint);
-                if (hint == '>')
-                {
-                    start = guess;
-                    guess = ((end - start) * rand()) / RAND_MAX + start;
-                }
-                if (hint == '<')
-                {
-                    end = guess;
-                    guess = ((end - start) * rand()) / RAND_MAX + start;
-                }
-                if (hint == '=')
-                {
-                    printf("lol");
-                }
-
+                end = guess;
+                guess = ((end - start) * rand()) / RAND_MAX + start;
             }
 
-        } while (guess != num);
+            
+            
+        } 
+        if (guess == num)
+        {
+            printf("Your number is: %d. Attempts: %d", guess, attempts);
+        }
     }
     return 0;
 }
