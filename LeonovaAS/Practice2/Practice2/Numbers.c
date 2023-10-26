@@ -40,9 +40,8 @@ int main()
         while (guess != num)
         {
             attempts += 1;
-            printf("guess is: %d. Give a hint please \n", guess);
-            getchar();
-            scanf("%c", &hint);
+            printf("guess is: %d. Give a hint please \n", guess);           
+            scanf(" %c", &hint);
             if (hint == '>')
             {
                 start = guess;
