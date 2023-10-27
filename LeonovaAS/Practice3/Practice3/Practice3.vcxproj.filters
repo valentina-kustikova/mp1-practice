@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Numbers.c">
+    <ClCompile Include="Cows_N_Bulls.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
