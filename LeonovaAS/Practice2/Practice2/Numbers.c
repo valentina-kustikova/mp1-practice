@@ -41,7 +41,7 @@ int main()
         {
             attempts += 1;
             printf("guess is: %d. Give a hint please \n", guess);           
-            scanf(" %c", &hint);
+            scanf("%*c%c", &hint);
             if (hint == '>')
             {
                 start = guess;
