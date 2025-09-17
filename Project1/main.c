@@ -3,7 +3,7 @@
 int main() {
 	float a, b, c;
 	scanf_s("%d %d %d", &a, &b, &c);
-	if (a < 0 || b < 0 || c < 0) {
+	if (a <= 0 || b <= 0 || c <= 0) {
 		printf("Incorrect input values!");
 		return 1;
 	}
