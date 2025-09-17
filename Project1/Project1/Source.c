@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <math.h>
 int main()
 {
-  int a, b;
-  scanf_s("%d %d", &a, &b);
-  printf("%d", a + b);
+  float v1, v2, s, t;
+  scanf_s("%f %f %f %f", &v1, &v2, &s, &t);
+  printf("%f", fabs(s-t*(v1+v2)));
   return 0;
 }
