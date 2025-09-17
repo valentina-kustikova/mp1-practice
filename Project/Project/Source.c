@@ -1,6 +1,8 @@
 #include <stdio.h>
 int main() {
-	int a = 1, b = 2;
-	printf("%d", a + b);
+	float a, b, c;
+	scanf("%f %f %f" &a,&b,&c)
+		if(a=b,a=c)
+        printf("Равностр треугольник")
 	return 0;
 }
