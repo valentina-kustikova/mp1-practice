@@ -1,8 +1,7 @@
 #include <stdio.h>
 int main() {
-	float a, b, ñ;
-	scanf_s("%f %f", &a, &b);
-	c = a + b;
-	printf("% f", ñ);
+	float v1, v2, s, t;
+	scanf("%f %f %f %f", &v1, &v2, &s, &t);
+	printf("s = %f", s = (v1+v2)*t)
 	return 0;
 }
