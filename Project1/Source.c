@@ -1,16 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 
-#define LEN 20
+#define LEN 512
 
 int main() {
-	int a, b;
+	float a, b, c;
+
+	setlocale(LC_ALL, "RUS");
+	
 	char line[LEN];
 	fgets(line, LEN, stdin);
-	a = atoi(line);
-	fgets(line, LEN, stdin);
-	b = atoi(line);
-	//sscanf_s(line, "%d%d", &a, &b);
-	printf("S=%d", a + b);
+	sscanf_s(line, "%f%f%f", &a, &b, &c);
+	
+	if (a <= 0 || b <= 0 || c <= 0) {
+		printf("Стороны должны быть положительными.");
+		return 1;
+	}
+
+	if (a >= b + c || b >= a + c || c >= b + c) {
+		printf("Треугольник не существует.");
+		return 2;
+	}
+
+	if (a == b && b == c) {
+		printf("Равносторонний");
+	} else if (a == b || b == c || a == c) {
+		printf("Равнобедренный");
+	} else {
+		printf("Треугольник общего вида");
+	}
+
 	return 0;
 }
