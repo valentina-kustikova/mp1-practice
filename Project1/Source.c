@@ -17,7 +17,7 @@ int main() {
 		return 1;
 	}
 
-	if (a >= b + c || b >= a + c || c >= b + c) {
+	if (a >= b + c || b >= a + c || c >= a + b) {
 		printf("Треугольник не существует.");
 		return 2;
 	}
