@@ -1,7 +1,8 @@
 #include <stdio.h>
 
 int main() {
-	int a = 4, b = 5;
-	printf("Sum = %d", a + b);
+	float v1, v2, s, t;
+	scanf_s("%f %f %f %f", &v1, &v2, &s, &t);
+	printf("S = %f", (v1 + v2) * t + s);
 	return 0;
 }
