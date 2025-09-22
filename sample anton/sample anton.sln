@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29509.3
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sample anton", "sample anton\sample anton.vcxproj", "{13C987CA-9ECC-4DCB-B007-DD04DCAFF9FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{13C987CA-9ECC-4DCB-B007-DD04DCAFF9FB}.Debug|x64.ActiveCfg = Debug|x64
+		{13C987CA-9ECC-4DCB-B007-DD04DCAFF9FB}.Debug|x64.Build.0 = Debug|x64
+		{13C987CA-9ECC-4DCB-B007-DD04DCAFF9FB}.Debug|x86.ActiveCfg = Debug|Win32
+		{13C987CA-9ECC-4DCB-B007-DD04DCAFF9FB}.Debug|x86.Build.0 = Debug|Win32
+		{13C987CA-9ECC-4DCB-B007-DD04DCAFF9FB}.Release|x64.ActiveCfg = Release|x64
+		{13C987CA-9ECC-4DCB-B007-DD04DCAFF9FB}.Release|x64.Build.0 = Release|x64
+		{13C987CA-9ECC-4DCB-B007-DD04DCAFF9FB}.Release|x86.ActiveCfg = Release|Win32
+		{13C987CA-9ECC-4DCB-B007-DD04DCAFF9FB}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2AEC29B1-7328-48C3-A4F6-6DEFAE3D430B}
+	EndGlobalSection
+EndGlobal
