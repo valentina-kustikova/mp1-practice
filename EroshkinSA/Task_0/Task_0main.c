@@ -45,7 +45,7 @@ int main() {
 			return 0;
 			// 0 0 5 and 3 0 4
 		}
-	} // Нормальный случай
+	} // Центр одной окружности находится вне второй
 	else {
 		if (distance < radius1 + radius2) {
 			printf("Okruzhnosti peresekaytsya");
