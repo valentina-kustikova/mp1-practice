@@ -2,13 +2,14 @@
 #include <locale.h>
 #include <math.h>
 
-int main() 
+int main()
 {
 	setlocale(LC_ALL, "");
 	float x1, y1, r1, x2, y2, r2;
-	scanf_s("%f %f %f %f %f %f",&x1,&y1,&r1,&x2,&y2,&r2);
+	printf("Введите данные в формате: x1 y1 r1 x2 y2 r2");
+	scanf_s("%f %f %f %f %f %f", &x1, &y1, &r1, &x2, &y2, &r2);
 	float rast = sqrt(fabs(x1 - x2) * fabs(x1 - x2) + fabs(y1 - y2) * fabs(y1 - y2));
-	if (r1 <= 0 || r2 <= 0) 
+	if (r1 <= 0 || r2 <= 0)
 	{
 		printf("Некорректные данные");
 		return 0;
@@ -49,6 +50,6 @@ int main()
 		return 0;
 	}
 	printf("Окружности пересекаются в двух точках");
-	return 0; 
+	return 0;
 
 }
