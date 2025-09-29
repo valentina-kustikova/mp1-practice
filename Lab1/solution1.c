@@ -3,19 +3,19 @@
 
 int main() {
 	float x1, y1, r1, x2, y2, r2, dist;
-	printf("Введите координаты и радиус 1 окружности:\n");
+	printf("Enter coordinates and radius of 1st circle:\n");
 	scanf_s("%f %f %f", &x1, &y1, &r1);
-	printf("Введите координаты и радиус 2 окружности:\n");
+	printf("Enter coordinates and radius of 2nd circle:\n");
 	scanf_s("%f %f %f", &x2, &y2, &r2);
 
 	if ((r1 < 0) || (r2 < 0)) {
-		printf("Радиусы не могут быть отрицательными");
+		printf("Radiuses must be non-negative");
 		return 1;
 	}
 
 
 	if ((x1 == x2) && (y1 == y2) && (r1 == r2)) {
-		printf("Окружности совпадают");
+		printf("Circles are the same");
 		return 0;
 	}
 
@@ -24,23 +24,23 @@ int main() {
 
 
 	if ((abs(r1 - r2) > dist) || ((r1 + r2) < dist)) {
-		printf("Окружности не пересекаются");
+		printf("Circles do not intersect");
 		return 0;
 	}
 
 
 	if (abs(r1 - r2) == dist) {
-		printf("Внутреннее касание окружностей");
+		printf("Internal tangency of circles");
 		return 0;
 	}
 
 
 	if ((r1 + r2) == dist) {
-		printf("Внешнее касание окружностей");
+		printf("External tangency of circles");
 		return 0;
 	}
 
 
-	printf("Окружности пересекаются");
+	printf("Circles intersect each other");
 	return 0;
 }
