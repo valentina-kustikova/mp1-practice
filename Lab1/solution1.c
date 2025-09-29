@@ -23,7 +23,7 @@ int main() {
 	dist = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 
 
-	if ((abs(r1 - r2) > dist) || ((r1 + r2) < dist)) {
+	if ((r1 + r2) < dist) {
 		printf("Circles do not intersect");
 		return 0;
 	}
@@ -37,6 +37,12 @@ int main() {
 
 	if ((r1 + r2) == dist) {
 		printf("External tangency of circles");
+		return 0;
+	}
+
+
+	if (dist < abs(r1 - r2)) {
+		printf("One circle is inside another");
 		return 0;
 	}
 
