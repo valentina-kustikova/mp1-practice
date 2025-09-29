@@ -2,8 +2,8 @@
 #include <math.h>
 #include <locale.h>
 int main() {
-	setlocale(LC_ALL, "Russian");
 	float r1,r2,x1,x2,y1,y2,rast;
+	setlocale(LC_ALL, "Russian");
 	printf("Введите радиус первой окружности:");
 	scanf_s("%f", &r1);
 	printf("Введите радиус второй окружности:");
@@ -25,16 +25,16 @@ int main() {
 		printf("окружности пересекаются в 2 точках");
 		return 0;
 	}
+	if ((rast == 0.0) && (r1 == r2)) {
+		printf("окружности совпадают(одна окружность)");
+		return 0;
+	}
 	if (rast == fabsf(r1 - r2)) {
 		printf("касаются внутренним образом");
 		return 0;
 	}
 	if ((rast < fabsf(r1 - r2))&&(rast!=0.0)) {
 		printf("окружности расположены внутренним образом и не касаются(центры не совпадают)");
-		return 0;
-	}
-	if ((rast==0.0) && (r1 == r2)) {
-		printf("окружности совпадают(одна окружность)");
 		return 0;
 	}
 	if ((rast == 0.0) && (r1 != r2)) {
