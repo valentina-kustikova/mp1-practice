@@ -3,10 +3,10 @@
 #include <math.h>
 
 int main() {
-	setlocale(LC_ALL, "RUS");
 	float r1, r2, x1, y1, x2, y2, rast;
+	setlocale(LC_ALL, "RUS");
 	scanf_s("%f %f %f %f %f %f", &r1, &r2, &x1, &y1, &x2, &y2);
-	if (r1 < 0 | r2 < 0)
+	if (r1 <= 0 | r2 <= 0)
 	{
 		printf("Радиусы не могут быть отрицательными");
 		return 1;
@@ -32,10 +32,6 @@ int main() {
 		printf("Окружности касаются внутренним образом");
 		return 0;
 	}
-	if (rast == (r1 + r2))
-	{
-		printf("Окружности касаются внешним образом");
-		return 0;
-	}
+	printf("Окружности касаются внешним образом");
 	return 0;
 }
