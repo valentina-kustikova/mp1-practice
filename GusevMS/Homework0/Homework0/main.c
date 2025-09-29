@@ -23,7 +23,7 @@ int main() {
         printf("Окружность лежит в окружности");
         return 0;
     }
-    if (d == fabs(r1 - r2)) {
+    if (d == fabs(r1 - r2) && (r1 != r2) && (x1 != x2) && (y1 != y2)) {
         printf("Внутреннее касание");
         return 0;
     }
