@@ -1,5 +1,5 @@
 #include <stdio.h>
-
+#include <math.h>
 int main() {
     float x1, y1, r1, x2, y2, r2, s;
     printf("Enter coordinates and radius of first circle\n");
@@ -13,7 +13,7 @@ int main() {
     }
 
     // расстояние между центрами окружностей
-    s = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+    s = sqrt(((x2 - x1) * (x2 - x1)) + ((y2 - y1) * (y2 - y1)));
 
         if ((x1 == x2) && (y1 == y2) && (r1 == r2)) {
             printf("circles match");
