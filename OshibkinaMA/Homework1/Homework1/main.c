@@ -3,12 +3,17 @@
 #include <locale.h>
 int main() {
 	setlocale(LC_ALL, "Russian");
-	float r1, r2, x1, x2, y2, y1, d1, d2;
+	float r1, r2, x1, x2, y2, y1, d1;
 	printf("Введите радиус и координаты центра первой окружности:\n");
 	scanf_s("%f %f %f", &r1, &x1, &y1);
 	printf("Введите радиус и координаты центра второй окружности:\n");
 	scanf_s("%f %f %f", &r2, &x2, &y2);
-	d1 = sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
+	d1 = sqrt(pow((x2 - x1), 2) + pow((y2 - y1), 2));
+	if ((r1 <= 0) || (r2 <= 0))
+	{
+		printf("Некоректные данные");
+		return 1;
+	}
 	if (d1 > (r1 + r2))
 		printf("Окружности не пересекаются. Одна окружность лежит вне другой\n");
 	else if (d1 == (r1 + r2))
