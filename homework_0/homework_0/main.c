@@ -2,13 +2,13 @@
 
 int main() {
     float x1, y1, r1, x2, y2, r2, s;
-    printf("введите координаты центра и радиус первой окружности\n");
+    printf("Enter coordinates and radius of first circle\n");
     scanf_s("%f %f %f", &x1, &y1, &r1);
-    printf("введите координаты центра и радиус второй окружности\n");
+    printf("Enter coordinates and radius of second circle\n");
     scanf_s("%f %f %f", &x2, &y2, &r2);
 
     if ((r1 < 0) || (r2 < 0)) {
-        printf("отрицательные радиусы");
+        printf("negative radiuses");
         return 1;
     }
 
@@ -16,31 +16,31 @@ int main() {
     s = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 
         if ((x1 == x2) && (y1 == y2) && (r1 == r2)) {
-            printf("окружности совпадают");
+            printf("circles match");
             return 0;
         }
 
     if (s > r1 + r2) {
-        printf("окружности не пересекаются и не лежат друг в друге");
+        printf("circles don't intersert");
         return 0;
     }
 
     if ((s < r2 - r1) || (s < r1 - r2)) {
-        printf("одна окружность лежит внутри другой");
+        printf("one circle in ohter circle");
         return 0;
     }
 
     if (s == r1 + r2) {
-        printf("окружности касаются внешним образом");
+        printf("circles kasautsa vneshnim obrazom");
         return 0;
     }
 
     if ((s == r2 - r1) || (s == r1 - r2)) {
-        printf("окружности касаются внутренним образом");
+        printf("circles kasautsa vnutrennim obrazom");
         return 0;
     }
 
-    printf("окружности пересекаются");
+    printf("circles intersect");
     return 0;
 
 }
