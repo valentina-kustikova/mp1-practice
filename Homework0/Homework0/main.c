@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <math.h>
+#include <locale.h>
 
 int main() {
     float x1, y1, r1, x2, y2, r2, d;
+	setlocale(LC_ALL, "RUS");
     scanf_s("%f %f %f %f %f %f", &x1, &y1, &r1, &x2, &y2, &r2);
     if (r1 < 0 || r2 < 0) {
         printf("Отрицательные радиусы");
