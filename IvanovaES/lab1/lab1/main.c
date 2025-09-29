@@ -6,6 +6,10 @@ int main() {
 	setlocale(LC_ALL, "RUS");
 	float r1, r2, x1, y1, x2, y2, rast;
 	scanf_s("%f %f %f %f %f %f", &r1, &r2, &x1, &y1, &x2, &y2);
+	if (r1 < 0 | r2 < 0)
+	{
+		printf("Радиусы не могут быть отрицательными");
+	}
 	rast = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 	if (rast > (r1 + r2))
 	{
@@ -19,7 +23,7 @@ int main() {
 	{
 		printf("Окружности совпадают");
 	}
-	if (rast == fabs(r1 - r2))
+	if (rast == fabs(r1 - r2) && rast != 0)
 	{
 		printf("Окружности касаются внутренним образом");
 	}
