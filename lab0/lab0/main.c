@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <math.h>
+#include <locale.h>
 
 int main() {
 	float raznost_radiusov, R_center, centrX1, centrX2, centrY1, centrY2, r1, r2;
+	setlocale(LC_ALL, "Russian");
 	printf("Центр1 (x y), Центр2 (x y), радиус1, радиус2\n");
 	scanf_s("%f %f %f %f %f %f", &centrX1, &centrY1, &centrX2, &centrY2, &r1, &r2);
 	R_center = sqrtf((centrX2 - centrX1) * (centrX2 - centrX1) + (centrY2 - centrY1) * (centrY2 - centrY1));
