@@ -4,6 +4,7 @@
 int main() {
 	float r1,r2,x1,x2,y1,y2,rast;
 	setlocale(LC_ALL, "Russian");
+
 	printf("¬ведите радиус первой окружности:");
 	scanf_s("%f", &r1);
 	printf("¬ведите радиус второй окружности:");
@@ -12,7 +13,12 @@ int main() {
 	scanf_s("%f %f", &x1,&y1);
 	printf("¬ведите координаты второй окружности:");
 	scanf_s("%f %f", &x2,&y2);
+	if ((r1 < 0) || (r2<0)){
+		printf("некорректные данные");
+		return 0;
+	}
 	rast = sqrtf((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+	
 	if (rast > r1 + r2) {
 		printf("окружности расположены внешним образом и не касаютс€");
 		return 0;
