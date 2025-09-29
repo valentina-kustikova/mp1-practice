@@ -3,6 +3,7 @@
 int main() {
 	float r1, r2, x1, x2, y1, y2;
 	scanf_s("%f %f %f %f %f %f", &r1, &r2, &x1, &x2, &y1, &y2);
+	//test
 
 	if (r1 <= 0 || r2 <= 0) 
 	{
