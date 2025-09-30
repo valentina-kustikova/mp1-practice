@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <locale.h>
 #include <math.h>
 int main() {
+	setlocale(LC_ALL, "RU");
 	double x1, y1, r1;
 	double x2, y2, r2;
 	double distance;
