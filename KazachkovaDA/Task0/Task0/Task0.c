@@ -58,10 +58,7 @@ int main() {
 		return 0;
 	}
 
-	if (d > r1 + r2)
-	{
-		printf_s("Okruzhnosti ne imeut obschih tochek");
-		return 0;
-	}
+	printf_s("Okruzhnosti ne imeut obschih tochek");
+	return 0;
 
 }
