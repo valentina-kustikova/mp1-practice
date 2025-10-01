@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <math.h>
 int main() {
-	float r1, r2, x1, x2, y1, y2;
+	float r1, r2, x1, x2, y1, y2, d;
 
 	printf_s("Radius pervoi okruzhnosti = ");
 	scanf_s("%f", &r1);
@@ -26,7 +26,7 @@ int main() {
 	printf_s("Koordinata 'y' centra vtoroi okruzhnosti = ");
 	scanf_s("%f", &y2);
 
-	float d = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+	d = sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 
 	if (r1 <= 0 || r2 <= 0)
 	{
