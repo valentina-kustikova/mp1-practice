@@ -7,20 +7,20 @@ int main() {
 	if (r1 <= 0 || r2 <= 0) {
 		printf("vvodinormalno");
 		return 0;
-	};
+	}
 	if (x1 == x2 && y1 == y2 && r1 == r2) {
 		printf("oniodinakovie");
 		return 0;
-	};
+	}
 	if (x1 == x2 && y1 == y2) {
 		printf("oniconcentriceskie");
 		return 0;
-	};
+	}
 	d = sqrtf((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 	if (r1 + r2 < d) {
 		printf("onidaleko");
 		return 0;
-	};
+	}
 	if (r1 + r2 == d) {
 		printf("onikasautsairiadom");
 		return 0;
@@ -33,10 +33,8 @@ int main() {
 		printf("onikasautsaiodnavnutri");
 		return 0;
 	};
-	if (d > fabs(r1 - r2)) {
-		printf("oniperesecautsa");
-		return 0;
-	};
-	printf("vseploho");
+	printf("oniperesecautsa");
+	return 0;
+	
 	return 0;
 }
