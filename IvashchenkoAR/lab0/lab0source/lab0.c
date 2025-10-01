@@ -4,9 +4,8 @@
 int main()
 {
     float x1, x2, y1, y2, r1, r2;
-    scanf("%f, %f, %f, %f, %f, %f,", &x1, &x2, &y1, &y2, &r1, &r2);
+    scanf("%f %f %f %f %f %f", &x1, &x2, &y1, &y2, &r1, &r2);
     float d = sqrtf((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-
 
 
     if (r1 <= 0 || r2 <= 0)
@@ -14,8 +13,6 @@ int main()
         printf("Radius dolzhen bit polozhitelnim");
         return 1;
     }
-
-    float d = sqrtf((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 
 
     if ((x1 == y1) && (y2 == x2) && (r1 == r2))
@@ -55,3 +52,4 @@ int main()
         return 0;
     }
 
+}
