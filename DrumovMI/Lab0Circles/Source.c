@@ -41,12 +41,11 @@
 
 int main() {
 	float x0, y0, x1, y1, r0, r1;
+	char line[LINE];
 	setlocale(LC_ALL, "rus");
 	setlocale(LC_NUMERIC, "C");
 
-	printf("Введите x0, y0, x1, y1, r1, r2:\n");
-
-	char line[LINE];
+	printf("Введите x0, y0, x1, y1, r1, r2:\n");	
 	fgets(line, LINE, stdin);
 	sscanf_s(line, "%f %f %f %f %f %f", &x0, &y0, &x1, &y1, &r0, &r1);
 
@@ -79,7 +78,7 @@ int main() {
 	else if (d + r0 > r1) {
 		printf("Окружности пересекаются");
 	}
-	else if (d + r0 < r1) {
+	else {
 		printf("Одна окружность находится внутри другой");
 	}
 
