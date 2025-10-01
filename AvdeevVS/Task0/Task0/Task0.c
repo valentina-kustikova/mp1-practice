@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <math.h>
 int main() {
-  float x1, x2, y1, y2, r1, r2;
-  scanf("%f%f%f%f%f%f", &x1, &y1, &r1, &x2, &y2, &r2);
-  float s = sqrtf((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+  float x1, x2, y1, y2, r1, r2, s;
+  scanf_s("%f%f%f%f%f%f", &x1, &y1, &r1, &x2, &y2, &r2);
+  s = sqrtf((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
   if ((r1 <= 0) || (r2 <= 0)) {
     printf("nekorrektnyy radius");
     return 1;
@@ -28,12 +28,6 @@ int main() {
     printf("peresekayutsya ---- Obshchikh tochek: 2");
     return 0;
   }
-  if (s < fabs(r1 - r2)) {
-    printf("odna v drugoy bez kasaniy ---- Obshchikh tochek: 0");
-    if ((x1 == x2) && (y1 == y2)) {
-      printf("Kontsentricheskie okruzhnosti");
-    }
-    return 0;
-  }
+  printf("odna v drugoy bez kasaniy ---- Obshchikh tochek: 0");
   return 0;
 }
