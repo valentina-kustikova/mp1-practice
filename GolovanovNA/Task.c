@@ -35,6 +35,4 @@ int main() {
 	};
 	printf("oniperesecautsa");
 	return 0;
-	
-	return 0;
 }
