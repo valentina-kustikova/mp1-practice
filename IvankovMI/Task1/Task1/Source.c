@@ -3,7 +3,8 @@
 #include <locale.h>
 int main() {
 	float x1, x2, y1, y2, r1, r2;
-	setlocale(LC_CTYPE, "Russiаn");
+	//setlocale(LC_CTYPE, "Russiаn");
+	setlocale(LC_ALL, "Rus");
 	//scanf_s("¬ведите координаты и радиус первой окружности (x y r): %f %f %f", &x1, &y1, &r1);
 	//scanf_s("¬ведите координаты и радиус второй окружности (x y r): %f %f %f", &x2, &y2, &r2);
 	printf("¬ведите координаты и радиус первой окружности (x y r):");
