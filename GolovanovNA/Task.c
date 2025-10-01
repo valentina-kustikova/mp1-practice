@@ -24,15 +24,15 @@ int main() {
 	if (r1 + r2 == d) {
 		printf("onikasautsairiadom");
 		return 0;
-	};
+	}
 	if (d < fabs(r1 - r2)) {
 		printf("odnavdrugoi");
 		return 0;
-	};
+	}
 	if (d == fabs(r1 - r2)) {
 		printf("onikasautsaiodnavnutri");
 		return 0;
-	};
+	}
 	printf("oniperesecautsa");
 	return 0;
 }
