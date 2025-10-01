@@ -24,34 +24,33 @@ int main() {
 	}
 
 	float d = sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
-	if (x1 != x2 && y1 != y1 && r1 != r2 && 0 < d < fabs(r1 - r2)) {
+	if ( r1>(d+r2)) {
 		printf("одна внутри другой");
 		return 0;
 	}
-	if (x1 != x2 && y1 != y1 && r1 != r2 && 0 < d < fabs(r2 - r1)) {
+	if ( r2>(d+r1)) {
 		printf("одна внутри другой");
 		return 0;
 	}
 
-	if ((x1 != x2) && (y1 != y2) && (d = fabs(r1 - r2)) && (r1 != r2)) {
+	if (r2==(d+r1)) {
 		printf("внутреннее касание");
 		return 0;
 	}
-	if ((x1 != x2) && (y1 != y2) && (d = fabs(r2 - r1)) && (r1 != r2)) {
+	if (r1 ==(d+r2)) {
 		printf("внутреннее касание");
 		return 0;
 	}
 
-	if (d = r1 + r2) {
+	if (d == (r1 + r2)) {
 		printf("внешнее касание");
 		return 0;
 	}
 
-	if (d > r1 + r2) {
+	if (d > (r1 + r2)) {
 		printf("общих точек нет");
 		return 0;
 	}
-
-	printf("окружности пересекаюся");
-	return 0;
+		printf("окружности пересекаюся");
+		return 0;
 }
