@@ -4,8 +4,8 @@
 
 int main()
 {
-	setlocale(LC_ALL, "");
 	float x1, y1, r1, x2, y2, r2;
+	setlocale(LC_ALL, "Rus");
 	printf("Введите данные в формате: x1 y1 r1 x2 y2 r2");
 	scanf_s("%f %f %f %f %f %f", &x1, &y1, &r1, &x2, &y2, &r2);
 	float rast = sqrt(fabs(x1 - x2) * fabs(x1 - x2) + fabs(y1 - y2) * fabs(y1 - y2));
@@ -26,7 +26,7 @@ int main()
 	}
 	if (rast == r1 + r2)
 	{
-		printf("Окружности внешним образом касаются в одном точке");
+		printf("Окружности внешним образом касаются в одной точке");
 		return 0;
 	}
 	if (rast + r1 < r2)
