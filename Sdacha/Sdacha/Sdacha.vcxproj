@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{dd980194-817f-4fa8-b03e-cbeff08851d2}</ProjectGuid>
-    <RootNamespace>helloworld</RootNamespace>
+    <ProjectGuid>{202762d5-6989-46f9-84b1-712cdeaaebf5}</ProjectGuid>
+    <RootNamespace>Sdacha</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,7 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="hello-world-attempt1.cpp" />
+    <ClCompile Include="lab0PeterB.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
