@@ -1,0 +1,18 @@
+#include <stdio.h>
+
+int main() {
+    double h, w, d;
+    printf("Введите высоту, ширину и глубину (см): ");
+    scanf("%lf %lf %lf", &h, &w, &d);
+
+    double rhoDVP=800, rhoDSP=700, rhoWOOD=600; 
+    double vDVP=h*w*0.005/1e6;                  
+    double vDSP=(2*h*d+2*w*d)*0.015/1e6;        
+    int polki=h/40; if((int)h%40==0) polki--;   
+    double vPolki=polki*w*d*0.015/1e6;          
+    double vWOOD=h*w*0.01/1e6;                  
+
+    double m=vDVP*rhoDVP + vDSP*rhoDSP + vPolki*rhoDSP + vWOOD*rhoWOOD;
+    printf("Масса шкафа ≈ %.2f кг\n", m);
+    return 0;
+}
