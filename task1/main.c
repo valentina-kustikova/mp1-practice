@@ -18,6 +18,7 @@ int main()
 		weight_shelf = (w - 2 * 1.5) * (d - 0.5 - 1) * 1.5 * density_dsp;
 
 	printf("The weight of the closet is %.2f kg", (weight_back + 2*weight_side + weight_doors + 2*weight_top + ((int)(h/40)-1)*weight_shelf)/1000.0);
+	return 0;
 }
 
 /*
