@@ -6,7 +6,7 @@ int main() {
 	do {
 		printf("Enter correct height h: ");
 		scanf_s("%f", &h);
-	} while (h < 180 || h > 250);
+	} while (h < 180 || h > 220);
 
 
 	do {
