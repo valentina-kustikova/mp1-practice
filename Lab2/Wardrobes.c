@@ -28,7 +28,7 @@ int main() {
 	
 	shelves = (int)(h) / 40;
 
-	printf("Масса шкафа в килограммах: %f", (dvp * hm * wm * 0.005) + (2 * dsp * hm * dm * 0.015) + (2 * dsp * wm * dm * 0.015) + (oakDensity * hm * wm * 0.01) + (wm * dm * 0.015 * shelves * dsp));
+	printf("Wardrobe weight in kilogram: %f", (dvp * hm * wm * 0.005) + (2 * dsp * hm * dm * 0.015) + (2 * dsp * wm * dm * 0.015) + (oakDensity * hm * wm * 0.01) + (wm * dm * 0.015 * shelves * dsp));
 
 
 
