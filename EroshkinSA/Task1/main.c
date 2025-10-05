@@ -16,11 +16,11 @@ int main() {
 		current_height += 41.5f;
 	}
 	v_doors = w * h * tree;
-	printf("back = %f \nroofs = %f \nsides = %f \nshelfs = %f \ndoors = %f\n", v_back, v_roofs, v_sides, v_shelfs, v_doors);
+	//printf("back = %f \nroofs = %f \nsides = %f \nshelfs = %f \ndoors = %f\n", v_back, v_roofs, v_sides, v_shelfs, v_doors);
 	m_dvp = v_back * density_dvp;
 	m_dsp = (v_roofs + v_sides + v_shelfs) * density_dsp;
 	m_tree = v_doors * density_tree;
-	printf("dvp = %f \ndsp = %f \ntree = %f\n", m_dvp, m_dsp, m_tree);
+	//printf("dvp = %f \ndsp = %f \ntree = %f\n", m_dvp, m_dsp, m_tree);
 	m = m_dvp + m_dsp + m_tree;
 	printf("Mass of the closet = %f kg", m);
 	return 0;
