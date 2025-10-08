@@ -2,25 +2,18 @@
 #include <locale.h>
 
 #define LINE 512
-#define EPS (1e-8)
 
 /*
-* ДСП - 600 кг/м3 = 600 / 1000000 = 0.0006 кг/см3
-* ДВП - 750 кг/м3 = 750  / 1000000 = 0.00075 кг/см3
-* Дерево - 690 кг/м3 = 690 / 1000000 = 0.00069 кг/см3
+* ДСП - 800 кг/м3
+* ДВП - 735 кг/м3
+* Дерево - 700 кг/м3
 */
 
-/* TESTS
-* 1) EXP: повторение запроса на ввод
-*    1: -1 -1 -1
-*    2: 0 0 0
-*    3: 1 1 -0.0003
-* 2) EXP: сообщения об ошибке
-*/
 int main() {
-	const float p_dsp = 0.0006f, p_dvp = 0.00075f, p_wood = 0.00069f;
+	const float p_dsp = 800.f, p_dvp = 735.f, p_wood = 700.f;
 
-	float h, w, d;
+	float h, w, d, m_back, m_side, m_cover, m_doors, m_shelf, mass;
+	int shelves_count;
 	char line[LINE];
 	int correct_input = 1;
 
@@ -54,11 +47,15 @@ int main() {
 		return 0;
 	}
 
-	float mass = p_dvp * h * w * 0.5f + 
-		2 * p_dsp * h * d * 1.5f +
-		2 * p_dsp * w * d * 1.5f +
-		    p_wood * h * w * 1.f +
-		((int) h / 40) * p_dsp * w * d * 1.5f;
+	shelves_count = (int)h / 40 - 1;
+
+	m_back = p_dvp * h * w * 0.5f;
+	m_side =  p_dsp * h * d * 1.5f;
+	m_cover = p_dsp * w * (d + 1.5f) * 1.5f;
+	m_doors = p_wood * h * w * 1.f;
+	m_shelf = p_dsp * (w - 3.f) * d * 1.5f;
+
+	mass = (m_back + 2 * m_side + 2 * m_cover + m_doors + shelves_count * m_shelf) / 1000000.f;
 
 	printf("Масса шкафа с введёнными характеристиками равна %f кг", mass);
 
