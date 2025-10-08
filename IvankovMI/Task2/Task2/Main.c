@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <locale.h>
 #define t 0.015
 #define pd 700
 #define pdsp 800
@@ -6,6 +7,7 @@
 int main() {
 	double mass, h, w, d, m1, m2, m3, m4, m5, copy;
 	int k = 0;
+	setlocale(LC_ALL, "Rus");
 
 	printf("¬ведите высоту, ширину и глубину шкафа");
 	do {
