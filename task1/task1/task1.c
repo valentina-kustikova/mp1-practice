@@ -6,13 +6,13 @@ int main() {
 	setlocale(LC_ALL, "");
 	float h_cm, w_cm, d_cm;//см
 
-	float th_dvp = 0.005;//мм в м
-	float th_dsp = 0.015;
-	float th_wood = 0.01;
+	float th_dvp = 0.005f;//мм в м
+	float th_dsp = 0.015f;
+	float th_wood = 0.01f;
 
-	float p_dvp = 720.0;  //кг/м^3
-	float p_dsp = 620.0;
-	float p_wood = 850.0;
+	float p_dvp = 735.0f;  //кг/м^3
+	float p_dsp = 800.0f;
+	float p_wood = 700.0f;
 
 	printf("¬ведите высоту h: ");
 	scanf_s("%f", &h_cm);
@@ -21,32 +21,32 @@ int main() {
 	printf("¬ведите глубину d: ");
 	scanf_s("%f", &d_cm);
 
-	if (h_cm < 180 || h_cm>220) {
+	if (h_cm < 180.f || h_cm > 220.f) {
+		printf("¬ведите другие параметры");
+		return 0;
+	}
+
+	if (d_cm < 50.f || d_cm > 90.f) {
 		printf("¬ведите другие парметры");
 		return 0;
 	}
 
-	if (d_cm < 50 || d_cm>90) {
+	if (w_cm < 80.f || w_cm > 120.f) {
 		printf("¬ведите другие парметры");
 		return 0;
 	}
 
-	if (w_cm < 80 || w_cm>120) {
-		printf("¬ведите другие парметры");
-		return 0;
-	}
+	float h = h_cm / 100.f;
+	float w = w_cm / 100.f;
+	float d = d_cm / 100.f;
 
-	float h = h_cm / 100;
-	float w = w_cm / 100;
-	float d = d_cm / 100;
+	int n_shelves = (int)floor(h_cm / 40.0) - 1;
 
-	int n_shelves = (int)floor(h_cm / 40.0);
-
-	float vol_back = w * h * th_dvp;
+	float vol_back = w * (h + 2.f * th_dsp) * th_dvp;
 	float vol_sides = 2 * (h * d * th_dsp);
 	float vol_roof_botton = 2 * (d * w * th_dsp);
-	float vol_doors = 2 * (h * w * th_wood);
-	float vol_shelves = n_shelves * (d * w * th_dsp);
+	float vol_doors = (h + 2.f * th_dsp) * w * th_wood;
+	float vol_shelves = n_shelves * (d * (w - 2.f * th_dsp) * th_dsp);
 
 	float m_back = vol_back * p_dvp;
 	float m_sides = vol_sides * p_dsp;
