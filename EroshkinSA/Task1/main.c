@@ -24,6 +24,7 @@ int main() {
 	m_tree = v_doors * density_tree;
 	//printf("dvp = %f \ndsp = %f \ntree = %f\n", m_dvp, m_dsp, m_tree);
 	m = m_dvp + m_dsp + m_tree;
+	printf("Number of shelfs = %d\n", cnt);
 	printf("Mass of the closet = %f kg", m);
 	return 0;
 }
