@@ -9,6 +9,14 @@
 * ДВП - 750 кг/м3 = 750  / 1000000 = 0.00075 кг/см3
 * Дерево - 690 кг/м3 = 690 / 1000000 = 0.00069 кг/см3
 */
+
+/* TESTS
+* 1) EXP: повторение запроса на ввод
+*    1: -1 -1 -1
+*    2: 0 0 0
+*    3: 1 1 -0.0003
+* 2) EXP: сообщения об ошибке
+*/
 int main() {
 	const float p_dsp = 0.0006f, p_dvp = 0.00075f, p_wood = 0.00069f;
 
@@ -20,8 +28,8 @@ int main() {
 	setlocale(LC_NUMERIC, "C");
 
 	do {
-		fgets(line, LINE, stdin);
 		printf("Введите высоту h, ширину w и глубину d в сантиметрах: ");
+		fgets(line, LINE, stdin);
 		sscanf_s(line, "%f %f %f", &h, &w, &d);
 	} while (h <= 0 || w <= 0 || d <= 0);
 
@@ -48,9 +56,11 @@ int main() {
 
 	float mass = p_dvp * h * w * 0.5f + 
 		2 * p_dsp * h * d * 1.5f +
-		2 * p_dsp * w * d * 0.15f +
+		2 * p_dsp * w * d * 1.5f +
 		    p_wood * h * w * 1.f +
-		    p_dsp * w * 0.15f;
+		((int) h / 40) * p_dsp * w * d * 1.5f;
+
+	printf("Масса шкафа с введёнными характеристиками равна %f кг", mass);
 
 	return 0;
 }
