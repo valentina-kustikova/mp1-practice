@@ -47,7 +47,7 @@ int main() {
 		return 0;
 	}
 
-	shelves_count = (int)h / 40 - 1;
+	shelves_count = ((int) h <= 200) ? 4 : 5;
 
 	m_back = p_dvp * h * w * 0.5f;
 	m_side =  p_dsp * h * d * 1.5f;
