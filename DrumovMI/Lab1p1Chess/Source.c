@@ -15,54 +15,93 @@ bool knight(char x1, char y1, char x2, char y2);
 
 int main() {
     char line[LINE];
-    enum {NONE, KING, QUEEN, ROOK, BISHOP, KNIGHT} type = NONE;
-	char x1, y1, x2, y2;
+    enum { NONE, KING, QUEEN, ROOK, BISHOP, KNIGHT } type = NONE;
+    char x1, y1, x2, y2;
     bool win = false;
+    bool ans_king, ans_queen, ans_rook, ans_bishop, ans_knight;
 
-	setlocale(LC_ALL, "ru");
-	setlocale(LC_NUMERIC, "C");
+    setlocale(LC_ALL, "ru");
 
-	do {
-		printf("Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ»ÐµÑ‚ÐºÐ¸ k1 Ð¸ k2: ");
-		fgets(line, LINE, stdin);
-		sscanf_s(line, "%c%d %c%d", &x1, &y1, &x2, &y2);
-	} while ('a' <= tolower(x1) && tolower(x1) <= 'h' &&
-             'a' <= tolower(x2) && tolower(x2) <= 'h' &&
-              1 <= y1 && y1 <= 8 &&
-              1 <= y2 && y2 <= 8);
+    do {
+        printf("Ââåäèòå êëåòêè k1 è k2: ");
+        fgets(line, LINE, stdin);
+        sscanf_s(line, "%c%d %c%d", &x1, &y1, &x2, &y2);
+    } while ('a' <= tolower(x1) && tolower(x1) <= 'h' &&
+        'a' <= tolower(x2) && tolower(x2) <= 'h' &&
+        1 <= y1 && y1 <= 8 &&
+        1 <= y2 && y2 <= 8);
+
+    x1 = tolower(x1) - 'a' + 1;
+    x2 = tolower(x2) - 'a' + 1;
 
     while (type == NONE) {
-        printf("Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ñ„Ð¸Ð³ÑƒÑ€Ñƒ (ÐºÐ¾Ñ€Ð¾Ð»ÑŒ, Ñ„ÐµÑ€Ð·ÑŒ, Ð»Ð°Ð´ÑŒÑ, ÑÐ»Ð¾Ð½, ÐºÐ¾Ð½ÑŒ): ");
+        printf("Ââåäèòå ôèãóðó (king, queen, rook, bishop, knight): ");
         fgets(line, LINE, stdin);
-        if (!strcmp(line, "ÐºÐ¾Ñ€Ð¾Ð»ÑŒ")) {
+        if (!strncmp(line, "king", 4)) {
             type = KING;
         }
-        else if (!strcmp(line, "Ñ„ÐµÑ€Ð·ÑŒ")) {
+        else if (!strncmp(line, "queen", 5)) {
             type = QUEEN;
         }
-        else if (!strcmp(line, "Ð»Ð°Ð´ÑŒÑ")) {
+        else if (!strncmp(line, "rook", 4)) {
             type = ROOK;
         }
-        else if (!strcmp(line, "ÑÐ»Ð¾Ð½")) {
+        else if (!strncmp(line, "bishop", 6)) {
             type = BISHOP;
         }
-        else if (!strcmp(line, "ÐºÐ¾Ð½ÑŒ")) {
+        else if (!strncmp(line, "knight", 6)) {
             type = KNIGHT;
         }
     }
 
+    ans_king = king(x1, y1, x2, y2);
+    ans_queen = queen(x1, y1, x2, y2);
+    ans_rook = rook(x1, y1, x2, y2);
+    ans_bishop = bishop(x1, y1, x2, y2);
+    ans_knight = knight(x1, y1, x2, y2);
+
     switch (type) {
     case KING:
-        if (king(x1, y1, x2, y2))
+        if (ans_king)
             win = true;
         break;
     case QUEEN:
-        if (queen(x1, y1, x2, y2))
+        if (ans_queen)
+            win = true;
+        break;
+    case ROOK:
+        if (ans_rook)
+            win = true;
+        break;
+    case BISHOP:
+        if (ans_bishop)
+            win = true;
+        break;
+    case KNIGHT:
+        if (ans_knight)
             win = true;
         break;
     }
-    
-	return 0;
+
+    if (win) {
+        printf("Ìîæíî ïåðåìåñòèòüñÿ çà îäèí õîä.");
+    }
+    else {
+        if (ans_king)
+            printf("Êîðîëü\n");
+        if (ans_queen)
+            printf("Ôåðçü\n");
+        if (ans_rook)
+            printf("Ëàäüÿ\n");
+        if (ans_bishop)
+            printf("Ñëîí\n");
+        if (ans_knight)
+            printf("Êîíü\n");
+        if (!(ans_king || ans_queen || ans_rook || ans_bishop || ans_knight))
+            printf("Íè îäíà èç ôèãóð íå ìîæåò ïåðåìåñòèòüñÿ çà îäèí õîä.");
+    }
+
+    return 0;
 }
 
 bool king(char x1, char y1,
