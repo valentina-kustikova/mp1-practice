@@ -4,7 +4,7 @@ int main() {
 	setlocale(LC_ALL, "Rus");
 
 	float h, w, d, massa1, massa2, massa3, massa4, massa5, massa, n;
-	int der = 720, dsp = 620, dvp = 850, tder = 10, tdsp = 15, tdvp = 5;
+	int der = 700, dsp = 800, dvp = 735, tder = 10, tdsp = 15, tdvp = 5;
 
 	do
 	{
@@ -18,7 +18,7 @@ int main() {
 		printf_s("¬ведите значение ширины шкафа W (в см, 80-120)\n");
 		scanf_s("%f", &w);
 	} while ((w < 80) || (w > 120));
-	w = w * 10;
+	w = w * 10;	
 
 	do
 	{
@@ -27,13 +27,13 @@ int main() {
 	} while ((w < 80) || (d > 90));
 	d = d * 10;
 
-	n = ((h / 10 - 3)/40)-1;
+	n = ((h / 10)/40)-1;
 	n=(int)n;
 
-	massa1 = h * tdvp * w * dvp / 1000000000.0; //масса задней стенки
+	massa1 = (h+30) * tdvp * w * dvp / 1000000000.0; //масса задней стенки
 	massa2 = h * tdsp * d * dsp / 1000000000.0 *2;//боковые стенки
 	massa3 = w * d * dsp * tdsp / 1000000000.0 * 2;// дно и потолок
-	massa4 = w * h * tder * der / 1000000000.0 * 2;// двери
+	massa4 = w * (h+30) * tder * der / 1000000000.0;// двери
 	massa5 = (w - 2*tdsp) * d * dsp * tdsp * n / 1000000000.0;
 	massa = massa1 + massa2 + massa3 + massa4 + massa5;
 	printf("ќбща€ масса = %.1f кг\n\n\n", massa);
