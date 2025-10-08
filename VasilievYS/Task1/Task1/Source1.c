@@ -3,7 +3,7 @@
 int main()
 {
 	float m, wPol, w, h, tDvp = 0.5, tDsp = 1.5, tDer = 1.0, d; //в см
-	float pDer = 0.72, pDsp = 1.3, pDvp = 0.85; //в г/см3
+	float pDer = 0.7, pDsp = 0.8, pDvp = 0.735; //в г/см3
 	int cPol;
 	setlocale(LC_ALL, "RUS");
 	do
@@ -21,7 +21,8 @@ int main()
 		cPol = (int)cPol;
 	}
 	wPol = w - 2 * tDsp;
-	m = (pDvp * h * w * tDvp) + (pDsp * h * d * tDsp * 2) + (pDsp * w * d * tDsp * 2) + (pDer * h * w * tDer) + (pDsp * d * wPol * tDsp * cPol);
+	m = (pDvp * (h * w * tDvp)) + (pDsp * h * d * tDsp * 2) + (pDsp * (w-2*tDsp) * d * tDsp * 2) + (pDer * h * w * tDer) + (pDsp * d * wPol * tDsp * cPol);
+	//   задняя стенка              боковины                       крышки                                двери                        полки
 	printf("Масса шкафа = %f кг", m/1000);
 	return 0;
 }
