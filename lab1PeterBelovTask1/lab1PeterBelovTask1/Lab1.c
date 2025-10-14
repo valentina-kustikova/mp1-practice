@@ -76,6 +76,6 @@ int main() {
 	
 	float m; // Масса шкафа
 	m = (V1 * p_dvp) + ((V2 + V3) * 2) * p_dcp + (V4 * p_tree) + V5 * p_dcp;
-	printf("Масса шкафа:%.2f", m);
+	printf("Масса шкафа: %.2f", m);
 	return 0;
 }
