@@ -22,7 +22,7 @@ int main()
 		answ = (rand() % 1000) + 1;
 		do
 		{
-			printf_s("¬ведите доагдку:");
+			printf_s("¬ведите догадку:");
 			scanf_s("%d", &guess);
 			if (guess > answ) 
 			{
@@ -66,7 +66,7 @@ int main()
 				min = guess + 1;
 				tries += 1;
 			}
-			if (min > max) {
+			if (min >= max) {
 				printf_s("ќшибка ввода на предыдущих попытках");
 				return 1;
 			}
