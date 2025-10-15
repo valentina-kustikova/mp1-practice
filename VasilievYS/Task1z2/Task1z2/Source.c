@@ -10,13 +10,13 @@ int main()
 	do
 	{
 		printf("Координаты первой клетки: ");
-		scanf_s(" %c%d", &k1, 1, &c1);
+		scanf_s("%c%d", &k1, 1, &c1);
 		
 		printf("Координаты второй клетки: ");
-		scanf_s(" %c%d", &k2, 1, &c2);
+		scanf_s("%*c%c%d", &k2, 1, &c2);
 		
 		printf("Ваша фигура(король - K, ферзь - F, ладья - L, слон - S, конь - H): ");
-		scanf_s(" %c", &f);
+		scanf_s("%*c%c", &f);
 	} while (((k1 == k2) && (c1 == c2)) || f != 'K' && f != 'F' && f != 'L' && f!= 'S' && f!= 'H');
 	for (i = 0; i < ((sizeof(a) / sizeof(a[0])) ); i++)
 	{
