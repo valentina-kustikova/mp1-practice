@@ -18,7 +18,7 @@ int main()
 		printf("Ваша фигура(король - K, ферзь - F, ладья - L, слон - S, конь - H): ");
 		scanf_s(" %c", &f);
 	} while (((k1 == k2) && (c1 == c2)) || f != 'K' && f != 'F' && f != 'L' && f!= 'S' && f!= 'H');
-	for (i = 0; i < ((sizeof(a) / sizeof(a[0])) - 1); i++)
+	for (i = 0; i < ((sizeof(a) / sizeof(a[0])) ); i++)
 	{
 		if (a[i] == k1)
 		{
