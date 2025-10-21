@@ -1,19 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define L 5
+#define L 10
 
 int main()
 {
 	srand(time());
 	int i,j,bulls = 0,cows = 0,userNumber;
 	int num[L];
-	for (i = 0; i < L; i++)
+	for (i = L - 1; i >= 0; i--)
 	{
 		do {
 			if (i == L-1) { userNumber = rand() % 9 + 1; }
 			else { userNumber = rand() % 10; };
-			for (j = 0; j < i; j++) { if (num[j] == userNumber) { break; }};
+			for (j = L - 1; j > i; j--) { if (num[j] == userNumber) { break; }};
 		} while (j != i);
 		num[i] = userNumber;
 	}
