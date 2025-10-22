@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\peter\\Desktop\\gg\\Sdacha\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{202762D5-6989-46F9-84B1-712CDEAAEBF5}|Sdacha\\Sdacha.vcxproj|C:\\Users\\peter\\Desktop\\gg\\Sdacha\\Sdacha\\lab0PeterB.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{202762D5-6989-46F9-84B1-712CDEAAEBF5}|Sdacha\\Sdacha.vcxproj|solutionrelative:Sdacha\\lab0PeterB.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "lab0PeterB.c",
+              "DocumentMoniker": "C:\\Users\\peter\\Desktop\\gg\\Sdacha\\Sdacha\\lab0PeterB.c",
+              "RelativeDocumentMoniker": "Sdacha\\lab0PeterB.c",
+              "ToolTip": "C:\\Users\\peter\\Desktop\\gg\\Sdacha\\Sdacha\\lab0PeterB.c",
+              "RelativeToolTip": "Sdacha\\lab0PeterB.c",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
+              "WhenOpened": "2025-10-22T04:45:56.171Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
