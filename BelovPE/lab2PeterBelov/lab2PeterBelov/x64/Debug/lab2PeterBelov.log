@@ -1,5 +1,0 @@
-﻿  lab2.c
-C:\Users\peter\Desktop\Belov P\mp1-practice\lab2PeterBelov\lab2PeterBelov\lab2.c(7,11): warning C4244: функция: преобразование "time_t" в "unsigned int", возможна потеря данных
-C:\Users\peter\Desktop\Belov P\mp1-practice\lab2PeterBelov\lab2PeterBelov\lab2.c(16,13): error C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\peter\Desktop\Belov P\mp1-practice\lab2PeterBelov\lab2PeterBelov\lab2.c(56,13): error C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\peter\Desktop\Belov P\mp1-practice\lab2PeterBelov\lab2PeterBelov\lab2.c(99,13): error C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
