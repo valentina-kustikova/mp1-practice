@@ -11,7 +11,7 @@ int main() {
     char x1, x2;
     int y1, y2;
     bool king, queen, rook, bishop, knight;
-    bool can = false;
+    bool can = false, flag = true;
     char line[LINE], ch;
 
     setlocale(LC_ALL, "ru");
@@ -39,21 +39,31 @@ int main() {
     knight = (abs(x1 - x2) == 1 && abs(y1 - y2) == 2) ||
         (abs(x1 - x2) == 2 && abs(y1 - y2) == 1);
     getchar();
-figure:
-    printf("Введите название фигуры: ");
-    scanf("%511s", line);
-    if (!strncmp(line, "король", 6))
-        can = king;
-    else if (!strncmp(line, "ферзь", 5))
-        can = queen;
-    else if (!strncmp(line, "ладья", 5))
-        can = rook;
-    else if (!strncmp(line, "слон", 4))
-        can = bishop;
-    else if (!strncmp(line, "конь", 4))
-        can = knight;
-    else
-        goto figure;
+
+    while (flag) {
+        printf("Введите название фигуры: ");
+        scanf("%511s", line);
+        if (!strncmp(line, "король", 6)) {
+            can = king;
+            flag = 0;
+        }
+        else if (!strncmp(line, "ферзь", 5)) {
+            can = queen;
+            flag = 0;
+        }
+        else if (!strncmp(line, "ладья", 5)) {
+            can = rook;
+            flag = 0;
+        }
+        else if (!strncmp(line, "слон", 4)) {
+            can = bishop;
+            flag = 0;
+        }
+        else if (!strncmp(line, "конь", 4)) {
+            can = knight;
+            flag = 0;
+        }
+    }
 
     if (can)
         printf("Выбранная фигура может перейти с k1 на k2 за один ход.\n");
