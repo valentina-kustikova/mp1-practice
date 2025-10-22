@@ -16,22 +16,20 @@ int main() {
 		x = rand() % 1000 + 1;
 		scanf_s("%d", &ans1);
 		while (ans1) {
-			if (ans1 > x) {
-				printf("The number is less\n");
-				scanf_s("%d", &ans1);
-				k1++;
-			}
-			if (ans1 < x) {
-				printf("The number is greater\n");
-				scanf_s("%d", &ans1);
-				k1++;
-			}
 			if (ans1 == x) {
 				printf("You have won the number is correctly guessed\n");
 				printf("Number of attempts = %d\n", k1);
 				printf("The guessed number = %d ", ans1);
 				break;
 			}
+			if (ans1 > x) {
+				printf("The number is less\n");
+			}
+			if (ans1 < x) {
+				printf("The number is greater\n");
+			}
+			scanf_s("%d", &ans1);
+			k1++;
 		}
 		return 0;
 	}
@@ -53,25 +51,19 @@ int main() {
 			y = getchar();
 			switch (hunch) {
 			case '>':
-				if (ans2 >= min) {
 					min = ans2;
 					ans2 = rand() % (max - min + 1) + min;
 					k2++;
-				}
-				break;
+					break;
 			case '<':
-				if (ans2 <= max) {
 					max = ans2;
 					ans2 = rand() % (max - min + 1) + min;
 					k2++;
-				}
-				break;
+					break;
 			case '=':
 				printf("The number is guessed\n");
 				printf("Number of attempts = %d\n", k2);
 				printf("The guessed number = %d ", ans2);
-
-
 				return 0;
 
 			default:
