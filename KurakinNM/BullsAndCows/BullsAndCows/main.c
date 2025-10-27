@@ -1,13 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define L 10
-
 int main()
 {
 	srand(time());
-	int i,j,bulls = 0,cows = 0,userNumber;
-	int num[L];
+	int i,j,bulls = 0,cows = 0,userNumber,L;
+	printf("enter number (1-10):");
+	scanf_s("%d", &L);
+	int num[10];
 	for (i = L - 1; i >= 0; i--)
 	{
 		do {
