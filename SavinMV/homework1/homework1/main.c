@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <locale.h>
 #include <math.h>
-int main() {
-	setlocale(LC_ALL, "Russian");
+int main() {	
 	float dvp = 800.f, dsp = 735.f, der = 700.f, t_bvn = 0.015f, t_zad = 0.005f, t_dver = 0.01f, h, d, w,ves,k;
+	setlocale(LC_ALL, "Russian");
 	
 	do{
 		printf("¬ведите высоту шкафа от 180 до 220 см включительно:");
