@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <windows.h>
+#include <math.h>
 #include <time.h>
 //#define DEBUG
 
 int main() {
-    srand(time(NULL));
-    int n, i, digit, bulls = 0, cows = 0, player_number_int = 0;
+    srand((unsigned int)time(NULL));
+    int n, i, bulls = 0, cows = 0, player_number_int = 0, player_number_int_copy = 0;
     int comp_number[5] = { -1, -1, -1, -1, -1 }, player_number[5] = { -1, -1, -1, -1, -1 };
 
     do {   //player choose the number of digits
@@ -40,18 +41,23 @@ int main() {
 #endif
         bulls = 0;
         cows = 0;
-        for (i = 0; i < n; i++) {
-            do {
-                printf("Input digit %d >> ", i + 1);
-                scanf_s("%d", &digit);
-                player_number[i] = digit;
-                if (digit < 0 || digit > 9) {
-                    printf("Error! Try again.\n\n");
-                    system("pause");
-                }
-            } while (digit < 0 || digit > 9);
+        do {
+            printf("Input number >> ");
+            scanf_s("%d", &player_number_int);
+            if (player_number_int > pow(10, n) || player_number_int < pow(10, n - 1)) {
+                printf("Error! Try again.\n\n");
+                system("pause");
+            }
+        } while (player_number_int > pow(10, n) || player_number_int < pow(10, n - 1));
+
+        int j = n - 1;
+        player_number_int_copy = player_number_int;
+        while (j >= 0) {
+            player_number[j] = player_number_int_copy % 10;
+            player_number_int_copy /= 10;
+            j--;
         }
-        system("cls");
+
         for (i = 0; i < n; i++) {
             if (player_number[i] == comp_number[i]) {
                 bulls += 1;
@@ -64,13 +70,9 @@ int main() {
                 }
             }
         }
-        player_number_int = player_number[0];
-        for (i = 1; i < n; i++) {
-            player_number_int = player_number_int * 10 + player_number[i];
-        }
+
         printf("Your number is %d.\n", player_number_int);
-        printf("You have %d bulls and %d cows.\n", bulls, cows);
-        system("pause");
+        printf("You have %d bulls and %d cows.\n\n", bulls, cows);
     } while (bulls != n);
 
     system("cls");
