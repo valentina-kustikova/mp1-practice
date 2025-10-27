@@ -42,7 +42,9 @@ int main() {
 		k = floorf(h / 40.f);
 	}
 	printf("Кол-во полок:%f\n", k);
-	ves = dvp * ((h/100.f) * (w/100.f) * t_zad) + 2.f * dsp * ((h/100.f) * (d/100.f)  * t_bvn) + 2.f * dsp * ((w/100.f) * (d/100.f)  * t_bvn) + (der * ((h/100.f) * (w/100.f) * t_dver)) + k * dsp*((w/100.f-2.f*t_bvn) * (d/100.f) * t_bvn);
+	ves = dvp * ((h/100.f) * (w/100.f) * t_zad) + 2.f * dsp * ((h/100.f) * (d/100.f)  * t_bvn) +
+		2.f * dsp * ((w/100.f) * (d/100.f)  * t_bvn) + (der * ((h/100.f) * (w/100.f) * t_dver)) +
+		k * dsp*((w/100.f-2.f*t_bvn) * (d/100.f) * t_bvn);
 	printf("Вес шкафа:%f kg\n", ves);
 	return 0;
 }
