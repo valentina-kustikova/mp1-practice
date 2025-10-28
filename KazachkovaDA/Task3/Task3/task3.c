@@ -2,12 +2,14 @@
 #include <time.h>
 #include <stdlib.h>
 #include <locale.h>
-#define N 10
+#define N 5
+
 int main()
 {
 	setlocale(LC_ALL, "Rus");
 	int arr[N], player[N], n, numb, i, l, guess, j, bull, cow;
 	l = 1;
+
 	do 
 	{
 		printf_s("Введите длину слова:\n");
@@ -17,18 +19,17 @@ int main()
 	for (i = 0; i < n; i++) {
 		l *= 10;
 	}
+
 	do
 	{
 		srand(time(NULL));
 		numb = rand() % (l - l / 10) + l / 10;
+
 		for (i = 0; i < n; i++) {
-			arr[i] = numb % 10;
+			arr[n-i-1] = numb % 10;
 			numb /= 10;
 		}
-		for (i = 0; i < n; i++) {
-			printf_s("%d", arr[i]);
-		}
-	} while (arr[0] = 0);
+	} while (arr[n-1] = 0);
 	
 	do
 	{
@@ -42,31 +43,33 @@ int main()
 
 		for (i = 0; i < n; i++) 
 		{
-			player[i] = guess % 10;
+			player[n-i-1] = guess % 10;
 			guess /= 10;
 		}
+
 		for (i = 0; i < n; i++)
 		{
-			while (arr[i] == player[i])
+			if (arr[i] == player[i])
 			{
-				bull += 1;
-				i++;
+				bull++;
 			}
 		}
-		for (i; i < n; i++)
-		{
-			for (j = i; j < n; j++)
-			{
-				if (arr[i] == player[j++])
-				{
-					cow += 1;
-				}
 
-					
+		for (i = 0; i < n; i++)
+		{
+			for (j = 0; j < n; j++)
+			{
+				if (arr[i] == player[j])
+				{
+					cow++;
+				}
 			}
 		}
+		cow = cow - bull;
 		printf_s("Быков: %d, коров: %d\n", bull, cow);
 	} while (bull != n);
-	
+	if (bull = 2) {
+		printf_s("Вы угадали!");
+	}
 	return 0;
 }
