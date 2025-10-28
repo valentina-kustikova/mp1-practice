@@ -3,9 +3,9 @@
 #define N 256
 
 char names[10000][256] = {""};
-int true_costs[10000] = { 0 }, costs[10000] = { 0 }, count[10000] = { 0 };
+int last_cost, last_true_cost;
 
-void form() {
+void form(int costs[], int true_costs[], int count[]) {
 	int id = 0;
 	printf("-----\n");
 	for (; id < 10000; id++) {
@@ -15,7 +15,7 @@ void form() {
 	printf("-----\n");
 }
 
-void calculate() {
+void calculate(int true_costs[]) {
 	int id = 0, summ = 0;
 	for (; id < 10000; id++) {
 		if (!names[id][0]) continue;
@@ -24,8 +24,10 @@ void calculate() {
 	printf("\nTotal sum: %d\n", summ);
 }
 
-void scan(char code[], int name[], int cost, int sale) {
+int scan(int length[], int true_costs[], int costs[], int count[]) {
 // Считываю очередной лог
+	char code[F], name[N];
+	int cost, sale;
 	int i = 0, id = 0, true_cost, l = 0;
 	char c;
 	for (i = 0; i < F; i++) {
@@ -38,6 +40,7 @@ void scan(char code[], int name[], int cost, int sale) {
 		scanf_s("%c", &c);
 		if (c != ' ') name[l++] = c;
 	} while (c != ' ');
+	length[id] = l;
 	scanf_s("%d %d", &cost, &sale);
 	true_cost = cost - (cost * sale) / 100;
 // Добавляю новый лог в чек
@@ -46,22 +49,34 @@ void scan(char code[], int name[], int cost, int sale) {
 	}
 	true_costs[id] += true_cost; costs[id] += cost;
 	count[id]++;
-// Вывожу новый лог
-	printf("NEW LOG  ");
-	for (i = 0; i < l; i++) printf("%c", name[i]);
-	printf(": %d -> %d\n", cost, true_cost);
+// Сохраняю последний лог
+	last_cost = cost; last_true_cost = true_cost;
+	return id;
+}
+
+void last(int id, int len) {
+	int i = 0;
+	printf("LAST LOG  ");
+	for (i = 0; i < len; i++) printf("%c", names[id][i]);
+	printf(": %d -> %d\n", last_cost, last_true_cost);
 }
 
 
 int main() {
-	char code[F], name[N];
-	int cost = 0, sale = 0, n;
+	int n;
+
+	int length[10000] = { 0 };
+	int true_costs[10000] = { 0 }, costs[10000] = { 0 }, count[10000] = { 0 };
+
+	int last_id, last_cost, last_true_cost;
+
 	scanf_s("%d", &n); scanf_s("%*c");
 	while (n--) {
-		scan(code, name, cost, sale);
+		int id = scan(length, true_costs, costs, count);
 		scanf_s("%*c");
+		last(id, length[id]);
 	}
-	form();
-	calculate();
+	form(costs, true_costs, count);
+	calculate(true_costs);
 	return 0;
 }
