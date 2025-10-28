@@ -17,16 +17,18 @@ int main()
 	for (i = 0; i < n; i++) {
 		l *= 10;
 	}
-
-	srand(time(NULL));
-	numb = rand()%(l - l/10)+l/10;
-	for (i = 0; i < n; i++) {
-		arr[i] = numb % 10;
-		numb /= 10;
-	}
-	for (i = 0; i < n; i++) {
-		printf_s("%d", arr[i]);
-	}
+	do
+	{
+		srand(time(NULL));
+		numb = rand() % (l - l / 10) + l / 10;
+		for (i = 0; i < n; i++) {
+			arr[i] = numb % 10;
+			numb /= 10;
+		}
+		for (i = 0; i < n; i++) {
+			printf_s("%d", arr[i]);
+		}
+	} while (arr[0] = 0);
 	
 	do
 	{
@@ -34,7 +36,7 @@ int main()
 		bull = 0;
 		do
 		{
-			printf_s("¬ведите вашу догадку:");
+			printf_s("\n¬ведите вашу догадку:");
 			scanf_s("%d", &guess);
 		} while ((guess >= l) || (guess < (l / 10)));
 
@@ -43,25 +45,26 @@ int main()
 			player[i] = guess % 10;
 			guess /= 10;
 		}
-			for (i = 0; i < n; i++)
+		for (i = 0; i < n; i++)
+		{
+			while (arr[i] == player[i])
 			{
-				for (j = 0; j < n; j++) 
-				{
-					if (arr[i] == player[i])
-					{
-						bull += 1;
-					}
-					else
-					{
-						if (arr[i] == player[j++])
-						{
-							cow += 1;
-						}
-
-					}
-				}
-				
+				bull += 1;
+				i++;
 			}
+		}
+		for (i; i < n; i++)
+		{
+			for (j = i; j < n; j++)
+			{
+				if (arr[i] == player[j++])
+				{
+					cow += 1;
+				}
+
+					
+			}
+		}
 		printf_s("Ѕыков: %d, коров: %d\n", bull, cow);
 	} while (bull != n);
 	
