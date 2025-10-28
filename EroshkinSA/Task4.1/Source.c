@@ -63,20 +63,36 @@ void last(int id, int len) {
 
 
 int main() {
-	int n;
+	int id = -1, type;
 
 	int length[10000] = { 0 };
 	int true_costs[10000] = { 0 }, costs[10000] = { 0 }, count[10000] = { 0 };
 
 	int last_id, last_cost, last_true_cost;
-
-	scanf_s("%d", &n); scanf_s("%*c");
-	while (n--) {
-		int id = scan(length, true_costs, costs, count);
-		scanf_s("%*c");
-		last(id, length[id]);
+	while (scanf_s("%d%*c", &type)) {
+		switch (type) {
+		case 1:
+			id = scan(length, true_costs, costs, count);
+			scanf_s("%*c");
+			break;
+		case 2:
+			if (id == -1) {
+				printf("Empty\n");
+				break;
+			}
+			last(id, length[id]);
+			break;
+		case 3:
+			printf("Added to the check!\n");
+		case 4:
+			form(costs, true_costs, count);
+			break;
+		case 5:
+			calculate(true_costs);
+			break;
+		default:
+			printf("Incorrect operation!\n");
+		}
 	}
-	form(costs, true_costs, count);
-	calculate(true_costs);
 	return 0;
 }
