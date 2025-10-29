@@ -8,9 +8,41 @@
 
 #define LINE 512
 
+struct bullsandcows {
+    int bulls, int cows;
+};
+
+bool no_repetitions(int a[], int n) {
+    int i, j;
+    for (i = 1; i < n; i++)
+        for (j = 0; j < i; j++)
+            if (a[i] == a[j])
+                return false;
+    return true;
+}
+
+struct bullsandcows count(int a[], int b[], int n) {
+    int i, j;
+    int bulls = 0, cows = 0;
+    struct bullsandcows;
+    for (i = 0; i < n; i++)
+        if (a[i] == b[i]) bulls++;
+    for (i = 0; i < n - 1; i++)
+        for (j = i + 1; j < n; j++)
+            if (a[i] == b[j]) cows++;
+    bullsandcows = {
+        .bulls = bulls,
+        .cows = cows
+    };
+    return bullsandcows;
+}
+
 int main() {
     char a[5], b[5];
     int n, i;
+    int guesses = 0;
+    bool guessed;
+
     srand((unsigned int) time(0));
     setlocale(LC_ALL, "ru");
     setlocale(LC_NUMERIC, "C");
@@ -37,11 +69,19 @@ int main() {
     }
 
     do {
-        printf("Загадайте %d-значное число с различными цифрами: ", n);
-        for (i = 0; i < n; i++)
-            scanf("%c ", &b[i]);
-        scanf("%*s");
-    } while ();
+        do {
+            printf("Загадайте %d-значное число с различными цифрами: ", n);
+            for (i = 0; i < n; i++)
+                scanf("%c ", &b[i]);
+            scanf("%*s");
+        } while (!no_repetitions(b, n));
+
+        struct bullsandcows result = count(a, b, n);
+        if (result.bulls == n)
+            guessed = true;
+        printf("Кол-во коров: %d. Кол-во быков: %d.\n", result.cows, result.bulls);
+    } while (!guessed);
+    printf("Вы угадали! Кол-во затраченных попыток: %d.", guesses);
 
     system("chcp 866");
     return 0;
