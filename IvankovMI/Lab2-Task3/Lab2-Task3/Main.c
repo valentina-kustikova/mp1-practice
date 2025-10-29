@@ -1,22 +1,53 @@
 #include "C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\stdio.h"
 #include "C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\locale.h"
-#include <C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\stdlib.h>
-#include <C:\Program Files (x86)\Windows Kits\10\Include\10.0.19041.0\ucrt\time.h>
-int main() {
+#include <C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\stdlib.h>
+#include <C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\time.h>
+
+//RAND_MAX = 32767
+
+void procedure_try_n(int k) {
+	;
+}
+
+int heavy_main() {
 	long int a;
-	int regim = 0;
+	int k = 0, regim = 0;
 	setlocale(LC_ALL, "Rus");
 	srand(time(NULL));
-	//regim = MessageBoxA("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½", "ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½", "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½", &regim);
-	printf_s("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½\n0 - ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½\n1 - ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½\n");
+	//printf("%d", RAND_MAX);
+	//regim = MessageBoxA("ÂÛÁÅĞÅÒÅ ĞÅÆÈÌ ÈÃĞÛ", "ß ÎÒÃÀÄÛÂÀŞ ×ÈÑËÎ ÊÎÌÏÜŞÒÅĞÀ", "ÊÌÏÜŞÒÅĞ ÎÒÃÀÄÛÂÀÅÒ ÌÎÅ ×ÈÑËÎ", &regim);
+	printf_s("ÂÛÁÅĞÅÒÅ ĞÅÆÈÌ ÈÃĞÛ\n0 - ß ÎÒÃÀÄÛÂÀŞ ×ÈÑËÎ ÊÎÌÏÜŞÒÅĞÀ\n1 - ÊÎÌÏÜŞÒÅĞ ÎÒÃÀÄÛÂÀÅÒ ÌÎÅ ×ÈÑËÎ\n");
 	scanf_s("%d", &regim);
 	if (regim == 0) {
 		int s;
 		a = rand();
-		printf_s("ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½. \nï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. \nï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.");
+		printf_s("\nß çàãàäàë ñëó÷àéíîå öåëîå ÷èñëî. Ïîïğîáóé îòãàäàòü åãî. \nÍà êàæäóş òâîş ïîïûòêó ÿ áóäó äàâàòü ïîäñêàçêó, áîëüøå èëè ìåíüøå òâîÿ äîãàäêà. \n\nÂâîäè ñâîş ïåğâóş äîãàäêó:  ");
 		do {
 			scanf_s("%d", &s);
-			
-		} while (a == s);
+			k++;
+			if (s > a) {
+				printf_s("Íå óãàäàë — òâîå ÷èñëî ñëèøêîì áîëüøîå. \n");
+				procedure_try_n(k);
+
+			}
+			if (s < a) {
+				printf_s("Íå óãàäàë — òâîå ÷èñëî ñëèøêîì ìàëåíüêîå. \n");
+				procedure_try_n(k);
+
+			}
+		} while (a != s);
+
 	}
+}
+
+int main() {
+	int v;
+	setlocale(LC_ALL, "Rus");
+	printf_s("ÂÛÁÅĞÅÒÅ ÂÅĞÑÈŞ ÈÃĞÛ\n\n0 - ÎÁËÅÃ×ÅÍÍÀß, \nÂÛÏÎËÍÅÍÍÛ ÌÈÍÈÌÀËÜÍÛÅ ÒĞÅÁÎÂÀÍÈß, \nĞÀÁÎÒÀÅÒ \n\n1 - ÓÒßÆÅËÅÍÍÀß, \nĞÅÀËÈÇÎÂÀÍÛ ĞÀÇÍÛÅ ÔÈ×È, \nÊÎÍÒĞÎËÜ ÂÂÎÄÀ \nÈ ÏĞ. \n\n");
+	scanf_s("%d", &v);
+	printf_s("\n\n\n\n");
+	if (v == 0)
+		light_main();
+	else
+		heavy_main();
 }
