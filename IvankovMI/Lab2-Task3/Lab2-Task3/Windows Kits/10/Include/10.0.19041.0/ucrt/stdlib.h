@@ -9,10 +9,10 @@
 #ifndef _INC_STDLIB // include guard for 3rd party interop
 #define _INC_STDLIB
 
-#include <corecrt.h>
-#include <corecrt_malloc.h>
-#include <corecrt_search.h>
-#include <corecrt_wstdlib.h>
+#include <C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt.h>
+#include <C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_malloc.h>
+#include <C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_search.h>
+#include <C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\corecrt_wstdlib.h>
 #include <limits.h>
 
 #pragma warning(push)
