@@ -1,7 +1,7 @@
-#include "C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\stdio.h"
-#include "C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\locale.h"
-#include <C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\stdlib.h>
-#include <C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\time.h>
+#include <stdio.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <time.h>
 
 //RAND_MAX = 32767
 

@@ -1,7 +1,7 @@
-#include "C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\stdio.h"
-#include "C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\locale.h"
-#include <C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\stdlib.h>
-#include <C:\Users\User\git practice\mp1-practice\IvankovMI\Lab2-Task3\Lab2-Task3\Windows Kits\10\Include\10.0.19041.0\ucrt\time.h>
+#include <stdio.h>
+#include <locale.h>
+#include <stdlib.h>
+#include <time.h>
 
 //RAND_MAX = 32767
 
@@ -41,21 +41,21 @@ int light_main() {
 		printf_s("\nЗагадай случайное целое число от 1 до 1000. Я попробую отгадать его. \nНа каждую мою попытку отвечай: \n> — если моя догадка больше твоего числа, \n< — если моя догадка меньше твоего числа, \n= — если я наконец-таки отгадал твое число\n\nЯ начинаю отгадывать: %d \n", a);
 		do {
 			scanf_s("%c", &s);
-			if (s == ">"[0]) {
-				r = a - 1;
+			if (s == '>') {
+				r = a;
 				if (l >= r) { win = 0; continue; }
 				k++;
-				a = l + rand() % (r - l + 1);
+				a = l + rand() % (r - l);
 				printf_s("Ай, не угадал! А может это: %d ?\n", a);
 			}
-			else if (s == "<"[0]) {
+			else if (s == '<') {
 				l = a + 1;
 				if (l >= r) { win = 0; continue; }
 				k++;
-				a = l + rand() % (r - l + 1);
+				a = l + rand() % (r - l);
 				printf_s("Да как так то! А может это: %d ?\n", a);
 			}
-			else if (s == "\n"[0])
+			else if (s == '\n')
 				;
 			else 
 				printf_s("Я не понял. Введи '<' '>' или '='\n");
