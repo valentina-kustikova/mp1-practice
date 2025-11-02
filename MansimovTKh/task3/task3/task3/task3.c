@@ -5,6 +5,7 @@
 
 int len(int a);
 
+
 int main() {
     srand(time(NULL));
     int n, i, j, digit, userGuess;
