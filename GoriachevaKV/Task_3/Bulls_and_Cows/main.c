@@ -2,11 +2,10 @@
 #include <windows.h>
 #include <math.h>
 #include <time.h>
-//#define DEBUG
 
 int main() {
     srand((unsigned int)time(NULL));
-    int n, i, bulls = 0, cows = 0, player_number_int = 0, player_number_int_copy = 0;
+    int n, i, bulls = 0, cows = 0, player_number_int = 0, player_number_int_copy = 0, upper = 1, lower = 1;
     int comp_number[5] = { -1, -1, -1, -1, -1 }, player_number[5] = { -1, -1, -1, -1, -1 };
 
     do {   //player choose the number of digits
@@ -35,20 +34,24 @@ int main() {
         }
     }
 
+    for (i = 0; i < n; i++) {
+        upper *= 10;
+    }
+    for (i = 0; i < (n - 1); i++) {
+        lower *= 10;
+    }
+
     do {    //main game code
-#ifdef DEBUG
-        printf("DEBUG The guessed number is %d%d%d%d%d.\n", comp_number[0], comp_number[1], comp_number[2], comp_number[3], comp_number[4]);
-#endif
         bulls = 0;
         cows = 0;
         do {
             printf("Input number >> ");
             scanf_s("%d", &player_number_int);
-            if (player_number_int > pow(10, n) || player_number_int < pow(10, n - 1)) {
+            if (player_number_int >= upper || player_number_int < lower) {
                 printf("Error! Try again.\n\n");
                 system("pause");
             }
-        } while (player_number_int > pow(10, n) || player_number_int < pow(10, n - 1));
+        } while (player_number_int >= upper || player_number_int < lower);
 
         int j = n - 1;
         player_number_int_copy = player_number_int;
