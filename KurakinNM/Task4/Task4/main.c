@@ -79,14 +79,18 @@ void createCheck(int check[], char name[], int cost[], float discount[])
 {
 	int i,j;
 	printf("\tname\t|\tcost\t|\tquantity\t|\ttotal cost\t\n");
+	printf("--------------------------------------------------------------------------------\n");
 	for (i = 0; i < L; i++)
 	{
-		printf("\t");
-		for (j = 0; j < 4; j++)
+		if (check[i] > 0)
 		{
-			printf("%c", name[4 * i + j]);
+			printf("\t");
+			for (j = 0; j < 4; j++)
+			{
+				printf("%c", name[4 * i + j]);
+			}
+			printf("\t|\t%.2f\t|\t%8d\t|\t%.2f\t\n", cost[i] * (1 - discount[i]), check[i], cost[i] * (1 - discount[i]) * check[i]);
 		}
-		printf("\t|\t%.2f\t|\t%8d\t|\t%.2f\t\n", cost[i]*(1- discount[i]), check[i], cost[i] * (1 - discount[i]) * check[i]);
 	}
 }
 void totalCost(int check[], int cost[], float discount[])
