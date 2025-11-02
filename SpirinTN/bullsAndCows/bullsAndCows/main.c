@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #define DEBUG
 
@@ -20,7 +21,7 @@ int main() {
 	lengthNumber = setLengthNumber();
 	hiddenNumber = generationNumber(lengthNumber);
 #ifdef DEBUG
-	printf("(TEST) A number has been guessed: %d", hiddenNumber);
+	printf("(TEST) A number has been guessed: %d\n", hiddenNumber);
 #endif
 
 	tryingGuessNumber(hiddenNumber, lengthNumber);
@@ -52,41 +53,60 @@ int generationNumber(int lengthNumber) {
 	return resultNumber;
 }
 
+int isIdenticalDigits(int userNumber);
 int counterBulls(int userNumber, int hiddenNumber, int lengthNumber);
 int counterCows(int userNumber, int hiddenNumber, int lengthNumber);
 
 void tryingGuessNumber(int hiddenNumber, int lengthNumber) {
-	int userNumber = 0, rangeMultiplier = 1, i;
-	for (i = 1; i < lengthNumber; i++) {
-		rangeMultiplier *= 10;
-	}
+	int userNumber = 0, rangeMultiplier = (int) pow(10, lengthNumber - 1), i;
+
 	while (userNumber != hiddenNumber) {
-		printf("Input number (length number - %d digits): ");
+		printf("Input number (all the digits are different, length number - %d digits): ", lengthNumber);
 		scanf_s("%d", &userNumber);
-		while (userNumber < rangeMultiplier || userNumber >= rangeMultiplier * 10) {
-			printf("Incorrect number. Input number (length number - %d digits): ");
+		while (userNumber < rangeMultiplier || userNumber >= rangeMultiplier * 10 || isIdenticalDigits(userNumber)) {
+			printf("Incorrect number. Input number (all the digits are different, length number - %d digits): ", lengthNumber);
 			scanf_s("%d", &userNumber);
 		}
 		printf("Number of bulls: %d\n", counterBulls(userNumber, hiddenNumber, lengthNumber));
 		printf("Number of cows: %d\n\n", counterCows(userNumber, hiddenNumber, lengthNumber));
 	}
-	printf("Congratulations! You guessed the number.");
+	printf("Congratulations! You guessed the number.\n");
+}
+
+int isIdenticalDigits(int userNumber) {
+	int digits[10] = { 0 };
+	while (userNumber > 0) {
+		int currentDigit = userNumber % 10;
+		if (digits[currentDigit] == 1) {
+			return 1;
+		}
+		digits[currentDigit]++;
+		userNumber /= 10;
+	}
+	return 0;
 }
 
 int counterBulls(int userNumber, int hiddenNumber, int lengthNumber) {
 	int count = 0, i;
 	for (i = 0; i < lengthNumber; i++) {
-		if (userNumber % 10 == hiddenNumber % 10) {
+		if (hiddenNumber / (int)pow(10, i) % 10 == userNumber / (int)pow(10, i) % 10) {
 			count++;
 		}
-		userNumber /= 10;
-		hiddenNumber /= 10;
 	}
 	return count;
 }
 
 int counterCows(int userNumber, int hiddenNumber, int lengthNumber) {
-	int count = 0, i;
-
+	int count = 0, i, j;
+	for (i = 0; i < lengthNumber; i++) {
+		for (j = 0; j < lengthNumber; j++) {
+			if (j == i) {
+				continue;
+			}
+			if (hiddenNumber / (int)pow(10, i) % 10 == userNumber / (int)pow(10, j) % 10) {
+				count++;
+			}
+		}
+	}
 	return count;
 }
