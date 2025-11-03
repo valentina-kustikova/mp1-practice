@@ -16,7 +16,16 @@ int main() {
 
 	int komp_arr[5], is_play = 1, cnt_try = 0, len, i;
 
-	len = 2 + rand() % 4;
+	printf("Введите длину числа");
+	scanf_s("%d", &len);
+
+	while (len < 2 || len > 5) {
+		printf("Некорректный ввод");
+		printf("Введите длину числа");
+		scanf_s("%d", &len);
+	}
+
+
 	create_rand_num(komp_arr, len);
 
 	int arr[] = { 4,5,4,4 };
