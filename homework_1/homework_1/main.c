@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 int main() {
-    int dvp = 800, dsp = 650, wood = 700;
+    float dvp = 800.f, dsp = 650.f, wood = 700.f;
     float h, w, d, weight_1, weight_2, weight_3, weight_4, weight_5, weight;
     do {
         printf("Enter h, w, d\n");
@@ -12,10 +12,10 @@ int main() {
     weight_3 = 2 * (w * d * 0.015 * dsp);
     weight_4 = h * w * 0.01 * wood;
     if (2 <= h) {
-        weight_5 = (w * d * 0.01 * dsp) * 5;
+        weight_5 = ((w - 0.3) * d * 0.01 * dsp) * 5;
     }
     else {
-        weight_5 = (w * d * 0.01 * dsp) * 4;
+        weight_5 = ((w-0.3) * d * 0.01 * dsp) * 4;
     }
     weight = weight_1 + weight_2 + weight_3 + weight_4 + weight_5;
     printf("weight = %f kg", weight);
