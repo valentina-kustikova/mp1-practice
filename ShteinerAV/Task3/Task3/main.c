@@ -28,11 +28,6 @@ int main() {
 
 	create_rand_num(komp_arr, len);
 
-	int arr[] = { 4,5,4,4 };
-
-	printf("%d", different_num(arr, 4));
-
-
 
 #ifdef DEBUG
 	printf("***Загаданная комбинация - ");
