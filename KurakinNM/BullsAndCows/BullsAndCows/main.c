@@ -5,14 +5,13 @@ int main()
 {
 	srand(time());
 	int i,j,bulls = 0,cows = 0,userNumber,L;
-	printf("enter number (1-10):");
+	printf("enter number (1-9):");
 	scanf_s("%d", &L);
 	int num[10];
 	for (i = L - 1; i >= 0; i--)
 	{
 		do {
-			if (i == L-1) { userNumber = rand() % 9 + 1; }
-			else { userNumber = rand() % 10; };
+			userNumber = rand() % 9 + 1;
 			for (j = L - 1; j > i; j--) { if (num[j] == userNumber) { break; }};
 		} while (j != i);
 		num[i] = userNumber;
