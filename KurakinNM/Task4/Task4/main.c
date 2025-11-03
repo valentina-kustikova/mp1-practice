@@ -1,8 +1,9 @@
 #include <stdio.h>
+#include <string.h>
 
 #define L 4
 
-int scan(char a[]);
+void scan(char qr[]);
 void info(int qrSelect, char name[], int cost[], int discount[]);
 void addToCheck(int qrSelect, int check[]);
 void createCheck(int check[], char name[], int cost[], float discount[]);
@@ -11,14 +12,14 @@ void totalCost(int check[], int cost[], float discount[]);
 int main()
 {
 	int i,j, select;
-	int check[] = {0,0,0,0};
-	char qr[] = "0000000102009000";
-	char name[] = "milkcakejusebean";
-	int cost[] = {50,250,15,30};
-	float discount[] = { 0.10f,0.40f,0.0f,0.15f };
-	int qrSelect = -1;
+	int check[L] = {0,0,0,0};
+	char qr[L][4] = { "0000","0001","0200","9000" };
+	char name[L][4] = { "milk","cake","juse","bean" };
+	int cost[L] = {50,250,15,30};
+	float discount[L] = { 0.10f,0.40f,0.0f,0.15f };
+	char qrSelect[4] = "9999";
 	printf("QRs: ");
-	for (i = 0; i < L; i++) { for (j = 0; j < 4; j++) { printf("%c",qr[i*4+j]); }; printf(" "); };
+	for (i = 0; i < L; i++) { for (j = 0; j < 4; j++) { printf("%c",qr[i][j]); }; printf(" "); };
 	printf("\n");
 	do
 	{
@@ -26,11 +27,11 @@ int main()
 		scanf_s("%d", &select);
 		switch (select)
 		{
-		case 1: qrSelect = scan(qr); break;
-		case 2: info(qrSelect, name, cost, discount); break;
+		case 1: scan(qrSelect); for (j = 0; j < 4; j++) { printf("%c", qrSelect[j]); }; break;
+		/*case 2: info(qrSelect, name, cost, discount); break;
 		case 3: addToCheck(qrSelect, check); break;
 		case 4: createCheck(check, name, cost, discount); break;
-		case 5: totalCost(check, cost, discount); select = 0; break;
+		case 5: totalCost(check, cost, discount); select = 0; break;*/
 		default:break;
 		}
 
@@ -38,22 +39,11 @@ int main()
 	return 0;
 }
 
-int scan(char a[])
+void scan(char qr[])
 {
 	getchar();
-	char qr[4]; int i,j, result = -1;
 	printf("Enter QR:");
-	for (i = 0; i < 4; i++)
-	{
-		scanf_s("%c", &qr[i]);
-	}
-	for (i = 0; i < L; i++)
-	{
-		for (j = 0; j < 4; j++) { if (a[i * 4 + j] != qr[j]) { break; } };
-		if (j == 4) { result = i; break; }
-	}
-	if (result == -1) { printf("uncorect QR\n"); }
-	return result;
+	gets(qr);
 }
 void info(int qrSelect, char name[],int cost[], float discount[])
 {
