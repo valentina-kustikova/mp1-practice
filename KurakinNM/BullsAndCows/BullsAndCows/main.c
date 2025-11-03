@@ -35,6 +35,11 @@ int main()
 			if (j != L) { break; }
 		}
 		if (i == L) {
+			for (i = 0; i < L; i++)
+			{
+				userNumber *= 10;
+				userNumber += userNum[i];
+			}
 			i = 0; bulls = 0; cows = 0;
 			while (userNumber > 0 && i < L)
 			{
