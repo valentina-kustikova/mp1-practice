@@ -20,8 +20,6 @@ int main()
 		l *= 10;
 	}
 
-	do
-	{
 		srand(time(NULL));
 		numb = rand() % (l - l / 10) + l / 10;
 
@@ -29,7 +27,6 @@ int main()
 			arr[n-i-1] = numb % 10;
 			numb /= 10;
 		}
-	} while (arr[n-1] = 0);
 	
 	do
 	{
