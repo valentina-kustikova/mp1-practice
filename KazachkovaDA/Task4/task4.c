@@ -19,10 +19,6 @@ int main()
 	int unic_codes[N];//массив уникальных штрихкодов
 	int num_unic_codes = amount_calc(codes, unic_codes, goods_amount, amount);
 
-	for (int i = 0; i <= num_unic_codes; i++) {
-		printf_s("ID: %d  Amount: %\n", unic_codes[i], goods_amount[i]);
-	}
-
 	create_receipt(unic_codes, goods_amount, num_unic_codes); //вызываем создание чека
 
 	return 0; 
