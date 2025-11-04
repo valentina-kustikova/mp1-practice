@@ -3,11 +3,11 @@
 #include <string.h>
 #include <locale.h>
 #define N 1000
-#define sizedb 5
-const int code[sizedb] = { 1001, 1002, 1003, 1004, 1005 };
-const char* name[5] = { "apples", "milk", "bananas", "bread", "juice" };
-const int price[5] = {100, 90, 75, 30, 300 };
-const int discount[5] = {15, 10, 25, 35, 5};
+#define sizedb 15
+const int code[sizedb] = { 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015};
+const char* name[15] = { "apples", "milk", "bananas", "bread", "juice", "ketchup", "mayonaise", "eggs", "cheese", "tomatoes", "sausages", "salad", "meat", "butter", "fish"};
+const int price[15] = {100, 90, 75, 30, 300, 80, 75, 60, 140, 200, 300, 250, 400, 170, 270};
+const int discount[15] = {15, 10, 25, 35, 5, 20, 40, 35, 10, 35, 45, 10, 10, 20, 40};
 
 
 int main()
@@ -20,12 +20,12 @@ int main()
 	int num_unic_codes = amount_calc(codes, unic_codes, goods_amount, amount);
 
 	for (int i = 0; i <= num_unic_codes; i++) {
-		printf_s("ID: %d  Amount: %d\n", unic_codes[i], goods_amount[i]);
+		printf_s("ID: %d  Amount: %\n", unic_codes[i], goods_amount[i]);
 	}
 
 	create_receipt(unic_codes, goods_amount, num_unic_codes); //вызываем создание чека
 
-	return 0;
+	return 0; 
 }
 
 int scan(int *codes)
@@ -35,14 +35,13 @@ int scan(int *codes)
 	int j = 0;
 	int flag = 0;
 	int value = 0;
+	printf_s("Type 0 for exit\n");
 	do
 	{
-		//scanf_s("%d", &(codes[i]));
+		printf_s("Enter the code: ");
 		scanf_s("%d", &value);
-		//printf_s("Value: %d\n", value);
-		for (int i = 0; i < sizedb; i++)
+		for (int i = 0; i < 15; i++)
 		{
-			//printf_s("code[i] = %d", code[i]);
 			if (code[i] == value)
 			{
 				codes[j] = value;
@@ -51,7 +50,7 @@ int scan(int *codes)
 			}
 		}
 		if (flag == 0) {
-			printf_s(" \nPoprobui esche raz\n");
+			printf_s(" \nThe code isn't found\n");
 		}
 		
 	} while (value > 0);
@@ -68,7 +67,7 @@ int amount_calc(int *codes, int *unic_codes, int *goods_amount, int amount)
 		{
 			continue; //берем следующий код
 		}
-		int flag = 0;
+		int flag = 0; 
 		goods_amount[k] = 1; //считаем количество встретившегося штрихкода
 		if ((i == amount - 1) && (codes[i] > 0))
 		{
@@ -101,9 +100,8 @@ create_receipt(int *unic_codes, int *goods_amount, int num_unic_codes)
 	for (int i = 0; i <= num_unic_codes; i++)
 	{
 		//ищем штрихкод в базе данных
-		for (int j = 0; j < 5; j++)
+		for (int j = 0; j < sizedb; j++)
 		{
-			//printf_s("%d ", code[j]);
 			if (unic_codes[i] == code[j])
 			{
 				float total0 = goods_amount[i]*(price[j] * (1 - (discount[j] * 0.01)));
