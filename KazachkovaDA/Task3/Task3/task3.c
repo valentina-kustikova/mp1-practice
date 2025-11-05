@@ -5,9 +5,9 @@
 #define N 5
 
 int main()
-{
+{	
+	int arr[N], player[N], n, numb, i, l, guess, j, bull, cow, digit, flag;
 	setlocale(LC_ALL, "Rus");
-	int arr[N], player[N], n, numb, i, l, guess, j, bull, cow;
 	l = 1;
 
 	do 
@@ -16,18 +16,34 @@ int main()
 		scanf_s("%d", &n);
 	} while (n < 2 || n >5);
 	
+	srand(time(NULL));
+
+	for (i = 0; i < n; i++)
+	{
+		flag = 0;
+		do
+		{
+			digit = rand() % 10;
+		} while (digit == 0);
+		
+		
+		for (j = 0; j < n; j++)
+		{
+			if (arr[j] == digit)
+				{
+					flag = 1;
+				}
+		}
+		if (flag = 0)
+		{
+			arr[i] = digit;
+		}
+
+	}
 	for (i = 0; i < n; i++) {
-		l *= 10;
+		printf_s("%d", arr[i]);
 	}
 
-		srand(time(NULL));
-		numb = rand() % (l - l / 10) + l / 10;
-
-		for (i = 0; i < n; i++) {
-			arr[n-i-1] = numb % 10;
-			numb /= 10;
-		}
-	
 	do
 	{
 		cow = 0;
@@ -65,7 +81,7 @@ int main()
 		cow = cow - bull;
 		printf_s("Быков: %d, коров: %d\n", bull, cow);
 	} while (bull != n);
-	if (bull = 2) {
+	if (bull == 2) {
 		printf_s("Вы угадали!");
 	}
 	return 0;
