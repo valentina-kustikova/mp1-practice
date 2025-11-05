@@ -57,9 +57,10 @@ int main() {
 
     a[0] = '1' + rand() % 9;
     for (i = 1; i < n; i++) {
-        bool correct = true;
+        bool correct;
         do {
             int j;
+            correct = true;
             a[i] = '0' + rand() % 10;
             for (j = 0; j < i; j++) {
                 if (a[j] == a[i]) {
