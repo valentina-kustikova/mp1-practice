@@ -5,10 +5,10 @@
 
 
 int main() {
-	setlocale(LC_ALL, "Rus");
 	int n, r, step = 10, i, j, tx[10], ty[10];
 	int check = 1, bull, cows, x, y;
 	x = 0;
+	setlocale(LC_ALL, "Rus");
 	srand((unsigned)time(0));
 	printf("Привет! Это игра <Быки и коровы>. Правила просты:\nЯ загадываю число, ты пытаешься его угадать\n");
 	do {
@@ -18,12 +18,12 @@ int main() {
 
 	do {
 		check = 1;
-		for (int i = 0; i < n; i++) {
+		for (i = 0; i < n; i++) {
 			r = rand() % step;
 			tx[i] = r;
 		}
-		for (int i = 0; i < n; i++) {
-			for (int j = i + 1; j < n; j++) {
+		for (i = 0; i < n; i++) {
+			for (j = i + 1; j < n; j++) {
 				if (tx[i] == tx[j]) {
 					check = 0;
 					break;
@@ -78,18 +78,22 @@ int main() {
 		} while (check != 1);
 		check = -1;
 		for (i = 0; i < n;i++) {
-			for (j = 0; j < n; j++) {
+			if (tx[i] == ty[i]) {
+				bull++;
+			}
+			for (j = 0; j < i; j++) {
 				if (tx[i] == ty[j]) {
-					if (i == j)
-						bull++;
-					else
-						cows++;
+					cows++;
+				}
+			}
+			for (j = i + 1; j < n; j++) {
+				if (tx[i] == ty[j]) {
+					cows++;
 				}
 			}
 		}
-		if (bull == n) check = 1;
-		else printf("Количество коров %d\nКоличество быков %d\n", cows, bull);
-	} while (check != 1);
+		printf("Количество коров %d\nКоличество быков %d\n", cows, bull);
+	} while (bull != n);
 	printf("Ура! Вы правы! Загаданное число %d\n", x);
 	return 0;
 }
