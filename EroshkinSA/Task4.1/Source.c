@@ -2,7 +2,15 @@
 #define F 4
 #define N 256
 
-char names[10000][N] = { {""} };
+
+struct things {
+	char code[F], name[N];
+	float cost, sale;
+	int count;
+};
+
+struct thing emp = { "", "", 0.0f, 0.0f, 0 };
+struct thing things[30] = { emp };
 
 
 void form(int costs[], int sales[], int count[]) {
@@ -51,29 +59,13 @@ void last(int id, int len, int* last_cost, int* last_sale) {
 	printf(": %d -> %d\n", *last_cost, *last_cost * (100 - *last_sale) / 100);
 }
 
-void base(int length[], int costs[], int sales[]) {
-	char code[F], name[N];
-	int cost, sale;
-	int i = 0, id = 0, l = 0;
-	char c;
-	for (i = 0; i < F; i++) {
-		scanf_s("%c", &(code[i]), 1);
-		id *= 10;
-		id += code[i] - '0';
+void base() {
+	int i;
+	for (i = 0; i < 30; i++) {
+		struct thing t = things[i];
+		scanf("%s %s %f %f", t.code, t.name, &t.cost, &t.sale);
+
 	}
-	scanf_s("%*c");
-	if (id < 0) return;
-	printf("%c%c%c%c ", code[0], code[1], code[2], code[3]);
-	do {
-		scanf_s("%c", &c);
-		if (c != ' ') name[l++] = c;
-	} while (c != ' ');
-	length[id] = l;
-	scanf_s("%d %d", &cost, &sale);
-	for (i = 0; i < l; i++) names[id][i] = name[i];
-	costs[id] = cost; sales[id] = sale;
-	scanf("%*c");
-	if (id) base(length, costs, sales);
 }
 
 
