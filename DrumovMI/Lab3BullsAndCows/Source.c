@@ -29,9 +29,12 @@ struct bullsandcows count(char a[], char b[], int n) {
     struct bullsandcows res;
     for (i = 0; i < n; i++)
         if (a[i] == b[i]) bulls++;
-    for (i = 0; i < n; i++)
-        for (j = 0; j < n; j++)
-            if (i != j && a[i] == b[j]) cows++;
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < i; j++) 
+            if (a[i] == b[j]) cows++;
+        for (j = i + 1; j < n; j++)
+            if (a[i] == b[j]) cows++;
+    }
     res = (struct bullsandcows) {
         .bulls = bulls,
         .cows = cows
@@ -70,9 +73,6 @@ int main() {
             }
         } while (!correct);
     }
-    for (i = 0; i < n; i++)
-        printf("%c ", a[i]);
-    printf("\n");
 
     guessed = false;
     do {
@@ -83,8 +83,6 @@ int main() {
             for (i = 0; i < n; i++)
                 scanf("%c", &b[i]);
             while ((ch = getchar()) != EOF && ch != '\n');
-            for (i = 0; i < n; i++)
-                printf("%c ", b[i]);
             printf("\n");
         } while (!no_repetitions(b, n));
         guesses++;
