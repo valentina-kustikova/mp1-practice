@@ -18,6 +18,7 @@ void input() {
 		t.count = 0;
 		t.sale = t.cost * t.sale / 100.0f;
 		things[i] = t;
+		printf("%s ", t.code);
 	}
 }
 
@@ -35,7 +36,7 @@ void scan(struct thing* last) {
 
 void Last(struct thing* last) {
 	struct thing t = *last;
-	printf("Last scanned: %s %s %f %f\n", t.code, t.name, t.cost, t.sale);
+	printf("Отсканировано: %s %s %.0f %.0f\n", t.code, t.name, t.cost, t.sale);
 }
 
 void add(struct thing* last) {
@@ -56,12 +57,12 @@ void receipt() {
 	printf("-------\n");
 	for (i = 0; i < N; i++) {
 		if (things[i].count) {
-			printf("%s - %f - %d - %f\n", things[i].name, things[i].cost, things[i].count, things[i].cost * things[i].count);
+			printf("%s - %.0f - %d - %.0f\n", things[i].name, things[i].cost, things[i].count, things[i].cost * things[i].count);
 			sum += things[i].cost * things[i].count;
 			sale += things[i].sale;
 		}
 	}
-	printf("-------\nСуммарная стоимость: %f\nОбщая скидка: %f\nИтоговая стоимость: %f\n-------\n", sum, sale, sum - sale);
+	printf("-------\nСуммарная стоимость: %.0f\nОбщая скидка: %.0f\nИтоговая стоимость: %.0f\n-------\n", sum, sale, sum - sale);
 }
 
 
@@ -69,8 +70,10 @@ void receipt() {
 int main() {
 	system("chcp 1251");
 	freopen("database.txt", "r", stdin);
+	printf("Доступные для сканирования коды: ");
 	input();
-	struct thing last = { "0000", "empty", 0.0f, 0.0f, 0};
+	printf("\nСписок доступных команд:\n0 - завершить работу\n1 <****> - сканировать штрих-код\n2 - узнать последний отсканированный товар\n3 - добавить товар в чек\n4 - сформировать и вывести чек\n");
+	struct thing last = { .code = "0000", .name = "empty", .cost = 0.0f, .sale = 0.0f, .count = 0};
 	freopen("CON", "r", stdin);
 	char type = -1;
 	while (1) {
