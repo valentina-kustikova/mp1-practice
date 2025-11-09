@@ -22,10 +22,10 @@ int main() {
     int cnt_list[N] = { 0, 0, 0, 0 };
     int discounts[N] = { 1 + rand() % 50 , 1 + rand() % 50 , 1 + rand() % 50 , 1 + rand() % 50 };
     int price_with_discounts[4] = { 
-        price_list[0] - (int)(price_list[0] * (1 + rand() % 50) / (float)100),
-        price_list[1] - (int)(price_list[1] * (1 + rand() % 50) / (float)100),
-        price_list[2] - (int)(price_list[2] * (1 + rand() % 50) / (float)100),
-        price_list[3] - (int)(price_list[3] * (1 + rand() % 50) / (float)100)
+        price_list[0] - (int)(price_list[0] * discounts[0] / (float)100),
+        price_list[1] - (int)(price_list[1] * discounts[1] / (float)100),
+        price_list[2] - (int)(price_list[2] * discounts[2] / (float)100),
+        price_list[3] - (int)(price_list[3] * discounts[3] / (float)100)
         };
 
    do {
