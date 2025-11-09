@@ -3,12 +3,8 @@
 #include <time.h>
 
 int main() {
-	int dl, bik = 0, kor = 0, i = 0, k = 0,j=0;
-	int pc_num[5] = { 0 };
-	int d[10] = { 0 };
-	int chp[5] = { 0 };
-	int c = 0, l = 0;
-	int ch;
+	int dl, bik = 0, kor = 0, i = 0, k = 0, j = 0, c = 0, l = 0, ch;
+	int d[10] = { 0 }, chp[5] = { 0 }, pc_num[5] = { 0 };
 	srand((unsigned int)time(0));
 	do {
 		printf("Vvedi dlinu ot 2 do 5: ");
@@ -23,6 +19,12 @@ int main() {
 		} while (d[pc_num[i]] == 1);
 		d[pc_num[i]] = 1;
 	}
+	
+	if (dl == 2) printf("chislo kompa: %d%d\n", pc_num[0], pc_num[1]);
+	if (dl == 3) printf("chislo kompa: %d%d%d\n", pc_num[0], pc_num[1], pc_num[2]);
+	if (dl == 4) printf("chislo kompa: %d%d%d%d\n", pc_num[0], pc_num[1], pc_num[2], pc_num[3]);
+	if (dl == 5) printf("chislo kompa: %d%d%d%d%d\n", pc_num[0], pc_num[1], pc_num[2], pc_num[3], pc_num[4]);
+	
 	l = dl;
 	printf("Poprobuy vvesti chislo dlinoy %d: ", dl);
 	
@@ -37,26 +39,20 @@ int main() {
 			ch /= 10;
 			dl -= 1;
 		}
-		for (i = 0; i < l; i++) {
-			printf("%d\n", chp[i]);
-		}
 		dl=l;
-		for (i = 0; i < l; i++) {
+		for (i = 0;i < l;i++) {
 			if (pc_num[i] == chp[i]) bik += 1;
+			for (j = 0;j < i;j++) {
+				if (pc_num[i] == chp[j]) kor += 1;
 
-		}
-
-		for (k = 0; k < l; k++) {
-			for (j = 0; j < l; j++) {
-				
-				if (pc_num[k] == chp[j] && k != j) kor += 1;				
+			}
+			for (j = i + 1; j < l;j++) {
+				if (pc_num[i] == chp[j]) kor += 1;
 			}
 		}
 		printf("%d bik and %d kor\n", bik, kor);
 		if (bik != l) printf("ne ygadal, poprobui eshe\n");
 	} while (bik != l);
-
 	printf("ygadal");
-
 	return 0;
 }
