@@ -5,8 +5,8 @@
 #define N 5
 
 int main() {
-	int dlina, bulls, cows, popitok = 0;
-	int i, j, m, k;
+	int dlina, bulls, cows, popitok = 0, pol;
+	int i, j;
 	srand((unsigned int)time(0));
 	setlocale(LC_ALL, "Russian");
 
@@ -34,21 +34,31 @@ int main() {
 
 	//работа с пользовательским числом, поиск быков и коров до тех пор пока быки не станут равны длине
 	do {
-		int pol[N] = {0};
+		int polm[N] = {0};
 		bulls = 0;
 		cows = 0;
 		popitok += 1;
 
-		for (j = 0; j < dlina; j++) {
-			scanf_s("%1d", &pol[j]);
+		scanf_s("%d", &pol);
+
+		for (i = dlina; i > 0; i--) {
+			polm[i - 1] = pol % 10;
+			pol = pol / 10;
 		}
 
-		for (k = 0; k < dlina; k++) {
-			for (m = 0; m < dlina; m++) {
-				if (chislo[k] == pol[m] && k == m) {
-					bulls += 1;
+		for (i = 0; i < dlina; i++) {
+			if (chislo[i] == polm[i]) {
+				bulls += 1;
+			}
+		}
+		for (i = 0; i < dlina; i++) {
+			for (j = 0; j < i; j++) {
+				if (chislo[i] == polm[j]) {
+					cows += 1;
 				}
-				if (chislo[k] == pol[m] && k != m) {
+				}
+			for ( j = i+1; j < dlina; j++) {
+				if (chislo[i] == polm[j]) {
 					cows += 1;
 				}
 			}
