@@ -3,12 +3,13 @@
 
 int main()
 {
-	srand(time());
-	int i,j,bulls = 0,cows = 0,userNumber,L;
-	printf("enter number (1-9):");
-	scanf_s("%d", &L);
+	int i, j, bulls = 0, cows = 0, userNumber, L;
 	int num[9];
 	int userNum[9];
+	srand(time());	
+	printf("enter number (1-9):");
+	scanf_s("%d", &L);
+	
 	for (i = L - 1; i >= 0; i--)
 	{
 		do {
@@ -34,19 +35,12 @@ int main()
 			for (j = i+1; j < L; j++) { if (userNum[j] == userNum[i]) { break; } };
 			if (j != L) { break; }
 		}
-		if (i == L) {
-			for (i = 0; i < L; i++)
+		if (i == L) {			
+			bulls = 0; cows = 0;
+			for (i = 0; i < L;i++)
 			{
-				userNumber *= 10;
-				userNumber += userNum[i];
-			}
-			i = 0; bulls = 0; cows = 0;
-			while (userNumber > 0 && i < L)
-			{
-				if (userNumber % 10 == num[i]) { bulls++; };
-				for (j = 0; j < L; j++) { if (userNumber % 10 == num[j]) { cows++; } };
-				i++;
-				userNumber /= 10;
+				if (userNum[i] == num[i]) { bulls++; };
+				for (j = 0; j < L; j++) { if (userNum[i] == num[j]) { cows++; } };
 			}
 			printf("Bulls = %d, Cows = %d\n\n", bulls, cows - bulls);
 		}
