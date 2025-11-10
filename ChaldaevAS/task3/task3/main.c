@@ -21,7 +21,7 @@ int main() {
 	}
 	for (i = 0; i < n; i++) {
 		int number = rand() % 10;
-		if (i == 0 && number == 0) {
+		if (i == 0 && number == 0) { // вытащить из цикла
 			number = 1 + rand() % 9;
 		}
 		while (digits[number] != 0) {
@@ -39,7 +39,7 @@ int main() {
 		int bulls = 0, cows = 0;
 
 		printf("\nWrite your number (length %d): ", n);
-		scanf_s("%d", &player_num);
+		scanf_s("%d", &player_num); // проверить отсутствие повторений
 
 		if (player_num <= 0) {
 			printf("Error: Number must be positive!\n");
