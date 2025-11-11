@@ -4,7 +4,7 @@
 #include <locale.h>
 #define N 1000
 #define sizedb 15
-const int code[sizedb] = { 1001, 1002, 1003, 1004, 1005, 1006, 1007, 1008, 1009, 1010, 1011, 1012, 1013, 1014, 1015};
+const char* code[sizedb] = { "0001", "0002", "0003", "0004", "0005", "0006", "0007", "0008", "0009", "0010", "0011", "0012", "0013", "0014", "0015"};
 const char* name[15] = { "apples", "milk", "bananas", "bread", "juice", "ketchup", "mayonaise", "eggs", "cheese", "tomatoes", "sausages", "salad", "meat", "butter", "fish"};
 const int price[15] = {100, 90, 75, 30, 300, 80, 75, 60, 140, 200, 300, 250, 400, 170, 270};
 const int discount[15] = {15, 10, 25, 35, 5, 20, 40, 35, 10, 35, 45, 10, 10, 20, 40};
@@ -12,11 +12,17 @@ const int discount[15] = {15, 10, 25, 35, 5, 20, 40, 35, 10, 35, 45, 10, 10, 20,
 
 int main()
 {
-	int codes[N]; //все считанные штрихкоды
+	char* codes[N]; //все считанные штрихкоды
 	int amount;//количество считанных штрихкодов
 	amount = scan(codes);//считали штрихкоды
+	/*
+	* for (int i = 0; i < 15; i++)
+	{
+		printf_s("%s", codes[i]);
+	}
+	*/
 	int goods_amount[N];//количество штук для штрихкода
-	int unic_codes[N];//массив уникальных штрихкодов
+	char* unic_codes[N];//массив уникальных штрихкодов
 	int num_unic_codes = amount_calc(codes, unic_codes, goods_amount, amount);
 
 	create_receipt(unic_codes, goods_amount, num_unic_codes); //вызываем создание чека
@@ -24,34 +30,47 @@ int main()
 	return 0; 
 }
 
-int scan(int *codes)
+int scan(char** codes)
 {
-	int i = 0;
-	// j - счетчик принятых штрихкодов
-	int j = 0;
 	int flag = 0;
-	int value = 0;
-	printf_s("Type 0 for exit\n");
+	int j = 0;
+	printf("Type 0 for exit\n");
+
 	do
 	{
-		printf_s("Enter the code: ");
-		scanf_s("%d", &value);
+		printf("Enter the code: ");
+		char str[5];
+
+		if (gets_s(str, sizeof(str)) == NULL) {
+			break;
+		}
+
+		if (strcmp(str, "0") == 0) {
+			break;
+		}
+
+		int found = 0;
 		for (int i = 0; i < 15; i++)
 		{
-			if (code[i] == value)
+			if (strcmp(code[i], str) == 0)
 			{
-				codes[j] = value;
+				codes[j] = (char*)malloc(strlen(str) + 1);
+				if (codes[j] != NULL) {
+					strcpy_s(codes[j], strlen(str) + 1, str);
+				}
 				flag = 1;
 				j++;
+				break;
 			}
 		}
-		if (flag == 0) {
-			printf_s(" \nThe code isn't found\n");
-		}
-		
-	} while (value > 0);
-	return j;
 
+		if (flag == 0) {
+			printf("The code isn't found\n");
+		}
+
+	} while (1);
+
+	return j;
 }
 
 int amount_calc(int *codes, int *unic_codes, int *goods_amount, int amount)
