@@ -47,29 +47,29 @@ int unique(int a[5], int n, int i) {
 }
 
 void get_int_arr_lenth_n(int a[5], int n) {
-	char inp[100], zaglushka[1];
-	int i = 0, l;
+	char inp[100];
+	int i = 0, l, debb1;
 	DEBB
-    //fgets(zaglushka, sizeof(zaglushka), stdin); //заглушка
 	fgets(inp, sizeof(inp), stdin);
-	fgets(inp, sizeof(inp), stdin);                                                        //scanf_s(" %s", inp);
+	fgets(inp, sizeof(inp), stdin);                                                        //scanf_s(" %s", inp) - почему-то не работает
 	DEBB
-	while (((strlen(inp) - 1) != n) || (!arr_is_digit(inp, n))) {
+	while (((l = strlen(inp) - 1) != n) || (debb1 = !arr_is_digit(inp, n))) {
 		printf("Введите ЧИСЛО из %d цифр\n", n);
-		fgets(inp, sizeof(inp), stdin);                                                    //scanf_s(" %s", inp);
+		fgets(inp, sizeof(inp), stdin);
 	}
 	for (; i < n; i++)
 		a[i] = ((int)(inp[i]));
 }
 
-int arr_is_digit(char a[100], int n) {
-	char digits[10] = "0123456789";
-	int i = 0, j = 0, ok;
+int arr_is_digit(char a[], int n) {
+	char digits[10] = "0123456789", debb3;
+	int i = 0, j = 0, ok, debb2 = 4;
 	for (; i < n; i++) {
 		ok = 0;
 		for (; j < 10; j++)
-			if (a[i] == digits[j])
+			if (debb2 = ((debb3 = a[i]) == digits[j]))
 				ok = 1;
+
 		if (ok == 0)
 			return 0;
 	}
