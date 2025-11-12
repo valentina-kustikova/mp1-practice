@@ -5,21 +5,21 @@
 #include <math.h>
 #include <string.h>
 
-#define DEBB printf("ќтладка є %d \n", debb++);
+#define DEBB printf("     ~~~ ќтладка є %d ~~~     \n", debb++);
 
 int debb = 0;
 
 int unique(int a[5], int n, int i);
 void get_int_arr_lenth_n(int a[5],int n);
-int arr_is_digit(char a[100], int n);
+int arr_is_digit(char a[], int n);
 
 int main() {
-	int n, sl[5] = {-1}, mysl[5] = {0}, i, j, cows = 0, bulls = 0;  //на вс€кий случай инициализирую массивы, пока не знаю, зачем
+	int n, sl[5] = {-1}, mysl[5] = {-1}, i, j, cows = 0, bulls = 0, ok = 0, try = 1;  //на вс€кий случай инициализирую массивы, пока не знаю, зачем
 
 	setlocale(LC_ALL, "Rus");
 	srand(time(NULL));
 
-	printf("¬ведите длину загадываемого числа (2, 3, 4 или 5)\n");
+	printf("¬ведите длину загадываемого \"слова\" (2, 3, 4 или 5)\n");
 	scanf_s("%d", &n);
 	sl[0] = rand() % 10;
 	for (i = 1; i < n; i++) {
@@ -27,13 +27,29 @@ int main() {
 			sl[i] = rand() % 10;
 	}
 	
-	printf("\nOk'эй, € загадал число из %d цифр. ¬водите свою отгадку, \nа € отвечу, сколько в ней коров (цифра есть, но не на своем месте) \nи быков (цифра и еЄ положение угаданы верно).\n", n);
-	DEBB
+	printf("\nOk'эй, € загадал \"слово\" из %d цифр. ¬водите свою отгадку, \nа € отвечу, сколько в ней коров (цифра есть, но не на своем месте) \nи быков (цифра и еЄ положение угаданы верно).\n", n);
+	DEBB;
 	get_int_arr_lenth_n(mysl, n);
-	DEBB
-	for (i = 0; i < n; i++) {
-		int t = mysl[i];
-
+	DEBB;
+	while (!ok) {
+		char repl[] = "¬ вашем слове";
+		for (i = 0; i < n; i++) {
+			int t = mysl[i];
+			for (j = 0; j < n; j++)
+				if (t == sl[j]) {
+					if (i == j)
+						bulls++;
+					else
+						cows++;
+				}
+		}
+		if (bulls == n)
+			ok = 1;
+		else {
+			printf("??????Х????????????ґІ?????????? !\"#$%&'()*+,-./01234569:;<=>?@AB..YZ[\\]^_`ab..yz{|}~?јЅ¬..Ёёяабв..клмноп????????????????????????????????????????????????рстуфхцчшщъыьэю€®Є™Їѓњ°Ґ∞?Ј?є§?†??????Х????????");
+			//repl = (try < 2) ? "¬ы не отгадали слово, но в нем случайно затесались " : "¬ вашем слове";
+			printf("%s %d быков и %d коров\n", repl, bulls, cows);
+		}
 	}
 }
 
@@ -48,13 +64,13 @@ int unique(int a[5], int n, int i) {
 
 void get_int_arr_lenth_n(int a[5], int n) {
 	char inp[100];
-	int i = 0, l, debb1;
-	DEBB
+	int i = 0, debbl, caps = 0, debb1;
+	DEBB;
 	fgets(inp, sizeof(inp), stdin);
 	fgets(inp, sizeof(inp), stdin);                                                        //scanf_s(" %s", inp) - почему-то не работает
-	DEBB
-	while (((l = strlen(inp) - 1) != n) || (debb1 = !arr_is_digit(inp, n))) {
-		printf("¬ведите „»—Ћќ из %d цифр\n", n);
+	DEBB;
+	while (((debbl = strlen(inp) - 1) != n) || (debb1 =(caps = !arr_is_digit(inp, n)))) {
+		printf("¬ведите \"слово\" из %d %s\n", n, (caps)? "÷»‘–":"цифр"); caps = 0;
 		fgets(inp, sizeof(inp), stdin);
 	}
 	for (; i < n; i++)
@@ -63,13 +79,12 @@ void get_int_arr_lenth_n(int a[5], int n) {
 
 int arr_is_digit(char a[], int n) {
 	char digits[10] = "0123456789", debb3;
-	int i = 0, j = 0, ok, debb2 = 4;
+	int i = 0, j, ok, debb2 = 4;
 	for (; i < n; i++) {
 		ok = 0;
-		for (; j < 10; j++)
+		for (j = 0; j < 10; j++)
 			if (debb2 = ((debb3 = a[i]) == digits[j]))
 				ok = 1;
-
 		if (ok == 0)
 			return 0;
 	}
