@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 int main() {
+	unsigned corov = 0, buk = 0, b[5] = { 10, 10, 10, 10, 10 };
 	unsigned n, a[5] = { 10, 10, 10, 10, 10 };
 	int i, j;
 	setlocale(LC_ALL, "RU");
@@ -24,10 +25,10 @@ int main() {
 			}
 		}
 	}
-	unsigned corov = 0, buk = 0, b[5] = { 10, 10, 10, 10, 10 };
-	for (i = 0; i < n; i++) {
-		printf("%u ", a[i]);
-	} // чит на показ числа ;)
+	
+	//for (i = 0; i < n; i++) {
+	//	printf("%u ", a[i]);
+	//} // чит на показ числа ;)
 
 	printf_s("\nя задумал число длины %u из цифр от 0 до 9 - угадайте его: ", n);
 	do {
@@ -38,9 +39,12 @@ int main() {
 		} while (j < n);
 
 		for (i = 0; i < n; i++) {
-			for (j = 0; j < n; j++) {
-				if (a[i] == b[j] && i == j) buk++;
-				else if (a[i] == b[j] && i != j) corov++;
+			if (a[i] == b[i]) buk++;
+			for (j = 0; j < i; j++) {
+				if (a[i] == b[j]) corov++;
+			}
+			for (j = i + 1; j < n; j++) {
+				if (a[i] == b[j]) corov++;
 			}
 		}
 		printf("”гадано коров %u, угадано быков %u\n", corov, buk);
