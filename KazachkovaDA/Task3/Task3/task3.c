@@ -15,6 +15,10 @@ int main()
 		printf_s("Введите длину слова:\n");
 		scanf_s("%d", &n);
 	} while (n < 2 || n >5);
+
+	for (i = 0; i < n; i++) {
+		l *= 10;
+	}
 	
 	srand(time(NULL));
 
@@ -32,17 +36,24 @@ int main()
 			if (arr[j] == digit)
 				{
 					flag = 1;
+					break;
 				}
 		}
-		if (flag = 0)
+		if (flag == 0)
 		{
 			arr[i] = digit;
 		}
-
+		else
+		{
+			i --;
+		}
 	}
-	for (i = 0; i < n; i++) {
+	/*
+	* for (i = 0; i < n; i++)
+	{
 		printf_s("%d", arr[i]);
 	}
+	*/
 
 	do
 	{
@@ -81,7 +92,7 @@ int main()
 		cow = cow - bull;
 		printf_s("Быков: %d, коров: %d\n", bull, cow);
 	} while (bull != n);
-	if (bull == 2) {
+	if (bull == n) {
 		printf_s("Вы угадали!");
 	}
 	return 0;
