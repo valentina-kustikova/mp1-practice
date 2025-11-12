@@ -5,8 +5,14 @@
 #include <math.h>
 #include <string.h>
 
+#define DEBB printf("ќтладка є %d \n", debb++);
+
+int debb = 0;
+
 int unique(int a[5], int n, int i);
 void get_int_arr_lenth_n(int a[5],int n);
+int arr_is_digit(char a[100], int n);
+
 int main() {
 	int n, sl[5] = {-1}, mysl[5] = {0}, i, j, cows = 0, bulls = 0;  //на вс€кий случай инициализирую массивы, пока не знаю, зачем
 
@@ -22,7 +28,9 @@ int main() {
 	}
 	
 	printf("\nOk'эй, € загадал число из %d цифр. ¬водите свою отгадку, \nа € отвечу, сколько в ней коров (цифра есть, но не на своем месте) \nи быков (цифра и еЄ положение угаданы верно).\n", n);
+	DEBB
 	get_int_arr_lenth_n(mysl, n);
+	DEBB
 	for (i = 0; i < n; i++) {
 		int t = mysl[i];
 
@@ -39,12 +47,16 @@ int unique(int a[5], int n, int i) {
 }
 
 void get_int_arr_lenth_n(int a[5], int n) {
-	char inp[100];
+	char inp[100], zaglushka[1];
 	int i = 0, l;
-	fscanf_s("%s", inp);
-	while ((l = (strlen(inp)) != n) || (!arr_is_digit(inp, l))) {
+	DEBB
+    //fgets(zaglushka, sizeof(zaglushka), stdin); //заглушка
+	fgets(inp, sizeof(inp), stdin);
+	fgets(inp, sizeof(inp), stdin);                                                        //scanf_s(" %s", inp);
+	DEBB
+	while (((strlen(inp) - 1) != n) || (!arr_is_digit(inp, n))) {
 		printf("¬ведите „»—Ћќ из %d цифр\n", n);
-		fscanf_s("%s", inp);
+		fgets(inp, sizeof(inp), stdin);                                                    //scanf_s(" %s", inp);
 	}
 	for (; i < n; i++)
 		a[i] = ((int)(inp[i]));
