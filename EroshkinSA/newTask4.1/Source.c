@@ -23,7 +23,7 @@ void input() {
 }
 
 void scan(struct thing* last) {
-	char code[5];
+	char code[F];
 	int i;
 	scanf("%s%*c", code);
 	for (i = 0; i < N; i++) {
@@ -32,6 +32,7 @@ void scan(struct thing* last) {
 			return;
 		}
 	}
+	printf("Неверный штрих-код!\n");
 }
 
 void Last(struct thing* last) {
