@@ -22,7 +22,7 @@ int main()
 	}
 	*/
 	int goods_amount[N];//количество штук для штрихкода
-	char* unic_codes[N];//массив уникальных штрихкодов
+	char** unic_codes[N];//массив уникальных штрихкодов
 	int num_unic_codes = amount_calc(codes, unic_codes, goods_amount, amount);
 
 	create_receipt(unic_codes, goods_amount, num_unic_codes); //вызываем создание чека
@@ -73,35 +73,38 @@ int scan(char** codes)
 	return j;
 }
 
-int amount_calc(int *codes, int *unic_codes, int *goods_amount, int amount)
+int amount_calc(char **codes, char **unic_codes, int *goods_amount, int amount)
 {
 	int k = 0;
 	for (int i = 0; i <= amount; i++) 
 	{
-		if (codes[i] == 0)
+		if (codes[i] == NULL)
 		{
 			continue; //берем следующий код
 		}
 		int flag = 0; 
 		goods_amount[k] = 1; //считаем количество встретившегося штрихкода
-		if ((i == amount - 1) && (codes[i] > 0))
+		if ((i == amount - 1) && (codes[i] != NULL))
 		{
-			unic_codes[k] = codes[i];
+			unic_codes[k] = malloc(strlen(codes[i]) + 1);
+			strcpy_s(unic_codes[k], strlen(codes[i]) + 1, codes[i]);
 			break;
 		}
 		for (int j = i+1; j < amount; j++)
 		{
-			if (codes[i] == codes[j] && codes[i] != 0)
+			if ((codes[i] != NULL) && (strcmp(codes[i], codes[j]) == 0))
 			{
 				goods_amount[k] += 1;//считаем количество встретившегося штрихкода
-				unic_codes[k] = codes[i];//записываем штрихкод в новый массив уникальных штрихкодов
-				codes[j] = 0;
+				unic_codes[k] = malloc(strlen(codes[i]) + 1);//записываем штрихкод в новый массив уникальных штрихкодов
+				strcpy_s(unic_codes[k], strlen(codes[i]) + 1, codes[i]);
+				codes[j] = NULL;
 				flag = 1;
 			}
 		}
 		if (flag == 0)
 		{
-			unic_codes[k] = codes[i];
+			unic_codes[k] = malloc(strlen(codes[i]) + 1);
+			strcpy_s(unic_codes[k], strlen(codes[i]) + 1, codes[i]);
 
 		}
 		k++;
