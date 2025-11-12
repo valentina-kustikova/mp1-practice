@@ -9,6 +9,9 @@ const char* name[15] = { "apples", "milk", "bananas", "bread", "juice", "ketchup
 const int price[15] = {100, 90, 75, 30, 300, 80, 75, 60, 140, 200, 300, 250, 400, 170, 270};
 const int discount[15] = {15, 10, 25, 35, 5, 20, 40, 35, 10, 35, 45, 10, 10, 20, 40};
 
+int scan(char** codes);
+int amount_calc(char **codes, char **unic_codes, int *goods_amount, int amount);
+create_receipt(int *unic_codes, int *goods_amount, int num_unic_codes);
 
 int main()
 {
