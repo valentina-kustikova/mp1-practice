@@ -28,15 +28,15 @@ int main()
     } while (n < 2 || n>5);
     a[0] = rand() % 9 + 1;
     num = a[0];
-    used[a[0]]++;
+    used[a[0]-1]++;
     for (i = 1; i < n; i++)
     {  
         do
         {
             a[i] = rand() % 9 + 1;
-        } while (used[a[i]] != 0);
+        } while (used[a[i]-1] != 0);
         num = num * 10 + a[i];
-        used[a[i]]++;
+        used[a[i]-1]++;
     } 
     do {
         cow = 0;
