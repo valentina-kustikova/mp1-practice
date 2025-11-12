@@ -33,12 +33,6 @@ int main() {
 		number[i] = d;
 		used[d] = 1;
 	}
-	/*for (int i = 0; i<n; i++) {
-		printf("%d", number[i]);
-	}
-
-	return 0;*/
-
 	//игрок откадывает
 
 	int attempts = 0;
