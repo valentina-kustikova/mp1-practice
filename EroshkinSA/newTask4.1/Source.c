@@ -32,6 +32,8 @@ void scan(struct thing* last) {
 			return;
 		}
 	}
+	struct thing t = { "0000", "empty", 0.0f, 0.0f, 0 };
+	*last = t;
 	printf("Неверный штрих-код!\n");
 }
 
@@ -69,14 +71,14 @@ void receipt() {
 
 
 int main() {
+	char type = -1;
 	system("chcp 1251");
 	freopen("database.txt", "r", stdin);
 	printf("Доступные для сканирования коды: ");
 	input();
 	printf("\nСписок доступных команд:\n0 - завершить работу\n1 <****> - сканировать штрих-код\n2 - узнать последний отсканированный товар\n3 - добавить товар в чек\n4 - сформировать и вывести чек\n");
-	struct thing last = { .code = "0000", .name = "empty", .cost = 0.0f, .sale = 0.0f, .count = 0};
+	struct thing last = { "0000", "empty", 0.0f, 0.0f, 0};
 	freopen("CON", "r", stdin);
-	char type = -1;
 	while (1) {
 		scanf("%c%*c", &type);
 		switch (type) {
@@ -84,16 +86,17 @@ int main() {
 			return 0;
 		case '1':
 			scan(&last);
+			if(strcmp("0000", last.code) != 0) printf("Для добавления товара в чек используйте команду 3\n");
 			break;
 		case '2':
 			if (strcmp(last.code, "0000") == 0) {
-				printf("Пусто\n");
+				printf("Не считано ни одного корректного штрих - кода\n");
 			}
 			else Last(&last);
 			break;
 		case '3':
 			if (strcmp(last.code, "0000") == 0) {
-				printf("Пусто\n");
+				printf("Последний штрих-код некорректен или не считано ни одного\n");
 			}
 			else add(&last);
 			break;
