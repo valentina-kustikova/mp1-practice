@@ -18,7 +18,7 @@ int main() {
 	setlocale(LC_ALL, "Rus");
 	srand(time(NULL));
 
-	printf("      --- Вы запустили игру «Быки и коровы­®» --- \nВ ней вам надо будет угадывать слово \nпо необычным подсказкам\n\n");
+	printf("      --- Вы запустили игру «Быки и коровы­» --- \nВ ней вам надо будет угадывать слово \nпо необычным подсказкам\n\n");
 	printf("Введите длину загадываемого слова (2, 3, 4 или 5)\n");
 	scanf_s("%d", &n);
 	if (n > 5)
@@ -119,28 +119,4 @@ int arr_is_digit(char a[], int n) {
 			return 0;
 	}
 	return 1;
-}
-
-
-
-
-//Просто полезные функции, которые пригодятся позже
-
-void get_str_didg_arr_lenth_n(int a[5], int n) {
-	char inp[100];
-	int i = 0, l;
-	fscanf_s("%s", inp);
-	while ((l = (strlen(inp)) != n) || (!arr_is_digit(inp, l))) {
-		printf("Введите ЧИСЛО из %d цифр\n", n);
-		fscanf_s("%s", inp);
-	}
-	for (; i < n; i++)
-		a[i] = ((int)(inp[i]));
-}
-
-void get_int_arr_in_range(int a[5], int n) {
-	char inp[100];
-	fscanf_s("%s", inp);
-	if ((strlen(inp) < 2) || (strlen(inp) > n))
-		printf("Введите число от ");
 }
