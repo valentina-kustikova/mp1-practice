@@ -6,20 +6,14 @@
 #include <string.h>
 
 
-//ОТЛАДКА:  для релиза убрать из кода все макросы и переменные с "DEBB"/"debb" в названии
-#define DEBB //printf("     ~~~ Отладка № %d ~~~     \n", debb++);
-#define DEBB1 //printf("    ~~~ Отладка: заг. сл. - %d%d%d%d%d ~~~\n", sl[0], sl[1], sl[2], sl[3], sl[4]);
-
-int debb = 0;    //отладка
 int глобальный_костыль = 1;      //КОСТЫЛЬ (осторожно) !!!
 
 int unique(int a[5], int i);
 void get_int_arr_lenth_n(int a[5],int n);
 int arr_is_digit(char a[], int n);
 
-#define ADEBB {-1, -1, -1, -1, -1}  //тоже для отладки
 int main() {
-	int n, sl[5] = ADEBB, mysl[5] = ADEBB, i, j, cows = 0, bulls = 0, ok = 0, tryn = 1, tryp = 0;  //массивы инициализированны для отладки
+	int n, sl[5], mysl[5], i, j, cows = 0, bulls = 0, ok = 0, tryn = 1, tryp = 0;
 
 	setlocale(LC_ALL, "Rus");
 	srand(time(NULL));
@@ -28,23 +22,19 @@ int main() {
 	printf("Введите длину загадываемого слова (2, 3, 4 или 5)\n");
 	scanf_s("%d", &n);
 	if (n > 5)
-		printf("Вы просите загадать число больше 5, но делаете это без уважения. \nТак что я не гарантирую корректную работу программы\n");       //Вы ввели число больше 5. Дальше нет гарантий корректной работы программы
+		printf("Вы просите загадать число больше 5, но делаете это без уважения. \nТак что я не гарантирую корректную работу программы\n");
 	if (n == 1)
 		printf("Игра, конечно, запустится, но будет ли в этом смысл...\n");
 	sl[0] = rand() % 10;
 	for (i = 1; i < n; i++) {
 		sl[i] = rand() % 10;
-		while (! unique(sl, i))               //(sl[i] == sl[i - 1]) || (sl[i] == sl[abs(i - 2)])     (for (j = i; j > 0; j--) sl[i] == sl[j])
+		while (! unique(sl, i))
 			sl[i] = rand() % 10;
 	}
 	
-	DEBB1;
 	printf("\nOk'эй, я загадал \"слово\" из %d уникальных цифр. Вводите свою отгадку, \nа я отвечу, сколько в ней коров (цифра есть, но не на своем месте) \nи быков (цифра и её положение угаданы верно).\n", n);
-	DEBB;
 	get_int_arr_lenth_n(mysl, n);
-	DEBB;
 	while (!ok) {
-		//char repl[] = "В вашем слове";     --неудачная попытка
 		for (i = 0; i < n; i++) {
 			int t = mysl[i];
 			for (j = 0; j < n; j++)
@@ -89,19 +79,18 @@ int unique(int a[5], int i) {
 
 void get_int_arr_lenth_n(int a[5], int n) {
 	char inp[100];
-	int i = 0, debbl, caps = 0, debb1;
-	DEBB;
+	int i = 0, caps = 0;
+	
 	if (глобальный_костыль == 1) {
 		fgets(inp, sizeof(inp), stdin); глобальный_костыль = 0;         //КОСТЫЛЬ --\_/(- _ - )\_/--
 	}
-	fgets(inp, sizeof(inp), stdin);                                                        //scanf_s(" %s", inp) - почему-то не работает
-	DEBB;
-	while (((debbl = strlen(inp) - 1) != n) || (debb1 =(caps = !arr_is_digit(inp, n)))) {
+	
+	fgets(inp, sizeof(inp), stdin);
+	while ((strlen(inp) - 1 != n) || (caps = !arr_is_digit(inp, n))) {
 		printf("Введите \"слово\" из %d %s\n", n, (caps)? "ЦИФР":"цифр"); caps = 0;
 		fgets(inp, sizeof(inp), stdin);
 	}
 	for (i = 0; i < n; i++)
-		//a[i] = ((int)(inp[i]));      --ага, как бы ни так -- это C, детка
 		switch (inp[i]){
 		case '0': a[i] = 0; break;
 		case '1': a[i] = 1; break;
@@ -112,17 +101,17 @@ void get_int_arr_lenth_n(int a[5], int n) {
 		case '6': a[i] = 6; break;
 		case '7': a[i] = 7; break;
 		case '8': a[i] = 8; break;
-		case '9': a[i] = 9; break;    //вот так -- это вам не пайтон (да пипец, даже break вкаждом писать надо)
+		case '9': a[i] = 9; break;
 		}
 }
 
 int arr_is_digit(char a[], int n) {
-	char digits[10] = "0123456789", debb3;
-	int i = 0, j, ok, debb2 = 4;
+	char digits[10] = "0123456789";
+	int i = 0, j, ok;
 	for (; i < n; i++) {
 		ok = 0;
 		for (j = 0; j < 10; j++)
-			if (debb2 = ((debb3 = a[i]) == digits[j])) {
+			if (a[i] == digits[j]) {
 				ok = 1; 
 				break;
 			}
