@@ -5,26 +5,49 @@
 #define P 5
 int order() {
   int t;
-  scanf_s("%d", &t);
-  scanf_s("%*c");
+  scanf("%d", &t);
+  scanf("%*c");
   return t;
 }
-void Case1(char scan[][P], int h) {
-  scanf_s("%4s", &(scan[h]));
+void Case1(char prom[]) {
+  scanf("%s", prom);
 }
-void Case2(char code[][P], char name[][D], float cost[], float dis[], char scan[][P], int h) {
-  int j;
+void Case2(char code[][P], char name[][D], float cost[], float dis[], char scan[][P], int h, char prom[]) {
+  int j, fl = 0, t;
   for (j = 0; j < D; j++) {
-    if (strcmp(code[j], scan[h - 1]) != 0) {
+    if (strcmp(code[j], prom) != 0) {
       continue;
     }
     else {
+      fl = 1;
       printf("%s", code[j]);
       printf(" ");
       printf("%s", name[j]);
       printf(" %.0f ", cost[j]);
       printf("%.0f%%\n", dis[j]);
       break;
+    }
+  }
+  if (fl == 0) {
+    printf("Product not found\n");
+  }
+  else {
+    printf("Add to the receipt?\n");
+    printf("11 - Yes\n");
+    printf("10 - No\n");
+    do {
+      scanf("%d", &t);
+      scanf("%*c");
+    } while (t < 10 || t>11);
+    printf("You can continue the purchase\n");
+    if (t == 10) {
+      return;
+    }
+    else {
+      for (j = 0; j < P; j++) {
+        scan[h][j] = prom[j];
+      }
+      return;
     }
   }
 }
@@ -100,7 +123,7 @@ void pri(char code[][P], char name[][D], float cost[], float dis[]) {
 }
 int main() {
   char name[D][D] = { "apples","peachs","oranges","melons","grape","bread","butter","pears","kiwi","lemons" };
-  char code[D][P] = { "1607","0505","1498","2332","6752","1351","0064","2353","9437","1027" }, scan[S][P];
+  char code[D][P] = { "1607","0505","1498","2332","6752","1351","0064","2353","9437","1027" }, scan[S][P], prom[P];
   float cost[D] = { 150.0f,220.0f,200.0f,310.0f,230.0f,60.0f,370.0f,180.0f,290.0f,130.0f };
   float dis[D] = { 6.0f,3.0f,3.0f,4.0f,5.0f,7.0f,10.0f,9.0f,9.0f,8.0f };
   int ord, fl = 1, h = 0, num[S];
@@ -110,10 +133,10 @@ int main() {
     ord = order();
     switch (ord) {
     case 1:
-      Case1(scan, h++);
+      Case1(prom);
       break;
     case 2:
-      Case2(code, name, cost, dis, scan, h);
+      Case2(code, name, cost, dis, scan, h++, prom);
       break;
     case 3:
       numbers(scan, num, h);
