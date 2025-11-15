@@ -1,14 +1,13 @@
 #include <stdio.h>
 #include <windows.h>
-#include <math.h>
 #include <time.h>
 
 int main() {
     srand((unsigned int)time(NULL));
-    int n, i, bulls = 0, cows = 0, player_number_int = 0, player_number_int_copy = 0, upper = 1, lower = 1;
+    int n, i, bulls = 0, cows = 0, player_number_int = 0, player_number_int_copy = 0, upper = 1, lower = 1, digits_repeat = 0;
     int comp_number[5] = { -1, -1, -1, -1, -1 }, player_number[5] = { -1, -1, -1, -1, -1 };
 
-    do {   //player choose the number of digits
+    do {   //player chooses the number of digits
         printf("Input number of digits (2-5) >> ");
         scanf_s("%d", &n);
         if (n < 2 || n > 5) {
@@ -45,21 +44,40 @@ int main() {
         bulls = 0;
         cows = 0;
         do {
-            printf("Input number >> ");
-            scanf_s("%d", &player_number_int);
-            if (player_number_int >= upper || player_number_int < lower) {
-                printf("Error! Try again.\n\n");
-                system("pause");
-            }
-        } while (player_number_int >= upper || player_number_int < lower);
+            digits_repeat = 0;
+            do {
+                printf("Input number >> ");
+                scanf_s("%d", &player_number_int);
+                if (player_number_int >= upper || player_number_int < lower) {
+                    printf("Uncorrect input! Try again.\n\n");
+                    system("pause");
+                }
+            } while (player_number_int >= upper || player_number_int < lower);
 
-        int j = n - 1;
-        player_number_int_copy = player_number_int;
-        while (j >= 0) {
-            player_number[j] = player_number_int_copy % 10;
-            player_number_int_copy /= 10;
-            j--;
-        }
+            int j = n - 1;
+            player_number_int_copy = player_number_int;
+            while (j >= 0) {
+                player_number[j] = player_number_int_copy % 10;
+                player_number_int_copy /= 10;
+                j--;
+            }
+
+            for (i = 0; i < n; i++) {
+                for (int j = i + 1; j < n; j++) {
+                    if (player_number[i] == player_number[j]) {
+                        digits_repeat = 1;
+                        printf("Uncorrect input!\n");
+                        printf("All the digits in the number must be different.\n");
+                        printf("Try again.\n\n");
+                        break;
+                    }
+                }
+                if (digits_repeat) {
+                    break;
+                }
+            }
+        } while (digits_repeat);
+
 
         for (i = 0; i < n; i++) {
             if (player_number[i] == comp_number[i]) {
