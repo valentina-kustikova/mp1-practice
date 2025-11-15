@@ -20,7 +20,7 @@ int main() {
 	char directoryPath[MAX_PATH], trash[MAX_PATH];
 	clock_t start_time;
 
-	setlocale(LC_ALL,"RUS"); // замедляет сортировку
+	setlocale(LC_ALL,"RUS");
 
 	printf("введите директорию: ");
 	gets(directoryPath);
