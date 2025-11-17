@@ -76,7 +76,7 @@ void check_print(int total_products_count[], int summ_products_cost[], int* tota
 
 //main code
 int main() {
-	int idx = -1, barcode_check = 0, total_without_discount = 0, total = 0, check_printing = 0;
+	int idx = -1, total_without_discount = 0, total = 0, check_printing = 0;
 	int total_products_count[PRODUCTS_COUNT] = { 0 };
 	int summ_products_cost[PRODUCTS_COUNT] = { 0 };
 	char barcode[BARCODE_LENGTH];
