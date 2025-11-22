@@ -6,7 +6,7 @@
 
 int main()
 {	
-	int arr[N], player[N], n, numb, i, l, guess, j, bull, cow, digit, flag;
+	int arr[N], player[N], n, numb, i, l, guess, j, bull, cow, digit, flag, temp;
 	setlocale(LC_ALL, "Rus");
 	l = 1;
 
@@ -59,17 +59,31 @@ int main()
 	{
 		cow = 0;
 		bull = 0;
+
 		do
 		{
+			flag = 1;
 			printf_s("\n¬ведите вашу догадку:");
 			scanf_s("%d", &guess);
-		} while ((guess >= l) || (guess < (l / 10)));
+			temp = guess;
 
-		for (i = 0; i < n; i++) 
-		{
-			player[n-i-1] = guess % 10;
-			guess /= 10;
-		}
+			for (i = 0; i < n; i++)
+			{
+				player[n - i - 1] = guess % 10;
+				guess /= 10;
+			}
+
+			for (i = 0; i < n; i++) {
+				for (j = i+1; j < n; j++) {
+					if ((player[i] == player[j]) || (player[j] == 0))
+					{
+						flag = 0;
+					}
+				}
+			}
+
+		} while ((temp >= l) || (temp < (l / 10)) || (flag == 0));
+
 
 		for (i = 0; i < n; i++)
 		{
