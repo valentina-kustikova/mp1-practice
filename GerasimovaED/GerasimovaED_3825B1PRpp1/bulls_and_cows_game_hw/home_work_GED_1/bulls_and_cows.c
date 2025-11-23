@@ -1,12 +1,11 @@
-#include <stdio.h>
+/*#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #define DEBUG
 void main() {
-	int a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, user_ans, cnt_bc = 0, cow_cnt, bull_cnt;
+	int a1, a2, a3, a4, a5, b1, b2, b3, b4, b5, user_ans, cnt_bc = 0, cow_cnt, bull_cnt, num_len = 0;
 	srand((unsigned int)time(0));
 	printf("Bulls and Cows\n");
-	int num_len = 0;
 	while (num_len < 2 || num_len > 5) {
 		printf("Input number length in range 2-5:\n");
 		scanf_s("%d", &num_len);
@@ -241,4 +240,4 @@ void main() {
 		}
 		break;
 	}
-}
+}*/
