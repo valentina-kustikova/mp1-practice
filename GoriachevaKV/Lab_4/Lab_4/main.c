@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #define PRODUCTS_COUNT 5
 #define BARCODE_LENGTH 5
 #define MAX_PRODUCT_NAME_LENGTH 20
@@ -37,64 +38,66 @@ int check_the_barcode(char barcode[]) {
 	return -1;
 }
 
-void calculations(int total_products_count[], int summ_products_cost[], int* total_without_discount, int* total) {
+void calculations(int total_products_count[], int summ_products_cost[], int cost_with_discount[], int* total_without_discount, int* total, int* total_discount) {
 	for (int i = 0; i < PRODUCTS_COUNT; i++) {
 		if (total_products_count[i]) {
-			summ_products_cost[i] += cost[i] * total_products_count[i];
-			*total_without_discount += summ_products_cost[i];
-			*total += (int)(summ_products_cost[i] * ((100 - discounts[i]) / 100.0));
+			summ_products_cost[i] += cost_with_discount[i] * total_products_count[i];
+			*total_without_discount += cost[i] * total_products_count[i];
+			*total += summ_products_cost[i];
 		}
 	}
+	*total_discount = *total_without_discount - *total;
 }
 
-void info_print(int* idx) {
-	int cost_with_discount = (int)(cost[*idx] * ((100 - discounts[*idx]) / 100.0));
+void info_print(int* idx, int cost_with_discount[]) {
 	printf("INFORMATION\n");
 	printf("--------------------------------\n");
 	printf("Name: %s\n", product_names[*idx]);
-	printf("Cost: %d\n", cost_with_discount);
+	printf("Price: %d\n", cost_with_discount[*idx]);
 	printf("Discount: %d%%\n", discounts[*idx]);
-	printf("Cost (without discount): %d\n\n", cost[*idx]);
+	printf("Price (without discount): %d\n\n", cost[*idx]);
 }
 
-void check_print(int total_products_count[], int summ_products_cost[], int* total_without_discount, int* total) {
-	printf("--------------------------------------------------\n");
-	printf("|                     CHECK                      |\n");
-	printf("|------------------------------------------------|\n");
-	printf("| %-20s | %10s | %10s |\n", "NAME", "COUNT", "COST");
-	printf("|------------------------------------------------|\n");
+void check_print(int total_products_count[], int summ_products_cost[], int cost_with_discount[], int* total_without_discount, int* total, int* total_discount) {
+	printf("---------------------------------------------------------------\n");
+	printf("|                            CHECK                            |\n");
+	printf("|-------------------------------------------------------------|\n");
+	printf("| %-20s | %10s | %10s | %10s |\n", "NAME", "PRICE", "QTY", "TOTAL");
+	printf("|-------------------------------------------------------------|\n");
 	for (int i = 0; i < PRODUCTS_COUNT; i++) {
 		if (total_products_count[i]) {
-			printf("| %-20s | %10d | %10d |\n", product_names[i], total_products_count[i], summ_products_cost[i]);
+			printf("| %-20s | %10d | %10d | %10d |\n", product_names[i], cost_with_discount[i], total_products_count[i], summ_products_cost[i]);
 		}
 	}
-	printf("|------------------------------------------------|\n");
-	printf("| TOTAL without discount: %-23d|\n", *total_without_discount);
-	printf("| TOTAL: %-40d|\n", *total);
-	printf("--------------------------------------------------\n\n");
+	printf("|-------------------------------------------------------------|\n");
+	printf("| TOTAL without discount: %-36d|\n", *total_without_discount);
+	printf("| TOTAL DISCOUNT: %-44d|\n", *total_discount);
+	printf("| TOTAL: %-53d|\n", *total);
+	printf("---------------------------------------------------------------\n\n");
 }
 
 //main code
 int main() {
-	int idx = -1, total_without_discount = 0, total = 0, check_printing = 0;
-	int total_products_count[PRODUCTS_COUNT] = { 0 };
-	int summ_products_cost[PRODUCTS_COUNT] = { 0 };
+	int idx = -1, total_without_discount = 0, total_discount = 0, total = 0, check_printing = 0, c;
+	int total_products_count[PRODUCTS_COUNT] = { 0 }, summ_products_cost[PRODUCTS_COUNT] = { 0 }, cost_with_discount[PRODUCTS_COUNT] = { 0 };
 	char barcode[BARCODE_LENGTH];
 
 	do {
 		printf("Input a barcode or END (to end the purchase): ");
 		scanf_s("%s", barcode, (unsigned)sizeof(barcode));
+		while ((c = getchar()) != '\n' && c != EOF);
 		idx = check_the_barcode(barcode);
 		if (idx != -1) {
 			check_printing = 1;
 			total_products_count[idx]++;
-			info_print(&idx);
+			cost_with_discount[idx] = (int)(cost[idx] * ((100 - discounts[idx]) / 100.0));
+			info_print(&idx, cost_with_discount);
 		}
 	} while (strcmp(barcode, "END") != 0);
 
 	if (check_printing) {
-		calculations(total_products_count, summ_products_cost, &total_without_discount, &total);
-		check_print(total_products_count, summ_products_cost, &total_without_discount, &total);
+		calculations(total_products_count, summ_products_cost, cost_with_discount, &total_without_discount, &total, &total_discount);
+		check_print(total_products_count, summ_products_cost, cost_with_discount, &total_without_discount, &total, &total_discount);
 	}
 	else {
 		printf("Check is empty. Nothing to print.\n\n");
