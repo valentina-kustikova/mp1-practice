@@ -5,7 +5,9 @@
 int main() {
 	int n = 1, i;
 	int digits[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-	int pc_num[5];
+	int pc_num[5] = {0, 0, 0, 0, 0};
+	int number;
+
 
 	srand(time(NULL));
 
@@ -19,13 +21,14 @@ int main() {
 			printf("Error: Number must be between 2 and 5!\n");
 		}
 	}
-	for (i = 0; i < n; i++) {
+
+	number = 1 + rand() % 9;
+	digits[number] = 1;
+	pc_num[0] = number;
+	for (i = 1; i < n; i++) {
 		int number = rand() % 10;
-		if (i == 0 && number == 0) { // вытащить из цикла
-			number = 1 + rand() % 9;
-		}
 		while (digits[number] != 0) {
-			int number = rand() % 10;
+			number = rand() % 10;
 		}
 		digits[number] = 1;
 		pc_num[i] = number;
@@ -34,6 +37,8 @@ int main() {
 	while (1) {
 		int player_num;
 		int player_digits[5];
+		int player_digits_count[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+		int is_incorrect = 0;
 		int temp;
 		int len = 0;
 		int bulls = 0, cows = 0;
@@ -61,8 +66,18 @@ int main() {
 
 		temp = player_num;
 		for (i = 0; i < n; i++) {
-			player_digits[n - i - 1] = temp % 10;
+			int digit = temp % 10;
+			player_digits[n - i - 1] = digit;
+			player_digits_count[digit] += 1;
+			if (player_digits_count[digit] >= 2) {
+				is_incorrect = 1;
+				break;
+			}
 			temp /= 10;
+		}
+		if (is_incorrect) {
+			printf("Error: Your number must not have any repeated digits!\n");
+			continue;
 		}
 
 		for (i = 0; i < n; i++) {
