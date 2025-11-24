@@ -20,16 +20,17 @@ int main() {
     do {
         printf("Введите штрихкод товара (1111-5555) или 0 для завершения: ");
         scanf_s("%d", &basket);
+		int pr;
 
-        if (basket == 0) {
-            break;
-        }
+		if (basket == 0) {
+			break;
+		}
+
         copybasket = basket;
         for (i = 3; i >= 0; i--) {
             barcode[i] = copybasket % 10;
             copybasket = copybasket / 10;
         }
-
 
         flag = 0;
         for (i = 0; i < K; i++) {
@@ -41,8 +42,16 @@ int main() {
                 }
             }
             if (flag == 1) {
-                kol[i] += 1;
-                printf("Товар добавлен: %s (Цена: %d, Скидка: %d%%)\n", nazvanie[i], tsena[i], skidka[i]);
+				printf("Отсканированный товар: %s (Цена: %d, Скидка: %d%%)\n", nazvanie[i], tsena[i], skidka[i]);
+				printf("Добавим товар? Если да введите 11, если нет то введите 00: ");
+				scanf_s("%d", &pr);
+				if (pr == 11) {
+					kol[i] += 1;
+					printf("Товар добавлен: %s (Цена: %d, Скидка: %d%%)\n", nazvanie[i], tsena[i], skidka[i]);
+				}
+				else {
+					printf("Отсканируйте другой товар\n");
+				}
                 break;
             }
         }
@@ -51,7 +60,7 @@ int main() {
             printf("Товар с штрих-кодом %d не найден!\n", basket);
         }
 
-    } while (1);
+    } while (basket !=0);
 
     printf("ВАШ ЧЕК\n");
     for (i = 0; i < K; i++) {
@@ -63,7 +72,7 @@ int main() {
         }
     }
 
-    printf("\nИтоги:\n");
+    printf("\nИтог:\n");
     printf("Общая сумма: %d руб.\n", summ);
     printf("Скидка: %.2f руб.\n", summskidka);
     printf("К оплате: %.2f руб.\n", summ - summskidka);
