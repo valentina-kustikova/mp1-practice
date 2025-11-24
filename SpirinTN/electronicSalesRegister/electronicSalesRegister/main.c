@@ -54,11 +54,10 @@ void scanningProduct(struct Product listProducts[], struct buyProductCounter lis
 void receiptFormation(struct Product listProducts[], struct buyProductCounter listBuyProductsCounter[], int n);
 
 int main() {
-    setlocale(LC_ALL, "rus");
-
     struct Product listProducts[COUNT_PRODUCTS];
     struct buyProductCounter listBuyProductsCounter[COUNT_PRODUCTS];
-    addProductInShop(listProducts, 0, "1807", "Карандаш чернографитный", 15, 0);
+	setlocale(LC_ALL, "rus");
+	addProductInShop(listProducts, 0, "1807", "Карандаш чернографитный", 15, 0);
     addProductInShop(listProducts, 1, "2007", "Шариковая ручка", 20, 0);
     addProductInShop(listProducts, 2, "1110", "Ластик", 25, 0);
     addProductInShop(listProducts, 3, "1991", "Металлическая линейка 15 см", 30, 20);
