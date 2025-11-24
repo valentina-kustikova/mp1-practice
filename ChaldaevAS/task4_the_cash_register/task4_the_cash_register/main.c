@@ -3,8 +3,6 @@
 #define PRODUCT_COUNT 10
 #define BAR_CODE_LEN 5
 #define NAME_MAX_LEN 50
-#define PRICE_LIMIT_DISCOUNT 1400
-#define DISCOUNT 20
 
 
 char barcodes[PRODUCT_COUNT][BAR_CODE_LEN] = {
@@ -46,6 +44,20 @@ int cost[PRODUCT_COUNT] = {
 	100
 };
 
+
+int discount[PRODUCT_COUNT] = {
+	20,
+	30,
+	45,
+	30,
+	10,
+	10,
+	10,
+	10,
+	50,
+	70
+};
+
 int input_barcode(int product_check_count[PRODUCT_COUNT]) {
 	char input_code[BAR_CODE_LEN];
 	int i;
@@ -77,11 +89,11 @@ int input_barcode(int product_check_count[PRODUCT_COUNT]) {
 
 void display_the_check(int product_check_count[PRODUCT_COUNT]) {
 	int final_price = 0, i;
-	int final_price_with_discount = 0;
+	int total_discount = 0;
 
-	printf("\n============================================\n");
-	printf("%-20s | %5s | %8s\n", "PRODUCT", "COUNT", "PRICE");
-	printf("--------------------------------------------\n");
+	printf("\n======================================================\n");
+	printf("%-20s | %5s | %5s | %15s\n", "PRODUCT", "PRICE", "COUNT", "CORRENT PRICE");
+	printf("--------------------------------------------------------\n");
 
 
 	for (i = 0; i < PRODUCT_COUNT; i++) {
@@ -91,20 +103,16 @@ void display_the_check(int product_check_count[PRODUCT_COUNT]) {
 			continue;
 		}
 		
-		price_for_product = cost[i] * product_check_count[i];
+		price_for_product = (cost[i] * product_check_count[i] * (100 - discount[i])) / 100;
+		total_discount += cost[i] * product_check_count[i] - price_for_product;
 		final_price += price_for_product;
 
-		printf("%-20s | %5d | %8d\n", names[i], product_check_count[i], price_for_product);
+		printf("%-20s | %5d | %5d | %15d\n", names[i], cost[i], product_check_count[i], price_for_product);
 	}
-	printf("\n--------------------------------------------\n");
-	if (final_price > PRICE_LIMIT_DISCOUNT) {
-		final_price_with_discount = final_price - (final_price * DISCOUNT / 100);
-		printf("TOTAL (with discount): %d", final_price_with_discount);
-	}
-	else {
-		printf("TOTAL (without discount): %d", final_price);
-	}
-	printf("\n============================================\n");
+	printf("\n-----------------------------------------------------\n");
+	printf("TOTAL DISCOUNT: %d\n\n", total_discount);
+	printf("TOTAL PRICE: %d", final_price);
+	printf("\n=====================================================\n");
 }
 
 int main() {
