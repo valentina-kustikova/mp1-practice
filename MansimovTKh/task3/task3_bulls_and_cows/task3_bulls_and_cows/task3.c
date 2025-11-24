@@ -3,36 +3,43 @@
 #include <time.h>
 #include <math.h>
 
-int len(int a);
+int len(int a); 
+void print(int b[], int n);
 
 int main() {
-    srand(time(NULL));
-    int n, i, j, digit, userGuess;
+    int n, i, j, digit, userGuess, endgame = 0;
     int number[5];
+    srand((unsigned int)time(0));
     while (1) {
-        int digits[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+        int digits[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
         printf("Input number from 2 to 5: "); scanf_s("%d", &n);
         while (n < 2 || n>5) {
             printf("\nInput correct number from 2 to 5: "); scanf_s("%d", &n);
         }
-
-        for (i = 0; i < n; i++) {
+        digit = rand() % 10;
+        if (digit == 0) {
+            digit = 1 + rand() % 9;
+        }
+        digits[digit] = 1; 
+        number[0] = digit;
+        for (i = 1; i < n; i++) {
             digit = rand() % 10;
-            if (i == 0 && digit == 0) {
+            /*if (i == 0 && digit == 0) {
                 digit = 1 + rand() % 9;
-            }
+            }*/
             while (digits[digit] != 0) {
                 digit = rand() % 10;
             }
             digits[digit] = 1;
             number[i] = digit;
         }
+        print(number, n);
         printf("\nA number with length %d is hidden. Try to guess it\n", n);
 
         while (1) {
             printf("Input your guess with %d unique digits: ", n); scanf_s("%d", &userGuess);
             int userGuessNumber[5], cow, bull;
-            int ds[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, flag = 0, userGuessForCheck = userGuess;  //ds - это "бронь" цифр в числе,
+            int ds[9] = { 0, 0, 0, 0, 0, 0, 0, 0, 0}, flag = 0, userGuessForCheck = userGuess;  //ds - это "бронь" цифр в числе,
             cow = 0; bull = 0;
             while (userGuessForCheck != 0) {
                 int d = userGuessForCheck % 10;
@@ -43,27 +50,38 @@ int main() {
                 ds[d] = 1;
                 userGuessForCheck /= 10;
             }
-
+     
             if (flag == 0) {   // если флаг=1 - значит игрок где-то накос€чил и мы должны продолжать цикл, пока игрок не введет число в допустимой форме.
-                int N = (n - 1);
-                for (i = 0; i < n; i++) {
-                    int s = pow(10, N); // 10 в N-ой степени
-                    userGuessNumber[i] = userGuess / s; //берем первую цифру числа: 12345/10000 = 1
-                    userGuess %= s; //затем избавл€емс€ от первой цифры числа: 12345%10000 = 2345
-                    N--; // уменьшаем степень на 1
+                i = n - 1;
+                while (userGuess != 0) {
+                    userGuessNumber[i--] = userGuess % 10;
+                    userGuess /= 10;
                 }
+                                                                        //print(userGuessNumber, n);
                 cow = 0; bull = 0;
                 for (i = 0; i < n; i++) {
-                    for (j = 0; j < n; j++) {
-                        if ((number[i] == userGuessNumber[j]) && (i == j)) bull++;
-                        if ((number[i] == userGuessNumber[j]) && (i != j)) cow++;
+
+                    if (number[i] == userGuessNumber[i]) bull++;
+
+                    for (j = 0; j <= i - 1; j++) {
+                                                                        //if ((number[i] == userGuessNumber[j]) && (i == j)) bull++;
+                        if ((number[i] == userGuessNumber[j])) cow++;
+                    }
+                    for (j = i + 1; j < n; j++) {
+                        if ((number[i] == userGuessNumber[j])) cow++;
                     }
                 }
                 printf("%d cow   %d bull\n", cow, bull);
                 if (bull == n) {
                     printf("Congratulations! You guessed number right!\n");
+                    endgame = 1;
+                    break;
                 }
             }
+
+        }
+        if (endgame) {
+            break;
         }
     }
     return 0;
@@ -78,4 +96,11 @@ int len(int a) {
         a /= 10;
     }
     return l;
+}
+
+void print(int b[], int n) {
+    int i;
+    for (i = 0; i < n; i++) {
+        printf("%d", b[i]);
+    }
 }
