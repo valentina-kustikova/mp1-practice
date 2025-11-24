@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-
+#define am_prod 8
 int prod_finder(char* barcode);
 void add_to_cart(int i, int am);
 void form_receipt();
@@ -16,7 +16,7 @@ typedef struct {
 	char name[20];
 } Product;
 
-Product products[10] = {
+Product products[am_prod] = {
 	{"1111", 100, 15, 0, "TOMATOES"},
 	{"2222", 90, 17, 0, "CUCUMBERS"},
 	{"3333", 80, 21, 0, "CHEESE"},
@@ -26,7 +26,7 @@ Product products[10] = {
 	{"7777", 40, 34, 0, "ORANGES"},
 	{"8888", 30, 5, 0, "WATER"}
 };
-int am_prod = 8; //количество продуктов
+//int am_prod = 8; //количество продуктов
 int main() {
 	int currID, currAmmount;
 	char enterCode[10];
@@ -86,7 +86,7 @@ void add_to_cart(int i, int am) {
 }
 void form_receipt() {
 	int i, receipt_pos = 0, itemPRICE = 0, totalSUM = 0, totalDISCOUNT = 0;
-	printf("RECEIPT\n");
+	printf("\nRECEIPT\n");
 	for (i = 0; i < am_prod; i++) {
 		if (products[i].sum > 0) {
 			receipt_pos++;
