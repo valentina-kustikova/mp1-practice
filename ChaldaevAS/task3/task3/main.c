@@ -97,4 +97,5 @@ int main() {
 			printf("%d - bulls, %d - cows", bulls, cows);
 		}
 	}
+	return 0;
 }
