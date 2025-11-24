@@ -3,9 +3,9 @@
 #include <time.h>
 
 int main() {
-    srand((unsigned int)time(NULL));
     int n, i, bulls = 0, cows = 0, player_number_int = 0, player_number_int_copy = 0, upper = 1, lower = 1, digits_repeat = 0;
     int comp_number[5] = { -1, -1, -1, -1, -1 }, player_number[5] = { -1, -1, -1, -1, -1 };
+    srand((unsigned int)time(NULL));
 
     do {   //player chooses the number of digits
         printf("Input number of digits (2-5) >> ");
