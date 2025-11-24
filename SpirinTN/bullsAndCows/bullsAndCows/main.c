@@ -51,7 +51,7 @@ int generationNumber(int lengthNumber) {
 	return resultNumber;
 }
 
-int isIdenticalDigits(int userNumber);
+int isIdenticalDigitsOrZero(int userNumber);
 int counterBulls(int userNumber, int hiddenNumber, int lengthNumber);
 int counterCows(int userNumber, int hiddenNumber, int lengthNumber);
 
@@ -61,7 +61,7 @@ void tryingGuessNumber(int hiddenNumber, int lengthNumber) {
 	while (userNumber != hiddenNumber) {
 		printf("Input number (all the digits are different, length number - %d digits): ", lengthNumber);
 		scanf_s("%d", &userNumber);
-		while (userNumber < rangeMultiplier || userNumber >= rangeMultiplier * 10 || isIdenticalDigits(userNumber)) {
+		while (userNumber < rangeMultiplier || userNumber >= rangeMultiplier * 10 || isIdenticalDigitsOrZero(userNumber)) {
 			printf("Incorrect number. Input number (all the digits are different, length number - %d digits): ", lengthNumber);
 			scanf_s("%d", &userNumber);
 		}
@@ -71,11 +71,11 @@ void tryingGuessNumber(int hiddenNumber, int lengthNumber) {
 	printf("Congratulations! You guessed the number.\n");
 }
 
-int isIdenticalDigits(int userNumber) {
+int isIdenticalDigitsOrZero(int userNumber) {
 	int digits[10] = { 0 };
 	while (userNumber > 0) {
 		int currentDigit = userNumber % 10;
-		if (digits[currentDigit] == 1) {
+		if (digits[currentDigit] == 1 || currentDigit == 0) {
 			return 1;
 		}
 		digits[currentDigit]++;
@@ -95,7 +95,7 @@ int counterBulls(int userNumber, int hiddenNumber, int lengthNumber) {
 	}
 	return count;
 }
-
+/*
 int counterCows(int userNumber, int hiddenNumber, int lengthNumber) {
 	int count = 0, i, j;
 	for (i = 0; i < lengthNumber; i++) {
@@ -116,6 +116,30 @@ int counterCows(int userNumber, int hiddenNumber, int lengthNumber) {
 			tmpHiddenNumber /= 10;
 		}
 		userNumber /= 10;
+	}
+	return count;
+}
+*/
+int counterCows(int userNumber, int hiddenNumber, int lengthNumber) {
+	int count = 0, i, j;
+	int digitsUserNumber[5], digitsHiddenNumber[5];
+	for (i = 0; i < lengthNumber; i++) {
+		digitsUserNumber[lengthNumber - 1 - i] = userNumber % 10;
+		digitsHiddenNumber[lengthNumber - 1 - i] = hiddenNumber % 10;
+		userNumber /= 10;
+		hiddenNumber /= 10;
+	}
+	for (i = 0; i < lengthNumber; i++) {
+		for (j = 0; j < i; j++) {
+			if (digitsUserNumber[i] == digitsHiddenNumber[j]) {
+				count++;
+			}
+		}
+		for (j = i + 1; j < lengthNumber; j++) {
+			if (digitsUserNumber[i] == digitsHiddenNumber[j]) {
+				count++;
+			}
+		}
 	}
 	return count;
 }
