@@ -95,31 +95,7 @@ int counterBulls(int userNumber, int hiddenNumber, int lengthNumber) {
 	}
 	return count;
 }
-/*
-int counterCows(int userNumber, int hiddenNumber, int lengthNumber) {
-	int count = 0, i, j;
-	for (i = 0; i < lengthNumber; i++) {
-		int tmpHiddenNumber = hiddenNumber;
-		for (j = 0; j < i; j++) {
-			if (userNumber % 10 == tmpHiddenNumber % 10) {
-				count++;
-				break;
-			}
-			tmpHiddenNumber /= 10;
-		}
-		tmpHiddenNumber /= 10;
-		for (j = i + 1; j < lengthNumber; j++) {
-			if (userNumber % 10 == tmpHiddenNumber % 10) {
-				count++;
-				break;
-			}
-			tmpHiddenNumber /= 10;
-		}
-		userNumber /= 10;
-	}
-	return count;
-}
-*/
+
 int counterCows(int userNumber, int hiddenNumber, int lengthNumber) {
 	int count = 0, i, j;
 	int digitsUserNumber[5], digitsHiddenNumber[5];
