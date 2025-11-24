@@ -60,9 +60,9 @@ int discount[PRODUCT_COUNT] = {
 
 int input_barcode(int product_check_count[PRODUCT_COUNT]) {
 	char input_code[BAR_CODE_LEN];
+	int c;
 	int i;
 	int is_found;
-	int c;
 
 	printf("Write new barcode or 'STOP' to complete the purchase: ");
 	scanf_s("%4s", input_code, (unsigned)sizeof(input_code));
