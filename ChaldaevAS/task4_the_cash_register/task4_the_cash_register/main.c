@@ -55,7 +55,7 @@ int discount[PRODUCT_COUNT] = {
 	10,
 	10,
 	50,
-	70
+	5
 };
 
 int input_barcode(int product_check_count[PRODUCT_COUNT]) {
