@@ -58,11 +58,29 @@ int discount[PRODUCT_COUNT] = {
 	5
 };
 
+int question() {
+	while (1) {
+		int a = 0;
+		printf("Write number of product to add (0 means do not add): ");
+		scanf_s("%d", &a);
+
+		if (a < 0) {
+			printf("ERROR: write positive number, pls!\n");
+			continue;
+		}
+
+		return a;
+	}
+}
+
+
+
 int input_barcode(int product_check_count[PRODUCT_COUNT]) {
 	char input_code[BAR_CODE_LEN];
 	int c;
 	int i;
 	int is_found;
+	int add_count;
 
 	printf("Write new barcode or 'STOP' to complete the purchase: ");
 	scanf_s("%4s", input_code, (unsigned)sizeof(input_code));
@@ -76,13 +94,21 @@ int input_barcode(int product_check_count[PRODUCT_COUNT]) {
 
 	for (i = 0; i < PRODUCT_COUNT; i++) {
 		if (strcmp(input_code, barcodes[i]) == 0) {
-			product_check_count[i]++;
 			is_found = 1;
 			break;
 		}
 	}
 	if (!is_found) {
 		printf("ERROR: Barcode not found.\n");
+	}
+	else {
+		printf("--[PRODUCT INFO]---\n");
+		printf("Product: %s\n", names[i]);
+		printf("Cost: %d\n", cost[i]);
+		printf("Discount: %d%\n", discount[i]);
+		printf("Corrent count in check: %d\n", product_check_count[i]);
+		add_count = question();
+		product_check_count[i] = add_count;
 	}
 	return 0;
 }
