@@ -11,18 +11,20 @@ int different_num();
 
 
 int main() {
+	int komp_arr[5], is_play = 1, cnt_try = 0, len, i;
 	setlocale(LC_ALL, "rus");
 	srand((unsigned int)time(0));
 
-	int komp_arr[5], is_play = 1, cnt_try = 0, len, i;
+	printf("¬ведите длину: ");
+	scanf_s("%d", &len);
 
-	len = 2 + rand() % 4;
+	while (len < 2 || len > 5) {
+		printf("„исло введено неверно\n");
+		printf("¬ведите длину: ");
+		scanf_s("%d", &len);
+	}
+
 	create_rand_num(komp_arr, len);
-
-	int arr[] = { 4,5,4,4 };
-
-	printf("%d", different_num(arr, 4));
-
 
 
 #ifdef DEBUG
@@ -48,7 +50,6 @@ int main() {
 
 			if (komp_arr[i] == user_arr[i]) {
 				cnt_bulls += 1;
-				continue;
 			}
 			else if (find(komp_arr, len, user_arr[i])) {
 				cnt_cows += 1;
