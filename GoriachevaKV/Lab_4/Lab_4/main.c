@@ -58,6 +58,24 @@ void info_print(int* idx, int cost_with_discount[]) {
 	printf("Price (without discount): %d\n\n", cost[*idx]);
 }
 
+void question(int* idx, int total_products_count[]) {
+	int query;
+	do {
+		printf("Do you want to add the product to the check?\n\n");
+		printf("1. Yes\n");
+		printf("2. No\n\n");
+		printf("Answer: ");
+		scanf_s("%d", &query);
+		if (query == 1) {
+			total_products_count[*idx]++;
+			printf("The product added.\n\n");
+		}
+		if (query != 1 && query != 2) {
+			printf("ERROR: Uncorrect input!\n\n");
+		}
+	} while (query != 1 && query != 2);
+}
+
 void check_print(int total_products_count[], int summ_products_cost[], int cost_with_discount[], int* total_without_discount, int* total, int* total_discount) {
 	printf("---------------------------------------------------------------\n");
 	printf("|                            CHECK                            |\n");
@@ -89,9 +107,9 @@ int main() {
 		idx = check_the_barcode(barcode);
 		if (idx != -1) {
 			check_printing = 1;
-			total_products_count[idx]++;
 			cost_with_discount[idx] = (int)(cost[idx] * ((100 - discounts[idx]) / 100.0));
 			info_print(&idx, cost_with_discount);
+			question(&idx, total_products_count);
 		}
 	} while (strcmp(barcode, "END") != 0);
 
