@@ -20,30 +20,30 @@ int search(char code[]);
 int main()
 {
 	int exit_prog = 1;
-	do {
-		//char *code = (char)malloc(strlen(code) + 1);
-		char code[8]; //переменнаяб, в которую считываем код
-		char ans[8];//проверка на запись  в чек
-		int err = scan(code);//считали код
-		//printf_s("%d %s", err, code);
+	do { 
+		char code[8]; //переменная, в которую считываем код
+		char ans[8];//проверка на запись в чек и выход из цикла
+		int err = scan(code);
+
 		if (strcmp(code, "exit") == 0)
 		{
 			exit_prog = 0;
 			break;
 		}
-		if (err != 0) continue;//продолжаем, если код найден
-		//при сканировании спрашиватб, добавить ли товар в чек
-		printf_s("Add?");
+		if (err != 0)
+		{
+			printf_s("Item not found. Try again\n");
+			continue;
+		}//продолжаем, если код найден
+		//при сканировании спрашивать, добавить ли товар в чек
+		printf_s("Add? ");
 		gets_s(ans, sizeof(ans));
 
-		/*scanf_s("%c", &ans);
-		getchar();*/
+
 		if (strcmp(ans, "y") == 0) add(code);
-		else (printf_s("the good is not added\n"));
+		else (printf_s("the item is not added\n"));
 	} while (exit_prog);
 	print_receipt();
-	//char code = (char*)malloc(strlen(code) + 1);
-	//free(code);
 	return 0; 
 }
 
@@ -52,9 +52,7 @@ int scan(char *code)
 	int idx = -1;
 	printf_s("Input code: ");
 	gets_s(code, sizeof(code));
-	//printf_s("VOTNASHKOD %s", code);
 	idx = search(code);
-	//printf_s("idx = %d", idx);
 	return (idx >= 0 ? 0 : 1);
 }
 
@@ -82,14 +80,13 @@ void add(char code[])
 void print_receipt()
 {
 	float total = 0;
-	//printf_s("hello world");
 	int i;
 	for (i = 0; i < sizedb; i++) {
 		if (cnt[i] > 0)
 		{
-			printf_s("Code: %s, name: %s, price: %d, count: %d, discount: %f = %.2f\n", given_codes[i], name[i], cnt[i]*price[i], cnt[i], cnt[i] * price[i] * discount[i], cnt[i]*(price[i] - price[i] * discount[i]));
+			printf_s("Code: %s, name: %s, price: %d, count: %d, discount: %.2f = %.2f\n", given_codes[i], name[i], price[i], cnt[i], cnt[i] * price[i] * discount[i], cnt[i]*(price[i] - price[i] * discount[i]));
 			total += cnt[i]*(price[i] - price[i] * discount[i]);
 		}
 	}
-	printf_s("TOTAL = %f", total);
+	printf_s("TOTAL = %.2f", total);
 }
