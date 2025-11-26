@@ -8,19 +8,18 @@
 
 
 void user_input(char *user_choise);
-void scan_item(char new_barcode[], char barcode_list[][4], char name_list[][20], int price_list[], int discounts[], int price_with_discounts[], int cnt_list[]);;
-void print_check(char name_list[][20], int price_with_discounts[], int cnt_list[]);
+void scan_item(char new_barcode[], char barcode_list[][5], char name_list[][20], int price_list[], int discounts[], int price_with_discounts[], int cnt_list[]);;
+void print_check(char name_list[][20], int price_with_discounts[], int cnt_list[], int* is_true);
 
 int main() {
-    srand((unsigned int)time(0));
-    setlocale(LC_ALL, "rus");
-
     int is_true = 1, i, flag = 0, itog_summ = 0;
     char user_choise;
     char new_barcode[5] = "";
+    srand((unsigned int)time(0));
+    setlocale(LC_ALL, "rus");
 
     char name_list[N][20] = { "Мандаринки", "Бананчики", "Яблочки", "Апельсинки" };
-    char barcode_list[N][4] = { "1234", "1111", "1212", "0980"};
+    char barcode_list[N][5] = { "1234", "1111", "1212", "0980"};
     int price_list[N] = { 350, 139, 100, 239 };
     int cnt_list[N] = { 0, 0, 0, 0 };
     int discounts[N] = { 1 + rand() % 50 , 1 + rand() % 50 , 1 + rand() % 50 , 1 + rand() % 50 };
@@ -45,8 +44,9 @@ int main() {
        }
 
        else if (user_choise == '2') {
-           print_check(name_list, price_with_discounts, cnt_list);
+           print_check(name_list, price_with_discounts, cnt_list, &is_true);
        }
+
     } while (is_true);
     return 0;
 }
@@ -112,23 +112,23 @@ void scan_item(char new_barcode[], char barcode_list[][4], char name_list[][20],
         system("pause");
     }
 }
-void print_check(char name_list[][20], int price_with_discounts[], int cnt_list[]) {
+void print_check(char name_list[][20], int price_with_discounts[], int cnt_list[], int* is_true) {
     int flag, i, itog_summ = 0;
     char user_choise;
 
     system("cls");
     printf("                ЧЕК\n");
     printf("--------------------------------------\n");
+    printf("    Товар   | Кол-во | Общая сумма \n");
+    printf("--------------------------------------\n");
     flag = 0;
     for (i = 0; i < N; i++) {
         if (cnt_list[i] != 0) {
             flag = 1;
-            printf("\n    Товар   | Кол-во | Общая сумма \n");
-            printf("--------------------------------------\n");
             printf(" %-15s %-8d %d\n", name_list[i], cnt_list[i], price_with_discounts[i] * cnt_list[i]);
         }
     }
-    printf("\n--------------------------------------");
+    printf("--------------------------------------");
 
     if (flag == 1) {
         printf("\n\nЖелаете оплатить товар? \n");
@@ -137,25 +137,20 @@ void print_check(char name_list[][20], int price_with_discounts[], int cnt_list[
         user_input(&user_choise);
 
         if (user_choise == '1') {
-            system("cls");
             for (i = 0; i < N; i++) {
                 if (cnt_list[i] != 0) {
                     itog_summ += price_with_discounts[i] * cnt_list[i];
                 }
             }
             printf("Сумма к оплате: %d\n", itog_summ);
-            system("pause");
-            return 1;
+            *is_true = 0;
         }
         else {
-            return 0;
             system("pause");
         }
     }
     else {
         system("cls");
         printf("Вы не добавили товар в чек!\n");
-        system("pause");
-        return 0;
     }
 }
