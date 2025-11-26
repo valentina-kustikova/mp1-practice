@@ -4,9 +4,9 @@
 #include <time.h>
 #include <windows.h>
 
-int* sz;
-int* num;
 char** name;
+int* num;
+int* sz;
 
 void swap(int* a, int* ai, int* b, int* bi) {
 	int tmp = *b, tmpi = *bi;
@@ -62,7 +62,7 @@ void InsertSort(int n) {
 	}
 }
 
-void RadixSort(int n) {
+/*void RadixSort(int n) {
 	int digitn[10][1000] = { {-1} }, digitv[10][1000] = { {-1} }, div = 1, cnt, d, i, p[10] = { 0 }, k, j;
 	do {
 		cnt = 0;
@@ -82,33 +82,17 @@ void RadixSort(int n) {
 		}
 		div *= 10;
 	} while (cnt != 0);
-}
+}*/
 
-void path(char dir[]);
 
-int read(char dir[]) {
-	int k = 0;
-	WIN32_FIND_DATA data;
+int read(char dir[], char flag) {
+	int k = 0, mx = 1;
+	WIN32_FIND_DATAA data;
 	HANDLE hFind = FindFirstFileA(dir, &data);
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
-			/*if (data.dwFileAttributes == 16) {
-				char newdir[1024] = "";
-				strncpy(newdir, dir, strlen(dir) - 1);
-				strcat(newdir, data.cFileName);
-				path(newdir);
-				if (strcmp(data.cFileName, ".") != 0 && strcmp(data.cFileName, "..") != 0) {
-					printf("Open directory: %s\n", newdir);
-					//k = read(newdir, num, sz, k);
-					printf("Close directory: %s\n", newdir);
-				}
-				continue;
-			}*/
 			if (data.dwFileAttributes != 32) continue;
-			printf("Read: %s of %d bytes\n", data.cFileName, data.nFileSizeLow);
-			//strcpy(name[k], data.cFileName);
-			//sz[k] = data.nFileSizeLow;
-			//num[k] = k;
+			if (strlen(data.cFileName) > mx) mx = strlen(data.cFileName);
 			k++;
 		} while (FindNextFileA(hFind, &data));
 		FindClose(hFind);
@@ -117,15 +101,14 @@ int read(char dir[]) {
 	num = (int*)malloc(k * sizeof(int));
 	name = (char**)malloc(k * sizeof(char*));
 	for (int i = 0; i < k; i++) {
-		name[i] = (char*)malloc(256 * sizeof(char));
+		name[i] = (char*)malloc(mx * sizeof(char));
 	}
 	k = 0;
-	WIN32_FIND_DATA data;
-	HANDLE hFind = FindFirstFileA(dir, &data);
+	hFind = FindFirstFileA(dir, &data);
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
 			if (data.dwFileAttributes != 32) continue;
-			printf("Read: %s of %d bytes\n", data.cFileName, data.nFileSizeLow);
+			if(flag) printf("Read: %s of %d bytes\n", data.cFileName, data.nFileSizeLow);
 			strcpy(name[k], data.cFileName);
 			sz[k] = data.nFileSizeLow;
 			num[k] = k;
@@ -135,26 +118,22 @@ int read(char dir[]) {
 	}
 	return k;
 }
-void path(char dir[]) {
-	char add[3] = "\\*\0";
-	strcat(dir, add);
-}
 
 char fsort(char method[], int k) {
 	if (strcmp(method, "classic") == 0) {
-		ClassicSort(num, sz, k); return 1;
+		ClassicSort(k); return 1;
 	}
 	if (strcmp(method, "insert") == 0) {
-		InsertSort(num, sz, k); return 1;
+		InsertSort(k); return 1;
 	}
 	if (strcmp(method, "choice") == 0) {
-		ChoiceSort(num, sz, k); return 1;
+		ChoiceSort(k); return 1;
 	}
 	if (strcmp(method, "bubble") == 0) {
-		BubbleSort(num, sz, k); return 1;
+		BubbleSort(k); return 1;
 	}
 	if (strcmp(method, "radix") == 0) {
-		RadixSort(num, sz, k); return 1;
+		//RadixSort(num, sz, k); return 1;
 	}
 	printf("Incorrect sort method\n");
 	return 0;
@@ -170,13 +149,13 @@ int main() {
 		switch (type) {
 		case 1:
 			scanf("%s", dir);
-			path(dir);
+			strcat(dir, "\\*\0");
 			break;
 		case 2:
 			if (strcmp(dir, "") == 0) {
 				printf("Nothing to read!\n");
 			}
-			else k = read(dir);
+			else k = read(dir, 1);
 			break;
 		case 3:
 			if (k == 0) {
@@ -184,25 +163,33 @@ int main() {
 				break;
 			}
 			scanf("%s", method);
+			LARGE_INTEGER st, end, freq;
+			double t;
+			QueryPerformanceFrequency(&freq);
+			QueryPerformanceCounter(&st);
 			clock_t a = clock();
 			f = fsort(method, k);
 			clock_t b = clock();
+			QueryPerformanceCounter(&end);
+			t = (double)(end.QuadPart - st.QuadPart) * 1000.0 / freq.QuadPart;
 			if (f) {
 				for (i = 0; i < k; i++) printf("%d) %s -> %d\n", i + 1, name[num[i]], sz[i]);
-				printf("Time: %.2f ms\n", (b - a) / CLOCKS_PER_SEC);
+				printf("Time: %.3f ms\n", t);
 			}
+			//for (i = 0; i < k; i++) num[i] = i;
+			read(dir, 0);   // Обратная перестановка массива
 			break;
 		case 0:
+			free(sz);
+			free(num);
+			for (int i = 0; i < k; i++) {
+				free(name[i]);
+			}
+			free(name);
 			return 0;
 		default:
 			printf("Incorrect input!\n");
 		}
 	}
-	free(sz);
-	free(num);
-	for (int i = 0; i < k; i++) {
-		free(name[i]);
-	}
-	free(name);
 	return 0;
 }
