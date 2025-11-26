@@ -168,7 +168,7 @@ int main() {
 			clock_t b = clock();
 			if (f) {
 				for (i = 0; i < k; i++) printf("%d) %s -> %d\n", i + 1, name[num[i]], sz[i]);
-				printf("Time: %.2f ms\n", 1000.0f * (b - a));
+				printf("Time: %.2f ms\n", (b - a) / CLOCKS_PER_SEC);
 			}
 			break;
 		case 0:
