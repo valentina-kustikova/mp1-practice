@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <string.h>
 #include <ctype.h>
-#include <errno.h>
 
 #define LINE 512
 #define ENTRY_SIZE 1000
@@ -99,9 +98,12 @@ int main() {
         strtok(query, " ");
         arg = strtok(NULL, " ");
 
+        for (i = 0; query[i]; i++)
+            query[i] = tolower(query[i]);
+
         found = false;
         for (i = 0; i < commands_amount; i++)
-            if (strcasecmp(commands[i].name, query) == 0) {
+            if (strcmp(commands[i].name, query) == 0) {
                 found = true;
                 commands[i].handler(arg);
             }
