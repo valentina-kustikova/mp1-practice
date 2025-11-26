@@ -90,7 +90,7 @@ void Receipt(char barcode[][10], char name[][10], float cost[], float discont[],
 		}
 	}
 	printf("\n\nОбщая стоимость всех товаров без скидки - %.1f", all);
-	printf("\nОбщая стоимость всех товаров со скидкой - %.1f\n", alld);
+	printf("\nОбщая стоимость всех товаров со скидкой - %.1f \n", alld);
 }
 int main() {
 	char barcode[N][10];
