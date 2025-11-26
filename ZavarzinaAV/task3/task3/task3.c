@@ -8,6 +8,11 @@
 
 int main() {
 	int n;
+	int number[5];
+	int used[10] = { 0 };
+	int attempts = 0;
+	char guess[10];
+
 	srand(time(NULL));
 	setlocale(LC_ALL, "");
 
@@ -19,8 +24,7 @@ int main() {
 		return 0;
 	}
 	//компьютер загадывает число 
-	int number[5];
-	int used[10] = { 0 };
+	
 	number[0] = rand() % 9 + 1;
 	used[number[0]] = 1;
 
@@ -35,8 +39,7 @@ int main() {
 	}
 	//игрок откадывает
 
-	int attempts = 0;
-	char guess[10];
+
 
 	while (1) {
 		printf("¬ведите загаданное число: ");
