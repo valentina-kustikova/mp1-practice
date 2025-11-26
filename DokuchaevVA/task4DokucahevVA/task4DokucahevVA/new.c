@@ -2,8 +2,13 @@
 #include <stdio.h>
 #include <locale.h>
 #include <string.h>
-#define N 10
+#include <windows.h>
 
+#define N 10
+void SetColor(int color) {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, color);
+}
 void recorde(char barcode[][10], char name[][10], float cost[], float discont[]) {
 	strcpy_s(barcode[0], 10, "0000");
 	strcpy_s(name[0], 10, "banan");
@@ -27,15 +32,41 @@ void recorde(char barcode[][10], char name[][10], float cost[], float discont[])
 }
 void buy(char barcode[][10], int total[]) {
 	char nbar[N];
-	strcpy_s(nbar, 10, "1111");
 	do {
 		int j = 0;
-		printf("\nСканируйте баркода товара. Если желаете закончить покупку, напишите <pay>\n");
-		scanf_s("%9s", &nbar, 10);
-		for (;j != N; j++) {
+		int check = 0;
+		int checkcheck = 1;
+		char yesno[N]="no";
+		printf("\nСканируйте штрих-код товара. Если желаете закончить покупку, напишите <pay>\n");
+		scanf_s("%9s", nbar, 10);
+		for (;j < N; j++) {
 			if (strcmp(barcode[j], nbar) == 0) {
-				total[j]++;
+				check++;
+				break;
 			}
+		}
+		if (strcmp(nbar, "pay") != 0 && check>0) {
+			printf("Добавляем товар в чек? (yes/no)\n");
+			scanf_s("%9s", yesno, 10);
+			if (strcmp(yesno, "yes") == 0) {
+				checkcheck = 1;
+			}
+			else if (strcmp(yesno, "no") == 0) {
+				checkcheck = 0;
+			}
+			else {
+				checkcheck = 0;
+				printf("Ошибка. Неверный ввод.");
+			}
+		}
+		for (;j< N; j++) {
+			if (strcmp(barcode[j], nbar) == 0 && checkcheck==1) {
+				total[j]++;
+				check++;
+			}
+		}
+		if (check == 0 && (strcmp(nbar, "pay") != 0)) {
+			printf("Такого товара нет");
 		}
 	} while (strcmp(nbar, "pay") != 0);
 }
@@ -47,7 +78,7 @@ void Receipt(char barcode[][10], char name[][10], float cost[], float discont[],
 	printf("\nВот ваш чек:");
 	for (; j < N; j++) {
 		if (total[j] != 0) {
-			printf("\nНазвание товара - %s", barcode[j]);
+			printf("\nНазвание товара - %s", name[j]);
 			printf("\nСтоимость товара за единицу - %.1f", cost[j]);
 			printf("\nКоличество единиц товара - %d", total[j]);
 			r = total[j] * cost[j];
@@ -62,12 +93,12 @@ void Receipt(char barcode[][10], char name[][10], float cost[], float discont[],
 	printf("\nОбщая стоимость всех товаров со скидкой - %.1f\n", alld);
 }
 int main() {
-	setlocale(LC_ALL, "Rus");
 	char barcode[N][10];
 	char name[N][10];
 	float cost[N];
 	float discont[N];
 	int total[N] = { 0 };
+	setlocale(LC_ALL, "Rus");
 	recorde(barcode, name, cost, discont);
 	buy(barcode, total);
 	Receipt(barcode, name, cost, discont, total);
