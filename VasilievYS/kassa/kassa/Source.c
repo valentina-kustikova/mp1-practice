@@ -70,37 +70,31 @@ void make_bill()
 }
 int main()
 {
-	int ans, ans2, i, res = 0, idx=0;
+	int ans, i, res = 0;
 	setlocale(LC_ALL, "Russian");
-  do////
+  do
 	{
 		if (res == 0){ printf("\nСканировать товар - 1, Завершить - 0: "); }
 		else { printf("\nСканировать товар - 1, Сформировать чек - 2, Завершить - 0: "); }
 		scanf_s("%d", &ans);
-		switch (ans)
-		{
+		switch (ans){
 		case 1:
-			do
-			{
-				idx = scan();
-			} while ( idx == -1);
-			do
-			{
-				printf("\nВывести информацию о товаре - 1, добавить товар в чек - 2, Назад - 0: ");
-				scanf_s("%d", &ans2);
-
-				switch (ans2)
+			do { } while ( scan() == -1);
+			do{
+				printf("\nВывести информацию о товаре - 1, Добавить товар в чек - 2, Назад - 3: ");
+				scanf_s("%d", &ans);
+				switch (ans)
 				{
 				case 1:
 					print(scanned);
-
+					break;
 				case 2:
 					add(scanned);
 					res++;
 				}
-			} while (ans2 != 0 && ans2 != 2);
-		case 2:
-			make_bill();
+			} while (ans != 3 && ans != 2);
+			break;
+		case 2: make_bill();
 		}
 	} while (ans != 0);
 	if (res > 0)
