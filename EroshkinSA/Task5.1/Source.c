@@ -7,6 +7,8 @@
 char** name;
 int* num;
 int* sz;
+int* temp;
+int* tempnum;
 
 void swap(int* a, int* ai, int* b, int* bi) {
 	int tmp = *b, tmpi = *bi;
@@ -37,10 +39,10 @@ void ClassicSort(int n) {
 void ChoiceSort(int n) {
 	int i, j;
 	for (i = 0; i < n; i++) {
-		int min = sz[i], idx = i;
+		int min = sz[num[i]], idx = i;
 		for (j = i + 1; j < n; j++) {
-			if (sz[j] < min) {
-				min = sz[j];
+			if (sz[num[j]] < min) {
+				min = sz[num[j]];
 				idx = j;
 			}
 		}
@@ -51,8 +53,8 @@ void ChoiceSort(int n) {
 void InsertSort(int n) {
 	int i;
 	for (i = 0; i < n; i++) {
-		int j = i - 1, tmp = sz[i];
-		while (j >= 0 && sz[j] > tmp) {
+		int j = i - 1, tmp = sz[num[i]];
+		while (j >= 0 && sz[num[j]] > tmp) {
 			sz[j + 1] = sz[j];
 			num[j + 1] = num[j];
 			j--;
@@ -62,28 +64,44 @@ void InsertSort(int n) {
 	}
 }
 
-/*void RadixSort(int n) {
-	int digitn[10][1000] = { {-1} }, digitv[10][1000] = { {-1} }, div = 1, cnt, d, i, p[10] = { 0 }, k, j;
-	do {
-		cnt = 0;
-		for (i = 0; i < n; i++) {
-			d = (sz[i] / div) % 10;
-			if (d) cnt++;
-			digitn[d][p[d]] = num[i];
-			digitv[d][p[d]++] = sz[i];
+void Merge(int l, int c, int r) {
+	int i = l, j = c + 1, k = 0;
+	while (i <= c && j <= r) {
+		if (sz[i] <= sz[j]) {
+			temp[k] = sz[i];
+			tempnum[k] = num[i];
+			k++; i++;
 		}
-		k = 0;
-		for (d = 0; d < 10; d++) {
-			for (j = 0; j < p[d]; j++) {
-				num[k] = digitn[d][j];
-				sz[k++] = digitv[d][j];
-			}
-			p[d] = 0;
+		else {
+			temp[k] = sz[j];
+			tempnum[k] = num[j];
+			k++; j++;
 		}
-		div *= 10;
-	} while (cnt != 0);
-}*/
+	}
+	while (i <= c) {
+		temp[k] = sz[i];
+		tempnum[k] = num[i];
+		k++; i++;
+	}
+	while (j <= r) {
+		temp[k] = sz[j];
+		tempnum[k] = num[j];
+		k++; j++;
+	}
+	for (i = 0; i < r - l + 1; i++) {
+		sz[l + i] = temp[i];
+		num[l + i] = tempnum[i];
+	}
+}
 
+
+void MergeSort(int l, int r) {
+	if (l + 1 > r) return;
+	int c = l + (r - l) / 2;
+	MergeSort(l, c);
+	MergeSort(c + 1, r);
+	Merge(l, c, r);
+}
 
 int read(char dir[], char flag) {
 	int k = 0, mx = 1;
@@ -97,11 +115,13 @@ int read(char dir[], char flag) {
 		} while (FindNextFileA(hFind, &data));
 		FindClose(hFind);
 	}
-	sz = (int*)malloc(k * sizeof(int));
-	num = (int*)malloc(k * sizeof(int));
-	name = (char**)malloc(k * sizeof(char*));
-	for (int i = 0; i < k; i++) {
-		name[i] = (char*)malloc(mx * sizeof(char));
+	if (flag) {
+		sz = (int*)malloc(k * sizeof(int));
+		num = (int*)malloc(k * sizeof(int));
+		name = (char**)malloc(k * sizeof(char*));
+		for (int i = 0; i < k; i++) {
+			name[i] = (char*)malloc((mx + 5) * sizeof(char));
+		}
 	}
 	k = 0;
 	hFind = FindFirstFileA(dir, &data);
@@ -119,6 +139,7 @@ int read(char dir[], char flag) {
 	return k;
 }
 
+
 char fsort(char method[], int k) {
 	if (strcmp(method, "classic") == 0) {
 		ClassicSort(k); return 1;
@@ -132,16 +153,21 @@ char fsort(char method[], int k) {
 	if (strcmp(method, "bubble") == 0) {
 		BubbleSort(k); return 1;
 	}
-	if (strcmp(method, "radix") == 0) {
-		//RadixSort(num, sz, k); return 1;
+	if (strcmp(method, "merge") == 0) {
+		temp = (int*)malloc(sizeof(int) * k);
+		tempnum = (int*)malloc(sizeof(int) * k);
+		MergeSort(0, k - 1); return 1;
+		free(temp);
+		free(tempnum);
 	}
 	printf("Incorrect sort method\n");
 	return 0;
 }
 
 int main() {
+	system("chcp 1251");
 	char method[50], dir[1000] = "";
-	int i, k = 0, type = -1, f;
+	int i, k = 0, type = -1, f, cnt = 0;
 	char ways[5][50] = { "classic", "insert", "choice", "bubble", "radix" };
 	printf("Instruction:\n1 <path_to_directory> - Enter of usage directory\n2 - Read of files from entered directory\n3 <sort_type> - Sort and print a list of files and time of sort\n0 - Exit\n");
 	while (type != 0) {
@@ -155,7 +181,18 @@ int main() {
 			if (strcmp(dir, "") == 0) {
 				printf("Nothing to read!\n");
 			}
-			else k = read(dir, 1);
+			else {
+				if (cnt) {
+					free(sz);
+					free(num);
+					for (i = 0; i < k; i++) {
+						free(name[i]);
+					}
+					free(name);
+				}
+				k = read(dir, 1);
+				cnt++;
+			}
 			break;
 		case 3:
 			if (k == 0) {
@@ -177,12 +214,12 @@ int main() {
 				printf("Time: %.3f ms\n", t);
 			}
 			//for (i = 0; i < k; i++) num[i] = i;
-			read(dir, 0);   // Обратная перестановка массива
+			read(dir, 0); // Обратная перестановка массива
 			break;
 		case 0:
 			free(sz);
 			free(num);
-			for (int i = 0; i < k; i++) {
+			for (i = 0; i < k; i++) {
 				free(name[i]);
 			}
 			free(name);
