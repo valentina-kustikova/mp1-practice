@@ -1,4 +1,4 @@
-#include<stdio.h>
+п»ї#include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #define am_prod 8
@@ -26,7 +26,7 @@ Product products[am_prod] = {
 	{"7777", 40, 34, 0, "ORANGES"},
 	{"8888", 30, 5, 0, "WATER"}
 };
-//int am_prod = 8; //количество продуктов
+//int am_prod = 8; //ГЄГ®Г«ГЁГ·ГҐГ±ГІГўГ® ГЇГ°Г®Г¤ГіГЄГІГ®Гў
 int main() {
 	int currID, currAmmount;
 	char enterCode[10];
