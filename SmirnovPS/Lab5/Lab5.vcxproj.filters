@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="barcodes.c">
+    <ClCompile Include="fileManager.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
