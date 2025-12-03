@@ -4,11 +4,6 @@
 #include <time.h>
 #include <windows.h>
 
-char** name;
-int* num;
-int* sz;
-int* temp;
-int* tempnum;
 
 void swap(int* a, int* ai, int* b, int* bi) {
 	int tmp = *b, tmpi = *bi;
@@ -18,7 +13,7 @@ void swap(int* a, int* ai, int* b, int* bi) {
 	*ai = tmpi;
 }
 
-void BubbleSort(int n) {
+void BubbleSort(int n, int* sz, int* num) {
 	int i, j;
 	for (i = 0; i < n - 1; i++) {
 		for (j = 0; j < n - i - 1; j++) {
@@ -27,7 +22,7 @@ void BubbleSort(int n) {
 	}
 }
 
-void ClassicSort(int n) {
+void ClassicSort(int n, int* sz, int* num) {
 	int i, j;
 	for (i = 0; i < n; i++) {
 		for (j = i + 1; j < n; j++) {
@@ -36,7 +31,7 @@ void ClassicSort(int n) {
 	}
 }
 
-void ChoiceSort(int n) {
+void ChoiceSort(int n, int* sz, int* num) {
 	int i, j;
 	for (i = 0; i < n; i++) {
 		int min = sz[num[i]], idx = i;
@@ -50,7 +45,7 @@ void ChoiceSort(int n) {
 	}
 }
 
-void InsertSort(int n) {
+void InsertSort(int n, int* sz, int* num) {
 	int i;
 	for (i = 0; i < n; i++) {
 		int j = i - 1, tmp = sz[num[i]];
@@ -64,7 +59,7 @@ void InsertSort(int n) {
 	}
 }
 
-void Merge(int l, int c, int r) {
+void Merge(int l, int c, int r, int* sz, int* num, int* temp, int* tempnum) {
 	int i = l, j = c + 1, k = 0;
 	while (i <= c && j <= r) {
 		if (sz[i] <= sz[j]) {
@@ -95,68 +90,66 @@ void Merge(int l, int c, int r) {
 }
 
 
-void MergeSort(int l, int r) {
+void MergeSort(int l, int r, int* sz, int* num, int* temp, int* tempnum) {
 	if (l + 1 > r) return;
 	int c = l + (r - l) / 2;
-	MergeSort(l, c);
-	MergeSort(c + 1, r);
-	Merge(l, c, r);
+	MergeSort(l, c, sz, num, temp, tempnum);
+	MergeSort(c + 1, r, sz, num, temp, tempnum);
+	Merge(l, c, r, sz, num, temp, tempnum);
 }
 
-int read(char dir[], char flag) {
-	int k = 0, mx = 1;
-	WIN32_FIND_DATAA data;
+int fcount(char dir[], int* pmx) {
+	int k = 0;
+	WIN32_FIND_DATA data;
 	HANDLE hFind = FindFirstFileA(dir, &data);
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
 			if (data.dwFileAttributes != 32) continue;
-			if (strlen(data.cFileName) > mx) mx = strlen(data.cFileName);
+			if (strlen(data.cFileName) > *pmx) *pmx = strlen(data.cFileName);
 			k++;
 		} while (FindNextFileA(hFind, &data));
 		FindClose(hFind);
 	}
-	if (flag) {
-		sz = (int*)malloc(k * sizeof(int));
-		num = (int*)malloc(k * sizeof(int));
-		name = (char**)malloc(k * sizeof(char*));
-		for (int i = 0; i < k; i++) {
-			name[i] = (char*)malloc((mx + 5) * sizeof(char));
-		}
-	}
-	k = 0;
+	else printf("Incorrect directory!\n");
+	return k;
+}
+
+void read(char dir[], char flag, char** name, int* sz, int* num) {
+	WIN32_FIND_DATAA data;
+	HANDLE hFind = FindFirstFileA(dir, &data);
+	int i = 0;
 	hFind = FindFirstFileA(dir, &data);
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
 			if (data.dwFileAttributes != 32) continue;
 			if(flag) printf("Read: %s of %d bytes\n", data.cFileName, data.nFileSizeLow);
-			strcpy(name[k], data.cFileName);
-			sz[k] = data.nFileSizeLow;
-			num[k] = k;
-			k++;
+			strcpy(name[i], data.cFileName);
+			sz[i] = data.nFileSizeLow;
+			num[i] = i;
+			i++;
 		} while (FindNextFileA(hFind, &data));
 		FindClose(hFind);
 	}
-	return k;
 }
 
 
-char fsort(char method[], int k) {
+char fsort(char method[], int k, int* sz, int* num) {
 	if (strcmp(method, "classic") == 0) {
-		ClassicSort(k); return 1;
+		ClassicSort(k, sz, num); return 1;
 	}
 	if (strcmp(method, "insert") == 0) {
-		InsertSort(k); return 1;
+		InsertSort(k, sz, num); return 1;
 	}
 	if (strcmp(method, "choice") == 0) {
-		ChoiceSort(k); return 1;
+		ChoiceSort(k, sz, num); return 1;
 	}
 	if (strcmp(method, "bubble") == 0) {
-		BubbleSort(k); return 1;
+		BubbleSort(k, sz, num); return 1;
 	}
 	if (strcmp(method, "merge") == 0) {
-		temp = (int*)malloc(sizeof(int) * k);
-		tempnum = (int*)malloc(sizeof(int) * k);
-		MergeSort(0, k - 1); return 1;
+		int* temp = (int*)malloc(sizeof(int) * k);
+		int* tempnum = (int*)malloc(sizeof(int) * k);
+		MergeSort(0, k - 1, sz, num, temp, tempnum); return 1;
 		free(temp);
 		free(tempnum);
 	}
@@ -167,17 +160,25 @@ char fsort(char method[], int k) {
 int main() {
 	system("chcp 1251");
 	char method[50], dir[1000] = "";
-	int i, k = 0, type = -1, f, cnt = 0;
-	char ways[5][50] = { "classic", "insert", "choice", "bubble", "radix" };
-	printf("Instruction:\n1 <path_to_directory> - Enter of usage directory\n2 - Read of files from entered directory\n3 <sort_type> - Sort and print a list of files and time of sort\n0 - Exit\n");
+	int i, k = 0, type = -1, f, cnt = 0, mx = 0;
+	int* sz; int* num; char** name;
+	printf("Enter address of directory:\n");
+	while (k == 0) {
+		scanf("%s", dir);
+		strcat(dir, "\\*\0");
+		k = fcount(dir, &mx);
+	}
+	sz = (int*)malloc(k * sizeof(int));
+	num = (int*)malloc(k * sizeof(int));
+	name = (char**)malloc(k * sizeof(char*));
+	for (int i = 0; i < k; i++) {
+		name[i] = (char*)malloc((mx + 5) * sizeof(char));
+	}
+	printf("Instruction:\n1 - Read of files from entered directory\n2 <sort_type> - Sort and print a list of files and time of sort\n0 - Exit\n");
 	while (type != 0) {
 		scanf("%d%*c", &type);
 		switch (type) {
 		case 1:
-			scanf("%s", dir);
-			strcat(dir, "\\*\0");
-			break;
-		case 2:
 			if (strcmp(dir, "") == 0) {
 				printf("Nothing to read!\n");
 			}
@@ -190,11 +191,11 @@ int main() {
 					}
 					free(name);
 				}
-				k = read(dir, 1);
+				read(dir, 1, name, sz, num);
 				cnt++;
 			}
 			break;
-		case 3:
+		case 2:
 			if (k == 0) {
 				printf("Nothing to sort!\n");
 				break;
@@ -205,7 +206,7 @@ int main() {
 			QueryPerformanceFrequency(&freq);
 			QueryPerformanceCounter(&st);
 			clock_t a = clock();
-			f = fsort(method, k);
+			f = fsort(method, k, sz, num);
 			clock_t b = clock();
 			QueryPerformanceCounter(&end);
 			t = (double)(end.QuadPart - st.QuadPart) * 1000.0 / freq.QuadPart;
@@ -214,7 +215,7 @@ int main() {
 				printf("Time: %.3f ms\n", t);
 			}
 			//for (i = 0; i < k; i++) num[i] = i;
-			read(dir, 0); // Обратная перестановка массива
+			read(dir, 0, name, sz, num); // Обратная перестановка массива
 			break;
 		case 0:
 			free(sz);
