@@ -1,172 +1,255 @@
 #include <stdio.h>
-#include <iostream>
 #include <windows.h>
 #include <string.h>
+#include <locale.h>
 #include <time.h>
-#define T 1000
-void Start(int* cn, char ad[], char name[][T], int size[]) {
-	printf("Enter the address of the directory\n");
+#define T 256
+int* size;
+int* ind;
+char** name;
+//C:\Users\1\Desktop\Maybe
+void Start(int* cn, char ad[]) {
+	int i,q=0;
+	unsigned int max = 0;
+	char plus[3] = "\\*\0";
+	printf("Enter the address of the directory:\n");
 	scanf("%s", ad);
-	//"C:\\Users\\1\\Desktop\\Maybe\\*\0"
-	//"C:\\Users\\1\\Desktop\\Maybe\\*"
+	strcat(ad, plus);
 	//C:\Users\1\Desktop\Maybe
-	WIN32_FIND_DATA data;
+	WIN32_FIND_DATAA data;
+	//printf("%s\n", ad);
 	HANDLE hFind = FindFirstFileA(ad, &data);
+	//printf("%p\n", hFind);
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
 			if (data.dwFileAttributes == 32) {
-				strcpy(name[*cn], data.cFileName);
-				size[*cn++] = data.nFileSizeLow;
+				if (max < strlen(data.cFileName)) {
+					//printf("%d ", strlen(data.cFileName));
+					max = strlen(data.cFileName);
+				}
+				(*cn)++;
+			}
+		} while (FindNextFileA(hFind, &data));
+		FindClose(hFind);
+	}
+	else {
+		DWORD error = GetLastError();
+		printf("Fatal -- Invalid directory address\n");
+		printf("Error ñode -- %d\n", error);
+	  exit(0);
+	}
+	if ((*cn) == 0) {
+		printf("There are no files in the directory!\n");
+		exit(0);
+	}
+	//printf("%d", max);
+	size = (int*)malloc((*cn) * sizeof(int));
+	name = (char**)malloc((*cn) * sizeof(char*));
+	/*if (name) {
+		printf("2\n");
+	}*/
+	for (i = 0; i < (*cn); i++) {
+		name[i] = (char*)malloc((max + 2) * sizeof(char));
+	}
+	hFind = FindFirstFileA(ad, &data);
+	if (hFind != INVALID_HANDLE_VALUE) {
+		do {
+			if (data.dwFileAttributes == 32) {
+				strcpy(name[q], data.cFileName);
+				size[q++] = data.nFileSizeLow;
 				printf("FILE --> %s --> %d\n", data.cFileName, data.nFileSizeLow);
 			}
-		} while (FindNextFile(hFind, &data));
+		} while (FindNextFileA(hFind, &data));
 		FindClose(hFind);
 	}
 }
-void Clean(char name[][T], char cl[][T], int size[], int ch[], int cnt) {
+void Clean(int cnt, int* cl) {
 	int i;
 	for (i = 0; i < cnt; i++) {
-		strcpy(name[i], cl[i]);
-		size[i] = ch[i];
+		size[i] = cl[i];
+		ind[i] = i;
 	}
 }
-void BubbleSort(int cnt, int size[], char name[][T]) {
-	time_t start_time, end_time;
-	double elapsed_time;
-	start_time = time(0);
-	int i, j, p;
-	char temp[T];
+void BubbleSort(int cnt) {
+	int i, j, p, e;
+	LARGE_INTEGER st, end, freq;
+	double t;
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&st);
 	for (i = 0; i < cnt - 1; i++) {
 		for (j = 0; j < cnt - i - 1; j++) {
 			if (size[j] > size[j + 1]) {
-				strcpy(temp, name[j]);
-				strcpy(name[j], name[j + 1]);
-				strcpy(name[j + 1], temp);
-				p = size[j];
+				e = size[j];
 				size[j] = size[j + 1];
-				size[j + 1] = p;
+				size[j + 1] = e;
+				p = ind[j];
+			  ind[j] = ind[j + 1];
+				ind[j + 1] = p;
 			}
 		}
 	}
-	end_time = time(0);
-	elapsed_time = difftime(end_time, start_time);
+	QueryPerformanceCounter(&end);
+	t = (double)(end.QuadPart - st.QuadPart) * 1000.0 / freq.QuadPart;
 	for (i = 0; i < cnt; i++) {
-		printf("%s -- %d\n", name[i], size[i]);
+		printf("%s -- %d\n", name[ind[i]], size[i]);
 	}
-	printf("Execution time - %.3f seconds\n", elapsed_time);
+	printf("Execution time - %.6f nanoseconds\n", t);
 }
-void InsertSort(int cnt, int size[], char name[][T]) {
-	int i, j, temp;
-	char s[T];
-	time_t start_time, end_time;
-	double elapsed_time;
-	start_time = time(0);
+void InsertSort(int cnt) {
+	int i, j, temp,z;
+	LARGE_INTEGER st, end, freq;
+	double t;
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&st);
 	for (i = 0; i < cnt; i++) {
-		temp = size[i];
-		strcpy(s, name[i]);
+		z = size[i];
+		temp = ind[i];
 		j = i - 1;
-		while (j >= 0 && (size[j] > temp)) {
+		while (j >= 0 && (size[j] > z)) {
 			size[j + 1] = size[j];
-			strcpy(name[j + 1], name[j]);
+			ind[j + 1] = ind[j];
 			j--;
 		}
-		size[j + 1] = temp;
-		strcpy(name[j + 1], s);
+		size[j + 1] = z;
+		ind[j + 1] = temp;
 	}
-	end_time = time(0);
-	elapsed_time = difftime(end_time, start_time);
+	QueryPerformanceCounter(&end);
+	t = (double)(end.QuadPart - st.QuadPart) * 1000.0 / freq.QuadPart;
 	for (i = 0; i < cnt; i++) {
-		printf("%s -- %d\n", name[i], size[i]);
+		printf("%s -- %d\n", name[ind[i]], size[i]);
 	}
-	printf("Execution time - %.3f seconds\n", elapsed_time);
+	printf("Execution time - %.6f nanoseconds\n", t);
 }
-void Merge(char name[][T], int a[], int l, int m, int r) {
-	int i = 0, j = 0, k = l;
+void Merge(int l, int m, int r,int cnt) {
+	/*int i, j, k = l;
 	int n1 = m - l + 1;
 	int n2 = r - m;
-	int lArr[n1], rArr[n2];
-	char s1[n1][T], s2[n2][T];
+	int* h;
+	int* rArr;
+	int* lArr;
+	h = (int*)malloc((r - l + 1) * sizeof(int));
+	lArr = (int*)malloc(n1 * sizeof(int));
+	rArr = (int*)malloc(n2 * sizeof(int));
 	for (i = 0; i < n1; i++) {
-		lArr[i] = a[l + i];
-		strcpy(s1[i], name[l + i]);
+		lArr[i] = size[l + i];
 	}
 	for (j = 0; j < n2; j++) {
-		rArr[j] = a[m + 1 + j];
-		strcpy(s2[j], name[m + 1 + j]);
+		rArr[j] = size[m + 1 + j];
+	}
+	for (j = 0; j < n2; j++) {
+		h[j] = j;
 	}
 	i = 0, j = 0;
 	while (i < n1 && j < n2) {
 		if (lArr[i] <= rArr[j]) {
-			strcpy(name[k], s1[i]);
-			a[k++] = lArr[i++];
+			h[k] = ind[l+i];
+			size[k++] = lArr[i++];
 		}
 		else {
-			strcpy(name[k], s2[j]);
-			a[k++] = rArr[j++];
+			h[k] = ind[m+1+j];
+			size[k++] = rArr[j++];
 		}
 	}
 	while (i < n1) {
-		strcpy(name[k], s1[i]);
-		a[k++] = lArr[i++];
+		h[k] = ind[l+i];
+		size[k++] = lArr[i++];
 	}
 	while (j < n2) {
-		strcpy(name[k], s2[j]);
-		a[k++] = rArr[j++];
+		h[k] = ind[m+1+j];
+		size[k++] = rArr[j++];
 	}
+	for (j = l; j <= r; j++) {
+		ind[j] = h[j];
+	}
+	free(lArr);
+	free(rArr);
+	free(h);*/
+	int i = l, j = m + 1, k = 0;
+	int* arr;
+	int* iarr;
+	arr = (int*)malloc(cnt * sizeof(int));
+	iarr = (int*)malloc(cnt * sizeof(int));
+	while (i <= m && j <= r) {
+		if (size[i] <= size[j]) {
+			arr[k] = size[i];
+			iarr[k++] = ind[i++];
+		}
+		else {
+			arr[k] = size[j];
+			iarr[k++] = ind[j++];
+		}
+	}
+	while (i <= m) {
+		arr[k] = size[i];
+		iarr[k] = ind[i];
+		k++; i++;
+	}
+	while (j <= r) {
+		arr[k] = size[j];
+		iarr[k] = ind[j];
+		k++; j++;
+	}
+	for (i = 0; i < r - l + 1; i++) {
+		size[l + i] = arr[i];
+		ind[l + i] = iarr[i];
+	}
+	free(arr);
+	free(iarr);
 }
-void MergeSort(char name[][T], int a[], int l, int r) {
+void MergeSort(int l, int r,int cnt) {
 	int m;
 	if (l + 1 <= r) {
 		m = l + (r - l) / 2;
-		MergeSort(name, a, l, m);
-		MergeSort(name, a, m + 1, r);
-		Merge(name, a, l, m, r);
+		MergeSort(l, m,cnt);
+		MergeSort( m + 1, r,cnt);
+		Merge( l, m, r,cnt);
 	}
 }
-void Msort(char name[][T], int a[], int cnt) {
+void Msort(int cnt) {
 	int l = 0, r = cnt - 1, i;
-	time_t start_time, end_time;
-	double elapsed_time;
-	start_time = time(0);
-	MergeSort(name, a, l, r);
-	end_time = time(0);
-	elapsed_time = difftime(end_time, start_time);
+	LARGE_INTEGER st, end, freq;
+	double t;
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&st);
+	MergeSort(l, r,cnt);
+	QueryPerformanceCounter(&end);
+	t = (double)(end.QuadPart - st.QuadPart) * 1000.0 / freq.QuadPart;
 	for (i = 0; i < cnt; i++) {
-		printf("%s -- %d\n", name[i], a[i]);
+		printf("%s -- %d\n", name[ind[i]], size[i]);
 	}
-	printf("Execution time - %.3f seconds\n", elapsed_time);
+	printf("Execution time - %.6f nanoseconds\n", t);
 }
-void SimpleSort(char name[][T], int size[], int cnt) {
-	time_t start_time, end_time;
-	double elapsed_time;
-	start_time = time(0);
-	int i, j, p;
-	char temp[T];
+void SimpleSort(int cnt) {
+	LARGE_INTEGER st, end, freq;
+	double g;
+	int i, j, p, t;
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&st);
 	for (i = 0; i < cnt; i++) {
 		for (j = i + 1; j < cnt; j++) {
 			if (size[i] > size[j]) {
-				strcpy(temp, name[i]);
-				strcpy(name[i], name[j]);
-				strcpy(name[j], temp);
-				p = size[i];
+				t = size[i];
 				size[i] = size[j];
-				size[j] = p;
+				size[j] = t;
+				p = ind[i];
+				ind[i] = ind[j];
+				ind[j] = p;
 			}
 		}
 	}
-	end_time = time(0);
-	elapsed_time = difftime(end_time, start_time);
+	QueryPerformanceCounter(&end);
+	g = (double)(end.QuadPart - st.QuadPart) * 1000.0 / freq.QuadPart;
 	for (i = 0; i < cnt; i++) {
-		printf("%s -- %d\n", name[i], size[i]);
+		printf("%s -- %d\n", name[ind[i]], size[i]);
 	}
-	printf("Execution time - %.3f seconds\n", elapsed_time);
+	printf("Execution time - %.6f nanoseconds\n", g);
 }
-void ChoiceSort(char name[][T], int size[], int cnt) {
-	int i, j, min, in, p;
-	char temp[T];
-	time_t start_time, end_time;
-	double elapsed_time;
-	start_time = time(0);
+void ChoiceSort(int cnt) {
+	int i, j, min, in, p,t;
+	LARGE_INTEGER st, end, freq;
+	double g;
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&st);
 	for (i = 0; i < cnt; i++) {
 		min = size[i];
 		in = i;
@@ -176,66 +259,117 @@ void ChoiceSort(char name[][T], int size[], int cnt) {
 				in = j;
 			}
 		}
-		strcpy(temp, name[i]);
-		strcpy(name[i], name[in]);
-		strcpy(name[in], temp);
-		p = size[i];
+		t = size[i];
 		size[i] = size[in];
-		size[in] = p;
+		size[in] = t;
+		p = ind[i];
+		ind[i] = ind[in];
+		ind[in] = p;
 	}
-	end_time = time(0);
-	elapsed_time = difftime(end_time, start_time);
+	QueryPerformanceCounter(&end);
+	g = (double)(end.QuadPart - st.QuadPart) * 1000.0 / freq.QuadPart;
 	for (i = 0; i < cnt; i++) {
-		printf("%s -- %d\n", name[i], size[i]);
+		printf("%s -- %d\n", name[ind[i]], size[i]);
 	}
-	printf("Execution time - %.3f seconds\n", elapsed_time);
+	printf("Execution time - %.6f nanoseconds\n", g);
 }
-void ProtectandPrint(int cnt, char cl[][T], char name[][T], int ch[], int size[]) {
-	int i;
+void HoarSort(int cnt,int n1,int n2) {
+	int m = n1 + (n2 - n1) / 2;
+	int i = n1, j = n2,t,f;
+	int p = size[m];
+	do {
+		while (size[i] < p) {
+			i++;
+		}
+		while (size[j] > p) {
+			j--;
+		}
+		if (i <= j) {
+			t = ind[i];
+			ind[i] = ind[j];
+			ind[j] = t;
+			f = size[i];
+			size[i] = size[j];
+			size[j] = f;
+			i++;
+			j--;
+		}
+	} while (i <= j);
+	if (n1 < j) {
+		HoarSort(cnt, n1, j);
+	}
+	if (i < n2) {
+		HoarSort(cnt, i, n2);
+	}
+}
+void Hsort(int cnt) {
+	int n1 = 0, n2 = cnt - 1, i;
+	LARGE_INTEGER st, end, freq;
+	double t;
+	QueryPerformanceFrequency(&freq);
+	QueryPerformanceCounter(&st);
+	HoarSort(cnt,n1, n2);
+	QueryPerformanceCounter(&end);
+	t = (double)(end.QuadPart - st.QuadPart) * 1000.0 / freq.QuadPart;
 	for (i = 0; i < cnt; i++) {
-		strcpy(cl[i], name[i]);
-		ch[i] = size[i];
+		printf("%s -- %d\n", name[ind[i]], size[i]);
+	}
+	printf("Execution time - %.6f nanoseconds\n", t);
+}
+void Print_and_Protect(int cnt,int* cl) {
+	int i;
+	ind = (int*)malloc(cnt * sizeof(int));
+	for (i = 0; i < cnt; i++) {
+		cl[i] = size[i];
+		ind[i] = i;
 	}
 	printf("\n");
 	printf("Select sorting or end the program:\n");
 	printf("1 - Bubble sorting\n");
 	printf("2 - Insertion sorting\n");
-	printf("3 - Merge sorting\n");
+	printf("3 - Merge sorting\n"); 
 	printf("4 - Simplest sorting\n");
 	printf("5 - Choice sorting\n");
-	printf("6 - End the program\n");
+	printf("6 - Quick sorting\n");
+	printf("7 - End the program\n\n");
 }
 int main() {
-	setlocale(LC_ALL, "Russian");
-	int size[T], ch[T], i, j, cnt = 0, fl, b = 1;
+	char* locale = setlocale(LC_ALL, "");
+	int cnt = 0, fl, b = 1,i;
+	int* cl;
 	int* cn = &cnt;
-	char name[T][T], cl[T][T], ad[T];
-	Start(cn, ad, name, size);
-	ProtectandPrint(cnt, cl, name, ch, size);
+	char ad[T];
+	Start(cn, ad);
+	cl = (int*)malloc(cnt * sizeof(int));
+	Print_and_Protect(cnt,cl);
 	while (b != 0) {
 		scanf("%d", &fl);
 		switch (fl) {
 		case 1:
-			BubbleSort(cnt, size, name);
-			Clean(name, cl, size, ch, cnt);
+			BubbleSort(cnt);
+			Clean( cnt,cl);
 			break;
 		case 2:
-			InsertSort(cnt, size, name);
-			Clean(name, cl, size, ch, cnt);
+			InsertSort(cnt);
+			Clean(cnt, cl);
 			break;
 		case 3:
-			Msort(name, size, cnt);
-			Clean(name, cl, size, ch, cnt);
+			Msort(cnt);
+			Clean( cnt, cl);
 			break;
 		case 4:
-			SimpleSort(name, size, cnt);
-			Clean(name, cl, size, ch, cnt);
+			SimpleSort(cnt);
+			Clean( cnt, cl);
 			break;
 		case 5:
-			ChoiceSort(name, size, cnt);
-			Clean(name, cl, size, ch, cnt);
+			ChoiceSort(cnt);
+			Clean(cnt, cl);
 			break;
 		case 6:
+			Hsort(cnt);
+			Clean( cnt, cl);
+			break;
+		case 7:
 			b = 0;
 			printf("The end!");
 			break;
@@ -243,5 +377,12 @@ int main() {
 			printf("Fatal -- There is no sorting with a given number\n");
 		}
 	}
+	free(cl);
+	free(size);
+	free(ind);
+	for (i = 0; i < cnt; i++) {
+		free(name[i]);
+	}
+	free(name);
 	return 0;
 }
