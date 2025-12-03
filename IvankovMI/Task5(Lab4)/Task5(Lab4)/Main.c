@@ -7,7 +7,7 @@
 #include <conio.h>
 
 #define N 1000       //макс длина ввода
-#define R(f) strcmp(inp, f) == 0
+#define R(f) strcmp(inp, f) == 0                //просто дл€ удобства
 #define scan {printf("----\b\b\b\b"); scanf_s(format, inp, sizeof(inp));}
 
 
@@ -22,17 +22,17 @@
 // выход.
 
 void choose(char *inp);
-void coupon();           //+
+void coupon(char* inp, char* coup);   //+
 void info() { ; }
-//void help();           //+
-//void callthecashier(); //+
+//void help();                        //+
+//void callthecashier();              //+
 void Galya() { ; }
 void Galina() { ; }
 void final() { ; }
 void barcode(char *inp);
 
 char helpi[] = "¬водите ниже цифры \"отсканированных штрихкодов\" и специальные команды, а программа \nсформирует чек и расчитает итоговую стоимость и размер скидки в рубл€х (без копеек). \n÷ифры \"штрихкода\" вводите слитно (без пробелов), в дес€тичной системе счислени€, \nкоманды и \"штрихкоды\" раздел€йте пробелами и/или переносами строк. \n—писок команд: \n.coupon           Ч предъ€вить скидочный купон (затем попрос€т ввести номер купона) \n.info <штрихкод>  Ч получить информацию о товаре, не добавл€€ его в корзину \n(обратите внимание, команду и \"штрихкод\" надо писать раздельно, пример: .info 0123) \n.. / .fin         Ч завершить \"сканирование товаров\" и перейти к оплате \n.. / .fin (после оплаты) Ч закончить просмотр чека и завершить покупку \n.callthecashier   Ч позвать сотрудника \n.Galya            Ч отменить уже добавленный к покупке товар \n.Galina           Ч отменить весь процесс покупки \n.quit             Ч выйти из программы и завершить процесс \n.help             Ч вывести эту инструкцию ещЄ раз \n*просто введЄнный штрихкод добавл€ет товар в корзину и выводит базовую информацию о нЄм \n*\"касса\" обслуживает покупателей непрерывно: после завершени€ одной покупки начнетс€ следующа€\n\n";
-
+char format[9];
 
 
 
@@ -44,25 +44,26 @@ char helpi[] = "¬водите ниже цифры \"отсканированных штрихкодов\" и специальные 
 int main() {
 	
 	FILE* list;
-	char inp[N + 1], format[9];  
-	int n, coup = 0;
+	char inp[N + 1];    //format[9];
+	int n, coup = 0, error;
 	
 	size_t szf = sizeof(format);
 	snprintf(format, szf, "%%%ds", N);
 
 	setlocale(LC_ALL, "Rus");
 
-	list = fopen("list_of_items.txt", "r");
+	"list ="; error = fopen_s(&list, "list_of_items.txt", "r");
 
 	printf("ƒобро пожаловать в имитацию кассового аппарата \n\n");
 	printf(helpi);
-	if (list == 0) {
+	if (error != 0) {
 		printf("ќшибка чтени€ файла. ѕроверьте наличие файла.");
 		return 0;
 	}
-	fscanf(list, "%d", &n);
+	fscanf_s(list, "%d", &n);
 	printf("\n------------------ ƒобро пожаловать в магазин \"ћагазин\"! ¬водите свои товары ------------------\n\n");
 
+	//printf("%d\n", n);
 	scan;
 	while (strcmp(inp, ".quit") != 0) {
 		
@@ -80,7 +81,7 @@ void choose(char* inp, int* coup) {
 	else if (R(".callthecashier"))
 		printf("скоро к вам подойдет сотрудник");
 	else if (R(".coupon"))
-		coupon(coup);
+		coupon(inp, coup);
 	else if (R(".info"))
 		info();
 	else if (R(".Galya"))
@@ -94,8 +95,9 @@ void choose(char* inp, int* coup) {
 }
 
 
-void coupon(int* coup) {
+void coupon(char* inp,int* coup) {
 	printf("¬ведите номер своего купона: ");
+	scan;
 	* coup = 1;
 }
 
