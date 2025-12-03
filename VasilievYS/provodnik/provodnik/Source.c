@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <windows.h>
 #include <string.h>
 #include<locale.h>
@@ -6,11 +7,9 @@
 #define maxPath 260
 struct fileInf
 {
-	char name[1000];
+	char name[100];
 	ULONGLONG size;
 };
-struct fileInf files[1000];
-int n = 0;
 int CheckE(char path[])
 {
 	HANDLE prov;
@@ -23,7 +22,7 @@ int CheckE(char path[])
 	}
 	else { FindClose(prov); return 0; }
 }
-void getL(char path[])
+int count(char path[])
 {
 	HANDLE hand;
 	WIN32_FIND_DATAA fileD;
@@ -36,17 +35,77 @@ void getL(char path[])
 		{
 			if ((((ULONGLONG)fileD.nFileSizeHigh << 32) | fileD.nFileSizeLow) != 0)
 			{
-				strcpy_s(files[i].name, 1000, fileD.cFileName);
-				fileSi = ((ULONGLONG)fileD.nFileSizeHigh << 32) | fileD.nFileSizeLow;
-				files[i].size = fileSi;
 				i++;
 			}
 		}
 	}
 	FindClose(hand);
-	n = i + 1;
+	return i;
+
 }
-void sortIn(struct fileInf list[], int amount)
+void getL(char path[], int n, struct fileInf list[], struct fileInf ns_list[])
+{
+	HANDLE hand;
+	WIN32_FIND_DATAA fileD;
+	ULONGLONG fileSi;
+	int i = 0;
+	hand = FindFirstFileA(path, &fileD);
+	while (FindNextFileA(hand, &fileD))
+	{
+		if (strcmp(fileD.cFileName, ".") != 0 && strcmp(fileD.cFileName, "..") != 0)
+		{
+			if ((((ULONGLONG)fileD.nFileSizeHigh << 32) | fileD.nFileSizeLow) != 0)
+			{
+				strcpy_s(list[i].name, 100, fileD.cFileName);
+				strcpy_s(ns_list[i].name, 100, fileD.cFileName);
+				fileSi = ((ULONGLONG)fileD.nFileSizeHigh << 32) | fileD.nFileSizeLow;
+				list[i].size = fileSi;
+				ns_list[i].size = fileSi;
+				i++;
+			}
+		}
+	}
+	FindClose(hand);
+}
+void swap(struct fileInf* x, struct fileInf* y)
+{
+	struct fileInf temp;
+	temp = *y;
+	*y = *x;
+	*x = temp;
+}
+void simple_sort(struct fileInf list[], int amount)
+{
+	int i, j;
+	for (i = 0; i < amount; i++)
+	{
+		for (j = i + 1; j < amount; j++)
+		{
+			if (list[i].size > list[j].size)
+			{
+				swap(&list[i], &list[j]);
+			}
+		} 
+	}
+}
+void select_sort(struct fileInf list[], int amount)
+{
+	int i, j, min_idx;
+	for (i = 0; i < amount; i++)
+	{
+		min_idx = i;
+		struct fileInf temp;
+		for (j = i + 1; j < amount; j++)
+		{
+			if (list[min_idx].size > list[j].size)
+			{
+				min_idx = j;
+			}
+		}
+		swap(&list[i], &list[min_idx]);
+	}
+}
+void insert_sort(struct fileInf list[], int amount)
 {
 	int i, j;
 	for (i = 1; i < amount; i++)
@@ -54,51 +113,81 @@ void sortIn(struct fileInf list[], int amount)
 		j = i - 1;
 		while (j >= 0 && list[j].size > list[j + 1].size)
 		{
-			struct fileInf temp = list[j + 1];
-			list[j + 1] = list[j];
-			list[j] = temp;
+			swap(&list[j+1], &list[j]);
 			j--;
 		}
 	}
 }
-void sortRe(struct fileInf list[], int amount)
+void merge(struct fileInf list[], int l, int m, int r, int n)
 {
-	int i, j;
-	for (i = 1; i < amount; i++)
+	struct fileInf* b = (struct fileInf*)malloc(n * sizeof(struct fileInf));
+	int k = 0, it1 = 0, it2 = 0;
+	while (it1 + l <= m && it2 + m + 1 <= r)
 	{
-		j = i - 1;
-		while (j >= 0 && list[j].size < list[j + 1].size)
+		if(list[l+it1].size < list[m+1+it2].size)
 		{
-			struct fileInf temp = list[j + 1];
-			list[j + 1] = list[j];
-			list[j] = temp;
-			j--;
+			b[k++] = list[l + (it1++)];
 		}
+		else { b[k++] = list[m + 1 + (it2++)]; }
 	}
+	while (l + it1 <= m) { b[k++] = list[l + (it1++)]; }
+	while (m + 1 + it2 <= r) { b[k++] = list[m + 1 + (it2++)]; }
+	for (it1 = 0; it1 < k; it1++)
+	{
+		list[l + it1] = b[it1];
+	}
+
 }
-void print(struct fileInf list[], int amount, int way, double time)
+void merge_sort(struct fileInf list[], int l, int r, int n)
+{
+	int m;
+	if (l + 1 > r) { return; }
+	m = l + (r - l) / 2;
+	merge_sort(list, l, m, n);
+	merge_sort(list, m + 1, r, n);
+	merge(list, l, m, r, n);
+}
+void quick_sort(struct fileInf list[], int n1, int n2)
+{
+	int mid = n1 + (n2 - n1) / 2;
+	int i = n1, j = n2, p = list[mid].size;
+	do
+	{
+		while (list[i].size < p) { i++; }
+		while (list[j].size > p) { j--; }
+		if (i <= j)
+		{
+			swap(&list[i], &list[j]);
+			i++; j--;
+		}
+	} while (i <= j);
+	if (n1 < j) { quick_sort(list, n1, j); }
+	if (i < n2) { quick_sort(list, i, n2); }
+}
+void refill_list(struct fileInf list[], struct fileInf ns_list[], int n)
 {
 	int i;
-	if (way == 1)
+	for (i = 0; i < n; i++)
 	{
-		for (i = 1; i < amount; i++)
-		{
-			printf("%d. %s %llu байт(а)\n", i, files[i].name, files[i].size);
-		}
-	}
-	else
+		list[i] = ns_list[i];
+	}	
+}
+void print(struct fileInf list[], struct fileInf ns_list[], int amount, double time)
+{
+	int i;
+	for (i = 0; i < amount; i++)
 	{
-		for (i = 0; i < amount - 1; i++)
-		{
-			printf("%d. %s %llu байт(а)\n", i + 1, files[i].name, files[i].size);
-		}
+		printf("%d. %s %llu байт(а)\n", i+1, list[i].name, list[i].size);
 	}
-	printf("Время сортировки: %f миллисекунд\n", time);
+	printf("Время сортировки: %.2f миллисекунд\n", time);
+	refill_list(list, ns_list, amount);
 }
 int main()
 {
-	int way = 1, ans = 1;
+	int way = 1, ans = 1, n;
 	char path[maxPath];
+	struct fileInf* list;
+	struct fileInf* ns_list;
 	clock_t start, end;
 	setlocale(LC_ALL, "RUS");
 	do {
@@ -106,23 +195,30 @@ int main()
 		scanf_s("%s", path, (unsigned)sizeof(path));
 		snprintf(path, maxPath, "%s\\\\*", path);
 	} while (CheckE(path) != 0);
-	getL(path);
+	n = count(path);
+	list = (struct fileInf*)malloc((n) * sizeof(struct fileInf));
+	ns_list = (struct fileInf*)malloc((n) * sizeof(struct fileInf));
+	getL(path, n, list, ns_list);
 	while (ans != 0)
 	{
 		do {
-			printf("Метод сортировки(1 - по возрастанию размера, 2 - по убыванию размера): ");
+			printf("Метод сортировки(1 - простейшая, 2 - выбором, " );
+			printf("3 - вставками, 4 - слиянием, 5 - быстрая): ");
 			scanf_s("%d", &way);
-		} while (way != 1 && way != 2);
-		if (way == 1)
+		} while (way != 1 && way != 2 && way!= 3 && way != 4 && way != 5);
+		switch (way)
 		{
-			start = clock();
-			sortIn(files, n);
-			end = clock();
+		case 1: start = clock(); simple_sort(list, n); end = clock();
+			break;
+		case 2: start = clock(); select_sort(list, n); end = clock();
+			break;
+		case 3: start = clock(); insert_sort(list, n); end = clock();
+			break;
+		case 4: start = clock(); merge_sort(list, 0, n-1, n); end = clock();
+			break;
+		case 5: start = clock(); quick_sort(list, 0, n - 1); end = clock();
 		}
-		else {
-			start = clock(); sortRe(files, n); end = clock();
-		}
-		print(files, n, way, (double)(end - start) * 1000 / CLOCKS_PER_SEC);
+		print(list, ns_list, n, (double)(end - start) * 1000 / CLOCKS_PER_SEC);
 		do {
 			printf("Cменить метод сортировки(1 - да, 0 - нет): ");
 			scanf_s("%d", &ans);
