@@ -39,6 +39,9 @@ int main() {
 	int is_true = 1, sort_num, sort_order;
 	struct FileInfo* files = NULL;
 
+	LARGE_INTEGER start_time, end_time, frequency;
+	double milisec;
+
 	setlocale(LC_ALL, "rus");
 
 	do {
@@ -106,8 +109,9 @@ int main() {
 
 
 		//начало отсчета времени сортировки
-		clock_t start = clock();
-
+		//clock_t start = clock();
+		QueryPerformanceFrequency(&frequency);
+		QueryPerformanceCounter(&start_time);
 		if (sort_num == 1) {
 			simple_sort(files, file_count, sort_order);
 		}
@@ -126,11 +130,12 @@ int main() {
 		else if (sort_num == 6) {
 			quick_sort(files, file_count, sort_order);
 		}
+		QueryPerformanceCounter(&end_time);
+		milisec = (double)(end_time.QuadPart - start_time.QuadPart) * 1000.0 / frequency.QuadPart;
+		//clock_t end = clock();
+		//double time = ((double)(end - start)) / CLOCKS_PER_SEC;
 
-		clock_t end = clock();
-		double time = ((double)(end - start)) / CLOCKS_PER_SEC;
-
-		sorted_print(files, file_count, sort_num, time);
+		sorted_print(files, file_count, sort_num, milisec);
 
 		free(files);
 		files = NULL;
@@ -380,5 +385,5 @@ void sorted_print(struct FileInfo files[], int count, int sort_type, double time
 	printf("----------------------------------------|-----------------\n");
 
 	printf("Метод сортировки: %d\n", sort_type);
-	printf("Время сортировки: %.6f секунд\n", time);
+	printf("Время сортировки: %.3f милисекунд\n", time);
 }
