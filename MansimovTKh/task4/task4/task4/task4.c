@@ -6,10 +6,14 @@
 
 #define N 4
 
+void user_input(char* user_choice);
+
 int main() {
     srand((unsigned int)time(0));
     setlocale(LC_ALL, "rus");
-    int userChoice, is_true = 1, i, flag = 0;
+    
+    char userChoice;
+    int is_true = 1, i, flag = 0;
     char barcode[5] = "";
     char goods[N][20] = { "Маркер", "Карандаш", "Ручка", "Ластик" };
     char data_barcode[N][4] = { "1337", "1488", "1309", "0512" };
@@ -31,13 +35,11 @@ int main() {
     };
     do {
         printf("Электронная касса \n"); printf("----------------------\n\n");
-        printf("1) СКАН\n4) Сформировать чек\n");
-        printf("Команда: ");scanf_s("%d", &userChoice);
-
-        while (userChoice != 1 && userChoice != 4) {
-            printf("Нормально пиши: "); scanf_s("%d", &userChoice);
-        }
-        if (userChoice == 1) {
+        printf("1) СКАН\n2) Сформировать чек\n");
+     
+       
+        user_input(&userChoice);
+        if (userChoice == '1') {
             printf("Введите штрих-код товара: "); scanf_s("%4s", barcode, sizeof(barcode));
 
             for (i = 0; i < N; i++) {
@@ -48,13 +50,10 @@ int main() {
                     printf("-------------------------------------------------------\n");
                     printf(" %-16s %-12d %-12d %d", goods[i], data_price[i], discounts[i], data_discounts_price[i]);
 
-                    printf("\n\n2) Добавить товар в чек\n0) Назад\n");
-                    printf("Команда: "); scanf_s("%d", &userChoice);
-                    while (userChoice != 2 && userChoice != 0) {
-                        printf("Нормально пиши: "); scanf_s("%d", &userChoice);
-                    }
+                    printf("\n\n1) Добавить товар в чек\n2) Назад\n");
+                    user_input(&userChoice);
 
-                    if (userChoice == 2) check[i]++;
+                    if (userChoice == '1') check[i]++;
                     else continue;
 
                 }
@@ -64,7 +63,7 @@ int main() {
             }
         }
 
-        else if (userChoice == 4) {
+        else if (userChoice == '2') {
             flag = 0;
             printf("----------------------ЧЕК---------------------\n");
             printf("\n    Товар   | Кол-во |Цена за 1 ед.| Общая сумма \n");
@@ -84,18 +83,14 @@ int main() {
             printf("------------------------------------------------\n\n\n");
 
             if (flag == 1) {
-                printf("5) Расчитать итоговую сумму\n0)Продолжить\n");
-                printf("Команда: "), scanf_s("%d", &userChoice);
-                while (userChoice != 0 && userChoice != 5) {
-                    printf("Нормально пиши: "); scanf_s("%d", &userChoice);
-                }
-                if (userChoice == 5) {
+                printf("1) Расчитать итоговую сумму\n2)Продолжить\n");
+                user_input(&userChoice);
+                if (userChoice == '1') {
                     printf("Сумма к оплате: %d\n", final_summa);
                     return 1;
                 }
-                else {
-                    continue;
-                }
+                else continue;
+      
             }
             else {
                 printf("Добавьте хоть 1 товар в чек!!!\n\n");
@@ -103,35 +98,26 @@ int main() {
             }
 
         }
-        /*if (flag == 1) {
-            printf("5) Расчитать итоговую сумму\n0)Продолжить\n");
-            printf("Команда: "), scanf_s("%d", &userChoice);
-            while (userChoice != 0 && userChoice != 5) {
-                printf("Нормально пиши: "); scanf_s("%d", &userChoice);
-            }
-            if (userChoice == 5) {
-                printf("Сумма к оплате: %d\n", final_summa);
-                return 1;
-            }
-            else {
-                continue;
-            }
-        }
-        else {
-            printf("Добавьте хоть 1 товар в чек!!!\n\n");
-            continue;
-        }*/
-
-
-
     } while (is_true);
     return 0;
 }
 
-//void print(int b[], int n) {
-//    int i;
-//    for (i = 0; i < n; i++) {
-//        printf("%d ", b[i]);
-//    }
-//}
 
+void user_input(char* user_choice) {
+    int c, ex_ch=0;
+    while (1) {
+        printf("\nКоманда: ");
+        scanf_s(" %c", user_choice, 1) != 1;
+        ex_ch = 0;
+        while ((c = getchar()) != '\n') {
+            ex_ch++;
+        }
+
+        if ((*user_choice == '1' || *user_choice == '2') && ex_ch == 0) {
+            break;
+        }
+        else {
+            printf("Ошибка. Допустимы команды 1 или 2\n");
+        }
+    }
+}
