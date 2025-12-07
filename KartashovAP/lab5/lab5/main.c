@@ -18,6 +18,41 @@ void merge(char** names, int* sizes, int order, int l, int m, int r);
 
 int main() {
 	char path[256];
+	WIN32_FIND_DATAA data;
+	HANDLE find;
+	char** names = NULL;
+	int* sizes = NULL;
+	int count = 0;
+	int choice, order, i;
+
+	printf("Enter catalogue path: ");
+	scanf_s("%s", path, 256);
+	strcat_s(path, sizeof(path), "\\*.*");
+	printf("Searching in: %s\n", path);
+
+	names = (char**)malloc(MAXAMOUNT * sizeof(char*));
+	sizes = (int*)malloc(MAXAMOUNT * sizeof(int));
+
+	find = FindFirstFileA(path, &data);
+	if (find == INVALID_HANDLE_VALUE) {
+		printf("Error opening catalogue");
+		return 1;
+	}
+
+	do {
+		if (strcmp(data.cFileName, ".") == 0 || strcmp(data.cFileName, "..") == 0)
+			continue;
+
+		printf("Found file: %s\n", data.cFileName);
+
+		names[count] = (char*)malloc(strlen(data.cFileName) + 1);
+		strcpy_s(names[count], strlen(data.cFileName) + 1, data.cFileName);
+
+		sizes[count] = data.nFileSizeLow;
+		count++;
+	} while (FindNextFileA(find, &data));
+
+	FindClose(find);
 
 	while (1) {
 		printf("\nSelect sorting choice: \n");
