@@ -1,13 +1,19 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int main() {
-	int t[5] = {1001,1002,3451,5678,9999};
+	char t1[5][6] = {"1001","1002","3451","5678","9999"};
 	char name[5][9] = {"moloko","limonad","xleb","kefir","konfeta"};
 	int ct[5] = { 100,40,50,70,120 };
 	int st[5] = { 10,20,5,15,30 };
-	int k, g, shtrix = 0,i,j,i1, symm = 0, itog = 0;
+	int k, g,i,j,i1, symm = 0, itog = 0;
 	int chek[5] = {0};
+	int shtrix = 0;
+	int t[5];
+	for (int i = 0; i < 5; i++) {
+		t[i] = atoi(t1[i]);
+	}
 	do {
 		symm = 0;
 		itog = 0;
