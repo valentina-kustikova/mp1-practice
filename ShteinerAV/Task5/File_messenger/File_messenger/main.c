@@ -3,7 +3,6 @@
 #include <windows.h>
 #include <string.h>
 #include <time.h>
-#define MAIN // TODO: оставить только main
 #define N 1000
 
 
@@ -11,13 +10,13 @@ int is_directory_windows(const char* path);
 void user_answer(char* user, char right);
 int read_and_print_files(int* cnt_files, int* FileSize, char** FileName);
 
-void simple_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName); // TODO: FileName можно не передавать
+void simple_sort(int cnt_files, int* FileSize, int* PoridokList); 
 
-void choose_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName); // TODO: FileName можно не передавать
+void choose_sort(int cnt_files, int* FileSize, int* PoridokList); 
 
-void insert_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName); // TODO: FileName можно не передавать
+void insert_sort(int cnt_files, int* FileSize, int* PoridokList); 
 
-void bubble_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName); // TODO: FileName можно не передавать
+void bubble_sort(int cnt_files, int* FileSize, int* PoridokList); 
 
 void swap(int* a, int *b);
 
@@ -28,7 +27,7 @@ void quick_sort_files(int* FileSize, int* PoridokList, int first, int last);
 
 void printf_hand(int cnt_files, int* FileSize, int* PoridokList, char** FileName, int res);
 
-#ifdef MAIN
+
 int main() {	
 	char user;
 	setlocale(LC_ALL, "rus");
@@ -76,20 +75,33 @@ int main() {
 
 				clock_t start, end;
 				if (user == '1') {
-					// TODO: clock
-					simple_sort(cnt_files, FileSize, PoridokList, FileName); // FileName убрать из параметров					
+					start = clock();
+					simple_sort(cnt_files, FileSize, PoridokList); 
+					end = clock();
+
+					printf("Simple sort\n");
 				}
 				else if (user == '2') {
-					// TODO: clock
-					choose_sort(cnt_files, FileSize, PoridokList, FileName); // FileName убрать из параметров					
+					start = clock();
+					choose_sort(cnt_files, FileSize, PoridokList); 
+					end = clock();
+
+					printf("Choose sort\n");;
 				}
 				else if (user == '3') {
-					// TODO: clock
-					insert_sort(cnt_files, FileSize, PoridokList, FileName); // FileName убрать из параметров					
+					start = clock();
+					insert_sort(cnt_files, FileSize, PoridokList);
+					end = clock();
+
+					printf("Insetr Sort\n");
+					
 				}
 				else if (user == '4') {
-					// TODO: clock
-					bubble_sort(cnt_files, FileSize, PoridokList, FileName); // FileName убрать из параметров					
+					start = clock();
+					bubble_sort(cnt_files, FileSize, PoridokList);
+					end = clock();
+
+					printf("Bubble Sort\n");
 				}
 				else if (user == '5') {					
 					start = clock();
@@ -97,7 +109,6 @@ int main() {
 					end = clock();
 
 					printf("Merge sort\n");
-					printf_hand(cnt_files, FileSize, PoridokList, FileName, start - end);
 				}
 				else if (user == '6') {					
 					start = clock();
@@ -105,9 +116,8 @@ int main() {
 					end = clock();
 
 					printf("Quick sort\n");
-					printf_hand(cnt_files, FileSize, PoridokList, FileName, start - end);
 				}
-				// TODO: printf_hand(cnt_files, FileSize, PoridokList, FileName, start - end);
+				printf_hand(cnt_files, FileSize, PoridokList, FileName, start - end);
 
 				for (int i = 0; i < cnt_files; i++) {
 					free(FileName[i]);
@@ -151,7 +161,7 @@ void user_answer(char* user,  char right) {
 
 	while (1) {
 		printf("Команда: ");
-		scanf_s("%*c%c", user);
+		scanf_s(" %c", user);
 
 		extrawords = 0;
 		while ((c = getchar()) != '\n') {
@@ -221,12 +231,9 @@ int read_and_print_files(int* cnt_files,int* FileSize, char** FileName) {
 	FindClose(hFind);
 }
 
-void simple_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName) {
-	clock_t start, end;
-	double res;
+void simple_sort(int cnt_files, int* FileSize, int* PoridokList) {
 	int i, j;
 
-	start = clock();
 	for ( i = 0; i < cnt_files; i++) {
 		for ( j = i + 1; j < cnt_files; j++) {
 			if (FileSize[i] > FileSize[j]) {
@@ -235,19 +242,11 @@ void simple_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName
 			}
 		}
 	}
-	end = clock();
-	res = (double)(end - start) / CLOCKS_PER_SEC;
-
-	printf("Simple sort\n");
-	printf_hand(cnt_files, FileSize, PoridokList, FileName, res);
 }
 
-void choose_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName) {
-	clock_t start, end;
-	double res;
+void choose_sort(int cnt_files, int* FileSize, int* PoridokList) {
 	int i, j;
 
-	start = clock();
 	for (int i = 0; i < cnt_files; i++) {
 		int min = FileSize[i], id = i;
 		for (int j = i + 1; j < cnt_files; j++) {
@@ -260,19 +259,11 @@ void choose_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName
 		swap(&FileSize[id], &FileSize[i]);
 		swap(&PoridokList[id], &PoridokList[i]);
 	}
-	end = clock();
-	res = (double)(end - start) / CLOCKS_PER_SEC;
-
-	printf("Choose sort\n");
-	printf_hand(cnt_files, FileSize, PoridokList, FileName, res);
 }
 
-void insert_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName) {
-	clock_t start, end;
-	double res;
+void insert_sort(int cnt_files, int* FileSize, int* PoridokList) {
 	int i, j;
 
-	start = clock();
 	for (int i = 0; i < cnt_files; i++) {
 		int j = i - 1;
 		int buff = FileSize[i];
@@ -284,20 +275,11 @@ void insert_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName
 		FileSize[j + 1] = buff;
 		PoridokList[j + 1] = i;
 	}
-	end = clock();
-	res = end - start;
-
-	printf("Insetr Sort\n");
-	printf_hand(cnt_files, FileSize, PoridokList, FileName, res);
-
 }
 
-void bubble_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName) {
-	clock_t start, end;
-	double res;
+void bubble_sort(int cnt_files, int* FileSize, int* PoridokList) {
 	int i, j;
 
-	start = clock();
 	for (i = 0; i < cnt_files; i++) {
 		for (j = 1; j < cnt_files - i; j++) {
 			if (FileSize[j - 1] < FileSize[j]) {
@@ -306,12 +288,6 @@ void bubble_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName
 			}
 		}
 	}
-	end = clock();
-	res = end - start;
-
-	printf("Bubble sort\n");
-	printf_hand(cnt_files, FileSize, PoridokList, FileName, res);
-
 }
 
 void swap(int* a, int* b) {
