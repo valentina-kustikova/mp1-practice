@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <time.h>
+#include <sys/time.h>
 #include <string.h>
 #include <locale.h>
 #include <stdlib.h>
@@ -29,14 +29,13 @@
 
 struct File {
     wchar_t name[256];
-    long size;
+    long long size;
 };
 
 void selectMethodSorting(int* selectedMethod);
 void sortingCatalog(int* selectedMethod);
 
 int main() {
-
     int selectedMethod = 3;
     setlocale(LC_ALL, "rus");
     SetConsoleOutputCP(1251);
@@ -99,11 +98,13 @@ char* getNameSort(int selectedMethod) {
     }
 }
 
+void executionSelectedSorting(int* selectedMethod, struct File* files, int n);
+
 void sortingCatalog(int* selectedMethod) {
     wchar_t path[MAX_PATH];
     wchar_t searchPath[MAX_PATH];
-    WIN32_FIND_DATAW findData; // структура, хранящая информацию о найденном файле
-    HANDLE hFind; // указатель на объект Windows
+    WIN32_FIND_DATAW findData;
+    HANDLE hFind;
     struct File* files = NULL;
     int count = 0;
     system("cls");
@@ -157,19 +158,16 @@ void sortingCatalog(int* selectedMethod) {
 
         count++;
     } while (FindNextFile(hFind, &findData));
-
     FindClose(hFind);
 
     while (1) {
         int operation;
         system("cls");
         printf(CATALOG_SORTER_FRAME);
+		printf("Найдено %d файлов:\n\n", count);
         wprintf(L"Сортировка каталога \"%s\"", path);
-        printf("методом \"%s\"\n\n", getNameSort(*selectedMethod));
-        printf("Найдено %d файлов:\n", count);
-        for (int i = 0; i < count; i++) {
-            wprintf(L"%s - %ld байт\n", files[i].name, files[i].size);
-        }
+        printf("методом \"%s\"\n", getNameSort(*selectedMethod));
+		executionSelectedSorting(selectedMethod, files, count);
 
         printf("\nХотите отсортировать другим методом (1 - да, 2 - нет): ");
         scanf_s("%d", &operation);
@@ -177,7 +175,6 @@ void sortingCatalog(int* selectedMethod) {
             printf("Неверный ответ. Хотите отсортировать другим методом (1 - да, 2 - нет): ");
             scanf_s("%d", &operation);
         }
-
         if (operation == 1) {
             selectMethodSorting(selectedMethod);
         }
@@ -188,4 +185,77 @@ void sortingCatalog(int* selectedMethod) {
 
     free(files);
     system("pause");
+}
+
+void swap(struct File* a, struct File* b);
+void sortEasy(struct File* files, int n);
+void sortSelectMin(struct File* files, int n);
+void sortPastes(struct File* files, int n);
+void sortBubble(struct File* files, int n);
+void quickSort(struct File* files, int first, int last);
+void mergeSort(struct File* files, int l, int r);
+
+void executionSelectedSorting(int* selectedMethod, struct File* files, int n) {
+	struct timeval start, end;
+	long seconds, microseconds;
+	gettimeofday(&start, NULL);
+	switch (*selectedMethod) {
+		case 1: 
+			sortEasy(files, n);
+			break;
+		case 2: 
+			sortSelectMin(files, n);
+			break;
+		case 3: 
+			sortPastes(files, n);
+			break;
+		case 4: 
+			sortBubble(files, n);
+			break;
+		case 5: 
+			quickSort(files, 0, n - 1);
+			break;
+		case 6: 
+			mergeSort(files, 0, n - 1);
+			break;
+	}
+	gettimeofday(&end, NULL);
+	seconds = end.tv_sec - start.tv_sec;
+
+	
+	printf("Сортировка заняла %.3f мс\n\n");
+}
+
+void swap(struct File* a, struct File* b) {
+	struct File* temp = a;
+	a = b;
+	b = temp;
+}
+
+void sortEasy(struct File* files, int n) {
+	int i, j;
+	for (i = 0; i < n; i++)
+		for (j = i + 1; j < n; j++)
+			if (files[i].size > files[j].size)
+				swap(&files[i], &files[j]);
+}
+
+void sortSelectMin(struct File* files, int n) {
+
+}
+
+void sortPastes(struct File* files, int n) {
+
+}
+
+void sortBubble(struct File* files, int n) {
+
+}
+
+void quickSort(struct File* files, int first, int last) {
+
+}
+
+void mergeSort(struct File* files, int l, int r) {
+
 }
