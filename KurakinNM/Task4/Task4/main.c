@@ -42,7 +42,8 @@ void scan(char qr[])
 {
 	getchar();
 	printf("Enter QR:");
-	gets(qr);
+	fgets(qr,5, stdin);
+	while (getchar() != '\n');
 }
 void info(char qrSelect[], char* qrs[], char* name[], int cost[], float discount[])
 {
