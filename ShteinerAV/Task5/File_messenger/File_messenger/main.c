@@ -143,7 +143,7 @@ int main() {
 	} while (1);
 	return 0;
 }
-#endif
+
 
 int is_directory_windows(const char* path) {
 	DWORD attributes = GetFileAttributesA(path);
@@ -214,11 +214,13 @@ int read_and_print_files(int* cnt_files,int* FileSize, char** FileName) {
 			printf(" %s \n", find_file_data.cFileName);
 
 			strcpy_s(FileName[(*cnt_files)], strlen(find_file_data.cFileName)+1, find_file_data.cFileName);
-			FileSize[(*cnt_files)++] = 1 +  (((LONGLONG)find_file_data.nFileSizeHigh << 32) | find_file_data.nFileSizeLow) / 1024; 
+			FileSize[(*cnt_files)] = 1 +  (((LONGLONG)find_file_data.nFileSizeHigh << 32) | find_file_data.nFileSizeLow) / 1024; 
+			(*cnt_files)++;
 
 			file_way[strlen(file_way) - strlen(find_file_data.cFileName)] = '\0';
 		} while (FindNextFileA(hFind, &find_file_data));
 		
+
 		printf("------------------------------\n");
 		printf("Всего файлов : %d \n\n", *cnt_files);
 		return 1;
