@@ -8,10 +8,7 @@
 
 void user_input(char* user_choice);
 
-int main() {
-    srand((unsigned int)time(0));
-    setlocale(LC_ALL, "rus");
-    
+int main() {    
     char userChoice;
     int is_true = 1, i, flag = 0;
     char barcode[5] = "";
@@ -33,6 +30,9 @@ int main() {
         (int)(data_price[2] * discounts[2] / (float)100),
         (int)(data_price[3] * discounts[3] / (float)100)
     };
+    setlocale(LC_ALL, "rus");
+    srand((unsigned int)time(0));
+
     do {
         printf("Электронная касса \n"); printf("----------------------\n\n");
         printf("1) СКАН\n2) Сформировать чек\n");
