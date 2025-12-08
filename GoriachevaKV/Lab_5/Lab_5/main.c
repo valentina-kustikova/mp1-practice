@@ -28,7 +28,7 @@ char directories[DIRECTORY_COUNT][MAX_FILE_NAME_LEN] = {
     "dir_2",
 };
 
-char dir_1[DIR_1_ELS][MAX_FILE_NAME_LEN] = {
+/*char dir_1[DIR_1_ELS][MAX_FILE_NAME_LEN] = {
     "coding.c",
     "readme.txt",
     "solution.sln",
@@ -42,6 +42,23 @@ char dir_2[DIR_2_ELS][MAX_FILE_NAME_LEN] = {
     "something.webp",
     "cat.gif",
     "video.mp4",
+};*/
+
+char directories_2[DIRECTORY_COUNT][MAX_FILE_NAME_LEN][MAX_FILE_NAME_LEN] = {
+    {
+    "coding.c",
+    "readme.txt",
+    "solution.sln",
+    "backup.txt"
+    },
+    {
+    "photo1.jpeg",
+    "photo2.jpeg",
+    "picture.png",
+    "something.webp",
+    "cat.gif",
+    "video.mp4",
+    },
 };
 
 int dir_1_sizes[DIR_1_ELS] = { 15, 5, 27, 9 };
