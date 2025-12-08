@@ -76,7 +76,8 @@ void question(int* idx, int total_products_count[]) {
 	} while (query != 1 && query != 2);
 }
 
-void check_print(int total_products_count[], int summ_products_cost[], int cost_with_discount[], int* total_without_discount, int* total, int* total_discount) {
+void check_print(int total_products_count[], int summ_products_cost[],
+		int cost_with_discount[], int* total_without_discount, int* total, int* total_discount) {
 	printf("---------------------------------------------------------------\n");
 	printf("|                            CHECK                            |\n");
 	printf("|-------------------------------------------------------------|\n");
@@ -84,7 +85,8 @@ void check_print(int total_products_count[], int summ_products_cost[], int cost_
 	printf("|-------------------------------------------------------------|\n");
 	for (int i = 0; i < PRODUCTS_COUNT; i++) {
 		if (total_products_count[i]) {
-			printf("| %-20s | %10d | %10d | %10d |\n", product_names[i], cost_with_discount[i], total_products_count[i], summ_products_cost[i]);
+			printf("| %-20s | %10d | %10d | %10d |\n", product_names[i], 
+				cost_with_discount[i], total_products_count[i], summ_products_cost[i]);
 		}
 	}
 	printf("|-------------------------------------------------------------|\n");
@@ -97,7 +99,8 @@ void check_print(int total_products_count[], int summ_products_cost[], int cost_
 //main code
 int main() {
 	int idx = -1, total_without_discount = 0, total_discount = 0, total = 0, check_printing = 0, c;
-	int total_products_count[PRODUCTS_COUNT] = { 0 }, summ_products_cost[PRODUCTS_COUNT] = { 0 }, cost_with_discount[PRODUCTS_COUNT] = { 0 };
+	int total_products_count[PRODUCTS_COUNT] = { 0 }, summ_products_cost[PRODUCTS_COUNT] = { 0 },
+		cost_with_discount[PRODUCTS_COUNT] = { 0 };
 	char barcode[BARCODE_LENGTH];
 
 	do {
@@ -114,8 +117,10 @@ int main() {
 	} while (strcmp(barcode, "END") != 0);
 
 	if (check_printing) {
-		calculations(total_products_count, summ_products_cost, cost_with_discount, &total_without_discount, &total, &total_discount);
-		check_print(total_products_count, summ_products_cost, cost_with_discount, &total_without_discount, &total, &total_discount);
+		calculations(total_products_count, summ_products_cost, cost_with_discount,
+			&total_without_discount, &total, &total_discount);
+		check_print(total_products_count, summ_products_cost, cost_with_discount,
+			&total_without_discount, &total, &total_discount);
 	}
 	else {
 		printf("Check is empty. Nothing to print.\n\n");
