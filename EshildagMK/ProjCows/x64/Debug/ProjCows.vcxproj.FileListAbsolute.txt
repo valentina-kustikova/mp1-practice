@@ -1,2 +1,0 @@
-C:\Temp\EshildagMK\mp1-practice\EshildagMK\ProjCows\x64\Debug\ProjCows.exe
-C:\Temp\EshildagMK\mp1-practice\EshildagMK\ProjCows\x64\Debug\ProjCows.pdb
