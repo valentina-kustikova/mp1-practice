@@ -79,13 +79,14 @@ void user_input(char* user_choice) {
 }
 
 
-void scan_item(char new_barcode[], char barcode_list[][4], char name_list[][20], int price_list[], int discounts[], int price_with_discounts[], int cnt_list[]) {
+void scan_item(char new_barcode[], char barcode_list[][5], char name_list[][20], int price_list[], int discounts[], int price_with_discounts[], int cnt_list[]) {
     int flag = 0, i;
     char user_choise;
     
     system("cls");
     printf("¬ведите штрих-код товара: ");
     scanf_s("%4s", new_barcode, sizeof(new_barcode));
+    printf("%s\n", new_barcode);
 
     for (i = 0; i < N; i++) {
         if (strncmp(new_barcode, barcode_list[i], 4) == 0) {
