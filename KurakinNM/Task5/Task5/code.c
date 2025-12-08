@@ -4,69 +4,95 @@
 #include <time.h>
 #include <locale.h>
 
-#define LFiles 100
-
 void bubbleSort(char* names[], unsigned long long sizes[], int n, int increasing);
 void fastSort(char* names[], unsigned long long sizes[], int start, int end, int increasing);
+void mergeSort(char* names[], char* namesb[], unsigned long long sizes[], unsigned long long sizesb[], int start, int end, int increasing);
 void simpleSort(char* names[], unsigned long long sizes[], int n, int increasing);
 void selectSort(char* names[], unsigned long long sizes[], int n, int increasing);
+void insertsSort(char* names[], unsigned long long sizes[], int n, int increasing);
 
 int main() {
 	WIN32_FIND_DATA  FindFileData;
 	HANDLE hFind;
-	char* fileNames[LFiles];
-	unsigned long long fileSizes[LFiles];
-	int n = 0, increasing, userSelect,i,sorted = 1;
-	char directoryPath[MAX_PATH], trash[MAX_PATH];
+	char **fileNames, **fileNamesB;
+	unsigned long long *fileSizes, *fileSizesB;
+	int n,i, increasing, userSelect,sorted;
+	char directoryPath[MAX_PATH];
 	clock_t start_time;
 
 	setlocale(LC_ALL,"RUS");
 
-	printf("введите директорию: ");
-	gets(directoryPath);
-	strcat_s(directoryPath, sizeof(directoryPath), "\\*");
-
-	hFind = FindFirstFileA(directoryPath, &FindFileData);
-	if (hFind == INVALID_HANDLE_VALUE)
-	{
-		printf("директория не найдена... (убедитесь, что она не содержит кириллицы)\n");
-		return 1;
-	}
-	do {
-		if (strcmp(FindFileData.cFileName, ".") != 0 && strcmp(FindFileData.cFileName, "..") != 0) {
-			if (!(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
-				size_t len = strlen(FindFileData.cFileName) + 1;
-				fileNames[n] = malloc(len);
-				memcpy(fileNames[n], FindFileData.cFileName, len);
-				//fileNames[n] = FindFileData.cFileName;
-				fileSizes[n] = ((unsigned long long)FindFileData.nFileSizeHigh << 32) | FindFileData.nFileSizeLow;
-				n++;
-			}
-			/*else {
-				char p[256] = "C:\\Users\\Max\\Desktop\\test000";
-				strcat_s(strcat_s(p, sizeof(p), "\\"), sizeof(p), FindFileData.cFileName);
-				printf("%s (Directory) - Size: %llu bytes\n", FindFileData.cFileName, SizeDir(p));
-			}*/
-		}
-	} while (FindNextFileA(hFind, &FindFileData) != 0);
-
 	while (1) {
-		printf("сортировать по 1-убыванию, 2-возрастанию, 0-выход: "); scanf_s("%d", &increasing);
-		while (increasing < 0 || increasing > 2) { gets(trash); printf("не коректный ввод, сортировать по 0-убыванию, 1-возрастанию: "); scanf_s("%d", &increasing); }
+		do {
+			printf("введите директорию (0 - выход): ");
+			//gets(directoryPath);
+			fgets(directoryPath, MAX_PATH, stdin);
+			directoryPath[strlen(directoryPath) - 1] = '\0';
+			if (strcmp(directoryPath,"0") == 0) return 0;
+			strcat_s(directoryPath, sizeof(directoryPath), "\\*");
+			hFind = FindFirstFileA(directoryPath, &FindFileData);
+			if (hFind == INVALID_HANDLE_VALUE) printf("директория не найдена... (убедитесь, что она не содержит кириллицы)\n");
 
-		if (increasing == 0) break;
+		} while (hFind == INVALID_HANDLE_VALUE);
+
+		n = 0;
+		do {
+			if (strcmp(FindFileData.cFileName, ".") != 0 && strcmp(FindFileData.cFileName, "..") != 0 && !(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) n++;
+		} while (FindNextFileA(hFind, &FindFileData) != 0);
+
+
+		fileNames = (char**)malloc(n * sizeof(char*));
+		fileSizes = (unsigned long long*)malloc(n * sizeof(unsigned long long));
+		hFind = FindFirstFileA(directoryPath, &FindFileData);
+
+		i = 0;
+		do {
+			if (strcmp(FindFileData.cFileName, ".") != 0 && strcmp(FindFileData.cFileName, "..") != 0 && !(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+				size_t len = strlen(FindFileData.cFileName) + 1;
+				fileNames[i] = malloc(len);
+				memcpy(fileNames[i], FindFileData.cFileName, len);
+				fileSizes[i] = ((unsigned long long)FindFileData.nFileSizeHigh << 32)
+					| FindFileData.nFileSizeLow;
+				i++;
+			}
+		} while (FindNextFileA(hFind, &FindFileData) != 0);
+
+
+
+		printf("сортировать по 1-убыванию, 2-возрастанию: "); scanf_s("%d", &increasing);
+		while (increasing < 0 || increasing > 2) { 
+			while(getchar() != '\n');
+			printf("не коректный ввод, сортировать по 1-убыванию, 2-возрастанию: "); 
+			scanf_s("%d", &increasing); 
+		}
+
+		if (increasing == 0){
+			for (i = 0; i < n; i++)
+			{
+				free(fileNames[i]);
+			}
+			free(fileNames);
+			free(fileSizes);
+			return 0;
+		}
 
 		do {
-			printf("выберите метод сортировки (1-пузырьком, 2-быстрая, 3-простая, 4-выбором): "); scanf_s("%d", &userSelect);
+			printf("выберите метод сортировки (1-пузырьком, 2-быстрая, 3-простая, 4-выбором, 5-слиянием, 6-вставками): "); scanf_s("%d", &userSelect);
 			switch (userSelect)
 			{
 			case 1: start_time = clock(); bubbleSort(fileNames, fileSizes, n, increasing); break;
 			case 2: start_time = clock(); fastSort(fileNames, fileSizes, 0, n - 1, increasing); break;
 			case 3: start_time = clock(); simpleSort(fileNames, fileSizes, n, increasing); break;
 			case 4: start_time = clock(); selectSort(fileNames, fileSizes, n, increasing); break;
-			default: printf("не коректный ввод, "), gets(trash); break;
+			case 5: start_time = clock();
+				fileNamesB = (char**)malloc(n * sizeof(char*));
+				fileSizesB = (unsigned long long*)malloc(n * sizeof(unsigned long long));
+				mergeSort(fileNames, fileNamesB, fileSizes, fileSizesB, 0, n - 1, increasing);
+				free(fileNamesB); free(fileSizesB); break;
+			case 6: start_time = clock(); insertsSort(fileNames, fileSizes, n, increasing); break;
+			default: printf("не коректный ввод, "); while(getchar() != '\n');  break;
 			}
-		} while (userSelect < 1 || userSelect > 4);
+		} while (userSelect < 1 || userSelect > 6);
 
 		start_time = clock() - start_time;
 
@@ -76,11 +102,14 @@ int main() {
 		}
 
 		printf("время: %.3f секунд\n", (double)start_time / CLOCKS_PER_SEC);
-	}
 
-	for (i = 0; i < n; i++)
-	{
-		free(fileNames[i]);
+		for (i = 0; i < n; i++)
+		{
+			free(fileNames[i]);
+		}
+		free(fileNames);
+		free(fileSizes);
+		while (getchar() != '\n');
 	}
 
 	return 0;
@@ -125,6 +154,31 @@ void fastSort(char* names[], unsigned long long sizes[], int start, int end, int
 	if (l > start) fastSort(names, sizes, start, l, increasing);
 	if (r < end) fastSort(names, sizes, r, end, increasing);
 }
+void mergeSort(char* names[], char* namesb[], unsigned long long sizes[], unsigned long long sizesb[], int start, int end, int increasing)
+{
+	int i, j, k = start;
+	if (start >= end) return;
+	mergeSort(names, namesb, sizes, sizesb, start, (start + end) / 2, increasing);
+	mergeSort(names, namesb, sizes, sizesb, (start + end) / 2 + 1, end, increasing);
+
+
+	i = start;
+	j = (start + end) / 2 + 1;
+	while (i <= (start + end) / 2 && j <= end)
+	{
+		if ((sizes[i] > sizes[j] && increasing == 1) || (sizes[i] < sizes[j] && increasing == 2)) { sizesb[k] = sizes[i]; namesb[k++] = names[i++];}
+		else { sizesb[k] = sizes[j]; namesb[k++] = names[j++];}
+	}
+	while (i <= (start + end) / 2) { sizesb[k] = sizes[i]; namesb[k++] = names[i++]; }
+	while (j <= end) { sizesb[k] = sizes[j]; namesb[k++] = names[j++]; }
+
+
+	for (k = start; k <= end; k++)
+	{
+		sizes[k] = sizesb[k];
+		names[k] = namesb[k];
+	}
+}
 void simpleSort(char* names[], unsigned long long sizes[], int n, int increasing)
 {
 	int i, j;
@@ -136,6 +190,18 @@ void simpleSort(char* names[], unsigned long long sizes[], int n, int increasing
 			{
 				swap(names, sizes, i,j);
 			}
+		}
+	}
+}
+void insertsSort(char* names[], unsigned long long sizes[], int n, int increasing)
+{
+	int i, j;
+	for (i = 1; i < n; i++)
+	{
+		for (j = i; j > 0; j--)
+		{
+			if ((sizes[j] > sizes[j - 1] && increasing == 2) || (sizes[j] < sizes[j - 1] && increasing == 1)) break;
+			swap(names, sizes, j, j - 1);
 		}
 	}
 }
