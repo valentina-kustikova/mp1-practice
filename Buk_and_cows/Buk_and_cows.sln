@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36518.9 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Buk_and_cows", "Buk_and_cows.vcxproj", "{4AE53AE1-4CAA-4CF6-BF2F-3FAA9D92CC58}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AE53AE1-4CAA-4CF6-BF2F-3FAA9D92CC58}.Debug|x64.ActiveCfg = Debug|x64
+		{4AE53AE1-4CAA-4CF6-BF2F-3FAA9D92CC58}.Debug|x64.Build.0 = Debug|x64
+		{4AE53AE1-4CAA-4CF6-BF2F-3FAA9D92CC58}.Debug|x86.ActiveCfg = Debug|Win32
+		{4AE53AE1-4CAA-4CF6-BF2F-3FAA9D92CC58}.Debug|x86.Build.0 = Debug|Win32
+		{4AE53AE1-4CAA-4CF6-BF2F-3FAA9D92CC58}.Release|x64.ActiveCfg = Release|x64
+		{4AE53AE1-4CAA-4CF6-BF2F-3FAA9D92CC58}.Release|x64.Build.0 = Release|x64
+		{4AE53AE1-4CAA-4CF6-BF2F-3FAA9D92CC58}.Release|x86.ActiveCfg = Release|Win32
+		{4AE53AE1-4CAA-4CF6-BF2F-3FAA9D92CC58}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {24AC64F5-12AF-4CF8-88DD-D1105E837A09}
+	EndGlobalSection
+EndGlobal
