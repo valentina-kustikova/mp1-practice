@@ -3,27 +3,34 @@
 #include <windows.h>
 #include <string.h>
 #include <time.h>
-#define MAIN
 #define N 1000
 
 
 int is_directory_windows(const char* path);
 void user_answer(char* user, char right);
 int read_and_print_files(int* cnt_files, int* FileSize, char** FileName);
-void simple_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName);
-void choose_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName);
-void insert_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName);
-void bubble_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName);
+
+void simple_sort(int cnt_files, int* FileSize, int* PoridokList); 
+
+void choose_sort(int cnt_files, int* FileSize, int* PoridokList); 
+
+void insert_sort(int cnt_files, int* FileSize, int* PoridokList); 
+
+void bubble_sort(int cnt_files, int* FileSize, int* PoridokList); 
+
 void swap(int* a, int *b);
+
 void merge_sort(int* FileSize, int* PoridokList, int left, int right);
 void merge(int* FileSize, int* PoridokList, int start, int mid, int end);
+
 void quick_sort_files(int* FileSize, int* PoridokList, int first, int last);
+
 void printf_hand(int cnt_files, int* FileSize, int* PoridokList, char** FileName, int res);
 
-#ifdef MAIN
-int main() {
-	setlocale(LC_ALL, "rus");
+
+int main() {	
 	char user;
+	setlocale(LC_ALL, "rus");
 
 	do {
 		system("cls");
@@ -34,13 +41,13 @@ int main() {
 
 		user_answer(&user, '1');
 		if (user == '1') {
-			int cnt_files = 0, time_in_work;
-			int* FileSize = (int*)malloc(N * sizeof(int));
-			char** FileName = (char**)malloc(N * sizeof(char*));
+			int cnt_files = 0, time_in_work, flag;
+			int* FileSize = (int*)malloc(N * sizeof(int)); // TODO: сначала считаем количество файлов, выделяем память, заполняем
+			char** FileName = (char**)malloc(N * sizeof(char*));			
 			for (int i = 0; i < N; i++) {
 				FileName[i] = (char*)malloc(100 * sizeof(char)); 
 			}
-			int flag = read_and_print_files(&cnt_files, FileSize, FileName);
+			flag = read_and_print_files(&cnt_files, FileSize, FileName);
 
 			if (flag) {
 				int* tmp1 = (int*)realloc(FileSize, cnt_files * sizeof(int));
@@ -66,45 +73,51 @@ int main() {
 				user_answer(&user, '6');
 				printf("\n");
 
+				clock_t start, end;
 				if (user == '1') {
-					simple_sort(cnt_files, FileSize, PoridokList, FileName);
-					
+					start = clock();
+					simple_sort(cnt_files, FileSize, PoridokList); 
+					end = clock();
+
+					printf("Simple sort\n");
 				}
 				else if (user == '2') {
-					choose_sort(cnt_files, FileSize, PoridokList, FileName);
-					
+					start = clock();
+					choose_sort(cnt_files, FileSize, PoridokList); 
+					end = clock();
+
+					printf("Choose sort\n");;
 				}
 				else if (user == '3') {
-					insert_sort(cnt_files, FileSize, PoridokList, FileName);
+					start = clock();
+					insert_sort(cnt_files, FileSize, PoridokList);
+					end = clock();
+
+					printf("Insetr Sort\n");
 					
 				}
 				else if (user == '4') {
-					bubble_sort(cnt_files, FileSize, PoridokList, FileName);
-					
-				}
-				else if (user == '5') {
-					clock_t start, end;
-					int res;
+					start = clock();
+					bubble_sort(cnt_files, FileSize, PoridokList);
+					end = clock();
 
+					printf("Bubble Sort\n");
+				}
+				else if (user == '5') {					
 					start = clock();
 					merge_sort(FileSize, PoridokList, 0, cnt_files - 1);
 					end = clock();
 
 					printf("Merge sort\n");
-					printf_hand(cnt_files, FileSize, PoridokList, FileName, start - end);
-					
 				}
-				else if (user == '6') {
-					clock_t start, end;
-					int res;
-
+				else if (user == '6') {					
 					start = clock();
 					quick_sort_files(FileSize, PoridokList, 0, cnt_files - 1);
 					end = clock();
 
 					printf("Quick sort\n");
-					printf_hand(cnt_files, FileSize, PoridokList, FileName, start - end);
 				}
+				printf_hand(cnt_files, FileSize, PoridokList, FileName, start - end);
 
 				for (int i = 0; i < cnt_files; i++) {
 					free(FileName[i]);
@@ -130,7 +143,7 @@ int main() {
 	} while (1);
 	return 0;
 }
-#endif
+
 
 int is_directory_windows(const char* path) {
 	DWORD attributes = GetFileAttributesA(path);
@@ -189,7 +202,9 @@ int read_and_print_files(int* cnt_files,int* FileSize, char** FileName) {
 		do {
 			snprintf(file_way, 100, "%s%s", file_way, find_file_data.cFileName);
 
-			if (strncmp(find_file_data.cFileName, ".", 1) == 0 || strncmp(find_file_data.cFileName, "..", 2) == 0 || is_directory_windows(&file_way)) {
+			if (strncmp(find_file_data.cFileName, ".", 1) == 0 ||
+				strncmp(find_file_data.cFileName, "..", 2) == 0 ||
+				is_directory_windows(&file_way)) {
 				file_way[strlen(file_way) - strlen(find_file_data.cFileName)] = '\0';
 				continue;
 			}
@@ -199,11 +214,13 @@ int read_and_print_files(int* cnt_files,int* FileSize, char** FileName) {
 			printf(" %s \n", find_file_data.cFileName);
 
 			strcpy_s(FileName[(*cnt_files)], strlen(find_file_data.cFileName)+1, find_file_data.cFileName);
-			FileSize[(*cnt_files)++] = 1 +  (((LONGLONG)find_file_data.nFileSizeHigh << 32) | find_file_data.nFileSizeLow) / 1024; 
+			FileSize[(*cnt_files)] = 1 +  (((LONGLONG)find_file_data.nFileSizeHigh << 32) | find_file_data.nFileSizeLow) / 1024; 
+			(*cnt_files)++;
 
 			file_way[strlen(file_way) - strlen(find_file_data.cFileName)] = '\0';
 		} while (FindNextFileA(hFind, &find_file_data));
 		
+
 		printf("------------------------------\n");
 		printf("Всего файлов : %d \n\n", *cnt_files);
 		return 1;
@@ -216,12 +233,9 @@ int read_and_print_files(int* cnt_files,int* FileSize, char** FileName) {
 	FindClose(hFind);
 }
 
-void simple_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName) {
-	clock_t start, end;
-	double res;
+void simple_sort(int cnt_files, int* FileSize, int* PoridokList) {
 	int i, j;
 
-	start = clock();
 	for ( i = 0; i < cnt_files; i++) {
 		for ( j = i + 1; j < cnt_files; j++) {
 			if (FileSize[i] > FileSize[j]) {
@@ -230,19 +244,11 @@ void simple_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName
 			}
 		}
 	}
-	end = clock();
-	res = (double)(end - start) / CLOCKS_PER_SEC;
-
-	printf("Simple sort\n");
-	printf_hand(cnt_files, FileSize, PoridokList, FileName, res);
 }
 
-void choose_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName) {
-	clock_t start, end;
-	double res;
+void choose_sort(int cnt_files, int* FileSize, int* PoridokList) {
 	int i, j;
 
-	start = clock();
 	for (int i = 0; i < cnt_files; i++) {
 		int min = FileSize[i], id = i;
 		for (int j = i + 1; j < cnt_files; j++) {
@@ -255,19 +261,11 @@ void choose_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName
 		swap(&FileSize[id], &FileSize[i]);
 		swap(&PoridokList[id], &PoridokList[i]);
 	}
-	end = clock();
-	res = (double)(end - start) / CLOCKS_PER_SEC;
-
-	printf("Choose sort\n");
-	printf_hand(cnt_files, FileSize, PoridokList, FileName, res);
 }
 
-void insert_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName) {
-	clock_t start, end;
-	double res;
+void insert_sort(int cnt_files, int* FileSize, int* PoridokList) {
 	int i, j;
 
-	start = clock();
 	for (int i = 0; i < cnt_files; i++) {
 		int j = i - 1;
 		int buff = FileSize[i];
@@ -279,20 +277,11 @@ void insert_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName
 		FileSize[j + 1] = buff;
 		PoridokList[j + 1] = i;
 	}
-	end = clock();
-	res = (double)(end - start) / CLOCKS_PER_SEC;
-
-	printf("Insetr Sort\n");
-	printf_hand(cnt_files, FileSize, PoridokList, FileName, res);
-
 }
 
-void bubble_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName) {
-	clock_t start, end;
-	double res;
+void bubble_sort(int cnt_files, int* FileSize, int* PoridokList) {
 	int i, j;
 
-	start = clock();
 	for (i = 0; i < cnt_files; i++) {
 		for (j = 1; j < cnt_files - i; j++) {
 			if (FileSize[j - 1] < FileSize[j]) {
@@ -301,12 +290,6 @@ void bubble_sort(int cnt_files, int* FileSize, int* PoridokList, char** FileName
 			}
 		}
 	}
-	end = clock();
-	res = (double)(end - start) / CLOCKS_PER_SEC;
-
-	printf("Bubble sort\n");
-	printf_hand(cnt_files, FileSize, PoridokList, FileName, res);
-
 }
 
 void swap(int* a, int* b) {
