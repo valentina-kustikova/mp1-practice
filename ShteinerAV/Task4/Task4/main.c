@@ -59,7 +59,7 @@ void user_input(char* user_choice) {
 
     while (1) {
         printf("\nКоманда: ");
-        scanf_s(" %c", user_choice, sizeof(user_choice));
+        scanf_s(" %c", user_choice, sizeof(char));
 
         while ((c = getchar()) != '\n' && c != EOF);
 
@@ -81,7 +81,7 @@ void scan_item(char new_barcode[], char barcode_list[][5], char name_list[][20],
     system("cls");
     printf("Введите штрих-код товара: ");
 
-    scanf_s("%4s", new_barcode, sizeof(new_barcode));
+    scanf_s("%4s", new_barcode, 5);
 
     while ((c = getchar()) != '\n' && c != EOF);
 
