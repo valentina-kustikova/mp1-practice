@@ -108,7 +108,12 @@ int main() {
 
 					printf("Quick sort\n");
 				}
-				printf_hand(cnt_files, FileSize, PoridokList, FileName, end - start);
+				
+
+				if (user != '0') {
+					printf_hand(cnt_files, FileSize, PoridokList, FileName, end - start);
+				}
+				
 
 				for (int i = 0; i < cnt_files; i++) {
 					free(FileName[i]);
