@@ -8,7 +8,7 @@
 
 int is_directory_windows(const char* path);
 void user_answer(char* user, char right);
-int read_and_print_files(int* cnt_files, int* FileSize, char** FileName);
+int read_and_print_files(int* cnt_files, int** FileSize, char*** FileName);
 
 void simple_sort(int cnt_files, int* FileSize, int* PoridokList); 
 
@@ -41,21 +41,12 @@ int main() {
 
 		user_answer(&user, '1');
 		if (user == '1') {
-			int cnt_files = 0, time_in_work, flag;
-			int* FileSize = (int*)malloc(N * sizeof(int)); // TODO: сначала считаем количество файлов, выделяем память, заполняем
-			char** FileName = (char**)malloc(N * sizeof(char*));			
-			for (int i = 0; i < N; i++) {
-				FileName[i] = (char*)malloc(100 * sizeof(char)); 
-			}
-			flag = read_and_print_files(&cnt_files, FileSize, FileName);
+			int cnt_files = 0, flag;
+			int* FileSize; 
+			char** FileName;			
+			flag = read_and_print_files(&cnt_files, &FileSize, &FileName);
 
 			if (flag) {
-				int* tmp1 = (int*)realloc(FileSize, cnt_files * sizeof(int));
-				FileSize = tmp1;
-
-				char** tmp2 = (char**)realloc(FileName, cnt_files * sizeof(char*));
-				FileName = tmp2;
-
 				int* PoridokList = (int*)malloc(cnt_files * sizeof(int));
 				for (int i = 0; i < cnt_files; i++) {
 					PoridokList[i] = i;
@@ -117,7 +108,7 @@ int main() {
 
 					printf("Quick sort\n");
 				}
-				printf_hand(cnt_files, FileSize, PoridokList, FileName, start - end);
+				printf_hand(cnt_files, FileSize, PoridokList, FileName, end - start);
 
 				for (int i = 0; i < cnt_files; i++) {
 					free(FileName[i]);
@@ -128,11 +119,6 @@ int main() {
 
 			}
 			else {
-				for (int i = 0; i < N; i++) {
-					free(FileName[i]);
-				}
-				free(FileName);
-				free(FileSize);
 				system("pause");
 			}
 		}	
@@ -177,10 +163,12 @@ void user_answer(char* user,  char right) {
 	}
 }
 
-int read_and_print_files(int* cnt_files,int* FileSize, char** FileName) {
+int read_and_print_files(int* cnt_files, int** FileSize, char*** FileName) {
 	char file_way[100];
 	WIN32_FIND_DATA find_file_data;
 	HANDLE hFind = NULL;
+	int file_count = 0;
+	int i = 0;
 
 	system("cls");
 	printf("_____________________________\n");
@@ -191,46 +179,83 @@ int read_and_print_files(int* cnt_files,int* FileSize, char** FileName) {
 	gets_s(file_way, sizeof(file_way));
 
 	if (is_directory_windows(file_way) != 0) {
-		system("cls");
-		printf("Директория| %s\n\n", file_way);
-		printf(" Размер() |  Названние\n");
+		char search_path[200];
+		char full_path[300];
 
-		snprintf(file_way, 100, "%s\\*", file_way);
-		hFind = FindFirstFileA(file_way, &find_file_data);
-		file_way[strlen(file_way) - 1] = '\0';
+		snprintf(search_path, sizeof(search_path), "%s\\*", file_way);
+
+		hFind = FindFirstFileA(search_path, &find_file_data);
+		if (hFind == INVALID_HANDLE_VALUE) {
+			printf("Не удалось открыть директорию\n");
+			return 0;
+		}
 
 		do {
-			snprintf(file_way, 100, "%s%s", file_way, find_file_data.cFileName);
-
-			if (strncmp(find_file_data.cFileName, ".", 1) == 0 ||
-				strncmp(find_file_data.cFileName, "..", 2) == 0 ||
-				is_directory_windows(&file_way)) {
-				file_way[strlen(file_way) - strlen(find_file_data.cFileName)] = '\0';
+			if (strcmp(find_file_data.cFileName, ".") == 0 ||
+				strcmp(find_file_data.cFileName, "..") == 0) {
 				continue;
 			}
 
-			printf("----------|-------------------\n");
-			printf("   %-7lld| ", 1 + (((LONGLONG)find_file_data.nFileSizeHigh << 32) | find_file_data.nFileSizeLow) / 1024);
-			printf(" %s \n", find_file_data.cFileName);
+			snprintf(full_path, sizeof(full_path), "%s\\%s", file_way, find_file_data.cFileName);
+			if (is_directory_windows(full_path)) {
+				continue;
+			}
 
-			strcpy_s(FileName[(*cnt_files)], strlen(find_file_data.cFileName)+1, find_file_data.cFileName);
-			FileSize[(*cnt_files)] = 1 +  (((LONGLONG)find_file_data.nFileSizeHigh << 32) | find_file_data.nFileSizeLow) / 1024; 
-			(*cnt_files)++;
-
-			file_way[strlen(file_way) - strlen(find_file_data.cFileName)] = '\0';
+			file_count++;
 		} while (FindNextFileA(hFind, &find_file_data));
-		
 
-		printf("------------------------------\n");
-		printf("Всего файлов : %d \n\n", *cnt_files);
-		return 1;
+		FindClose(hFind);
+
+		*cnt_files = file_count;
+
+		if (file_count > 0) {
+			*FileSize = (int*)malloc(file_count * sizeof(int));
+			*FileName = (char**)malloc(file_count * sizeof(char*));
+			for (i = 0; i < file_count; i++) {
+				(*FileName)[i] = (char*)malloc(N * sizeof(char));
+			}
+
+			hFind = FindFirstFileA(search_path, &find_file_data);
+			i = 0;
+
+			system("cls");
+			printf("Директория| %s\n\n", file_way);
+			printf(" Размер(КБ) |  Название\n");
+			printf("------------|-------------------\n");
+
+			do {
+				if (strcmp(find_file_data.cFileName, ".") == 0 ||
+					strcmp(find_file_data.cFileName, "..") == 0) {
+					continue;
+				}
+
+				snprintf(full_path, sizeof(full_path), "%s\\%s", file_way, find_file_data.cFileName);
+				if (is_directory_windows(full_path)) {
+					continue;
+				}
+
+				strcpy_s((*FileName)[i], strlen(find_file_data.cFileName) + 1, find_file_data.cFileName);
+				(*FileSize)[i] = (int)((((LONGLONG)find_file_data.nFileSizeHigh << 32) | find_file_data.nFileSizeLow + 1023) / 1024);
+
+				printf("    %-7d | %s\n", (*FileSize)[i], (*FileName)[i]);
+				printf("------------|-------------------\n");
+				i++;
+			} while (FindNextFileA(hFind, &find_file_data));
+
+			FindClose(hFind);
+
+			printf("Всего файлов: %d\n\n", file_count);
+			return 1;
+		}
+		else {
+			printf("В директории нет файлов\n");
+			return 0;
+		}
 	}
 	else {
 		printf("Неверно введена директория\n");
 		return 0;
 	}
-
-	FindClose(hFind);
 }
 
 void simple_sort(int cnt_files, int* FileSize, int* PoridokList) {
