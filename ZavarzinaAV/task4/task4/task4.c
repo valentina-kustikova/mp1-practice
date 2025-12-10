@@ -1,56 +1,46 @@
 #include <stdio.h>
 #include <locale.h>
+#include <string.h>
 #define N 10 
 
 
-void scan_products(int ba[N][4], char product[N][20], int price[N], int sale[N], int count[N]) {
-
-	int a[4]; //цифры шк
-	int b, c;
-	int cnt = 0; //счетчик совпавших чисел
+void scan_products(char ba[N][5], char product[N][20], int price[N], int sale[N], int count[N]) {
+	
+	char b[20];
 
 	do {
 		printf("¬ведите штрих код товара: \n");
-		scanf_s("%d", &b);
-		c = b;
-		for (int i = 3; i >= 0; i--) { //b=1234
-			a[i] = b % 10;
-			b = b / 10;
-		} //a={1, 2, 3, 4}
+		scanf_s("%s", b, (unsigned)sizeof(b));
+		
+		if (strcmp(b, "0") == 0) break;
 
 		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < 4; j++) {
-				if (a[j] == ba[i][j]) {
-					cnt += 1;
-				}
-			}
-			if (cnt == 4) {
+			if (strcmp(b, ba[i])== 0){
 				count[i]++;
 
-				printf("штрих-код: %d\n", c);
+				printf("штрих-код: %s\n", b);
 				printf("название товара: %s\n", product[i]);
 				printf("цена: %d\n", price[i]);
 				printf("скидка: %d\n", sale[i]);
 			}
-			cnt = 0;
 		}
-	} while (c != 0);
+	} while (1);
 
 }
 
 int main() {
 
-	setlocale(LC_ALL, "");
-
 	int sum = 0;
 	int sum_sale = 0;
 	int sum_with_sale = 0;
 
-	int ba[N][4] = { {1, 2, 3, 4}, {8, 0, 1, 2}, {3, 4, 5, 6}, {6, 7, 8, 9}, {1, 0, 0, 1}, {6, 0, 8, 2}, {1, 0, 1, 3}, {1, 7, 8, 6}, {9, 3, 3, 1}, {2, 2, 3, 6}}; //база данных шк
+	char ba[N][5] = { "1234", "8012", "3456", "6789", "1001", "6082", "1013", "1786", "9331", "2236" };
 	char product[N][20] = {"€блоки (кг)", "арбуз", "апельсины(кг)", "дын€", "бананы(кг)", "кабачки(кг)", "перцы(кг)", "огурцы(кг)", "помидоры(кг)", "баклажаны(кг)"};
 	int price[N] = { 200, 500, 100, 600, 150, 170, 220, 130, 300, 450 };
 	int sale[N] = { 7, 10, 5, 15, 7, 12, 5, 25, 75, 50 };
-	int count[N] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }; //количество раз отсканированного товара 
+	int count[N] = { 0 }; //количество раз отсканированного товара 
+
+	setlocale(LC_ALL, "");
 
 	scan_products(ba, product, price, sale, count);
 
