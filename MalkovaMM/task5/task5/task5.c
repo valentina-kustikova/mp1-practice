@@ -30,11 +30,11 @@ int makelist_time(char* path, int* fcount)
 {
 	double sorttime;
 	int i;
-	char sp[MAX_PATH]; //тут будет формирроваться путь в нужный формат
-	WIN32_FIND_DATAA filedata; //структура где будет о файле информация
-	HANDLE hf; //дескриптор - индентификатор для поиска файла
-	snprintf(sp, sizeof(sp), "%s\\*", path); // создали путь в нужном формате
-	hf = FindFirstFileA(sp, &filedata); //начало поиска, возвращает дескриптор
+	char sp[MAX_PATH]; 
+	WIN32_FIND_DATAA filedata; 
+	HANDLE hf; 
+	snprintf(sp, sizeof(sp), "%s\\*", path); 
+	hf = FindFirstFileA(sp, &filedata); 
 	*fcount = 0;
 	do{
 		(*fcount)++;
@@ -135,10 +135,8 @@ void choice(char** fnames, long long* fsizes, int fcount)
 				min_i = j;
 			}
 		}
-		if (min_i != i) {
-			swapnames(&fnames[i], &fnames[min_i]);
-			swapsizes(&fsizes[i], &fsizes[min_i]);
-		}
+		swapnames(&fnames[i], &fnames[min_i]);
+		swapsizes(&fsizes[i], &fsizes[min_i]);
 	}
 }
 void insert(char** fnames, long long* fsizes, int fcount)
@@ -148,8 +146,6 @@ void insert(char** fnames, long long* fsizes, int fcount)
 	{
 		long long size = fsizes[i];
 		char* name = fnames[i];
-		if(name!=NULL)
-			strcpy(name, fnames[i]);
 		j = i - 1;
 		while (j >= 0 && fsizes[j] > size) 
 		{
@@ -178,28 +174,36 @@ void merge(char** fnames, long long* fsizes, int fcount, int l,int m, int r)
 	int k = 0;
 	int it1 = 0;
 	int it2 = 0;
-	while (it1 + l < m && it2 + m + 1 <= r)
+	while (it1 + l <= m && it2 + m + 1 <= r)
 	{
 		if (fsizes[l + it1] < fsizes[m + 1 + it2])
 		{
 			fsizes1[k] = fsizes[l + it1];
-			fnames1[k++] = fnames[l + it1++];
+			fnames1[k] = fnames[l + it1];
+			it1++;
+			k++;
 		}
 		else
 		{
 			fsizes1[k] = fsizes[m + 1 + it2];
-			fnames1[k++] = fnames[m + 1 + it2++];
+			fnames1[k] = fnames[m + 1 + it2];
+			it2++;
+			k++;
 		}
 	}
 	while (l + it1 <= m)
 	{
 		fsizes1[k] = fsizes[l + it1];
-		fnames1[k++] = fnames[l + it1++];
+		fnames1[k] = fnames[l + it1];
+		it1++;
+		k++;
 	}
 	while (m + 1 + it2 <= r)
 	{
 		fsizes1[k] = fsizes[m + 1 + it2];
-		fnames1[k++] = fnames[m + 1 + it2++];
+		fnames1[k] = fnames[m + 1 + it2];
+		it2++;
+		k++;
 	}
 	for (it1 = 0; it1 < k; it1++)
 	{
@@ -254,14 +258,14 @@ void fprint(char** fnames, long long* fsizes, int fcount)
 }
 
 int main()
-{
-	setlocale(LC_ALL, "Rus");
+{	
 	char path[maxlength];
 	int fcount = 0;
 	int ch = -1;
+	setlocale(LC_ALL, "Rus");
 	printf("файловый менеджер \n");
 	printf("Введите путь до нужного Вам каталога: ");
-	if (fgets(path, sizeof(path), stdin) != NULL) //stdin входной поток для ввода с клавиатуры, а сам fgets читает строку и ставит в конце \0
+	if (fgets(path, sizeof(path), stdin) != NULL) 
 	{
 		size_t length = strlen(path);
 		if ((length > 0) && (path[length - 1] == '\n'))
@@ -270,7 +274,7 @@ int main()
 		}
 	}
 	DWORD check = GetFileAttributesA(path);
-	if ((check == INVALID_FILE_ATTRIBUTES) || !(check & FILE_ATTRIBUTE_DIRECTORY)) // вторая проверка: не ноль - директория, ноль - файл или что то другое
+	if ((check == INVALID_FILE_ATTRIBUTES) || !(check & FILE_ATTRIBUTE_DIRECTORY)) 
 	{
 		printf("ошибка (либо директории нет, либо она недоступна)");
 		return 0;
@@ -290,7 +294,7 @@ int main()
 		}
 		do {
 			printf("Выйти из файлового менеджера - 0\n");
-			printf("Выбрать следующий путь для просмотра/сортировки файлов - 1\n");
+			printf("Выбрать другой метод сортировки файлов - 1\n");
 			scanf_s("%d", &ch);
 		} while (ch != 0 && ch != 1);
 		if (ch == 0)
