@@ -4,12 +4,15 @@
 #include <string.h>
 #include<locale.h>
 #include<time.h>
+
 #define maxPath 260
+
 struct fileInf
 {
 	char name[100];
 	ULONGLONG size;
 };
+
 int CheckE(char path[])
 {
 	HANDLE prov;
@@ -22,6 +25,7 @@ int CheckE(char path[])
 	}
 	else { FindClose(prov); return 0; }
 }
+
 int count(char path[])
 {
 	HANDLE hand;
@@ -41,8 +45,8 @@ int count(char path[])
 	}
 	FindClose(hand);
 	return i;
-
 }
+
 void getL(char path[], int n, struct fileInf list[], struct fileInf ns_list[])
 {
 	HANDLE hand;
@@ -67,6 +71,7 @@ void getL(char path[], int n, struct fileInf list[], struct fileInf ns_list[])
 	}
 	FindClose(hand);
 }
+
 void swap(struct fileInf* x, struct fileInf* y)
 {
 	struct fileInf temp;
@@ -74,6 +79,7 @@ void swap(struct fileInf* x, struct fileInf* y)
 	*y = *x;
 	*x = temp;
 }
+
 void simple_sort(struct fileInf list[], int amount)
 {
 	int i, j;
@@ -88,6 +94,7 @@ void simple_sort(struct fileInf list[], int amount)
 		} 
 	}
 }
+
 void select_sort(struct fileInf list[], int amount)
 {
 	int i, j, min_idx;
@@ -105,6 +112,7 @@ void select_sort(struct fileInf list[], int amount)
 		swap(&list[i], &list[min_idx]);
 	}
 }
+
 void insert_sort(struct fileInf list[], int amount)
 {
 	int i, j;
@@ -118,6 +126,7 @@ void insert_sort(struct fileInf list[], int amount)
 		}
 	}
 }
+
 void merge(struct fileInf list[], int l, int m, int r, int n)
 {
 	struct fileInf* b = (struct fileInf*)malloc(n * sizeof(struct fileInf));
@@ -136,8 +145,9 @@ void merge(struct fileInf list[], int l, int m, int r, int n)
 	{
 		list[l + it1] = b[it1];
 	}
-
+	free(b);
 }
+
 void merge_sort(struct fileInf list[], int l, int r, int n)
 {
 	int m;
@@ -147,6 +157,7 @@ void merge_sort(struct fileInf list[], int l, int r, int n)
 	merge_sort(list, m + 1, r, n);
 	merge(list, l, m, r, n);
 }
+
 void quick_sort(struct fileInf list[], int n1, int n2)
 {
 	int mid = n1 + (n2 - n1) / 2;
@@ -164,6 +175,7 @@ void quick_sort(struct fileInf list[], int n1, int n2)
 	if (n1 < j) { quick_sort(list, n1, j); }
 	if (i < n2) { quick_sort(list, i, n2); }
 }
+
 void refill_list(struct fileInf list[], struct fileInf ns_list[], int n)
 {
 	int i;
@@ -172,6 +184,7 @@ void refill_list(struct fileInf list[], struct fileInf ns_list[], int n)
 		list[i] = ns_list[i];
 	}	
 }
+
 void print(struct fileInf list[], struct fileInf ns_list[], int amount, double time)
 {
 	int i;
@@ -182,6 +195,7 @@ void print(struct fileInf list[], struct fileInf ns_list[], int amount, double t
 	printf("Время сортировки: %.2f миллисекунд\n", time);
 	refill_list(list, ns_list, amount);
 }
+
 int main()
 {
 	int way = 1, ans = 1, n;
