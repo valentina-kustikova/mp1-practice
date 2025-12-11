@@ -6,7 +6,7 @@ int main() {
 	float obshskidki = 0.0;
 	int shtrixpok[N];
 
-	int shtrix[N][4] = {{1,0,0,1}, {2,0,0,2}, {3,0,0,3}, {4,0,0,4}};
+	char shtrix[N][4] = {"1001", "2002", "3003", "4004"};
 	int tsena[N] = { 89, 35, 50, 149 };
 	int skidka[N] = { 10, 5, 15, 20 };
 	char nazvan[N][7] = {"Moloko", "Voda", "Sok", "Chipsi"};
