@@ -98,6 +98,25 @@ void MergeSort(int l, int r, int* sz, int* num, int* temp, int* tempnum) {
 	Merge(l, c, r, sz, num, temp, tempnum);
 }
 
+int parse(int* sz, int* num, int l, int r) {
+	int pivot = sz[l + (r - l) / 2], i = l, j = r - 1;
+	while (i <= j) {
+		while (sz[i] < pivot) i++;
+		while (sz[j] > pivot) j--;
+		if (i > j) break;
+		if(sz[i] != sz[j]) swap(&sz[i], &num[i], &sz[j], &num[j]);
+		i++; j--;
+	}
+	return j + 1;
+}
+
+void QuickSort(int l, int r, int* sz, int* num) {
+	if (r - l <= 1) return;
+	int c = parse(sz, num, l, r);
+	QuickSort(l, c, sz, num);
+	QuickSort(c, r, sz, num);
+}
+
 int fcount(char dir[], int* pmx) {
 	int k = 0;
 	WIN32_FIND_DATA data;
@@ -110,7 +129,10 @@ int fcount(char dir[], int* pmx) {
 		} while (FindNextFileA(hFind, &data));
 		FindClose(hFind);
 	}
-	else printf("Incorrect directory!\n");
+	else {
+		printf("Несуществующая директория!\n");
+		return -1;
+	}
 	return k;
 }
 
@@ -122,7 +144,7 @@ void read(char dir[], char flag, char** name, int* sz, int* num) {
 	if (hFind != INVALID_HANDLE_VALUE) {
 		do {
 			if (data.dwFileAttributes != 32) continue;
-			if(flag) printf("Read: %s of %d bytes\n", data.cFileName, data.nFileSizeLow);
+			if(flag) printf("Прочитан файл %s размером %d байтов\n", data.cFileName, data.nFileSizeLow);
 			strcpy(name[i], data.cFileName);
 			sz[i] = data.nFileSizeLow;
 			num[i] = i;
@@ -153,17 +175,20 @@ char fsort(char method[], int k, int* sz, int* num) {
 		free(temp);
 		free(tempnum);
 	}
-	printf("Incorrect sort method\n");
+	if (strcmp(method, "quick") == 0) {
+		QuickSort(0, k, sz, num); return 1;
+	}
+	printf("Недопустимый метод сортировки\n");
 	return 0;
 }
 
 int main() {
 	system("chcp 1251");
 	char method[50], dir[1000] = "";
-	int i, k = 0, type = -1, f, cnt = 0, mx = 0;
+	int i, k = -1, type = -1, f, cnt = 0, mx = 0;
 	int* sz; int* num; char** name;
-	printf("Enter address of directory:\n");
-	while (k == 0) {
+	printf("Введите путь до директории:\n");
+	while (k == -1) {
 		scanf("%s", dir);
 		strcat(dir, "\\*\0");
 		k = fcount(dir, &mx);
@@ -174,60 +199,30 @@ int main() {
 	for (int i = 0; i < k; i++) {
 		name[i] = (char*)malloc((mx + 5) * sizeof(char));
 	}
-	printf("Instruction:\n1 - Read of files from entered directory\n2 <sort_type> - Sort and print a list of files and time of sort\n0 - Exit\n");
-	while (type != 0) {
-		scanf("%d%*c", &type);
-		switch (type) {
-		case 1:
-			if (strcmp(dir, "") == 0) {
-				printf("Nothing to read!\n");
-			}
-			else {
-				if (cnt) {
-					free(sz);
-					free(num);
-					for (i = 0; i < k; i++) {
-						free(name[i]);
-					}
-					free(name);
-				}
-				read(dir, 1, name, sz, num);
-				cnt++;
-			}
-			break;
-		case 2:
-			if (k == 0) {
-				printf("Nothing to sort!\n");
-				break;
-			}
-			scanf("%s", method);
-			LARGE_INTEGER st, end, freq;
-			double t;
-			QueryPerformanceFrequency(&freq);
-			QueryPerformanceCounter(&st);
-			clock_t a = clock();
-			f = fsort(method, k, sz, num);
-			clock_t b = clock();
-			QueryPerformanceCounter(&end);
-			t = (double)(end.QuadPart - st.QuadPart) * 1000.0 / freq.QuadPart;
-			if (f) {
-				for (i = 0; i < k; i++) printf("%d) %s -> %d\n", i + 1, name[num[i]], sz[i]);
-				printf("Time: %.3f ms\n", t);
-			}
-			//for (i = 0; i < k; i++) num[i] = i;
-			read(dir, 0, name, sz, num); // Обратная перестановка массива
-			break;
-		case 0:
-			free(sz);
-			free(num);
-			for (i = 0; i < k; i++) {
-				free(name[i]);
-			}
-			free(name);
-			return 0;
-		default:
-			printf("Incorrect input!\n");
+	read(dir, 1, name, sz, num);
+	printf("Выберите метод сортировки: classic - Классическая Сортировка\nbubble - Пузырьковая Сортировка\ninsert - Сортировка Вставками\nchoice - Сортировка Выбором\nmerge - Сортировка Слиянием\nquick - Быстрая/Сортировка Хоара\nВведите exit для выхода\n");
+	while (1) {
+		scanf("%s", method);
+		if (strcmp(method, "exit") == 0) break;
+		LARGE_INTEGER st, end, freq;
+		double t;
+		QueryPerformanceFrequency(&freq);
+		QueryPerformanceCounter(&st);
+		f = fsort(method, k, sz, num);
+		QueryPerformanceCounter(&end);
+		t = (double)(end.QuadPart - st.QuadPart) * 1000.0 / freq.QuadPart;
+		if (f) {
+			for (i = 0; i < k; i++) printf("%d) %s -> %d\n", i + 1, name[num[i]], sz[i]);
+			printf("Время: %.3f мс\n", t);
 		}
+		//for (i = 0; i < k; i++) num[i] = i;
+		read(dir, 0, name, sz, num); // Обратная перестановка массива
 	}
+	free(sz);
+	free(num);
+	for (i = 0; i < k; i++) {
+		free(name[i]);
+	}
+	free(name);
 	return 0;
 }
