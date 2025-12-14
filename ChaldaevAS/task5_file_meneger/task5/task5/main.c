@@ -4,157 +4,190 @@
 #include <time.h>
 
 #define MAX_FILES 1000
-#define PATH_LENGTH 150
 
-typedef struct {
-    char name[MAX_PATH];
-    long size;
-} FileInfo;
-
-FileInfo files[MAX_FILES];
+char file_names[MAX_FILES][256];
+long file_sizes[MAX_FILES];
 int file_count = 0;
 
-// Функция для установки русской кодировки
-void setRussianEncoding() {
-    SetConsoleOutputCP(1251);
-    SetConsoleCP(1251);
-}
-
-int check_correct_path(char* path) {
-    DWORD attributes = GetFileAttributesA(path);
-    if (attributes == INVALID_FILE_ATTRIBUTES) {
-        printf("\nERROR: Path not found!\n");
-        return 0;
+void show_files() {
+    if (file_count == 0) {
+        printf("No files\n");
+        return;
     }
-    if (!(attributes & FILE_ATTRIBUTE_DIRECTORY)) {
-        printf("\nERROR: This is not a directory!\n");
-        return 0;
-    }
-    return 1;
-}
 
-void input_dir_path(char* path) {
-    while (1) {
-        printf("\nEnter directory path: ");
-        if (fgets(path, PATH_LENGTH, stdin) == NULL) {
-            printf("Input error!\n");
-            continue;
-        }
-        path[strcspn(path, "\n")] = 0;
+    printf("\n%-30s %s\n", "File Name", "Size");
+    printf("----------------------------------------\n");
 
-        if (strlen(path) == 0) {
-            printf("Path cannot be empty!\n");
-            continue;
-        }
-
-        if (check_correct_path(path)) {
-            printf("Directory found successfully.\n");
-            break;
-        }
-        printf("Please try again.\n");
+    for (int i = 0; i < file_count; i++) {
+        printf("%-30s %ld\n", file_names[i], file_sizes[i]);
     }
 }
 
-void get_files_list(char* path) {
+void print_menu() {
+    printf("\n1. Sort files\n");
+    printf("2. Show files\n");
+    printf("3. Change directory\n");
+    printf("4. Exit\n");
+    printf("Choice: ");
+}
+
+int get_choice() {
+    int choice;
+    if (scanf_s("%d", &choice) != 1) {
+        choice = 0;
+    }
+    while (getchar() != '\n');
+    return choice;
+}
+
+int check_dir(char* path) {
+    unsigned long attr = GetFileAttributesA(path);
+    return (attr != INVALID_FILE_ATTRIBUTES &&
+        (attr & FILE_ATTRIBUTE_DIRECTORY));
+}
+
+void get_path(char* path) {
+    printf("Directory path: ");
+    fgets(path, 256, stdin);
+
+    int i = 0;
+    while (path[i] != '\n' && path[i] != '\0') {
+        i++;
+    }
+    path[i] = '\0';
+}
+
+void get_files(char* path) {
     WIN32_FIND_DATAA file_data;
-    char search_path[PATH_LENGTH];
+    char search_path[300];
+
+    // Используем sprintf_s вместо sprintf
     sprintf_s(search_path, sizeof(search_path), "%s\\*", path);
 
-    HANDLE hFind = FindFirstFileA(search_path, &file_data);
-    file_count = 0;
-
-    if (hFind == INVALID_HANDLE_VALUE) {
+    HANDLE handle = FindFirstFileA(search_path, &file_data);
+    if (handle == INVALID_HANDLE_VALUE) {
         printf("Error reading directory\n");
         return;
     }
 
+    file_count = 0;
+
     do {
+        if (strcmp(file_data.cFileName, ".") == 0) continue;
+        if (strcmp(file_data.cFileName, "..") == 0) continue;
+
         if (!(file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
-            strcpy_s(files[file_count].name, sizeof(files[file_count].name), file_data.cFileName);
-            files[file_count].size = (long)file_data.nFileSizeLow + ((long)file_data.nFileSizeHigh << 32);
+            // Используем strcpy_s вместо strcpy
+            strcpy_s(file_names[file_count], 256, file_data.cFileName);
+            file_sizes[file_count] = file_data.nFileSizeLow;
             file_count++;
+
+            if (file_count >= MAX_FILES) break;
         }
-    } while (FindNextFileA(hFind, &file_data) && file_count < MAX_FILES);
+    } while (FindNextFileA(handle, &file_data));
 
-    FindClose(hFind);
-
-    if (file_count == 0) {
-        printf("No files found in directory.\n");
-    }
-    else {
-        printf("Found %d files.\n", file_count);
-    }
+    FindClose(handle);
+    printf("Found %d files\n", file_count);
 }
 
 void bubble_sort(int ascending) {
     for (int i = 0; i < file_count - 1; i++) {
         for (int j = 0; j < file_count - i - 1; j++) {
-            int condition = ascending ?
-                (files[j].size > files[j + 1].size) :
-                (files[j].size < files[j + 1].size);
+            int need_swap = 0;
 
-            if (condition) {
-                FileInfo temp = files[j];
-                files[j] = files[j + 1];
-                files[j + 1] = temp;
+            if (ascending == 1) {
+                if (file_sizes[j] > file_sizes[j + 1]) {
+                    need_swap = 1;
+                }
+            }
+            else {
+                if (file_sizes[j] < file_sizes[j + 1]) {
+                    need_swap = 1;
+                }
+            }
+
+            if (need_swap) {
+                long temp_size = file_sizes[j];
+                file_sizes[j] = file_sizes[j + 1];
+                file_sizes[j + 1] = temp_size;
+
+                char temp_name[256];
+                strcpy_s(temp_name, 256, file_names[j]);
+                strcpy_s(file_names[j], 256, file_names[j + 1]);
+                strcpy_s(file_names[j + 1], 256, temp_name);
             }
         }
     }
 }
 
-void selection_sort(int ascending) {
-    for (int i = 0; i < file_count - 1; i++) {
-        int extreme = i;
-        for (int j = i + 1; j < file_count; j++) {
-            if (ascending ?
-                (files[j].size < files[extreme].size) :
-                (files[j].size > files[extreme].size)) {
-                extreme = j;
-            }
+void quick_sort(int left, int right, int ascending) {
+    if (left >= right) return;
+
+    long pivot = file_sizes[(left + right) / 2];
+    int i = left;
+    int j = right;
+
+    while (i <= j) {
+        if (ascending == 1) {
+            while (file_sizes[i] < pivot) i++;
+            while (file_sizes[j] > pivot) j--;
         }
-        FileInfo temp = files[i];
-        files[i] = files[extreme];
-        files[extreme] = temp;
-    }
-}
-
-void show_files() {
-    if (file_count == 0) {
-        printf("No files to display.\n");
-        return;
-    }
-
-    printf("\n%-50s %s\n", "File Name", "Size (bytes)");
-    printf("------------------------------------------------------------\n");
-    for (int i = 0; i < file_count; i++) {
-        printf("%-50s %ld\n", files[i].name, files[i].size);
-    }
-}
-
-void clear_input_buffer() {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF) {}
-}
-
-int get_int_input(const char* prompt, int min, int max) {
-    int value;
-    while (1) {
-        printf("%s", prompt);
-        if (scanf_s("%d", &value) != 1) {
-            printf("Invalid input! Please enter a number between %d and %d.\n", min, max);
-            clear_input_buffer();
-            continue;
+        else {
+            while (file_sizes[i] > pivot) i++;
+            while (file_sizes[j] < pivot) j--;
         }
-        clear_input_buffer();
 
-        if (value >= min && value <= max) {
-            return value;
+        if (i <= j) {
+            long temp_size = file_sizes[i];
+            file_sizes[i] = file_sizes[j];
+            file_sizes[j] = temp_size;
+
+            char temp_name[256];
+            strcpy_s(temp_name, 256, file_names[i]);
+            strcpy_s(file_names[i], 256, file_names[j]);
+            strcpy_s(file_names[j], 256, temp_name);
+
+            i++;
+            j--;
         }
-        printf("Please enter a number between %d and %d.\n", min, max);
     }
+
+    if (left < j) quick_sort(left, j, ascending);
+    if (i < right) quick_sort(i, right, ascending);
 }
 
-// Функция для точного измерения времени
+int get_sort_choice() {
+    int choice;
+
+    printf("\nChoose sorting method:\n");
+    printf("1. Bubble Sort\n");
+    printf("2. Quick Sort\n");
+    printf("Enter choice: ");
+
+    if (scanf_s("%d", &choice) != 1) {
+        choice = 1;
+    }
+    while (getchar() != '\n');
+
+    return choice;
+}
+
+int get_order_choice() {
+    int order;
+
+    printf("\nSorting order:\n");
+    printf("1. Ascending (smallest first)\n");
+    printf("2. Descending (largest first)\n");
+    printf("Enter choice: ");
+
+    if (scanf_s("%d", &order) != 1) {
+        order = 1;
+    }
+    while (getchar() != '\n');
+
+    return order;
+}
+
 double get_time() {
     static LARGE_INTEGER frequency;
     static int frequency_initialized = 0;
@@ -171,24 +204,23 @@ double get_time() {
 }
 
 int main() {
-    char path[PATH_LENGTH];
-    int choice, sort_method, order;
+    char path[256];
+    int choice;
     double start, end;
 
-    // Устанавливаем русскую кодировку
-    setRussianEncoding();
-
     printf("=== File Manager ===\n");
-    input_dir_path(path);
-    get_files_list(path);
+    get_path(path);
 
-    do {
-        printf("\n=== Main Menu ===\n");
-        printf("1. Sort files\n");
-        printf("2. Change directory\n");
-        printf("3. Exit\n");
+    if (!check_dir(path)) {
+        printf("Invalid directory!\n");
+        return 1;
+    }
 
-        choice = get_int_input("Enter your choice (1-3): ", 1, 3);
+    get_files(path);
+
+    while (1) {
+        print_menu();
+        choice = get_choice();
 
         if (choice == 1) {
             if (file_count == 0) {
@@ -196,36 +228,21 @@ int main() {
                 continue;
             }
 
-            printf("\nChoose sorting method:\n");
-            printf("1. Bubble Sort\n");
-            printf("2. Selection Sort\n");
-            sort_method = get_int_input("Enter choice (1-2): ", 1, 2);
-
-            printf("\nSorting order:\n");
-            printf("1. Ascending (smallest first)\n");
-            printf("2. Descending (largest first)\n");
-            order = get_int_input("Enter choice (1-2): ", 1, 2);
-
-            // Создаем копию для сортировки
-            FileInfo files_to_sort[MAX_FILES];
-            memcpy(files_to_sort, files, sizeof(FileInfo) * file_count);
+            int sort_type = get_sort_choice();
+            int order = get_order_choice();
 
             start = get_time();
 
-            if (sort_method == 1) {
+            if (sort_type == 1) {
                 bubble_sort(order == 1);
-                printf("\nUsing Bubble Sort - ");
+                printf("Sorted with Bubble Sort\n");
             }
             else {
-                selection_sort(order == 1);
-                printf("\nUsing Selection Sort - ");
+                quick_sort(0, file_count - 1, order == 1);
+                printf("Sorted with Quick Sort\n");
             }
 
             end = get_time();
-
-            printf("%s order\n", (order == 1) ? "Ascending" : "Descending");
-            show_files();
-
             double time_taken = end - start;
             if (time_taken < 0.001) {
                 printf("\nSorting time: %.6f milliseconds\n", time_taken * 1000);
@@ -234,20 +251,28 @@ int main() {
                 printf("\nSorting time: %.6f seconds\n", time_taken);
             }
 
-            // Восстанавливаем исходный массив
-            memcpy(files, files_to_sort, sizeof(FileInfo) * file_count);
-
         }
         else if (choice == 2) {
-            input_dir_path(path);
-            get_files_list(path);
+            show_files();
+
         }
         else if (choice == 3) {
+            get_path(path);
+            if (!check_dir(path)) {
+                printf("Invalid directory!\n");
+                continue;
+            }
+            get_files(path);
+
+        }
+        else if (choice == 4) {
             printf("Goodbye!\n");
             break;
         }
-
-    } while (1);
+        else {
+            printf("Invalid choice!\n");
+        }
+    }
 
     return 0;
 }
