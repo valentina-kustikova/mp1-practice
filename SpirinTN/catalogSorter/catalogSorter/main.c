@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <sys/time.h>
+#include <time.h>
 #include <string.h>
 #include <locale.h>
 #include <stdlib.h>
@@ -21,7 +21,7 @@
 #define SORTING_METHODS "\
 Методы сортировок:\n\
 1. Прострейшая сортировка\n\
-2. Сортировка выбором минимального\n\
+2. Сортировка выбором максимального\n\
 3. Сортировка вставками\n\
 4. Сортировка пузырьком\n\
 5. Быстрая сортировка\n\
@@ -32,15 +32,22 @@ struct File {
     long long size;
 };
 
-void selectMethodSorting(int* selectedMethod);
-void sortingCatalog(int* selectedMethod);
+
+void openMenu(int* selectedMethod);
 
 int main() {
     int selectedMethod = 3;
     setlocale(LC_ALL, "rus");
     SetConsoleOutputCP(1251);
     SetConsoleCP(1251);
+    openMenu(&selectedMethod);
+    return 0;
+}
 
+void selectMethodSorting(int* selectedMethod);
+void sortingCatalog(int* selectedMethod);
+
+void openMenu(int* selectedMethod) {
     while (1) {
         int operation;
         system("cls");
@@ -55,16 +62,15 @@ int main() {
         }
 
         if (operation == 1) {
-            sortingCatalog(&selectedMethod);
+            sortingCatalog(selectedMethod);
         }
         else if (operation == 2) {
-            selectMethodSorting(&selectedMethod);
+            selectMethodSorting(selectedMethod);
         }
         else {
             break;
         }
     }
-    return 0;
 }
 
 char* getNameSort(int selectedMethod);
@@ -90,7 +96,7 @@ void selectMethodSorting(int* selectedMethod) {
 char* getNameSort(int selectedMethod) {
     switch (selectedMethod) {
         case 1: return "Простейшая сортировка";
-        case 2: return "Сортировка выбором минимального";
+        case 2: return "Сортировка выбором максимального";
         case 3: return "Сортировка вставками";
         case 4: return "Сортировка пузырьком";
         case 5: return "Быстрая сортировка";
@@ -98,15 +104,34 @@ char* getNameSort(int selectedMethod) {
     }
 }
 
-void executionSelectedSorting(int* selectedMethod, struct File* files, int n);
+struct File* searchFiles(wchar_t* path, int* count);
+void sortingCatalogRealization(int* selectedMethod, struct File* files, wchar_t* path, int count);
 
 void sortingCatalog(int* selectedMethod) {
     wchar_t path[MAX_PATH];
+    struct File* files = NULL;
+    int count = 0;
+
+    files = searchFiles(path, &count);
+
+    if (files == NULL || count == 0) {
+        printf("Не удалось найти файлы в каталоге!\n\n");
+        system("pause");
+        return;
+    }
+
+    sortingCatalogRealization(selectedMethod, files, path, count);
+
+    free(files);
+    system("pause");
+}
+
+struct File* searchFiles(wchar_t* path, int* count) {
     wchar_t searchPath[MAX_PATH];
     WIN32_FIND_DATAW findData;
     HANDLE hFind;
     struct File* files = NULL;
-    int count = 0;
+
     system("cls");
     printf(CATALOG_SORTER_FRAME);
 
@@ -123,27 +148,21 @@ void sortingCatalog(int* selectedMethod) {
             break;
         }
         printf("Ошибка: путь некорректный или папка не существует\n");
-        wprintf(L"%s", path);
     }
 
-    
+
     swprintf_s(searchPath, MAX_PATH, L"%s\\*", path);
 
     hFind = FindFirstFileW(searchPath, &findData);
-    if (hFind == INVALID_HANDLE_VALUE) {
-        printf("Не удалось найти файлы в каталоге!\n\n");
-        system("pause");
-        return;
-    }
-
     do {
         if (strcmp(findData.cFileName, ".") == 0 ||
             strcmp(findData.cFileName, "..") == 0 ||
-            (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+            (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ||
+            findData.dwFileAttributes & (FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM)) {
             continue;
         }
 
-        struct File* temp = realloc(files, (count + 1) * sizeof(struct File));
+        struct File* temp = realloc(files, ((*count) + 1) * sizeof(struct File));
         if (temp == NULL) {
             free(files);
             FindClose(hFind);
@@ -153,21 +172,33 @@ void sortingCatalog(int* selectedMethod) {
         }
         files = temp;
 
-        wcscpy_s(files[count].name, 256, findData.cFileName);
-        files[count].size = findData.nFileSizeLow;
+        wcscpy_s(files[*count].name, 256, findData.cFileName);
+        files[*count].size = ((long long)findData.nFileSizeHigh << 32) | findData.nFileSizeLow;
 
-        count++;
+        (*count)++;
     } while (FindNextFile(hFind, &findData));
     FindClose(hFind);
+    return files;
+}
+
+void executionSelectedSorting(int* selectedMethod, struct File* files, int n);
+
+void sortingCatalogRealization(int* selectedMethod, struct File* files, wchar_t* path, int count) {
+    struct File* originalFiles = malloc(count * sizeof(struct File));
+    memmove(originalFiles, files, count * sizeof(struct File));
 
     while (1) {
-        int operation;
+        int operation, i;
         system("cls");
         printf(CATALOG_SORTER_FRAME);
-		printf("Найдено %d файлов:\n\n", count);
-        wprintf(L"Сортировка каталога \"%s\"", path);
+        printf("Найдено %d файлов:\n\n", count);
+        wprintf(L"Сортировка каталога \"%s\" ", path);
         printf("методом \"%s\"\n", getNameSort(*selectedMethod));
-		executionSelectedSorting(selectedMethod, files, count);
+        memmove(files, originalFiles, count * sizeof(struct File));
+        executionSelectedSorting(selectedMethod, files, count);
+        for (i = 0; i < count; i++) {
+            wprintf(L"%d. %ls - %lld байт\n", i + 1, files[i].name, files[i].size);
+        }
 
         printf("\nХотите отсортировать другим методом (1 - да, 2 - нет): ");
         scanf_s("%d", &operation);
@@ -183,28 +214,30 @@ void sortingCatalog(int* selectedMethod) {
         }
     }
 
-    free(files);
-    system("pause");
+    free(originalFiles);
 }
 
 void swap(struct File* a, struct File* b);
 void sortEasy(struct File* files, int n);
-void sortSelectMin(struct File* files, int n);
+void sortSelectMax(struct File* files, int n);
 void sortPastes(struct File* files, int n);
 void sortBubble(struct File* files, int n);
 void quickSort(struct File* files, int first, int last);
-void mergeSort(struct File* files, int l, int r);
+void mergeSort(struct File* files, int l, int r, struct File* tmp);
 
 void executionSelectedSorting(int* selectedMethod, struct File* files, int n) {
-	struct timeval start, end;
-	long seconds, microseconds;
-	gettimeofday(&start, NULL);
+    struct timespec start, end;
+    long seconds, nanoseconds;
+    float elapsed_ms;
+    struct File* tmp = *selectedMethod == 6 ? malloc(n * sizeof(struct File)) : NULL;
+    
+    timespec_get(&start, TIME_UTC);
 	switch (*selectedMethod) {
 		case 1: 
 			sortEasy(files, n);
 			break;
 		case 2: 
-			sortSelectMin(files, n);
+			sortSelectMax(files, n);
 			break;
 		case 3: 
 			sortPastes(files, n);
@@ -215,47 +248,126 @@ void executionSelectedSorting(int* selectedMethod, struct File* files, int n) {
 		case 5: 
 			quickSort(files, 0, n - 1);
 			break;
-		case 6: 
-			mergeSort(files, 0, n - 1);
+		case 6:
+			mergeSort(files, 0, n - 1, tmp);
 			break;
 	}
-	gettimeofday(&end, NULL);
-	seconds = end.tv_sec - start.tv_sec;
+    timespec_get(&end, TIME_UTC);
 
+    seconds = end.tv_sec - start.tv_sec;
+    nanoseconds = end.tv_nsec - start.tv_nsec;
+    elapsed_ms = seconds * 1000.0 + nanoseconds / 1000000.0;
 	
-	printf("Сортировка заняла %.3f мс\n\n");
+	printf("Сортировка заняла %.2f мс\n\n", elapsed_ms);
+    free(tmp);
 }
 
 void swap(struct File* a, struct File* b) {
-	struct File* temp = a;
-	a = b;
-	b = temp;
+	struct File temp = *a;
+	*a = *b;
+	*b = temp;
 }
 
 void sortEasy(struct File* files, int n) {
 	int i, j;
 	for (i = 0; i < n; i++)
 		for (j = i + 1; j < n; j++)
-			if (files[i].size > files[j].size)
+			if (files[i].size < files[j].size)
 				swap(&files[i], &files[j]);
 }
 
-void sortSelectMin(struct File* files, int n) {
-
+void sortSelectMax(struct File* files, int n) {
+    int i, j;
+    for (i = 0; i < n; i++) {
+        long long max = files[i].size, idx = i;
+        for (j = i + 1; j < n; j++) {
+            if (max < files[j].size) {
+                max = files[j].size;
+                idx = j;
+            }
+        }
+        swap(&files[i], &files[idx]);
+    }
 }
 
 void sortPastes(struct File* files, int n) {
-
+    int i, j;
+    for (i = 1; i < n; i++) {
+        struct File tmp = files[i];
+        int j = i - 1;
+        while (j >= 0 && files[j].size < tmp.size) {
+            files[j + 1] = files[j];
+            j--;
+        }
+        files[j + 1] = tmp;
+    }
 }
 
 void sortBubble(struct File* files, int n) {
-
+    int i, j;
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n - i - 1; j++)
+            if (files[j + 1].size > files[j].size)
+                swap(&files[j + 1], &files[j]);
 }
 
 void quickSort(struct File* files, int first, int last) {
-
+    int f = first, l = last;
+    long long mid = files[f + (l - f) / 2].size;
+    while (f < l) {
+        while (files[f].size > mid) f++;
+        while (files[l].size < mid) l--;
+        if (f <= l) {
+            swap(&files[f], &files[l]);
+            f++;
+            l--;
+        }
+    }
+    if (first < l) quickSort(files, first, l);
+    if (f < last) quickSort(files, f, last);
 }
 
-void mergeSort(struct File* files, int l, int r) {
+void merge(struct File* files, int l, int m, int r, struct File* tmp);
 
+void mergeSort(struct File* files, int l, int r, struct File* tmp) {
+    int m;
+    if (l >= r) return;
+
+    m = l + (r - l) / 2;
+    mergeSort(files, l, m, tmp);
+    mergeSort(files, m + 1, r, tmp);
+    merge(files, l, m, r, tmp);
+}
+
+void merge(struct File* files, int l, int m, int r, struct File* tmp) {
+    int i = l, j = m + 1, k = l;
+    while (i <= m && j <= r) {
+        if (files[i].size >= files[j].size) {
+            tmp[k] = files[i];
+            i++;
+            k++;
+        }
+        else {
+            tmp[k] = files[j];
+            j++;
+            k++;
+        }
+    }
+    if (i > m) {
+        while (j <= r) {
+            tmp[k] = files[j];
+            j++;
+            k++;
+        }
+    }
+    if (j > r) {
+        while (i <= m) {
+            tmp[k] = files[i];
+            i++;
+            k++;
+        }
+    }
+    for (i = l; i <= r; i++) {
+        files[i] = tmp[i];
+    }
 }
