@@ -4,6 +4,10 @@
 #include <time.h>
 #include <locale.h>
 
+int input_directory(char directoryPath[], WIN32_FIND_DATA* FindFileData);
+void print_files(unsigned long long* fileSizes, char** fileNames, int n);
+void read_directory(int* n, unsigned long long** fileSizes, char*** fileNames, WIN32_FIND_DATA  FindFileData, char directoryPath[]);
+
 void bubbleSort(char* names[], unsigned long long sizes[], int n, int increasing);
 void fastSort(char* names[], unsigned long long sizes[], int start, int end, int increasing);
 void mergeSort(char* names[], char* namesb[], unsigned long long sizes[], unsigned long long sizesb[], int start, int end, int increasing);
@@ -13,17 +17,16 @@ void insertsSort(char* names[], unsigned long long sizes[], int n, int increasin
 
 int main() {
 	WIN32_FIND_DATA  FindFileData;
-	HANDLE hFind;
 	char **fileNames, **fileNamesB;
 	unsigned long long *fileSizes, *fileSizesB;
 	int n,i, increasing, userSelect,sorted;
 	char directoryPath[MAX_PATH];
-	clock_t start_time;
+	clock_t work_time;
 
 	setlocale(LC_ALL,"RUS");
 
 	while (1) {
-		do {
+		/*do {
 			printf("введите директорию (0 - выход): ");
 			//gets(directoryPath);
 			fgets(directoryPath, MAX_PATH, stdin);
@@ -33,75 +36,69 @@ int main() {
 			hFind = FindFirstFileA(directoryPath, &FindFileData);
 			if (hFind == INVALID_HANDLE_VALUE) printf("директория не найдена... (убедитесь, что она не содержит кириллицы)\n");
 
-		} while (hFind == INVALID_HANDLE_VALUE);
+		} while (hFind == INVALID_HANDLE_VALUE);*/
 
-		n = 0;
-		do {
-			if (strcmp(FindFileData.cFileName, ".") != 0 && strcmp(FindFileData.cFileName, "..") != 0 && !(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) n++;
-		} while (FindNextFileA(hFind, &FindFileData) != 0);
+		if (input_directory(directoryPath,&FindFileData)) return 0;
 
-
-		fileNames = (char**)malloc(n * sizeof(char*));
-		fileSizes = (unsigned long long*)malloc(n * sizeof(unsigned long long));
-		hFind = FindFirstFileA(directoryPath, &FindFileData);
-
-		i = 0;
-		do {
-			if (strcmp(FindFileData.cFileName, ".") != 0 && strcmp(FindFileData.cFileName, "..") != 0 && !(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
-				size_t len = strlen(FindFileData.cFileName) + 1;
-				fileNames[i] = malloc(len);
-				memcpy(fileNames[i], FindFileData.cFileName, len);
-				fileSizes[i] = ((unsigned long long)FindFileData.nFileSizeHigh << 32)
-					| FindFileData.nFileSizeLow;
-				i++;
-			}
-		} while (FindNextFileA(hFind, &FindFileData) != 0);
-
+		read_directory(&n, &fileSizes, &fileNames, FindFileData, directoryPath);
+		
+		print_files(fileSizes, fileNames, n);
 
 
 		printf("сортировать по 1-убыванию, 2-возрастанию: "); scanf_s("%d", &increasing);
-		while (increasing < 0 || increasing > 2) { 
+		while (increasing < 1 || increasing > 2) { 
 			while(getchar() != '\n');
 			printf("не коректный ввод, сортировать по 1-убыванию, 2-возрастанию: "); 
 			scanf_s("%d", &increasing); 
-		}
-
-		if (increasing == 0){
-			for (i = 0; i < n; i++)
-			{
-				free(fileNames[i]);
-			}
-			free(fileNames);
-			free(fileSizes);
-			return 0;
 		}
 
 		do {
 			printf("выберите метод сортировки (1-пузырьком, 2-быстрая, 3-простая, 4-выбором, 5-слиянием, 6-вставками): "); scanf_s("%d", &userSelect);
 			switch (userSelect)
 			{
-			case 1: start_time = clock(); bubbleSort(fileNames, fileSizes, n, increasing); break;
-			case 2: start_time = clock(); fastSort(fileNames, fileSizes, 0, n - 1, increasing); break;
-			case 3: start_time = clock(); simpleSort(fileNames, fileSizes, n, increasing); break;
-			case 4: start_time = clock(); selectSort(fileNames, fileSizes, n, increasing); break;
-			case 5: start_time = clock();
+			case 1:
+				work_time = clock();
+				bubbleSort(fileNames, fileSizes, n, increasing);
+				work_time = clock() - work_time;
+				break;
+			case 2:
+				work_time = clock();
+				fastSort(fileNames, fileSizes, 0, n - 1, increasing);
+				work_time = clock() - work_time;
+				break;
+			case 3:
+				work_time = clock();
+				simpleSort(fileNames, fileSizes, n, increasing);
+				work_time = clock() - work_time;
+				break;
+			case 4:
+				work_time = clock();
+				selectSort(fileNames, fileSizes, n, increasing);
+				work_time = clock() - work_time;
+				break;
+			case 5:
 				fileNamesB = (char**)malloc(n * sizeof(char*));
 				fileSizesB = (unsigned long long*)malloc(n * sizeof(unsigned long long));
+				work_time = clock();
 				mergeSort(fileNames, fileNamesB, fileSizes, fileSizesB, 0, n - 1, increasing);
-				free(fileNamesB); free(fileSizesB); break;
-			case 6: start_time = clock(); insertsSort(fileNames, fileSizes, n, increasing); break;
-			default: printf("не коректный ввод, "); while(getchar() != '\n');  break;
+				work_time = clock() - work_time;
+				free(fileNamesB); free(fileSizesB);
+				break;
+			case 6:
+				work_time = clock();
+				insertsSort(fileNames, fileSizes, n, increasing);
+				work_time = clock() - work_time;
+				break;
+			default:
+				printf("не коректный ввод, ");
+				while(getchar() != '\n'); 
+				break;
 			}
 		} while (userSelect < 1 || userSelect > 6);
 
-		start_time = clock() - start_time;
+		print_files(fileSizes, fileNames, n);
 
-		for (i = 0; i < n; i++)
-		{
-			printf("имя файла: %50s| размер файла: %lld bytes\n", fileNames[i], fileSizes[i]);
-		}
-
-		printf("время: %.3f секунд\n", (double)start_time / CLOCKS_PER_SEC);
+		printf("время: %.3f секунд\n", (double)work_time / CLOCKS_PER_SEC);
 
 		for (i = 0; i < n; i++)
 		{
@@ -114,6 +111,62 @@ int main() {
 
 	return 0;
 }
+void read_directory(int*n, unsigned long long** fileSizes, char*** fileNames, WIN32_FIND_DATA  FindFileData, char directoryPath[]) {
+	HANDLE hFind;
+	int i = 0;
+
+	hFind = FindFirstFileA(directoryPath, &FindFileData);
+	*n = 0;
+
+	do {
+		if (strcmp(FindFileData.cFileName, ".") != 0 && strcmp(FindFileData.cFileName, "..") != 0 &&
+			!(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) (*n)++;
+	} while (FindNextFileA(hFind, &FindFileData) != 0);
+
+
+	*fileNames = (char**)malloc(*n * sizeof(char*));
+	*fileSizes = (unsigned long long*)malloc(*n * sizeof(unsigned long long));
+	hFind = FindFirstFileA(directoryPath, &FindFileData);
+
+	do {
+		if (strcmp(FindFileData.cFileName, ".") != 0 && strcmp(FindFileData.cFileName, "..") != 0 &&
+			!(FindFileData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+			size_t len = strlen(FindFileData.cFileName) + 1;
+			(*fileNames)[i] = malloc(len);
+			memcpy((*fileNames)[i], FindFileData.cFileName, len);
+			(*fileSizes)[i] = ((unsigned long long)FindFileData.nFileSizeHigh << 32)
+				| FindFileData.nFileSizeLow;
+			i++;
+		}
+	} while (FindNextFileA(hFind, &FindFileData) != 0);
+}
+
+void print_files(unsigned long long* fileSizes, char** fileNames,int n) {
+	int i;
+	if (n <= 20) {
+		for (i = 0; i < n; i++)
+		{
+			printf("имя файла: %50s| размер файла: %lld bytes\n", fileNames[i], fileSizes[i]);
+		}
+	}
+	printf("Число файлов: %d\n", n);
+}
+int input_directory(char directoryPath[], WIN32_FIND_DATA* FindFileData) {
+
+	HANDLE hFind;
+	do {
+		printf("введите директорию (0 - выход): ");
+		fgets(directoryPath, MAX_PATH, stdin);
+		directoryPath[strlen(directoryPath) - 1] = '\0';
+		if (strcmp(directoryPath, "0") == 0) return 1;
+		strcat_s(directoryPath, sizeof(char) * MAX_PATH, "\\*");
+		hFind = FindFirstFileA(directoryPath, FindFileData);
+		if (hFind == INVALID_HANDLE_VALUE) printf("директория не найдена... (убедитесь, что она не содержит кириллицы)\n");
+
+	} while (hFind == INVALID_HANDLE_VALUE);
+	return 0;
+}
+
 void swap(char* names[], unsigned long long sizes[],int ind1, int ind2) {
 	char* tmpN;
 	unsigned long long tmpS;
