@@ -27,6 +27,8 @@ void quick_sort_files(int* FileSize, int* PoridokList, int first, int last);
 
 void printf_hand(int cnt_files, int* FileSize, int* PoridokList, char** FileName, int res);
 
+void print_files(int cnt_files, int* FileSize, int* PoridokList, char** FileName, int status);
+
 
 int main() {	
 	char user;
@@ -42,8 +44,8 @@ int main() {
 		user_answer(&user, '1');
 		if (user == '1') {
 			int cnt_files = 0, flag;
-			int* FileSize; 
-			char** FileName;			
+			int* FileSize;
+			char** FileName;	
 			flag = read_and_print_files(&cnt_files, &FileSize, &FileName);
 
 			if (flag) {
@@ -136,6 +138,18 @@ int main() {
 	return 0;
 }
 
+void print_files(int cnt_files, int* FileSize, int* PoridokList, char** FileName) {
+
+	if (cnt_files < 100) {
+		printf("\n Размер() |  Названние\n");
+		for (int i = 0; i < cnt_files; i++) {
+			printf("----------|-------------------\n");
+			printf("   %-7lld| ", FileSize[i]);
+			printf(" %s \n", FileName[PoridokList[i]]);
+		}
+	}
+
+}
 
 int is_directory_windows(const char* path) {
 	DWORD attributes = GetFileAttributesA(path);
@@ -226,8 +240,6 @@ int read_and_print_files(int* cnt_files, int** FileSize, char*** FileName) {
 
 			system("cls");
 			printf("Директория| %s\n\n", file_way);
-			printf(" Размер(КБ) |  Название\n");
-			printf("------------|-------------------\n");
 
 			do {
 				if (strcmp(find_file_data.cFileName, ".") == 0 ||
@@ -242,12 +254,9 @@ int read_and_print_files(int* cnt_files, int** FileSize, char*** FileName) {
 
 				strcpy_s((*FileName)[i], strlen(find_file_data.cFileName) + 1, find_file_data.cFileName);
 				(*FileSize)[i] = (int)((((LONGLONG)find_file_data.nFileSizeHigh << 32) | find_file_data.nFileSizeLow + 1023) / 1024);
-
-				printf("    %-7d | %s\n", (*FileSize)[i], (*FileName)[i]);
-				printf("------------|-------------------\n");
+				
 				i++;
 			} while (FindNextFileA(hFind, &find_file_data));
-
 			FindClose(hFind);
 
 			printf("Всего файлов: %d\n\n", file_count);
@@ -410,12 +419,7 @@ void quick_sort_files(int* FileSize, int* PoridokList, int first, int last) {
 }
 
 void printf_hand(int cnt_files,int* FileSize, int* PoridokList, char** FileName, int res) {
-	printf("Время сортировки: %.6f\n", (double)(res) / CLOCKS_PER_SEC);
-	printf("\n Размер() |  Названние\n");
-	for (int i = 0; i < cnt_files; i++) {
-		printf("----------|-------------------\n");
-		printf("   %-7lld| ", FileSize[i]);
-		printf(" %s \n", FileName[PoridokList[i]]);
-	}
+	printf("Время сортировки: %.6f сек.\n", (double)(res) / CLOCKS_PER_SEC);
+	print_files(cnt_files, FileSize, PoridokList, FileName);
 	system("pause");
 }
