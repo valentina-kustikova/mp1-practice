@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#define _CRT_SECURE_NO_WARNINGS
 #define brange 4
 #define crange 100
 
