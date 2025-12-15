@@ -185,7 +185,7 @@ void executionSelectedSorting(int* selectedMethod, struct File* files, int n);
 
 void sortingCatalogRealization(int* selectedMethod, struct File* files, wchar_t* path, int count) {
     struct File* originalFiles = malloc(count * sizeof(struct File));
-    memmove(originalFiles, files, count * sizeof(struct File));
+    memcpy(originalFiles, files, count * sizeof(struct File));
 
     while (1) {
         int operation, i;
@@ -194,9 +194,9 @@ void sortingCatalogRealization(int* selectedMethod, struct File* files, wchar_t*
         printf("Найдено %d файлов:\n\n", count);
         wprintf(L"Сортировка каталога \"%s\" ", path);
         printf("методом \"%s\"\n", getNameSort(*selectedMethod));
-        memmove(files, originalFiles, count * sizeof(struct File));
+        memcpy(files, originalFiles, count * sizeof(struct File));
         executionSelectedSorting(selectedMethod, files, count);
-        for (i = 0; i < count; i++) {
+        if (count < 10) for (i = 0; i < count; i++) {
             wprintf(L"%d. %ls - %lld байт\n", i + 1, files[i].name, files[i].size);
         }
 
@@ -231,24 +231,29 @@ void executionSelectedSorting(int* selectedMethod, struct File* files, int n) {
     float elapsed_ms;
     struct File* tmp = *selectedMethod == 6 ? malloc(n * sizeof(struct File)) : NULL;
     
-    timespec_get(&start, TIME_UTC);
 	switch (*selectedMethod) {
 		case 1: 
+            timespec_get(&start, TIME_UTC);
 			sortEasy(files, n);
 			break;
-		case 2: 
+		case 2:
+            timespec_get(&start, TIME_UTC);
 			sortSelectMax(files, n);
 			break;
-		case 3: 
+		case 3:
+            timespec_get(&start, TIME_UTC);
 			sortPastes(files, n);
 			break;
-		case 4: 
+		case 4:
+            timespec_get(&start, TIME_UTC);
 			sortBubble(files, n);
 			break;
-		case 5: 
+		case 5:
+            timespec_get(&start, TIME_UTC);
 			quickSort(files, 0, n - 1);
 			break;
 		case 6:
+            timespec_get(&start, TIME_UTC);
 			mergeSort(files, 0, n - 1, tmp);
 			break;
 	}
@@ -259,7 +264,7 @@ void executionSelectedSorting(int* selectedMethod, struct File* files, int n) {
     elapsed_ms = seconds * 1000.0 + nanoseconds / 1000000.0;
 	
 	printf("Сортировка заняла %.2f мс\n\n", elapsed_ms);
-    free(tmp);
+    if (tmp != NULL) free(tmp);
 }
 
 void swap(struct File* a, struct File* b) {
