@@ -14,6 +14,7 @@ void insertion_sort(char** names, int* sizes, int count, int order);
 void bubble_sort(char** names, int* sizes, int count, int order);
 void merge_sort(char** names, int* sizes, int count, int order, int l, int r);
 void merge(char** names, int* sizes, int order, int l, int m, int r);
+void quick_sort(char** names, int* sizes, int count, int order);
 
 
 int main() {
@@ -40,7 +41,7 @@ int main() {
 	}
 
 	do {
-		if (strcmp(data.cFileName, ".") == 0 || strcmp(data.cFileName, "..") == 0)
+		if (strcmp(data.cFileName, ".") == 0 || strcmp(data.cFileName, "..") == 0 || count > MAXAMOUNT)
 			continue;
 
 		printf("Found file: %s\n", data.cFileName);
@@ -55,6 +56,9 @@ int main() {
 	FindClose(find);
 
 	while (1) {
+		clock_t start;
+		clock_t end;
+		double time_spent;
 		printf("\nSelect sorting choice: \n");
 		printf("1 - selection\n");
 		printf("2 - insertion\n");
@@ -71,22 +75,35 @@ int main() {
 
 		switch (choice) {
 			case 1:
+				start = clock();
 				selection_sort(names, sizes, count, order);
+				end = clock();
+				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
 				break;
 			case 2:
+				start = clock();
 				insertion_sort(names, sizes, count, order);
+				end = clock();
+				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
 				break;
 			case 3:
+				start = clock();
 				bubble_sort(names, sizes, count, order);
+				end = clock();
+				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
 				break;
 			case 4:
+				start = clock();
 				merge_sort(names, sizes, count, order, 0, count - 1);
+				end = clock();
+				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
 				break;
 			default:
 				printf("Incorrect choice!\n");
 		}	
 		
 		print_files(names, sizes, count);
+		printf("\nSorting completed in %.9f seconds\n", time_spent);
 	}
 
 	for (i = 0; i < count; i++) {
@@ -251,3 +268,5 @@ void merge(char** names, int* sizes, int order, int l, int m, int r) {
 	free(Lnames);
 	free(Rnames);
 }
+
+
