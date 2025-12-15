@@ -48,6 +48,7 @@ int main() {
 
 			if (flag) {
 				int* PoridokList = (int*)malloc(cnt_files * sizeof(int));
+				clock_t start, end;
 				for (int i = 0; i < cnt_files; i++) {
 					PoridokList[i] = i;
 				}
@@ -64,7 +65,7 @@ int main() {
 				user_answer(&user, '6');
 				printf("\n");
 
-				clock_t start, end;
+				
 				if (user == '1') {
 					start = clock();
 					simple_sort(cnt_files, FileSize, PoridokList); 
