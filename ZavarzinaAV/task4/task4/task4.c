@@ -12,7 +12,7 @@ void scan_products(char ba[N][5], char product[N][20], int price[N], int sale[N]
 		printf("¬ведите штрих код товара: \n");
 		scanf_s("%s", b, (unsigned)sizeof(b));
 		
-		if (strcmp(b, "0") == 0) break;
+		/*if (strcmp(b, "0") == 0) break;
 
 		for (int i = 0; i < N; i++) {
 			if (strcmp(b, ba[i])== 0){
@@ -22,10 +22,38 @@ void scan_products(char ba[N][5], char product[N][20], int price[N], int sale[N]
 				printf("название товара: %s\n", product[i]);
 				printf("цена: %d\n", price[i]);
 				printf("скидка: %d\n", sale[i]);
+			}*/
+
+		if (b[0] == '0' && b[1] == '\0') {
+			break;
+		}
+	
+		for (int i = 0; i < N; i++) {
+			int j = 0;
+			int e = 1;
+
+			while (b[j] != '\0' && ba[i][j] != '\0') {
+				if (b[j] != ba[i][j]) {
+					e = 0;
+					break;
+				}
+				j++;
+			}
+			
+			if (b[j] != '\0' || ba[i][j] != '\0') {
+				e = 0;
+			}
+
+			if (e) {
+				count[i]++;
+				printf("штрих-код: %s\n", b);
+				printf("название товара: %s\n", product[i]);
+				printf("цена: %d\n", price[i]);
+				printf("скидка: %d\n", sale[i]);
+				break;
 			}
 		}
 	} while (1);
-
 }
 
 int main() {
@@ -38,7 +66,7 @@ int main() {
 	char product[N][20] = {"€блоки (кг)", "арбуз", "апельсины(кг)", "дын€", "бананы(кг)", "кабачки(кг)", "перцы(кг)", "огурцы(кг)", "помидоры(кг)", "баклажаны(кг)"};
 	int price[N] = { 200, 500, 100, 600, 150, 170, 220, 130, 300, 450 };
 	int sale[N] = { 7, 10, 5, 15, 7, 12, 5, 25, 75, 50 };
-	int count[N] = { 0 }; //количество раз отсканированного товара 
+	int count[N] = { 0 }; 
 
 	setlocale(LC_ALL, "");
 
