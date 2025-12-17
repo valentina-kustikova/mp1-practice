@@ -28,7 +28,7 @@ int main() {
 		char ans = 'n';
 		int low = 0;
 		int up = 1001;
-		while (ans != '=') {
+		do {
 			int try = low + rand() % (up - low + 1);
 			printf("%d", try);
 			scanf_s(" %c", &ans);
@@ -39,7 +39,7 @@ int main() {
 			if (ans == '<') {
 				up = try;
 			};
-		}
+		} while (ans != '=');
 		printf("ura im ugadal za %d popitok", c);
 	}
 	return 0;
