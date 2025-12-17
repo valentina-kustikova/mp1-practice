@@ -10,7 +10,7 @@ int main() {
 		int x = 1 + rand() % (1000);
 		int dog = 0;
 		int c = 0;
-		while (dog != x) {
+		do {
 			scanf_s("%d", &dog);
 			c += 1;
 			if (dog > x) {
@@ -19,7 +19,7 @@ int main() {
 			if (dog < x) {
 				printf("bolshe");
 			}
-		}
+		} while (dog != x);
 		printf("ugadal za %d popitok!", c);
 	}
 	else {
