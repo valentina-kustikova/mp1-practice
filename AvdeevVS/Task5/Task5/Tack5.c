@@ -247,20 +247,46 @@ void Ans (int cnt, int* size, int* ind, char** name,double t) {
   }
   printf("Execution time - %.6f nanoseconds\n", t);
 }
+void Switch(int fl, int cnt, int* ind, double* tt, int* size, int* arr,int* iarr,int* bb,int* pp) {
+	switch (fl) {
+	case 1:
+		BubbleSort(cnt, size, ind, tt);
+		break;
+	case 2:
+		InsertSort(cnt, size, ind, tt);
+		break;
+	case 3:
+		Msort(cnt, size, ind, arr, iarr, tt);
+		break;
+	case 4:
+		SimpleSort(cnt, size, ind, tt);
+		break;
+	case 5:
+		ChoiceSort(cnt, size, ind, tt);
+		break;
+	case 6:
+		Hsort(cnt, size, ind, tt);
+		break;
+	case 7:
+		(*bb) = 0;
+		printf("The end!");
+		(*pp) = 0;
+		break;
+	default:
+		printf("Fatal -- There is no sorting with a given number\n");
+		(*pp) = 0;
+	}
+}
 int main() {
-	unsigned int max = 0;
+	unsigned int max = 0,p=1;
 	unsigned int* ma = &max;
   double t;
   double* tt = &t;
-  int* arr;
-  int* iarr;
-	int* size;
-	int* ind;
+  int* arr; int* iarr;	int* size;	int* ind;	int* cl;
 	char** name;
 	char* locale = setlocale(LC_ALL, "");
 	int cnt = 0, fl, b = 1,i;
-  int* cn = &cnt;
-	int* cl;
+	int* bb = &b;	int* pp = &p; int* cn = &cnt;
 	char ad[T];
 	StartProv(cn, ad,ma);
 	size = (int*)malloc(cnt * sizeof(int));
@@ -277,34 +303,12 @@ int main() {
 	Print_and_Protect(cnt,cl,size);
 	while (b != 0) {
 		scanf("%d", &fl);
-		switch (fl) {
-		case 1:
-			BubbleSort(cnt, size, ind, name);			
-			break;
-		case 2:
-			InsertSort(cnt, size, ind, name);
-			break;
-		case 3:
-			Msort(cnt, size, ind, name,arr,iarr);
-			break;
-		case 4:
-			SimpleSort(cnt, size, ind, name);
-			break;
-		case 5:
-			ChoiceSort(cnt, size, ind, name);
-			break;
-		case 6:
-			Hsort(cnt, size, ind, name);
-			break;
-		case 7:
-			b = 0;
-			printf("The end!");
-			break;
-		default:
-			printf("Fatal -- There is no sorting with a given number\n");
+		Switch(fl, cnt, ind, tt, size, arr, iarr, bb, pp);
+		if (p != 0) {
+			Ans(cnt, size, ind, name, t);
+			Clean(cnt, cl, size, ind);
 		}
-    Ans(cnt, size, ind, name,t);
-    Clean(cnt, cl, size, ind);
+		p = 1;
 	}
   free(arr);
   free(iarr);
