@@ -9,7 +9,7 @@
 //E:\school\2 class
 //E:\school\1 - 2
 //E:\school\4class
-
+//C:\Windows\System32
 struct FileInfo {		 // создаю структуру - тип данных, который хранит несколько переменных разныъ типов. Описывает файлы: имя и их размер
 	char name[256];
 	long long size;
@@ -31,12 +31,13 @@ void recursion_merge(struct FileInfo files[], int l, int r, int order);
 void recursion_quick(struct FileInfo files[], int first, int last, int order);
 void quick_sort(struct FileInfo files[], int n, int order);
 
-void sorted_print(struct FileInfo files[], int count, int sort_type, double time);
-
+void sorted_print(struct FileInfo files[], int count, int sort_type);
+void print_time_to_sort(double time);
 
 int main() {
 	char user_path[261];	//макс размер пути 260, + 1 символ для нуля
-	int is_true = 1, sort_num, sort_order;
+	char breaker[] = "0";
+	int is_true = 1, sort_num, sort_order, c;
 	struct FileInfo* files = NULL;
 
 	LARGE_INTEGER start_time, end_time, frequency;
@@ -44,7 +45,7 @@ int main() {
 
 	setlocale(LC_ALL, "rus");
 
-	do {
+	do { 
 		printf("Введите путь до директории: "); fgets(user_path, sizeof(user_path), stdin);  /* stdin - значит читаем с клавиатуры,
 																								sizeof-макс колво символов для чтения,
 																								функция не может изменить строку */
@@ -52,6 +53,7 @@ int main() {
 		if (strlen(user_path) > 0 && user_path[strlen(user_path) - 1] == '\n') {	//убираем символ '\n' в конце user_path
 			user_path[strlen(user_path) - 1] = '\0';
 		}
+		if (strcmp(user_path, breaker)==0) break;
 
 		if (strlen(user_path) == 0) {
 			printf("Путь не может быть пустым!\n\n");
@@ -77,8 +79,9 @@ int main() {
 
 		//чтение файлов по веденной директории
 		int file_count = directory_reader(user_path, files); // колво файлов в директории
+
 		if (file_count == 0) {
-			printf("По введенному пути к директории не нашлось файлов!\n\n");
+			printf("По введенному пути к директории не нашлось файлов\n\n");
 			free(files);
 			files = NULL;
 			continue;
@@ -89,8 +92,8 @@ int main() {
 
 
 		printf("1. Простейшая сортировка\n2. Сортировка выбором\n3. Сортировка вставками\n4. Пузырьковая сортировка\n5. Сортировка слиянием\n6. Быстрая сортировка\nВведите номер сортировки:"); scanf_s("%d", &sort_num);
-		int c;
-		while ((c = getchar()) != '\n' && c != EOF);
+		
+		//while ((c = getchar()) != '\n' && c != EOF);
 		while (sort_num < 1 || sort_num>6) {
 			printf("Введите верный номер: "); scanf_s("%d", &sort_num);
 		}
@@ -99,41 +102,56 @@ int main() {
 
 		printf("Выберите порядок сортировки:\n1. По возрастанию\n2. По убыванию\n");
 		scanf_s("%d", &sort_order);
-		while ((c = getchar()) != '\n' && c != EOF);
+		//while ((c = getchar()) != '\n' && c != EOF);
 		while (sort_order != 1 && sort_order != 2) {
 			printf("Введите 1 или 2: ");
 			scanf_s("%d", &sort_order);
-			while ((c = getchar()) != '\n' && c != EOF);
+			//while ((c = getchar()) != '\n' && c != EOF);
 		}
 
 
 
 		QueryPerformanceFrequency(&frequency);
-		QueryPerformanceCounter(&start_time);
+	
 
-		if (sort_num == 1) {
-			simple_sort(files, file_count, sort_order);
+		switch (sort_num) {
+			case 1:
+				QueryPerformanceCounter(&start_time);
+				simple_sort(files, file_count, sort_order);
+				QueryPerformanceCounter(&end_time);
+				break;
+			case 2:
+				QueryPerformanceCounter(&start_time);
+				choice_sort(files, file_count, sort_order);
+				QueryPerformanceCounter(&end_time);
+				break;
+			case 3:
+				QueryPerformanceCounter(&start_time);
+				insert_sort(files, file_count, sort_order);
+				QueryPerformanceCounter(&end_time);
+				break;
+			case 4:
+				QueryPerformanceCounter(&start_time);
+				bubble_sort(files, file_count, sort_order);
+				QueryPerformanceCounter(&end_time);
+				break;
+			case 5:
+				QueryPerformanceCounter(&start_time);
+				merge_sort(files, file_count, sort_order);
+				QueryPerformanceCounter(&end_time);
+				break;
+			case 6:
+				QueryPerformanceCounter(&start_time);
+				quick_sort(files, file_count, sort_order);
+				QueryPerformanceCounter(&end_time);
+				break;
 		}
-		else if (sort_num == 2) {
-			choice_sort(files, file_count, sort_order);
-		}
-		else if (sort_num == 3) {
-			insert_sort(files, file_count, sort_order);
-		}
-		else if (sort_num == 4) {
-			bubble_sort(files, file_count, sort_order);
-		}
-		else if (sort_num == 5) {
-			merge_sort(files, file_count, sort_order);
-		}
-		else if (sort_num == 6) {
-			quick_sort(files, file_count, sort_order);
-		}
-		QueryPerformanceCounter(&end_time);
+
+		
 		time = (double)(end_time.QuadPart - start_time.QuadPart) * 1000.0 / frequency.QuadPart;
 		
-
-		sorted_print(files, file_count, sort_num, time);
+		if (file_count<20) sorted_print(files, file_count, sort_num);
+		print_time_to_sort(time);
 
 		free(files);
 		files = NULL;
@@ -373,7 +391,7 @@ int directory_reader(char user_path[], struct FileInfo files[]) {		//files[] - э
 	return count;	 //возвращение кол-ва файлов в директории
 }
 
-void sorted_print(struct FileInfo files[], int count, int sort_type, double time) {
+void sorted_print(struct FileInfo files[], int count, int sort_type) {
 	printf("\n----- ОТСОРТИРОВАННЫЕ ФАЙЛЫ -----\n");
 	printf("%-40s %15s\n", "Имя файла", "Размер (байт)");
 	printf("----------------------------------------|-----------------\n");
@@ -383,5 +401,8 @@ void sorted_print(struct FileInfo files[], int count, int sort_type, double time
 	printf("----------------------------------------|-----------------\n");
 
 	printf("Метод сортировки: %d\n", sort_type);
-	printf("Время сортировки: %.3f секунд\n", time);
+}
+
+void print_time_to_sort(double time) {
+	printf("Время сортировки: %.3f мс\n", time);
 }
