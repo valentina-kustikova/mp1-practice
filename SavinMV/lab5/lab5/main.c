@@ -9,7 +9,8 @@ typedef struct {
     char* name;
     unsigned long long size;
 } FileInfo;
-
+FileInfo* readFilesFromDirectory(const char* searchPattern, int* outCount);
+void simpleSort(FileInfo arr[], int n);
 void swap(FileInfo* a, FileInfo* b);
 void bubbleSort(FileInfo arr[], int n);
 void insertionSort(FileInfo arr[], int n);
@@ -49,44 +50,15 @@ int main(void)
 
     int capacity = 10;
     int count = 0;
-    FileInfo* originalFiles = (FileInfo*)malloc(capacity * sizeof(FileInfo));
+    FileInfo* originalFiles = readFilesFromDirectory(directory, &count);
     if (!originalFiles) {
         printf("Ошибка\n");
         free(directory);
         return 1;
     }
 
-    do {
-        if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-            continue;
-
-        if (count >= capacity) {
-            capacity *= 2;
-            FileInfo* temp = (FileInfo*)realloc(originalFiles, capacity * sizeof(FileInfo));
-            if (!temp) {
-                printf("Ошибка\n");
-                freeFiles(originalFiles, count);
-                free(directory);
-                FindClose(hFind);
-                return 1;
-            }
-            originalFiles = temp;
-        }
-
-        size_t nameLen = strlen(findData.cFileName);
-        originalFiles[count].name = (char*)malloc(nameLen + 1);
-        if (!originalFiles[count].name) {
-            printf("Ошибка\n");
-            freeFiles(originalFiles, count);
-            free(directory);
-            FindClose(hFind);
-            return 1;
-        }
-        strcpy(originalFiles[count].name, findData.cFileName);
-
-        originalFiles[count].size = ((unsigned long long)findData.nFileSizeHigh << 32) | findData.nFileSizeLow;
-        count++;
-    } while (FindNextFileA(hFind, &findData));
+    
+    
 
     FindClose(hFind);
     free(directory);
@@ -106,6 +78,7 @@ int main(void)
         printf("3. Сортировка выбором (Selection Sort)\n");
         printf("4. Быстрая сортировка (Quick Sort)\n");
         printf("5. Сортировка слиянием (Merge Sort)\n");
+        printf("6. Простейшая сортировка (Simple Sort)\n");
         printf("0. Выйти из программы\n");
         printf("Ваш выбор (0-5): ");
 
@@ -129,42 +102,62 @@ int main(void)
         double t_ms;
 
         QueryPerformanceFrequency(&freq);
-        QueryPerformanceCounter(&start);
+        
 
 
         switch (choice) {
         case 1:
+            QueryPerformanceCounter(&start);
             bubbleSort(workingCopy, count);
+            QueryPerformanceCounter(&end);
             printf("\nПузырьковая сортировка\n");
+            
             break;
         case 2:
+            QueryPerformanceCounter(&start);
             insertionSort(workingCopy, count);
+            QueryPerformanceCounter(&end);
             printf("\nСортировка вставками\n");
+            
             break;
         case 3:
+            QueryPerformanceCounter(&start);
             selectionSort(workingCopy, count);
+            QueryPerformanceCounter(&end);
             printf("\nСортировка выбором\n");
+            
             break;
         case 4:
+            QueryPerformanceCounter(&start);
             quickSort(workingCopy, 0, count - 1);
+            QueryPerformanceCounter(&end);
             printf("\nБыстрая сортировка\n");
+            
             break;
         case 5:
+            QueryPerformanceCounter(&start);
             mergeSort(workingCopy,0, count-1);
+            QueryPerformanceCounter(&end);
             printf("\nСортировка слиянием\n");
+            break;
+        case 6:
+            QueryPerformanceCounter(&start);
+            simpleSort(workingCopy, count);
+            QueryPerformanceCounter(&end);
+            printf("\nПростейшая сортировка\n");
             break;
         default:
             printf("Неверный выбор.\n");
             freeFiles(workingCopy, count);
             continue;
         }
-        QueryPerformanceCounter(&end);
+        
         t_ms = (double)(end.QuadPart - start.QuadPart) / freq.QuadPart * 1000.0;
-
-        for (int i = 0; i < count; i++) {
-            printf("Файл: %s, Размер: %llu байт\n", workingCopy[i].name, workingCopy[i].size);
+        if (count < 20) {
+            for (int i = 0; i < count; i++) {
+                printf("Файл: %s, Размер: %llu байт\n", workingCopy[i].name, workingCopy[i].size);
+            }
         }
-
         printf("\n Время сортировки: %.3f мс\n", t_ms);
 
         freeFiles(workingCopy, count);
@@ -201,15 +194,23 @@ void insertionSort(FileInfo arr[], int n) {
 }
 
 void selectionSort(FileInfo arr[], int n) {
+    if (n <= 1) return;
+
     for (int i = 0; i < n - 1; i++) {
         int minIdx = i;
+        unsigned long long minSize = arr[i].size;
+
         for (int j = i + 1; j < n; j++) {
-            if (arr[j].size < arr[minIdx].size) {
+            unsigned long long currentSize = arr[j].size;
+            if (currentSize < minSize) {
+                minSize = currentSize;
                 minIdx = j;
             }
         }
         if (minIdx != i) {
-            swap(&arr[i], &arr[minIdx]);
+            FileInfo temp = arr[i];
+            arr[i] = arr[minIdx];
+            arr[minIdx] = temp;
         }
     }
 }
@@ -314,6 +315,9 @@ FileInfo* copyFiles(const FileInfo* src, int n) {
 }
 void freeFiles(FileInfo* files, int n) {
     if (!files) return;
+    for (int i = 0; i < n; i++) {
+        free(files[i].name);
+    }
     free(files);
 }
 char* appendWildcard(const char* input) {
@@ -335,4 +339,77 @@ char* appendWildcard(const char* input) {
         }
     }
     return result;
+}
+
+FileInfo* readFilesFromDirectory(const char* searchPattern, int* outCount) {
+    if (!searchPattern || !outCount) {
+        return NULL;
+    }
+
+    WIN32_FIND_DATA findData;
+    HANDLE hFind = FindFirstFileA(searchPattern, &findData);
+    if (hFind == INVALID_HANDLE_VALUE) {
+        *outCount = 0;
+        return NULL;
+    }
+
+    int capacity = 10;
+    int count = 0;
+    FileInfo* files = (FileInfo*)malloc(capacity * sizeof(FileInfo));
+    if (!files) {
+        FindClose(hFind);
+        *outCount = 0;
+        return NULL;
+    }
+
+    do {
+        if (findData.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
+            continue;
+        }
+
+        if (count >= capacity) {
+            capacity *= 2;
+            FileInfo* temp = (FileInfo*)realloc(files, capacity * sizeof(FileInfo));
+            if (!temp) {
+                for (int i = 0; i < count; i++) {
+                    free(files[i].name);
+                }
+                free(files);
+                FindClose(hFind);
+                *outCount = 0;
+                return NULL;
+            }
+            files = temp;
+        }
+
+        size_t nameLen = strlen(findData.cFileName);
+        files[count].name = (char*)malloc(nameLen + 1);
+        if (!files[count].name) {
+            for (int i = 0; i < count; i++) {
+                free(files[i].name);
+            }
+            free(files);
+            FindClose(hFind);
+            *outCount = 0;
+            return NULL;
+        }
+        strcpy_s(files[count].name, nameLen + 1, findData.cFileName);
+
+        files[count].size = ((unsigned long long)findData.nFileSizeHigh << 32) | findData.nFileSizeLow;
+        count++;
+
+    } while (FindNextFileA(hFind, &findData));
+
+    FindClose(hFind);
+    *outCount = count;
+    return files;
+}
+void simpleSort(FileInfo arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            if (arr[i].size < arr[j].size) {
+                swap(&arr[i], &arr[j]);
+            }
+        }
+    }
 }
