@@ -4,9 +4,9 @@
 #include <windows.h>
 #include <time.h>
 
-#define MAXAMOUNT 200
 
-
+void scan_files(char* folderPath, char*** scannedNames, int** scannedSizes, int* count);
+void copy_files(char** scannedNames, int* scannedSizes, int count, char*** sortedNames, int** sortedSizes);
 void print_files(char** names, int* sizes, int count);
 
 void selection_sort(char** names, int* sizes, int count, int order);
@@ -14,57 +14,32 @@ void insertion_sort(char** names, int* sizes, int count, int order);
 void bubble_sort(char** names, int* sizes, int count, int order);
 void merge_sort(char** names, int* sizes, int count, int order, int l, int r);
 void merge(char** names, int* sizes, int order, int l, int m, int r);
-void quick_sort(char** names, int* sizes, int count, int order);
 
 
 int main() {
-	char path[256];
-	WIN32_FIND_DATAA data;
-	HANDLE find;
-	char** names = NULL;
-	int* sizes = NULL;
-	int count = 0;
-	int choice, order, i;
+	char folderPath[256];
+	char** scannedNames = NULL;
+	int* scannedSizes = NULL;
+	int i, count = 0;
 
 	printf("Enter catalogue path: ");
-	scanf_s("%s", path, 256);
-	strcat_s(path, sizeof(path), "\\*.*");
-	printf("Searching in: %s\n", path);
+	scanf_s("%s", folderPath, (unsigned)_countof(folderPath));
 
-	names = (char**)malloc(MAXAMOUNT * sizeof(char*));
-	sizes = (int*)malloc(MAXAMOUNT * sizeof(int));
-
-	find = FindFirstFileA(path, &data);
-	if (find == INVALID_HANDLE_VALUE) {
-		printf("Error opening catalogue");
+	scan_files(folderPath, &scannedNames, &scannedSizes, &count);
+	if (count == 0)
 		return 1;
-	}
-
-	do {
-		if (strcmp(data.cFileName, ".") == 0 || strcmp(data.cFileName, "..") == 0 || count > MAXAMOUNT)
-			continue;
-
-		printf("Found file: %s\n", data.cFileName);
-
-		names[count] = (char*)malloc(strlen(data.cFileName) + 1);
-		strcpy_s(names[count], strlen(data.cFileName) + 1, data.cFileName);
-
-		sizes[count] = data.nFileSizeLow;
-		count++;
-	} while (FindNextFileA(find, &data));
-
-	FindClose(find);
 
 	while (1) {
-		clock_t start;
-		clock_t end;
+		clock_t start, end;
+		int choice, order;
 		double time_spent;
+
 		printf("\nSelect sorting choice: \n");
 		printf("1 - selection\n");
 		printf("2 - insertion\n");
 		printf("3 - bubble\n");
 		printf("4 - merge\n");
-		printf("0 - exit programm\n");
+		printf("0 - exit\n");
 		scanf_s("%d", &choice);
 
 		if (choice == 0)
@@ -73,48 +48,116 @@ int main() {
 		printf("Select sording order: ascending (0) or descending (1) ");
 		scanf_s("%d", &order);
 
+		char** sortedNames; 
+		int* sortedSizes; 
+		copy_files(scannedNames, scannedSizes, count, &sortedNames, &sortedSizes);
+
 		switch (choice) {
 			case 1:
 				start = clock();
-				selection_sort(names, sizes, count, order);
+				selection_sort(sortedNames, sortedSizes, count, order);
 				end = clock();
 				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
 				break;
 			case 2:
 				start = clock();
-				insertion_sort(names, sizes, count, order);
+				insertion_sort(sortedNames, sortedSizes, count, order);
 				end = clock();
 				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
 				break;
 			case 3:
 				start = clock();
-				bubble_sort(names, sizes, count, order);
+				bubble_sort(sortedNames, sortedSizes, count, order);
 				end = clock();
 				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
 				break;
 			case 4:
 				start = clock();
-				merge_sort(names, sizes, count, order, 0, count - 1);
+				merge_sort(sortedNames, sortedSizes, count, order, 0, count - 1);
 				end = clock();
 				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
 				break;
 			default:
 				printf("Incorrect choice!\n");
+				continue;
 		}	
 		
-		print_files(names, sizes, count);
-		printf("\nSorting completed in %.9f seconds\n", time_spent);
+		print_files(sortedNames, sortedSizes, count);
+		printf("\nSorting completed in %.3f seconds\n", time_spent);
+
+		for (i = 0; i < count; i++) 
+			free(sortedNames[i]);
+		free(sortedNames);
+		free(sortedSizes);
 	}
 
-	for (i = 0; i < count; i++) {
-		free(names[i]);
-	}
-
-	free(names);
-	free(sizes);
+	for (i = 0; i < count; i++)
+		free(scannedNames[i]);
+	free(scannedNames);
+	free(scannedSizes);
 
 	return 0;
 }
+
+
+void scan_files(char* folderPath, char*** scannedNames, int** scannedSizes, int* count) {
+	WIN32_FIND_DATAA data;
+	HANDLE find;
+	char path[256];
+	int capacity = 10;
+	int fileCount = 0;
+
+	*scannedNames = (char**)malloc(capacity * sizeof(char*));
+	*scannedSizes = (int*)malloc(capacity * sizeof(int));
+
+	strcpy_s(path, sizeof(path), folderPath);
+	strcat_s(path, sizeof(path), "\\*.*");
+
+	find = FindFirstFileA(path, &data);
+	if (find == INVALID_HANDLE_VALUE) {
+		printf("Error opening catalogue\n");
+		*count = 0;
+		return;
+	}
+
+	do {
+		if (strcmp(data.cFileName, ".") == 0 || strcmp(data.cFileName, "..") == 0 || (data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY))
+			continue;
+
+		if (fileCount >= capacity) {
+			capacity *= 2;
+			*scannedNames = (char**)realloc(*scannedNames, capacity * sizeof(char*));
+			*scannedSizes = (int*)realloc(*scannedSizes, capacity * sizeof(int));
+		}
+
+		(*scannedNames)[fileCount] = (char*)malloc(strlen(data.cFileName) + 1);
+		strcpy_s((*scannedNames)[fileCount], strlen(data.cFileName) + 1, data.cFileName);
+
+		(*scannedSizes)[fileCount] = data.nFileSizeLow;
+		fileCount++;
+
+	} while (FindNextFileA(find, &data));
+
+	FindClose(find);
+	*count = fileCount;
+}
+
+
+
+void copy_files(char** scannedNames, int* scannedSizes, int count, char*** sortedNames, int** sortedSizes)
+{
+	*sortedNames = (char**)malloc(count * sizeof(char*));
+	*sortedSizes = (int*)malloc(count * sizeof(int));
+
+	int i;
+
+	for (i = 0; i < count; i++) {
+		(*sortedNames)[i] = (char*)malloc(strlen(scannedNames[i]) + 1);
+		strcpy_s((*sortedNames)[i], strlen(scannedNames[i]) + 1, scannedNames[i]);
+		(*sortedSizes)[i] = scannedSizes[i];
+	}
+}
+
 
 
 void print_files(char** names, int* sizes, int count) {
@@ -125,7 +168,6 @@ void print_files(char** names, int* sizes, int count) {
 }
 
 
-// Сортировка выбором
 void selection_sort(char** names, int* sizes, int count, int order) {
 	int i;
 	for (i = 0; i < count - 1; i++) {
@@ -148,7 +190,6 @@ void selection_sort(char** names, int* sizes, int count, int order) {
 }
 
 
-// Сортировка вставкой
 void insertion_sort(char** names, int* sizes, int count, int order) {
 	int i;
 	for (i = 1; i < count; i++) {
@@ -168,7 +209,6 @@ void insertion_sort(char** names, int* sizes, int count, int order) {
 }
 
 
-// Сортировка пузырьком
 void bubble_sort(char** names, int* sizes, int count, int order) {
 	int i, j;
 	for (i = 0; i < count - 1; i++) {
@@ -187,7 +227,6 @@ void bubble_sort(char** names, int* sizes, int count, int order) {
 }
 
 
-// Сортировка слиянием
 void merge_sort(char** names, int* sizes, int count, int order, int l, int r) {
 	int m;
 	if (l >= r)
