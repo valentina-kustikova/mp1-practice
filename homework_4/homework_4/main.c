@@ -1,70 +1,121 @@
 #include <stdio.h>
 #define N 5
 
+
+const int barcode[N][4] = { {1,2,3,4},{5,6,7,8},{9,0,1,2},{3,4,5,6},{7,8,9,0} };
+const char name[N][10] = { "product 1", "product 2", "product 3", "product 4", "product 5" };
+const int price[N] = { 100, 130, 15, 1000, 250 };
+const int sale[N] = { 10, 20, 1, 25, 50 };
+int count[N] = { 0 };
+
+
+int parse_barcode(int product_code, int result[4]);
+int find_product_index(const int product[4]);
+void show_product_info(int idx);
+int confirm_add();
+void print_receipt();
+
 int main() {
-	int i, j, product, temp, match, total_price = 0;
-	float total_sale = 0.0;
-	int enter_barcode[4];
-	int barcode[N][4] = { {1,2,3,4},{5,6,7,8},{9,0,1,2},{3,4,5,6},{7,8,9,0} };
-	char name[N][10] = { "product 1", "product 2", "product 3", "product 4", "product 5" };
-	int price[N] = { 100, 130, 15, 1000, 250 };
-	int sale[N] = { 10, 20, 1, 25, 50 };
-	int count[N] = { 0 };
+    int product_code;
 
-	do {
-		printf("Enter the barcode of the product, if you want to complete the buying, enter 0\n\n");
-		scanf_s("%d", &product);
+    while (1) {
+        printf("Enter barcode (or 0 to finish): ");
+        scanf_s("%d", &product_code);
 
-		if (product == 0) break;
+        if (product_code == 0) {
+            break;
+        }
 
-		temp = product;
+        int product[4];
+        if (!parse_barcode(product_code, product)) {
+            printf("Error: barcode must be exactly 4 digits!\n");
+            continue;
+        }
 
-		for (i = 3; i >= 0; i--) {
-			enter_barcode[i] = temp % 10;
-			temp = temp / 10;
-		}
+        int idx = find_product_index(product);
+        if (idx == -1) {
+            printf("Product not found!\n");
+            continue;
+        }
 
-		if (temp != 0) {
-			printf("product not found\n");
+        show_product_info(idx);
 
-		}
+        if (confirm_add()) {
+            count[idx]++;
+            printf("Added to receipt.\n");
+        }
+        else {
+            printf("Skipped.\n");
+        }
+    }
 
-		else {
-			match = 0;
-			for (i = 0; i < N; i++) {
-				match = 1;
-				for (j = 0; j < 4; j++) {
-					if (enter_barcode[j] != barcode[i][j]) {
-						match = 0;
-						break;
-					}
-				}
-
-				if (match == 1) {
-					count[i] += 1;
-					printf("%s - %d rub. - %d%%\n\n", name[i], price[i], sale[i]);
-					break;
-				}
-			}
-			if (match == 0) {
-				printf("product not found\n");
-			}
-		}
-	} while (1);
-
-	printf("Receipt:\n");
-	for (i = 0; i < N; i++) {
-		if (count[i] != 0) {
-			printf("Name - %s, price - %d rub. * %d = %d rub.\n",
-				name[i], price[i], count[i], count[i] * price[i]);
-			total_price += count[i] * price[i];
-
-			printf("Sale - %d%%\n", sale[i]);
-
-			printf("Total: %f rub.\n", count[i] * price[i] - (count[i] * (price[i] * (sale[i] / 100.0))));
-			total_sale += (count[i] * (price[i] * (sale[i] / 100.0)));
-		}
-	}
-	printf("Total amount - %d, total sale - %f\n total amount to be paid - %f\n", total_price, total_sale, total_price - total_sale);
-	return 0;
+    print_receipt();
+    return 0;
 }
+
+
+
+int parse_barcode(int product_code, int result[4]) {
+    int temp = product_code;
+    for (int i = 3; i >= 0; i--) {
+        result[i] = temp % 10;
+        temp /= 10;
+    }
+    return (temp == 0);
+}
+
+int find_product_index(const int product[4]) {
+    for (int i = 0; i < N; i++) {
+        int match = 1;
+        for (int j = 0; j < 4; j++) {
+            if (product[j] != barcode[i][j]) {
+                match = 0;
+                break;
+            }
+        }
+        if (match) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+
+void show_product_info(int idx) {
+    printf("Found: %s - %d rub. - %d%% \n", name[idx], price[idx], sale[idx]);
+}
+
+int confirm_add() {
+    char answer;
+    printf("Add to receipt? (y/n): ");
+    scanf_s(" %c", &answer, 1);
+    return (answer == 'y' || answer == 'Y');
+}
+
+void print_receipt() {
+    int total_price = 0;
+    float total_discount = 0.0f;
+
+    printf("\nRECEIPT\n");
+    for (int i = 0; i < N; i++) {
+        if (count[i] > 0) {
+            int item_total = count[i] * price[i];
+            float item_discount = item_total * (sale[i] / 100.0f);
+            float item_final = item_total - item_discount;
+
+            printf("Name: %s\n", name[i]);
+            printf("Price: %d rub. * %d = %d rub.\n", price[i], count[i], item_total);
+            printf("Discount: %d%% (%.2f rub.)\n", sale[i], item_discount);
+            printf("To pay: %.2f rub.\n", item_final);
+            printf("------------------------\n");
+
+            total_price += item_total;
+            total_discount += item_discount;
+        }
+    }
+
+    printf("TOTAL: %d rub.\n", total_price);
+    printf("TOTAL DISCOUNT: %.2f rub.\n", total_discount);
+    printf("TO PAY: %.2f rub.\n", total_price - total_discount);
+}
+
