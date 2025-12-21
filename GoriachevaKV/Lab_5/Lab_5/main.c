@@ -1,16 +1,14 @@
-#include <stdio.h>
+﻿#include <stdio.h>
+#include <string.h>
+#include <Windows.h>
 
-#define DIRECTORY_COUNT 2
-#define MAX_PATH_LEN 100
-#define MAX_FILE_NAME_LEN 30
-#define DIR_1_ELS 4
-#define DIR_2_ELS 6
+#define MAX_FILES 100
 
 #define CHOICE_SORTING_METHOD_TEXT "\
 Choose a sorting method:\n\
 1. Simple sort\n\
 2. Choose sort\n\
-3. Insert sort\n\
+3. Insert sort (not working)\n\
 4. Bubble sort\n\
 5. Merge sort (not finished)\n\
 6. Quick sort (not finished)\n\n\
@@ -22,133 +20,57 @@ Sort by:\n\
 2. Descending\n\n\
 Input number of your choice: "
 
-//directories
-char directories[DIRECTORY_COUNT][MAX_FILE_NAME_LEN] = {
-    "dir_1",
-    "dir_2",
-};
+typedef struct {
+    char name[MAX_PATH];
+    long size;
+} FileInfo;
 
-/*char dir_1[DIR_1_ELS][MAX_FILE_NAME_LEN] = {
-    "coding.c",
-    "readme.txt",
-    "solution.sln",
-    "backup.txt",
-};
+FileInfo files[MAX_FILES];
 
-char dir_2[DIR_2_ELS][MAX_FILE_NAME_LEN] = {
-    "photo1.jpeg",
-    "photo2.jpeg",
-    "picture.png",
-    "something.webp",
-    "cat.gif",
-    "video.mp4",
-};*/
+int file_count = 0;
 
-char directories_2[DIRECTORY_COUNT][MAX_FILE_NAME_LEN][MAX_FILE_NAME_LEN] = {
-    {
-    "coding.c",
-    "readme.txt",
-    "solution.sln",
-    "backup.txt"
-    },
-    {
-    "photo1.jpeg",
-    "photo2.jpeg",
-    "picture.png",
-    "something.webp",
-    "cat.gif",
-    "video.mp4",
-    },
-};
+//sortings prototypes
+void simple_sort(int sort_by);
+void choose_sort(int sort_by);
+void insert_sort(int sort_by);
+void bubble_sort(int sort_by);
 
-int dir_1_sizes[DIR_1_ELS] = { 15, 5, 27, 9 };
-
-int dir_2_sizes[DIR_2_ELS] = { 4, 7, 12, 2, 9, 78 };
-
-//sortings
-void simple_sort(int arr[], int n) {
-    int i, j;
-    for (i = 0; i < n; i++) {
-        for (j = i + 1; j < n; j++) {
-            if (arr[i] == arr[j]) {
-                int buff = arr[i];
-                arr[i] = arr[j];
-                arr[j] = buff;
-            }
-        }
-    }
-}
-
-void choose_sort(int arr[], int n) {
-    int i, j;
-    for (i = 0; i < n; i++) {
-        int min = arr[i], ind = i;
-        for (j = i + 1; j < n; j++) {
-            if (min > arr[j]) {
-                min = arr[j];
-                ind = j;
-            }
-        }
-        arr[ind] = arr[i];
-        arr[i] = min;
-    }
-}
-
-void insert_sort(int arr[], int n) {
-    int i;
-    for (i = 1; i < n; i++) {
-        int j = i + 1, tmp = arr[i];
-        while (j >= 0 && arr[j] > tmp) {
-            arr[j + 1] = arr[j];
-            j--;
-        }
-        arr[j + 1] = tmp;
-    }
-}
-
-void bubble_sort(int arr[], int n) {
-    int i, j;
-    for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            if (arr[j + 1] < arr[j]) {
-                int tmp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = tmp;
-            }
-        }
-    }
-}
-
-//functions
-int check_the_dir(char path[]) {
-    for (int i = 0; i < DIRECTORY_COUNT; i++) {
-        if (strcmp(path, directories[i]) == 0) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-void dir_printing(int *dir_exists) {
-
-}
-
+//functions prototypes
+void dir_query(char path[]);
+void choose_sorting(int sorting_method, int sort_by);
 
 //main code
 int main() {
-    int c, dir_exists = -1, sorting_method = 0, sort_by = 0;
-    char path[MAX_PATH_LEN];
+    int dir_exists = -1, sorting_method = 0, sort_by = 0;
+    char path[MAX_PATH], search_path[MAX_PATH];
+
     printf("WELCOME TO FILE EXPLORER!\n\n");
 
+    dir_query(path);
+
+    snprintf(search_path, sizeof(search_path), "%s\\*", path);
+    WIN32_FIND_DATAA file_data;
+    HANDLE hFind = FindFirstFileA(search_path, &file_data);
+
+    if (hFind == INVALID_HANDLE_VALUE) {
+        printf("Error reading directory\n");
+        return;
+    }
+
     do {
-        printf("Input a path to a catalog you want to get list of files from: ");
-        scanf_s("%s", path, (unsigned)sizeof(path));
-        while ((c = getchar()) != '\n' && c != EOF);
-        dir_exists = check_the_dir(path);
-        if (dir_exists == -1) {
-            printf("The directory doesn't exist.\n\n");
+        if (!(file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)) {
+            strcpy_s(files[file_count].name, sizeof(files[file_count].name), file_data.cFileName);
+            files[file_count].size = (long)file_data.nFileSizeLow + ((long)file_data.nFileSizeHigh << 32);
+            file_count++;
         }
-    } while (dir_exists == -1);
+    } while (FindNextFileA(hFind, &file_data) && file_count < MAX_FILES);
+
+    FindClose(hFind);
+
+    for (int i = 0; i < file_count; i++) {
+        printf("%-40s %d bytes\n", files[i].name, files[i].size);
+    }
+
 
     do {
         printf(CHOICE_SORTING_METHOD_TEXT);
@@ -157,7 +79,7 @@ int main() {
             printf("Wrong input! Try again.\n");
         }
     } while (sorting_method < 1 || sorting_method > 6);
-    
+
     do {
         printf(CHOICE_SORT_BY_TEXT);
         scanf_s("%d", &sort_by);
@@ -166,5 +88,143 @@ int main() {
         }
     } while (sort_by < 1 || sort_by > 2);
 
+    printf("--------------------------");
 
+    choose_sorting(sorting_method, sort_by);
+
+    for (int i = 0; i < file_count; i++) {
+        printf("%-40s %d bytes\n", files[i].name, files[i].size);
+    }
+}
+
+
+//sortings
+void simple_sort(int sort_by) {
+    int i, j;
+    switch (sort_by) {
+    case 1:
+        for (i = 0; i < file_count; i++) {
+            for (j = i + 1; j < file_count; j++) {
+                if (files[i].size > files[j].size) {
+                    FileInfo buff = files[i];
+                    files[i] = files[j];
+                    files[j] = buff;
+                }
+            }
+        }
+        break;
+    case 2:
+        for (i = 0; i < file_count; i++) {
+            for (j = i + 1; j < file_count; j++) {
+                if (files[i].size < files[j].size) {
+                    FileInfo buff = files[i];
+                    files[i] = files[j];
+                    files[j] = buff;
+                }
+            }
+        }
+        break;
+    }
+}
+
+void choose_sort(int sort_by) {
+    int i, j;
+    switch (sort_by) {
+    case 1:
+        for (i = 0; i < file_count; i++) {
+            int min = files[i].size, ind = i;
+            FileInfo min_str = files[i];
+            for (j = i + 1; j < file_count; j++) {
+                if (min > files[j].size) {
+                    min = files[j].size;
+                    min_str = files[j];
+                    ind = j;
+                }
+            }
+            files[ind] = files[i];
+            files[i] = min_str;
+            files[i].size = min;
+        }
+        break;
+    case 2:
+        for (i = 0; i < file_count; i++) {
+            int max = files[i].size, ind = i;
+            FileInfo max_str = files[i];
+            for (j = i + 1; j < file_count; j++) {
+                if (max < files[j].size) {
+                    max = files[j].size;
+                    max_str = files[j];
+                    ind = j;
+                }
+            }
+            files[ind] = files[i];
+            files[i] = max_str;
+            files[i].size = max;
+        }
+        break;
+    }
+}
+
+void insert_sort(int sort_by) {
+    int i;
+    for (i = 1; i < file_count; i++) {
+        int j = i + 1;
+        FileInfo tmp = files[i];
+        while (j >= 0 && files[j].size > files[i].size) {
+            files[j + 1] = files[j];
+            j--;
+        }
+        files[j + 1] = tmp;
+    }
+}
+
+void bubble_sort(int sort_by) {
+    int i, j;
+    for (i = 0; i < file_count; i++) {
+        for (j = 0; j < file_count; j++) {
+            if (files[j + 1].size < files[j].size) {
+                FileInfo tmp = files[j];
+                files[j] = files[j + 1];
+                files[j + 1] = tmp;
+            }
+        }
+    }
+}
+
+//functions
+void dir_query(char path[]) {
+    int path_obtained = 1;
+    do {
+        printf("Input a path to a directory you want to get list of files from: ");
+        
+        if ((fgets(path, MAX_PATH, stdin)) == NULL) {
+            path_obtained = 0;
+            printf("Wrong input! Try again.\n\n");
+            continue;
+        }
+        path[strcspn(path, "\n")] = '\0'; //remove \n
+
+        if (strlen(path) == 0) {
+            path_obtained = 0;
+            printf("The path is empty. Try again.\n\n");
+        }
+    } while (path_obtained == 0);
+}
+
+
+void choose_sorting(int sorting_method, int sort_by) {
+    switch (sorting_method) {
+    case 1:
+        simple_sort(sort_by);
+        break;
+    case 2:
+        choose_sort(sort_by);
+        break;
+    case 3:
+        insert_sort(sort_by);
+        break;
+    case 4:
+        bubble_sort(sort_by);
+        break;
+    }
 }
