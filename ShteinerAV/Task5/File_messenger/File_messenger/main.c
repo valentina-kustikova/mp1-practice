@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <string.h>
 #include <time.h>
-#define N 1000
+#define N 5000
 
 
 int is_directory_windows(const char* path);
