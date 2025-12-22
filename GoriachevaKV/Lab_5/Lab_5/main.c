@@ -179,7 +179,7 @@ void bubble_sort(int sort_by) {
     switch (sort_by) {
     case 1:
         for (i = 0; i < file_count; i++) {
-            for (j = 0; j < file_count; j++) {
+            for (j = 0; j < file_count - 1; j++) {
                 if (files[j + 1].size < files[j].size) {
                     FileInfo tmp = files[j];
                     files[j] = files[j + 1];
@@ -190,7 +190,7 @@ void bubble_sort(int sort_by) {
         break;
     case 2:
         for (i = 0; i < file_count; i++) {
-            for (j = 0; j < file_count; j++) {
+            for (j = 0; j < file_count - 1; j++) {
                 if (files[j + 1].size > files[j].size) {
                     FileInfo tmp = files[j];
                     files[j] = files[j + 1];
