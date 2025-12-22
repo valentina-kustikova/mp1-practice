@@ -2,12 +2,12 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <Windows.h>
-#include <time.h>
 #include <locale.h>
 
 #define MAX_FILES 100
 
 //C:\Users\geniy\OneDrive\Desktop\codelifehacks
+//C:\Users\geniy\OneDrive\Desktop\photo
 
 char types_of_sort[6][MAX_FILES] = { "Simple", "Choise", "Insert", "Bubble", "Merge", "Quick"};
 char types_of_order[2][MAX_FILES] = { "From small to big", "From big to small" };
@@ -20,23 +20,18 @@ typedef struct {
 file_info files_in_directory[MAX_FILES];
 int file_cnt = 0;
 
-void simple_sort(file_info files_in_directory[], int file_cnt, clock_t* start_time, clock_t* end_time);
-void choise_sort(file_info files_in_directory[], int file_cnt, clock_t* start_time, clock_t* end_time);
-void insert_sort(file_info files_in_directory[], int file_cnt, clock_t* start_time, clock_t* end_time);
-void bubble_sort(file_info files_in_directory[], int file_cnt, clock_t* start_time, clock_t* end_time);
-
-void merge_sort(file_info files_in_directory[], int l, int r);
-void merge(file_info files_in_directory[], int l, int m, int r);
-
+void simple_sort(file_info files_in_directory[], int file_cnt);
+void choise_sort(file_info files_in_directory[], int file_cnt);
+void insert_sort(file_info files_in_directory[], int file_cnt);
+void bubble_sort(file_info files_in_directory[], int file_cnt);
+void merge_sort(file_info files_in_directory[], int file_size);
 void quick_sort(file_info files_in_directory[], int l, int r);
-int partition(file_info files_in_directory[], int l, int r);
-
 void directory_reader(char path[]);
 
 int main() {
     int dir_exists = -1, sort_choise = 0, order_choise = 0, i, l = 0, r = file_cnt-1;
     char path[MAX_PATH], search_path[MAX_PATH];
-    clock_t start_time, end_time;
+    LARGE_INTEGER start_time, end_time, frequency;
     double time_diff;
 
     setlocale(LC_ALL, "rus");
@@ -92,26 +87,40 @@ int main() {
 
     switch (sort_choise) {
     case 1: 
-        simple_sort(files_in_directory, file_cnt, &start_time, &end_time);
+        QueryPerformanceFrequency(&frequency);
+        QueryPerformanceCounter(&start_time);
+        simple_sort(files_in_directory, file_cnt);
+        QueryPerformanceCounter(&end_time);
         break;
     case 2:
-        choise_sort(files_in_directory, file_cnt, &start_time, &end_time);
+        QueryPerformanceFrequency(&frequency);
+        QueryPerformanceCounter(&start_time);
+        choise_sort(files_in_directory, file_cnt);
+        QueryPerformanceCounter(&end_time);
         break;
     case 3: 
-        insert_sort(files_in_directory, file_cnt, &start_time, &end_time);
+        QueryPerformanceFrequency(&frequency);
+        QueryPerformanceCounter(&start_time);
+        insert_sort(files_in_directory, file_cnt);
+        QueryPerformanceCounter(&end_time);
         break;
     case 4:
-        bubble_sort(files_in_directory, file_cnt, &start_time, &end_time);
+        QueryPerformanceFrequency(&frequency);
+        QueryPerformanceCounter(&start_time);
+        bubble_sort(files_in_directory, file_cnt);
+        QueryPerformanceCounter(&end_time);
         break;
     case 5: 
-        start_time = clock();
-        merge_sort(files_in_directory, l, r);
-        end_time = clock();
+        QueryPerformanceFrequency(&frequency);
+        QueryPerformanceCounter(&start_time);
+        merge_sort(files_in_directory, file_cnt);
+        QueryPerformanceCounter(&end_time);
         break;
     case 6: 
-        start_time = clock();
+        QueryPerformanceFrequency(&frequency);
+        QueryPerformanceCounter(&start_time);
         quick_sort(files_in_directory, l, r);
-        end_time = clock();
+        QueryPerformanceCounter(&end_time);
         break;
     default:
         printf("Error.\n");
@@ -134,27 +143,27 @@ int main() {
         break;
     }
 
-    time_diff = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
-    printf("Time: %f\n", time_diff);
+    time_diff = (double)(end_time.QuadPart - start_time.QuadPart) * 1000.0 / frequency.QuadPart;
+    printf("Time: %.10f\n", time_diff);
 
 	return 0;
 }
 
 void directory_reader(char path[]) {
-    char temp_path[MAX_PATH];
+    char tmp_path[MAX_PATH];
     int access = 0;
     do {
         printf("Input path to the directory:\n");
-        if (fgets(temp_path, sizeof(temp_path), stdin) == NULL) {
+        if (fgets(tmp_path, sizeof(tmp_path), stdin) == NULL) {
             printf("Wrong Input. Try again.\n");
             continue;
         }
-        size_t len = strnlen_s(temp_path, sizeof(temp_path));
-        while (len > 0 && isspace((unsigned char)temp_path[len - 1])) {
+        size_t len = strnlen_s(tmp_path, sizeof(tmp_path));
+        while (len > 0 && isspace((unsigned char)tmp_path[len - 1])) {
             len--;
         }
         size_t start_of_path = 0;
-        while (start_of_path < len && isspace((unsigned char)temp_path[start_of_path])) {
+        while (start_of_path < len && isspace((unsigned char)tmp_path[start_of_path])) {
             start_of_path++;
         }
         len -= start_of_path;
@@ -166,7 +175,7 @@ void directory_reader(char path[]) {
             printf("Wrong Input. Try again.\n");
             continue;
         }
-        if (memcpy_s(path, MAX_PATH, temp_path + start_of_path, len) != 0) {
+        if (memcpy_s(path, MAX_PATH, tmp_path + start_of_path, len) != 0) {
             path[0] = '\0';
             printf("Wrong Input. Try again.\n");
             continue;
@@ -176,8 +185,7 @@ void directory_reader(char path[]) {
     } while (!access);
 }
 
-void simple_sort(file_info files_in_directory[], int file_cnt, clock_t* start_time, clock_t* end_time) {
-    *start_time = clock();
+void simple_sort(file_info files_in_directory[], int file_cnt) {
     int i, j;
     for (i = 0; i < file_cnt; i++) {
         for (j = i + 1; j < file_cnt; j++) {
@@ -188,11 +196,9 @@ void simple_sort(file_info files_in_directory[], int file_cnt, clock_t* start_ti
             }
         }
     }
-    *end_time = clock();
 }
 
-void choise_sort(file_info files_in_directory[], int file_cnt, clock_t* start_time, clock_t* end_time) {
-    *start_time = clock();
+void choise_sort(file_info files_in_directory[], int file_cnt) {
     int i, j;
     for (i = 0; i < file_cnt; i++) {
         file_info min = files_in_directory[i];
@@ -206,11 +212,9 @@ void choise_sort(file_info files_in_directory[], int file_cnt, clock_t* start_ti
         files_in_directory[ind] = files_in_directory[i];
         files_in_directory[i] = min;
     }
-    *end_time = clock();
 }
 
-void insert_sort(file_info files_in_directorya[], int file_cnt, clock_t* start_time, clock_t* end_time) {
-    *start_time = clock();
+void insert_sort(file_info files_in_directorya[], int file_cnt) {
     int i;
     for (i = 1; i < file_cnt; i++) {
         int j = i - 1;
@@ -221,11 +225,9 @@ void insert_sort(file_info files_in_directorya[], int file_cnt, clock_t* start_t
         }
         files_in_directory[j + 1] = tmp;
     }
-    *end_time = clock();
 }
 
-void bubble_sort(file_info files_in_directory[], int file_cnt, clock_t* start_time, clock_t* end_time) {
-    *start_time = clock();
+void bubble_sort(file_info files_in_directory[], int file_cnt) {
     int i, j;
     for (i = 0; i < file_cnt; i++) {
         for (j = 0; j < file_cnt - i - 1; j++) {
@@ -236,72 +238,63 @@ void bubble_sort(file_info files_in_directory[], int file_cnt, clock_t* start_ti
             }
         }
     }
-    *end_time = clock();
 }
 
-void merge_sort(file_info files_in_directory[], int l, int r) {
-    int m;
-    if (l + 1 >= r) return;
-    m = l + (r - l) / 2;
-    merge_sort(files_in_directory, l, m);
-    merge_sort(files_in_directory, m + 1, r);
-    merge(files_in_directory, l, m, r);
-}
-
-void merge(file_info files_in_directory[], int l, int m, int r) {
-    file_info* b = (file_info*)malloc(MAX_FILES * sizeof(file_info));
-    int it1 = 0, it2 = 0, i;
-    while (it1 <= m && it2 < r) {
-        if (files_in_directory[l + it1].file_size < files_in_directory[m + it2 + 1].file_size) {
-            b[it1 + it2] = files_in_directory[l + it1];
-            it1++;
+void merge_sort(file_info files_in_directory[], int file_cnt) {
+    file_info* tmp = (file_info*)malloc(file_cnt * sizeof(file_info));
+    if (tmp == NULL) return;
+    for (int curr_size = 1; curr_size < file_cnt; curr_size *= 2) {
+        for (int left_start = 0; left_start < file_cnt - 1; left_start += 2 * curr_size) {
+            int mid = min(left_start + curr_size - 1, file_cnt - 1);
+            int right_end = min(left_start + 2 * curr_size - 1, file_cnt- 1);
+            int i = left_start;
+            int j = mid + 1;
+            int k = left_start;
+            for (int m = left_start; m <= right_end; m++) {
+                tmp[m] = files_in_directory[m];
+            }
+            while (i <= mid && j <= right_end) {
+                if (tmp[i].file_size <= tmp[j].file_size) {
+                    files_in_directory[k] = tmp[i];
+                    i++;
+                }
+                else {
+                    files_in_directory[k] = tmp[j];
+                    j++;
+                }
+                k++;
+            }
+            while (i <= mid) {
+                files_in_directory[k] = tmp[i];
+                i++;
+                k++;
+            }
         }
-        else {
-            b[it1 + it2] = files_in_directory[m + it2 + 1];
-            it2++;
-        }
     }
-    while (it1 <= m - l) {
-        b[it1 + it2] = files_in_directory[it1 + l];
-        it1++;
-    }
-    while (it2 < r - m) {
-        file_info* b = (file_info*)malloc(MAX_FILES * sizeof(file_info));
-        it2++;
-    }
-    for (i = 0; i < it1 + it2; i++) {
-        files_in_directory[l + i] = b[i];
-    }
-    free(b);
+    free(tmp);
 }
 
 void quick_sort(file_info files_in_directory[], int l, int r) {
-    if (l < r) {
-        int pi = partition(files_in_directory, l, r);
-        quick_sort(files_in_directory, l, pi - 1);
-        quick_sort(files_in_directory, pi + 1, r);
-    }
-}
+    int i = l, j = r;
+    file_info x = files_in_directory[(l + r) / 2];
 
-int partition(file_info files_in_directory[], int l, int r) {
-    file_info p = files_in_directory[l];
-    int i = l;
-    int j = r;
-    while (i < j) {
-        while (files_in_directory[i].file_size <= p.file_size && i <= r - 1) {
+    do {
+        while (files_in_directory[i].file_size < x.file_size) i++;
+        while (files_in_directory[j].file_size > x.file_size) j--;
+
+        if (i <= j) {
+            if (files_in_directory[i].file_size > files_in_directory[j].file_size) {
+                file_info tmp = files_in_directory[i];
+                files_in_directory[i] = files_in_directory[j];
+                files_in_directory[j] = tmp;
+            }
             i++;
-        }
-        while (files_in_directory[j].file_size > p.file_size && j >= l + 1) {
             j--;
         }
-        if (i < j) {
-            file_info tmp = files_in_directory[i];
-            files_in_directory[i] = files_in_directory[j];
-            files_in_directory[j] = tmp;
-        }
-    }
-    file_info tmp = files_in_directory[l];
-    files_in_directory[l] = files_in_directory[j];
-    files_in_directory[j] = tmp;
-    return j;
+    } while (i <= j);
+
+    if (i < r)
+        quick_sort(files_in_directory, i, r);
+    if (l < j)
+        quick_sort(files_in_directory, l, j);
 }
