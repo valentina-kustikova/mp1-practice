@@ -1,6 +1,7 @@
 ﻿#include <stdio.h>
 #include <string.h>
 #include <Windows.h>
+#include <time.h>
 
 #define MAX_FILES 100
 
@@ -8,10 +9,7 @@
 Choose a sorting method:\n\
 1. Simple sort\n\
 2. Choose sort\n\
-3. Insert sort (not working)\n\
-4. Bubble sort\n\
-5. Merge sort (not finished)\n\
-6. Quick sort (not finished)\n\n\
+3. Bubble sort\n\n\
 Input number of your choice: "
 
 #define CHOICE_SORT_BY_TEXT "\
@@ -32,7 +30,6 @@ int file_count = 0;
 //sortings prototypes
 void simple_sort(int sort_by);
 void choose_sort(int sort_by);
-void insert_sort(int sort_by);
 void bubble_sort(int sort_by);
 
 //functions prototypes
@@ -43,6 +40,8 @@ void choose_sorting(int sorting_method, int sort_by);
 int main() {
     int dir_exists = -1, sorting_method = 0, sort_by = 0;
     char path[MAX_PATH], search_path[MAX_PATH];
+    time_t start_time, end_time;
+    double total_time;
 
     printf("WELCOME TO FILE EXPLORER!\n\n");
 
@@ -67,18 +66,13 @@ int main() {
 
     FindClose(hFind);
 
-    for (int i = 0; i < file_count; i++) {
-        printf("%-40s %d bytes\n", files[i].name, files[i].size);
-    }
-
-
     do {
         printf(CHOICE_SORTING_METHOD_TEXT);
         scanf_s("%d", &sorting_method);
-        if (sorting_method < 1 || sorting_method > 6) {
+        if (sorting_method < 1 || sorting_method > 3) {
             printf("Wrong input! Try again.\n");
         }
-    } while (sorting_method < 1 || sorting_method > 6);
+    } while (sorting_method < 1 || sorting_method > 3);
 
     do {
         printf(CHOICE_SORT_BY_TEXT);
@@ -88,13 +82,21 @@ int main() {
         }
     } while (sort_by < 1 || sort_by > 2);
 
-    printf("--------------------------");
-
+    start_time = clock();
     choose_sorting(sorting_method, sort_by);
+    end_time = clock();
+
+    total_time = ((double)(end_time - start_time)) / CLOCKS_PER_SEC;
+
+    printf("%s\n", path);
+    printf("--------------------------\n");
 
     for (int i = 0; i < file_count; i++) {
         printf("%-40s %d bytes\n", files[i].name, files[i].size);
     }
+
+    printf("\nSorting total time: %lf\n\n", total_time);
+    return 0;
 }
 
 
@@ -165,27 +167,28 @@ void choose_sort(int sort_by) {
     }
 }
 
-void insert_sort(int sort_by) {
-    int i;
-    for (i = 1; i < file_count; i++) {
-        int j = i + 1;
-        FileInfo tmp = files[i];
-        while (j >= 0 && files[j].size > files[i].size) {
-            files[j + 1] = files[j];
-            j--;
-        }
-        files[j + 1] = tmp;
-    }
-}
-
 void bubble_sort(int sort_by) {
     int i, j;
-    for (i = 0; i < file_count; i++) {
-        for (j = 0; j < file_count; j++) {
-            if (files[j + 1].size < files[j].size) {
-                FileInfo tmp = files[j];
-                files[j] = files[j + 1];
-                files[j + 1] = tmp;
+    switch (sort_by) {
+    case 1:
+        for (i = 0; i < file_count; i++) {
+            for (j = 0; j < file_count; j++) {
+                if (files[j + 1].size < files[j].size) {
+                    FileInfo tmp = files[j];
+                    files[j] = files[j + 1];
+                    files[j + 1] = tmp;
+                }
+            }
+        }
+        break;
+    case 2:
+        for (i = 0; i < file_count; i++) {
+            for (j = 0; j < file_count; j++) {
+                if (files[j + 1].size > files[j].size) {
+                    FileInfo tmp = files[j];
+                    files[j] = files[j + 1];
+                    files[j + 1] = tmp;
+                }
             }
         }
     }
@@ -221,9 +224,6 @@ void choose_sorting(int sorting_method, int sort_by) {
         choose_sort(sort_by);
         break;
     case 3:
-        insert_sort(sort_by);
-        break;
-    case 4:
         bubble_sort(sort_by);
         break;
     }
