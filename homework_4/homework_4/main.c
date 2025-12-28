@@ -1,16 +1,20 @@
 #include <stdio.h>
+#include <string.h>
 #define N 5
 
 
-const int barcode[N][4] = { {1,2,3,4},{5,6,7,8},{9,0,1,2},{3,4,5,6},{7,8,9,0} };
-const char name[N][10] = { "product 1", "product 2", "product 3", "product 4", "product 5" };
+const char* barcode[N] = { "1234", "5678", "9012", "3456", "0012" };
+const char name[N][10] = { "milk", "bread", "eggs", "water", "melon" };
 const int price[N] = { 100, 130, 15, 1000, 250 };
 const int sale[N] = { 10, 20, 1, 25, 50 };
 int count[N] = { 0 };
 
 
-int parse_barcode(int product_code, int result[4]);
-int find_product_index(const int product[4]);
+int parse_barcode(int product_code, char result[5]);
+
+
+int find_product_index(const char* scanned);
+
 void show_product_info(int idx);
 int confirm_add();
 void print_receipt();
@@ -26,13 +30,13 @@ int main() {
             break;
         }
 
-        int product[4];
-        if (!parse_barcode(product_code, product)) {
-            printf("Error: barcode must be exactly 4 digits!\n");
+        char product_str[5];
+        if (!parse_barcode(product_code, product_str)) {
+            printf("Error: barcode must be 1 to 4 digits (no negatives)!\n");
             continue;
         }
 
-        int idx = find_product_index(product);
+        int idx = find_product_index(product_str);
         if (idx == -1) {
             printf("Product not found!\n");
             continue;
@@ -54,32 +58,34 @@ int main() {
 }
 
 
+int parse_barcode(int product_code, char result[5]) {
+    if (product_code < 0) return 0;
 
-int parse_barcode(int product_code, int result[4]) {
-    int temp = product_code;
-    for (int i = 3; i >= 0; i--) {
-        result[i] = temp % 10;
-        temp /= 10;
+
+    char temp[12];
+    sprintf_s(temp, sizeof(temp), "%d", product_code);
+
+    int len = strlen(temp);
+    if (len > 4) return 0;
+
+
+    for (int i = 0; i < 4 - len; i++) {
+        result[i] = '0';
     }
-    return (temp == 0);
+    strcpy_s(result + (4 - len), 5 - (4 - len), temp);
+    result[4] = '\0';
+
+    return 1;
 }
 
-int find_product_index(const int product[4]) {
+int find_product_index(const char* scanned) {
     for (int i = 0; i < N; i++) {
-        int match = 1;
-        for (int j = 0; j < 4; j++) {
-            if (product[j] != barcode[i][j]) {
-                match = 0;
-                break;
-            }
-        }
-        if (match) {
+        if (strcmp(scanned, barcode[i]) == 0) {
             return i;
         }
     }
     return -1;
 }
-
 
 void show_product_info(int idx) {
     printf("Found: %s - %d rub. - %d%% \n", name[idx], price[idx], sale[idx]);
@@ -118,4 +124,3 @@ void print_receipt() {
     printf("TOTAL DISCOUNT: %.2f rub.\n", total_discount);
     printf("TO PAY: %.2f rub.\n", total_price - total_discount);
 }
-
