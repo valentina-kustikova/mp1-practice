@@ -263,23 +263,23 @@ int partition(char** file_name, int* file_size, int l, int r, int direction) {
 		if ((direction && file_size[j] < pivot_value) || (!direction && file_size[j] > pivot_value)) {
 			i++;
 
-			int temp_size = file_size[i];
+			int tmp1 = file_size[i];
 			file_size[i] = file_size[j];
-			file_size[j] = temp_size;
+			file_size[j] = tmp1;
 
-			char* temp_name = file_name[i];
+			char* tmp2 = file_name[i];
 			file_name[i] = file_name[j];
-			file_name[j] = temp_name;
+			file_name[j] = tmp2;
 		}
 	}
 
-	int temp_size = file_size[i + 1];
+	int tmp1 = file_size[i + 1];
 	file_size[i + 1] = file_size[r];
-	file_size[r] = temp_size;
+	file_size[r] = tmp1;
 
-	char* temp_name = file_name[i + 1];
+	char* tmp2 = file_name[i + 1];
 	file_name[i + 1] = file_name[r];
-	file_name[r] = temp_name;
+	file_name[r] = tmp2;
 
 	return i + 1;
 }
