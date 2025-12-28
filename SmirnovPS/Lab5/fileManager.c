@@ -9,12 +9,18 @@ void scan_files(char* folderPath, char*** scannedNames, int** scannedSizes, int*
 void copy_files(char** scannedNames, int* scannedSizes, int count, char*** sortedNames, int** sortedSizes);
 void print_files(char** names, int* sizes, int count);
 
+void swap_int(int* a, int* b);
+void swap_str(char** a, char** b);
+
+void simple_sort(char** names, int* sizes, int count, int order);
 void selection_sort(char** names, int* sizes, int count, int order);
 void insertion_sort(char** names, int* sizes, int count, int order);
 void bubble_sort(char** names, int* sizes, int count, int order);
 void merge_sort(char** names, int* sizes, int count, int order, int l, int r);
 void merge(char** names, int* sizes, int order, int l, int m, int r);
-
+void quick_sort(char** names, int* sizes, int count, int order);
+void quick_sort_recursive(char** names, int* sizes, int l, int r, int order);
+int partition(char** names, int* sizes, int l, int r, int order);
 
 int main() {
 	char folderPath[256];
@@ -35,11 +41,14 @@ int main() {
 		double time_spent;
 
 		printf("\nSelect sorting choice: \n");
-		printf("1 - selection\n");
-		printf("2 - insertion\n");
-		printf("3 - bubble\n");
-		printf("4 - merge\n");
+		printf("1 - simple\n");
+		printf("2 - selection\n");
+		printf("3 - insertion\n");
+		printf("4 - bubble\n");
+		printf("5 - merge\n");
+		printf("6 - quick\n");
 		printf("0 - exit\n");
+
 		scanf_s("%d", &choice);
 
 		if (choice == 0)
@@ -53,35 +62,48 @@ int main() {
 		copy_files(scannedNames, scannedSizes, count, &sortedNames, &sortedSizes);
 
 		switch (choice) {
-			case 1:
-				start = clock();
-				selection_sort(sortedNames, sortedSizes, count, order);
-				end = clock();
-				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-				break;
-			case 2:
-				start = clock();
-				insertion_sort(sortedNames, sortedSizes, count, order);
-				end = clock();
-				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-				break;
-			case 3:
-				start = clock();
-				bubble_sort(sortedNames, sortedSizes, count, order);
-				end = clock();
-				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-				break;
-			case 4:
-				start = clock();
-				merge_sort(sortedNames, sortedSizes, count, order, 0, count - 1);
-				end = clock();
-				time_spent = (double)(end - start) / CLOCKS_PER_SEC;
-				break;
-			default:
-				printf("Incorrect choice!\n");
-				continue;
-		}	
-		
+		case 1:
+			start = clock();
+			simple_sort(sortedNames, sortedSizes, count, order);
+			end = clock();
+			break;
+
+		case 2:
+			start = clock();
+			selection_sort(sortedNames, sortedSizes, count, order);
+			end = clock();
+			break;
+
+		case 3:
+			start = clock();
+			insertion_sort(sortedNames, sortedSizes, count, order);
+			end = clock();
+			break;
+
+		case 4:
+			start = clock();
+			bubble_sort(sortedNames, sortedSizes, count, order);
+			end = clock();
+			break;
+
+		case 5:
+			start = clock();
+			merge_sort(sortedNames, sortedSizes, count, order, 0, count - 1);
+			end = clock();
+			break;
+
+		case 6:
+			start = clock();
+			quick_sort(sortedNames, sortedSizes, count, order);
+			end = clock();
+			break;
+
+		default:
+			printf("Incorrect choice!\n");
+			continue;
+		}
+
+		time_spent = (double)(end - start) / CLOCKS_PER_SEC;
 		print_files(sortedNames, sortedSizes, count);
 		printf("\nSorting completed in %.3f seconds\n", time_spent);
 
@@ -168,6 +190,31 @@ void print_files(char** names, int* sizes, int count) {
 }
 
 
+void swap_int(int* a, int* b) {
+	int t = *a;
+	*a = *b;
+	*b = t;
+}
+
+void swap_str(char** a, char** b) {
+	char* t = *a;
+	*a = *b;
+	*b = t;
+}
+
+
+void simple_sort(char** names, int* sizes, int count, int order) {
+	for (int i = 0; i < count - 1; i++) {
+		for (int j = i + 1; j < count; j++) {
+			if (order ? sizes[i] < sizes[j] : sizes[i] > sizes[j]) {
+				swap_int(&sizes[i], &sizes[j]);
+				swap_str(&names[i], &names[j]);
+			}
+		}
+	}
+}
+
+
 void selection_sort(char** names, int* sizes, int count, int order) {
 	int i;
 	for (i = 0; i < count - 1; i++) {
@@ -178,13 +225,8 @@ void selection_sort(char** names, int* sizes, int count, int order) {
 				minmax = j;
 		}
 		if (minmax != i) {
-			int tempSize = sizes[i];
-			sizes[i] = sizes[minmax];
-			sizes[minmax] = tempSize;
-
-			char* tempName = names[i];
-			names[i] = names[minmax];
-			names[minmax] = tempName;
+			swap_int(&sizes[i], &sizes[minmax]);
+			swap_str(&names[i], &names[minmax]);
 		}
 	}
 }
@@ -214,13 +256,8 @@ void bubble_sort(char** names, int* sizes, int count, int order) {
 	for (i = 0; i < count - 1; i++) {
 		for (j = 0; j < count - i - 1; j++) {
 			if (order ? sizes[j] < sizes[j + 1] : sizes[j] > sizes[j + 1]) {
-				int tempSize = sizes[j];
-				sizes[j] = sizes[j + 1];
-				sizes[j + 1] = tempSize;
-
-				char* tempName = names[j];
-				names[j] = names[j + 1];
-				names[j + 1] = tempName;
+				swap_int(&sizes[j], &sizes[j + 1]);
+				swap_str(&names[j], &names[j + 1]);
 			}
 		}
 	}
@@ -309,3 +346,35 @@ void merge(char** names, int* sizes, int order, int l, int m, int r) {
 }
 
 
+void quick_sort(char** names, int* sizes, int count, int order) {
+	if (count > 1)
+		quick_sort_recursive(names, sizes, 0, count - 1, order);
+}
+
+
+void quick_sort_recursive(char** names, int* sizes, int l, int r, int order) {
+	if (l < r) {
+		int pi = partition(names, sizes, l, r, order);
+		quick_sort_recursive(names, sizes, l, pi - 1, order);
+		quick_sort_recursive(names, sizes, pi + 1, r, order);
+	}
+}
+
+
+int partition(char** names, int* sizes, int l, int r, int order) {
+	int k = sizes[r];
+	int i = l - 1;
+
+	for (int j = l; j < r; j++) {
+		if (order ? sizes[j] > k : sizes[j] < k) {
+			i++;
+			swap_int(&sizes[i], &sizes[j]);
+			swap_str(&names[i], &names[j]);
+		}
+	}
+
+	swap_int(&sizes[i + 1], &sizes[r]);
+	swap_str(&names[i + 1], &names[r]);
+
+	return i + 1;
+}
