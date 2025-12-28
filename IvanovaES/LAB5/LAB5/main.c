@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+#include <time.h>
 
-#define maxfile 200
+#define maxfile 5000
 
 void print_files(char** file_name, int* file_size, int count);
 
@@ -11,8 +12,12 @@ void simple_sort(char** file_name, int* file_size, int count, int direction);
 void selection_sort(char** file_name, int* file_size, int count, int direction);
 void insertion_sort(char** file_name, int* file_size, int count, int direction);
 void bubble_sort(char** file_name, int* file_size, int count, int direction);
-void merge_sort(char** file_name, int* file_size, int count, int direction, int l, int r);
-void merge(char** file_name, int* file_size, int direction, int l, int r, int m);
+void quick_sort(char** file_name, int* file_size, int count, int direction);
+void quick_sort_recursive(char** file_name, int* file_size, int l, int r, int direction);
+void merge_sort(char** file_name, int* file_size, int count, int l, int r, int direction);
+void merge(char** file_name, int* file_size, int l, int r, int m, int direction);
+int partition(char** file_name, int* file_size, int l, int r, int direction);
+
 
 
 int main() {
@@ -59,7 +64,7 @@ int main() {
 	while (1) {
 		printf("\nViberite metod sortirovki\n");
 		printf("1 - prosteishaya\n2 - viborom\n3 - vstavkami\n4 - puzirkom\n"
-			"5 - sliyaniem\n0 - zakrit programmu\n");
+			"5 - sliyaniem\n6 - bistraya\n0 - zakrit programmu\n");
 		scanf_s("%d", &select);
 		
 		if (select == 0)
@@ -67,26 +72,50 @@ int main() {
 
 		printf("Viberi napravlenie: po vozrastaniyu - 1, po ubivaniyu - 0\n");
 		scanf_s("%d", &direction);
+		
+		clock_t start, end;
+		double time_used;
 
 		switch (select) {
 		case 1:
+			start = clock();
 			simple_sort(file_name, file_size, count, direction);
+			end = clock();
 			break;
 		case 2:
+			start = clock();
 			selection_sort(file_name, file_size, count, direction);
+			end = clock();
 			break;
 		case 3:
+			start = clock();
 			insertion_sort(file_name, file_size, count, direction);
+			end = clock();
 			break;
 		case 4:
+			start = clock();
 			bubble_sort(file_name, file_size, count, direction);
+			end = clock();
 			break;
 		case 5:
+			start = clock();
 			merge_sort(file_name, file_size, count, direction, 0, count-1);
+			end = clock();
+			break;
+		case 6:
+			start = clock();
+			quick_sort(file_name, file_size, count, direction);
+			end = clock();
 			break;
 		}
-	
+		
+		time_used = ((double)(end - start)) / CLOCKS_PER_SEC;
+
 		print_files(file_name, file_size, count);
+		
+		printf("Vremya vipolneniya: %.6f sekund\n", time_used);
+	
+		
 
 	}
 	for (i = 0; i < count; i++) {
@@ -212,7 +241,48 @@ void bubble_sort(char** file_name, int* file_size, int count, int direction) {
 		}
 	}
 }
-	
+
+void quick_sort(char** file_name, int* file_size, int count, int direction) {
+	if (count > 1)
+		quick_sort_recursive(file_name, file_size, 0, count - 1, direction);
+}
+
+void quick_sort_recursive(char** file_name, int* file_size, int l, int r, int direction) {
+	if (l < r) {
+		int pivot_index = partition(file_name, file_size, l, r, direction);
+		quick_sort_recursive(file_name, file_size, l, pivot_index - 1, direction);
+		quick_sort_recursive(file_name, file_size, pivot_index + 1, r, direction);
+	}
+}
+
+int partition(char** file_name, int* file_size, int l, int r, int direction) {
+	int pivot_value = file_size[r];
+	int i = l - 1;
+
+	for (int j = l; j < r; j++) {
+		if ((direction && file_size[j] < pivot_value) || (!direction && file_size[j] > pivot_value)) {
+			i++;
+
+			int temp_size = file_size[i];
+			file_size[i] = file_size[j];
+			file_size[j] = temp_size;
+
+			char* temp_name = file_name[i];
+			file_name[i] = file_name[j];
+			file_name[j] = temp_name;
+		}
+	}
+
+	int temp_size = file_size[i + 1];
+	file_size[i + 1] = file_size[r];
+	file_size[r] = temp_size;
+
+	char* temp_name = file_name[i + 1];
+	file_name[i + 1] = file_name[r];
+	file_name[r] = temp_name;
+
+	return i + 1;
+}
 
 void merge_sort(char** file_name, int* file_size, int count, int direction, int l, int r) {
 	int m;
