@@ -17,9 +17,13 @@
 #define CPL 21       //макс длина купона                                                                                    |
 #define ERL 100      //макс длина сообщения об ошибке                                                                       |
 #define HK  0        //спрашивать ли про горячие клавиши                                                                    |
-#define SOURCE_FILE  list_of_items_ANSI.txt          //имя файла со списком продуктов (только ANSI)                         |
+#define SOURCE_FILE  list_of_items_ANSI.txt        //имя файла со списком продуктов (только ANSI)                           |
+#define DESTINATION  Receipt.txt                   //имя файла для сохранения чека (при наличии одноименных добавится цифра)|
 //--------------------------------------------------------------------------------------------------------------------------|
 
+
+#define FNL 50       //макс длина имени файла
+#define FTC 50       //макс колл-во попыток создать файл
 
 #define DEBUG_RAW 39
 #define NOP 1;
@@ -29,6 +33,7 @@
 #define TO_STR(a) TO_STR_(a)
 #define MAKE_FORMAT(a) "%"TO_STR(a)"s"
 #define SRC_FILE TO_STR(SOURCE_FILE)
+#define DST_FILE TO_STR(DESTINATION)
 #define BCF MAKE_FORMAT(BCL)
 #define BCformat BCF
 #define R(f) (strcmp(inp, f) == 0)                //просто для удобства
@@ -60,7 +65,7 @@ void info(char* inp, struct product products[], int n);   //+
 //void callthecashier();                                  //+
 void Galya() { ; }   // отмена поз.
 void Galina() { ; }  // отмена покупки
-void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[], int n, int interactive);
+void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[], int* n, int interactive);
 void barcode(char* inp, struct product products[], struct item_in_receipt receipt[], int* l, int n);
 void test(char* inp);                                     //+
 void show_all_products(struct product products[], int n); //+
@@ -77,12 +82,14 @@ struct item_in_receipt* fast_search_in_receipt(struct item_in_receipt receipt[],
 errno_t make_the_receipt(FILE* stream, struct item_in_receipt receipt[], int n, int coup);
 errno_t free_the_basket(struct item_in_receipt basket[], int n);
 errno_t free_the_table(struct product table[], int n);
+FILE* make_n_open_file_for_receipt(char* name, int nl, int n);
 
+void raise(const char* const message, int data1, int data2, int data3);
 int is_interactive();
 
 
-struct { char* msg; int data; int data2;  } error_msg;   //указатель на сообщение об ошибке
-int error_flag = 0;                                      //флаг, поднимаемый ситуативно вызываемыми функциями в случае ошибки
+struct { char* msg; int data; int data2; int data3; } error_msg;   //указатель на сообщение об ошибке
+int error_flag = 0;                                               //флаг, поднимаемый ситуативно вызываемыми функциями в случае ошибки
 
 char helpi[] = "Вводите ниже цифры \"отсканированных штрихкодов\" и специальные команды, а программа \nсформирует чек и расчитает итоговую стоимость и размер скидки в рублях (без копеек). \nЦифры \"штрихкода\" вводите слитно (без пробелов), в десятичной системе счисления, \nкоманды и \"штрихкоды\" разделяйте пробелами и/или переносами строк. \nСписок команд: \n.coupon           — предъявить скидочный купон (затем попросят ввести номер купона) \n.info <штрихкод>  — получить информацию о товаре, не добавляя его в корзину \n(обратите внимание, команду и \"штрихкод\" надо писать раздельно, пример: .info 0123) \n.. / .fin         — завершить \"сканирование товаров\" и перейти к оплате \n.. / .fin (после оплаты) — закончить просмотр чека и завершить покупку \n.callthecashier   — позвать сотрудника \n.Galya            — отменить уже добавленный к покупке товар \n.Galina           — отменить весь процесс покупки \n.quit             — выйти из программы и завершить процесс \n.help             — вывести эту инструкцию ещё раз \n*просто введённый штрихкод добавляет товар в корзину и выводит базовую информацию о нём \n*\"касса\" обслуживает покупателей непрерывно: после завершения одной покупки начнется следующая\n\n";
 
@@ -310,6 +317,46 @@ errno_t free_the_table(struct product table[], int n) {
 	return (errno_t)(0);
 }
 
+FILE* make_n_open_file_for_receipt(char* name, int nl, int n) {
+	char buff[FNL + 2];     //т к "%d" - 2 символа
+	int i, l, k = 1;
+	FILE* file = NULL;
+	errno_t error = -1;
+	strncpy_s(buff, sizeof(char) * FNL, name, min(nl, min(strlen(name), FNL)));
+	buff[min(nl, min(l = strlen(name), FNL))] = '\0';
+	if (_access(buff, 0) == 0)
+		error = fopen_s(&file, buff, "w");
+	else {
+		if (l < FNL - 3 && l < nl - 3)
+			strcat_s(buff, sizeof(char) * FNL, "(%d)");
+		else
+			strcpy_s(buff + min(FNL, nl) - 3, sizeof(char) * FNL, "(%d)");
+		for (i = 0; i < n; i++) {
+			k++;
+			sprintf_s(buff, sizeof(char) * FNL, buff, i);
+			if (_access(buff, 0) == 0) {
+				error = fopen_s(&file, name, "w");
+					if (error == 0)
+						break;
+			}
+		}
+	}
+	if (error == 0  &&  file != NULL)
+		return file;
+	else {
+		raise("Не удалось создать файл для чека (было сделано %d) попыток", k, error, 0);
+		return NULL;
+	}
+}
+
+void raise(const char* const message, int data1, int data2, int data3) {
+	error_msg.msg = message;
+	error_msg.data = data1;
+	error_msg.data2 = data2;
+	error_msg.data3 = data3;
+	error_flag = 1;
+}
+
 int is_interactive() {
 	return _isatty(_fileno(stdin));
 }
@@ -456,7 +503,7 @@ void choose(char* inp, char* inp2, int* coup, char coupon_n[], struct item_in_re
 	else if (R(".GalinaOtmena"))
 		Galina();
 	else if (R("..") || R(".fin"))
-		final(inp, coup, coupon_n, receipt, *l, i);
+		final(inp, coup, coupon_n, receipt, l, i);
 	else if (R(".test"))
 		test(inp);
 	else if (R(".showall"))
@@ -568,8 +615,11 @@ void show_basket(struct item_in_receipt basket[], int n){
 }
 
 
-void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[], int n, int interactive) {
+void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[], int* n, int interactive) {
 	int i, c = 0, bare_total = 0, disc_total = 0, total_disc_amount = 0, total;
+	char inpch;
+	errno_t err;
+	FILE* file;
 	if (! *coup) {
 		if (is_last_word()) {
 			printf("Введите номер своего купона (если у вас нет купона, просто нажмите Enter): ");
@@ -584,10 +634,10 @@ void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[],
 		else
 			printf("\n");
 	}
-	for (i = 0; i < n; i++)
+	for (i = 0; i < *n; i++)
 		c += basket[i].count;
-	printf("Всего товаров в корзине: %d (%d видов)\n", c, n);
-	for (i = 0; i < n; i++) {
+	printf("Всего товаров в корзине: %d (%d видов)\n", c, *n);
+	for (i = 0; i < *n; i++) {
 		int bare_cost, disc_cost, t, disс_amount;
 		t = calc(basket[i].item->price, basket[i].item->discount);
 		bare_cost = basket[i].item->price * basket[i].count;
@@ -625,10 +675,52 @@ void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[],
 	printf("\n\n\nК ОПЛАТЕ %d РУБЛЕЙ\n", total);
 	if (interactive) {
 		printf("\n(для оплаты приложите банковскую карту к пробелу)\n");
-		while (_getch() != ' ')
-			;
-		printf("QWERTYUVBFG");
+		while ((inpch = _getch()) != ' ')
+			if (inpch == '.') {
+				printf(".");
+				scan;
+				if (R("pay"))
+					break;
+				if (R("quit"))
+					raise("Куда вздумал валить не заплатив!!!???!!!???", 666, 0, 0);
+			}
 	}
+	else {
+		printf("\n(для оплаты введите \".pay\")\n");
+		scan;
+		while(!R(".pay"))
+			if (R("quit"))
+				raise("Куда вздумал валить не заплатив!!!???!!!???", 666, 0, 0);
+	}
+	printf("\n   **  оплата прошла успешно  **\n\nВаш чек:\n\n\n");
+	err = make_the_receipt(stdout, basket, n, *coup);
+	printf("\n\nЕсли хотите сохранить чек в текстовом файле");
+	if (interactive) {
+		printf(" нажмите клавишу [S] или введите \".save\"");
+		if ((inpch = _getch()) == 's' || inpch == 'S') {
+			file = make_n_open_file_for_receipt(DST_FILE, FNL, FTC);
+			if (file != NULL)
+				printf("\n\nФайл успешо сохранен\n");
+		}
+		else {
+			printf("%c", inpch);
+			ungetc(inpch, stdin);
+			scan;
+		}
+	}
+	else {
+		printf(" введите \".save\"");
+		scan;
+	}
+	if (R(".save")) {
+		file = make_n_open_file_for_receipt(DST_FILE, FNL, FTC);
+		if (file != NULL)
+			printf("\n\nФайл успешо сохранен\n");
+	}
+	else
+		printf("\n\nЧек не будет сохранен\n");
+	//ну и самое важное
+	*n = 0;
 }
 
 
@@ -636,8 +728,9 @@ errno_t make_the_receipt(FILE* stream, struct item_in_receipt receipt[], int n, 
 	int i, c = 0, bare_total = 0, disc_total = 0, total_disc_amount = 0, total;
 	char t_buff[85];
 	time_t now = time(NULL);
+	fprintf(stream, "                                  Магазин \"Магазин\"                                  \n\n");
 	fprintf(stream, "---------------------------------КАССОВЫЙ ЧЕК/ПРИХОД---------------------------------\n");
-	fprintf(stream, "ЦЕНА БЕЗ СКИДКИ  СКИДКА (%)  ЦЕНА СО СКИДКОЙ  КОЛЛИЧЕСТВО  СКИДКА (РУБ.)        ИТОГО\n");
+	fprintf(stream, "ЦЕНА БЕЗ СКИДКИ  СКИДКА (%%)  ЦЕНА СО СКИДКОЙ  КОЛЛИЧЕСТВО  СКИДКА (РУБ.)        ИТОГО\n");
 	for (i = 0; i < n; i++) {
 		int bare_cost, disc_cost, t, disс_amount;
 		c += receipt[i].count;
@@ -645,7 +738,7 @@ errno_t make_the_receipt(FILE* stream, struct item_in_receipt receipt[], int n, 
 		bare_cost = receipt[i].item->price * receipt[i].count;
 		disc_cost = t * receipt[i].count;
 		disс_amount = bare_cost - disc_cost;
-		fprintf(stream, "%s  %s \n%12d.00  %9d%%  %12d.00  %8dшт.  %10d.00  %8d.00)\n",
+		fprintf(stream, "%s  %s \n%12d.00  %9d%%  %12d.00  %8dшт.  %10d.00  %8d.00\n",
 			receipt[i].item->number,
 			receipt[i].item->name,
 			receipt[i].item->price,
