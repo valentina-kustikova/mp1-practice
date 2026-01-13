@@ -13,13 +13,16 @@
 #define MADC 50      //максимальный размер скидки (в %)                                                                     |
 #define BCL 4        //длина штрихкода                                                                                      |
 #define PNL 70       //макс длина имени продукта                                                                            |
+//#define CPL INT_MAX  //макс длина купона (память выделится автоматически)                                                   |
+#define CPL 21       //макс длина купона                                                                                    |
 #define ERL 100      //макс длина сообщения об ошибке                                                                       |
 #define SOURCE_FILE  list_of_items_ANSI.txt          //имя файла со списком продуктов (только ANSI)                         |
 //--------------------------------------------------------------------------------------------------------------------------|
 
 
 #define DEBUG_RAW 39
-#define NOP int __a__ = 1;
+//#define NOP int __a__ = 1;
+#define NOP 1;
 
 #define CONCAT(a, b) a##b
 #define TO_STR_(a) #a
@@ -57,21 +60,25 @@
 // отмена покупки
 // финиш (завершение покупки)
 // выход.
+// тест
+// показать все товары
+// показать текущую корзину
 
 //void choose(char* inp, char* inp2, int* coup, receipt_t receipt_, int n, int ic);
-void choose(char* inp, char* inp2, int* coup, struct item_in_receipt receipt[], int* l, int n, int ic);
-void coupon(char* inp, int* coup);                        //+
+void choose(char* inp, char* inp2, int* coup, char coupon_n[], struct item_in_receipt receipt[], int* l, int n, int ic);
+void coupon(char* inp, int* coup, char coupon[]);         //+
 void info(char* inp, struct product products[], int n);   //+
 //void help();                                            //+
 //void callthecashier();                                  //+
 void Galya() { ; }   // отмена поз.
 void Galina() { ; }  // отмена покупки
-void final() { ; }
+void final(int* coup, char coupon[], struct item_in_receipt basket[], int n);
 void barcode(char* inp, struct product products[], struct item_in_receipt receipt[], int* l, int n);
 void test(char* inp);                                     //+
 void show_all_products(struct product products[], int n); //+
 void show_basket(struct item_in_receipt basket[], int n);
 
+int calc(int price, int discount);
 void file_to_sortedmatrix(FILE* crt, char* dst[][4], int n);                //старый вариант для старого массива
 errno_t fill_the_table(FILE* src, struct product dst[], int n);
 void set_discounts(struct product dst[], int n);
@@ -130,6 +137,7 @@ int main() {
 	
 	FILE* list;
 	char inp[N + 1], error_output[ERL + 1], inp2[N + 1]; //buff[N + 1];    //format[9];
+	char coupon_n[CPL + 1];
 	int n, coup = 0, l = 0, ic = 0;
 	errno_t  error;
 #if (NPR > 0)
@@ -187,7 +195,7 @@ int main() {
 	scan;
 	while (strcmp(inp, ".quit") != 0) {
 		
-		choose(inp, inp2, &coup, receipt, &l, n, ic);
+		choose(inp, inp2, &coup, coupon_n, receipt, &l, n, ic);
 		if (error_flag) {
 			printf("Ошибка обработки команды пользователя.\n");
 			sprintf_s(error_output, sizeof(char) * ERL, "Сообщение об ошибке: %s\n", error_msg.msg);
@@ -287,7 +295,13 @@ struct item_in_receipt* make_receipt(int n){
 #endif
 
 
-void file_to_sortedmatrix(FILE* crt, char* dst[][4], int n) { 
+int calc(int price, int discount){
+	//float fp = (float)price / ((float)discount / 100.0f);
+	float fp = (float)price * ((float)discount / 100.0f);
+	return price - (int)round(fp);
+}
+
+void file_to_sortedmatrix(FILE* crt, char* dst[][4], int n) {
 	;
 }
 
@@ -410,21 +424,21 @@ int input(char format[], char buff[], char inp[], char inp2[], int flag) {
 }
 
 
-void choose(char* inp, char* inp2, int* coup, struct item_in_receipt receipt[], int* l, int n, int ic) {
+void choose(char* inp, char* inp2, int* coup, char coupon_n[], struct item_in_receipt receipt[], int* l, int n, int ic) {
 	if (R(".help"))
 		printf(helpi);
 	else if (R(".callthecashier"))
 		printf("Скоро к вам подойдет сотрудник\n");
 	else if (R(".coupon"))
-		coupon(inp, coup);
+		coupon(inp, coup, coupon_n);
 	else if (R(".info"))
 		info(inp, products, n);
 	else if (R(".GalyaOtmena"))
 		Galya();
 	else if (R(".GalinaOtmena"))
 		Galina();
-	else if (R("..") && R(".fin"))
-		final();
+	else if (R("..") || R(".fin"))
+		final(coup, coupon_n, receipt, n);
 	else if (R(".test"))
 		test(inp);
 	else if (R(".showall"))
@@ -436,13 +450,14 @@ void choose(char* inp, char* inp2, int* coup, struct item_in_receipt receipt[], 
 }
 
 
-void coupon(char* inp, int* coup) {
+void coupon(char* inp, int* coup, char coupon[]) {
 	//char coupon[21];     //если нужна будет действительно проверка купона
 	if (is_last_word()) {
 		printf("Введите номер своего купона: ");
 	}
 	scan;
 	//strcpy(coupon, inp);
+	strncpy_s(coupon, sizeof(char) * CPL + 1, inp, CPL);
 	printf("Отлично, теперь на некоторые товары вы получите скидки!\n");
 	printf("№ купона: %s\n", inp);
 	*coup = 1;
@@ -457,7 +472,7 @@ void info(char* inp, struct product products[], int n){
 	scan;
 	product_ptr = fast_search(products, n, inp);
 	if (product_ptr != NULL)
-		printf("ШТРИХКОД: %s  НАЗВАНИЕ: %s \nЦЕНА: %d руб.  СКИДКА: %d%%\n", product_ptr->number, product_ptr->name, product_ptr->price, product_ptr->discount);
+		printf("ШТРИХКОД: %s  НАЗВАНИЕ: %s \nЦЕНА: %3d руб.  СКИДКА: %2d%%  ЦЕНА СО СКИДКОЙ: %3d\n", product_ptr->number, product_ptr->name, product_ptr->price, product_ptr->discount, calc(product_ptr->price, product_ptr->discount));
 	else
 		printf("Товар с таким штрихкодом не найден.\n");
 }
@@ -479,7 +494,7 @@ void barcode(char* inp, struct product products[], struct item_in_receipt receip
 		}
 		else
 			pos_in_rec->count++;
-		printf("Товар добавлен в корзину.\nШТРИХКОД: %s  НАЗВАНИЕ: %s \nЦЕНА: %d руб.  СКИДКА: %d%%\n", product_ptr->number, product_ptr->name, product_ptr->price, product_ptr->discount);
+		printf("Товар добавлен в корзину.\nШТРИХКОД: %s  НАЗВАНИЕ: %s \nЦЕНА: %3d руб.  СКИДКА: %2d%%  ЦЕНА СО СКИДКОЙ: %3d\n", product_ptr->number, product_ptr->name, product_ptr->price, product_ptr->discount, calc(product_ptr->price, product_ptr->discount));
 	}	
 	else
 		printf("Товар с таким штрихкодом не найден.\n");
@@ -491,21 +506,78 @@ void test(char* inp){
 	printf("ТЕСТ: %s\n", inp);
 }
 
+
 void show_all_products(struct product products[], int n){
 	int i;
 	printf("Всего товаров в магазине: %d\n", n);
 	for (i = 0; i < n; i++) {
-		printf("№п/п: %d  ШТРИХКОД: %s  НАЗВАНИЕ: %s \nЦЕНА: %d руб.  СКИДКА: %d%%\n", i, products[i].number, products[i].name, products[i].price, products[i].discount);
+		printf("№п/п: %d  ШТРИХКОД: %s  НАЗВАНИЕ: %s \nЦЕНА: %3d руб.  СКИДКА: %2d%%  ЦЕНА СО СКИДКОЙ: %3d\n", i, products[i].number, products[i].name, products[i].price, products[i].discount, calc(products[i].price, products[i].discount));
 	}
 }
 
+
 void show_basket(struct item_in_receipt basket[], int n){
-	int i, c = 0;
+	int i, c = 0, bare_total = 0, disc_total = 0, total_disc_amount = 0;
 	//for (struct item_in_receipt x: basket)          //эх..
 	for (i = 0; i < n; i++)
 		c += basket[i].count;
 	printf("Всего товаров в корзине: %d (%d видов)\n", c, n);
 	for (i = 0; i < n; i++) {
-		printf("№п/п: %d  ШТРИХКОД: %s  НАЗВАНИЕ: %s \nЦЕНА: %d руб.  СКИДКА: %d%%  КОЛЛИЧЕСТВО: %d\n", i, basket[i].item->number, basket[i].item->name, basket[i].item->price, basket[i].item->discount, basket[i].count);
+		int bare_cost, disc_cost, t, disс_amount;
+		t = calc(basket[i].item->price, basket[i].item->discount);
+		bare_cost = basket[i].item->price * basket[i].count;
+		disc_cost = t * basket[i].count;
+		disс_amount = bare_cost - disc_cost;
+		printf("№п/п: %d  ШТРИХКОД: %s  НАЗВАНИЕ: %s \nЦЕНА: %3d руб.  СКИДКА: %2d%%  ЦЕНА СО СКИДКОЙ: %3d \nКОЛЛИЧЕСТВО: %2d  СТОИМОСТЬ БЕЗ СКИДКИ: %4d  СО СКИДКОЙ: %4d  (скидка составит: %3d)\n", 
+			i, 
+			basket[i].item->number, 
+			basket[i].item->name, 
+			basket[i].item->price, 
+			basket[i].item->discount, 
+			t, 
+			basket[i].count,
+			bare_cost,
+			disc_cost,
+			disс_amount);
+		bare_total += bare_cost;
+		disc_total += disc_cost;
+		total_disc_amount += disс_amount;
 	}
+	printf("СУММ. СТОИМОСТЬ  БЕЗ СКИДКИ: %d  СО СКИДКОЙ: %d   СКИДКА СОСТАВИТ: %d\n", bare_total, disc_total, total_disc_amount);
+	printf("* Вы получите скидку только после предъявления скидочного купона. \nВведите \"..\" или \".fin\", чтобы оплатить покупки.\n");
+}
+
+
+void final(int* coup, char coupon[], struct item_in_receipt basket[], int n) {
+	int i, c = 0, bare_total = 0, disc_total = 0, total_disc_amount = 0;
+	
+	for (i = 0; i < n; i++)
+		c += basket[i].count;
+	printf("Всего товаров куплено: %d (%d видов)\n", c, n);
+	for (i = 0; i < n; i++) {
+		int bare_cost, disc_cost, t, disс_amount;
+		t = calc(basket[i].item->price, basket[i].item->discount);
+		bare_cost = basket[i].item->price * basket[i].count;
+		disc_cost = t * basket[i].count;
+		disс_amount = bare_cost - disc_cost;
+		printf("№п/п: %d  ШТРИХКОД: %s  НАЗВАНИЕ: %s \nЦЕНА: %3d руб.  СКИДКА: %2d%%  ЦЕНА СО СКИДКОЙ: %3d \nКОЛЛИЧЕСТВО: %2d  СТОИМОСТЬ БЕЗ СКИДКИ: %4d  СО СКИДКОЙ: %4d  (скидка составит: %3d)\n",
+			i,
+			basket[i].item->number,
+			basket[i].item->name,
+			basket[i].item->price,
+			basket[i].item->discount,
+			t,
+			basket[i].count,
+			bare_cost,
+			disc_cost,
+			disс_amount);
+		bare_total += bare_cost;
+		disc_total += disc_cost;
+		total_disc_amount += disс_amount;
+	}
+	printf("СУММ. СТОИМОСТЬ  БЕЗ СКИДКИ: %d", bare_total);
+	if (*coup)
+		printf("  СО СКИДКОЙ: %d   СКИДКА СОСТАВИТ: %d\n", disc_total, total_disc_amount);
+	else
+		printf("  (при отсутствии скидочного купона скидка не предоставляется)\n");
 }
