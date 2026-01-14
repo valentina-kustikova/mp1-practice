@@ -82,7 +82,7 @@ struct item_in_receipt* fast_search_in_receipt(struct item_in_receipt receipt[],
 errno_t make_the_receipt(FILE* stream, struct item_in_receipt receipt[], int n, int coup);
 errno_t free_the_basket(struct item_in_receipt basket[], int n);
 errno_t free_the_table(struct product table[], int n);
-FILE* make_n_open_file_for_receipt(char* name, int nl, int n);
+FILE* make_n_open_file_for_receipt(char* name, int nl, char new_name[], int n);
 
 void raise(const char* const message, int data1, int data2, int data3);
 int is_interactive();
@@ -275,7 +275,7 @@ struct product* fast_search(struct product products[], int n, char key[]){
 				break;
 			}
 		}
-		if (ok)
+		if (ok && (*search_ptr == *key_ptr))
 			return products + i;
 	}
 	return NULL;
@@ -299,7 +299,7 @@ struct item_in_receipt* fast_search_in_receipt(struct item_in_receipt receipt[],
 				break;
 			}
 		}
-		if (ok)
+		if (ok && (*search_ptr == *key_ptr))
 			return receipt + i;
 	}
 	return NULL;
@@ -317,29 +317,35 @@ errno_t free_the_table(struct product table[], int n) {
 	return (errno_t)(0);
 }
 
-FILE* make_n_open_file_for_receipt(char* name, int nl, int n) {
-	char buff[FNL + 2];     //т к "%d" - 2 символа
+FILE* make_n_open_file_for_receipt(char* name, int nl, char new_name[], int n) {
+	char buff[FNL + 2];     //т к "%d" - 2 символа будут заменены одним
 	int i, l, k = 1;
 	FILE* file = NULL;
 	errno_t error = -1;
-	strncpy_s(buff, sizeof(char) * FNL, name, min(nl, min(strlen(name), FNL)));
-	buff[min(nl, min(l = strlen(name), FNL))] = '\0';
-	if (_access(buff, 0) == 0)
+	nl = min(nl, FNL);
+	l = min(strlen(name), nl);
+	strncpy_s(buff, sizeof(char) * (FNL + 2), name, l + 1);
+	buff[l] = '\0';
+	if (_access(buff, 0) != 0)
 		error = fopen_s(&file, buff, "w");
 	else {
 		if (l < FNL - 3 && l < nl - 3)
-			strcat_s(buff, sizeof(char) * FNL, "(%d)");
+			strcat_s(buff, sizeof(char) * (FNL + 2), "(%d)");
 		else
-			strcpy_s(buff + min(FNL, nl) - 3, sizeof(char) * FNL, "(%d)");
+			strcpy_s(buff + min(FNL, nl) - 3, sizeof(char) * (FNL + 2), "(%d)");
 		for (i = 0; i < n; i++) {
 			k++;
-			sprintf_s(buff, sizeof(char) * FNL, buff, i);
-			if (_access(buff, 0) == 0) {
+			sprintf_s(buff, sizeof(char) * (FNL + 2), buff, i);
+			if (_access(buff, 0) != 0) {
 				error = fopen_s(&file, name, "w");
 					if (error == 0)
 						break;
 			}
 		}
+	}
+	if (new_name != NULL) {
+		strncpy_s(new_name, sizeof(char) * (FNL + 2), buff, nl + 1);
+		new_name[nl] = '\0';
 	}
 	if (error == 0  &&  file != NULL)
 		return file;
@@ -618,8 +624,9 @@ void show_basket(struct item_in_receipt basket[], int n){
 void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[], int* n, int interactive) {
 	int i, c = 0, bare_total = 0, disc_total = 0, total_disc_amount = 0, total;
 	char inpch;
+	char filename[FNL + 2];
 	errno_t err;
-	FILE* file;
+	FILE* file = NULL;
 	if (! *coup) {
 		if (is_last_word()) {
 			printf("Введите номер своего купона (если у вас нет купона, просто нажмите Enter): ");
@@ -681,26 +688,42 @@ void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[],
 				scan;
 				if (R("pay"))
 					break;
-				if (R("quit"))
+				if (R("quit")) {
 					raise("Куда вздумал валить не заплатив!!!???!!!???", 666, 0, 0);
+					return;
+				}
 			}
 	}
 	else {
 		printf("\n(для оплаты введите \".pay\")\n");
 		scan;
 		while(!R(".pay"))
-			if (R("quit"))
+			if (R(".quit")) {
 				raise("Куда вздумал валить не заплатив!!!???!!!???", 666, 0, 0);
+				return;
+			}
 	}
 	printf("\n   **  оплата прошла успешно  **\n\nВаш чек:\n\n\n");
-	err = make_the_receipt(stdout, basket, n, *coup);
+	err = make_the_receipt(stdout, basket, *n, *coup);
+	if (err != 0)
+		raise("Не удалось распечатать чек (код ошибки: %d)", err, 0, 0);
 	printf("\n\nЕсли хотите сохранить чек в текстовом файле");
 	if (interactive) {
 		printf(" нажмите клавишу [S] или введите \".save\"");
 		if ((inpch = _getch()) == 's' || inpch == 'S') {
-			file = make_n_open_file_for_receipt(DST_FILE, FNL, FTC);
-			if (file != NULL)
-				printf("\n\nФайл успешо сохранен\n");
+			file = make_n_open_file_for_receipt(DST_FILE, FNL, filename, FTC);
+			if (file != NULL) {
+				err = make_the_receipt(file, basket, *n, *coup);
+				if (err != 0)
+					raise("Не удалось распечатать чек (код ошибки: %d)", err, 0, 0);
+				err = fclose(file);
+				if (err == 0)
+					printf("\n\nФайл успешо сохранен (название: %s)\n", filename);
+				else
+					printf("\n\nВозникли ошибки при сохранении (закрытии) файла\n");
+			}
+			else
+				printf("Не удалось создать файл для чека");
 		}
 		else {
 			printf("%c", inpch);
@@ -713,14 +736,26 @@ void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[],
 		scan;
 	}
 	if (R(".save")) {
-		file = make_n_open_file_for_receipt(DST_FILE, FNL, FTC);
-		if (file != NULL)
-			printf("\n\nФайл успешо сохранен\n");
+		file = make_n_open_file_for_receipt(DST_FILE, FNL, filename, FTC);
+		if (file != NULL) {
+			err = make_the_receipt(file, basket, *n, *coup);
+			if (err != 0)
+				raise("Не удалось распечатать чек (код ошибки: %d)", err, 0, 0);
+			err = fclose(file);
+			if (err == 0)
+				printf("\n\nФайл успешо сохранен (название: %s)\n", filename);
+			else
+				printf("\n\nВозникли ошибки при сохранении (закрытии) файла\n");
+		}
+		else
+			printf("Не удалось создать файл для чека");
 	}
 	else
-		printf("\n\nЧек не будет сохранен\n");
+		if (file == NULL)
+			printf("\n\nЧек не будет сохранен\n");
 	//ну и самое важное
 	*n = 0;
+	*coup = 0;
 }
 
 
@@ -760,7 +795,7 @@ errno_t make_the_receipt(FILE* stream, struct item_in_receipt receipt[], int n, 
 	fprintf(stream, "КАССИР                                                                  Иванков М. И.\n");
 	fprintf(stream, "МЕСТО РАСЧЕТОВ                                                                   Lab4\n");
 	ctime_s(t_buff, sizeof(char) * 85, &now);
-	fprintf(stream, "ДАТА И ВРЕМЯ РАСЧЕТОВ%64s\n", t_buff);
+	fprintf(stream, "ДАТА И ВРЕМЯ РАСЧЕТОВ %64s\n", t_buff);
 	fprintf(stream, "\n                                 Спасибо за покупки!                                 \n");
 	return (errno_t)(0);
 }
