@@ -16,7 +16,7 @@
 #define PNL 70       //макс длина имени продукта                                                                            |
 #define CPL 21       //макс длина купона                                                                                    |
 #define ERL 100      //макс длина сообщения об ошибке                                                                       |
-#define HK  0        //спрашивать ли про горячие клавиши                                                                    |
+#define HK  0        //спрашивать ли про горячие клавиши (по умолчанию выкл)                                                |
 #define SOURCE_FILE  list_of_items_ANSI.txt        //имя файла со списком продуктов (только ANSI)                           |
 #define DESTINATION  Receipt.txt                   //имя файла для сохранения чека (при наличии одноименных добавится цифра)|
 //--------------------------------------------------------------------------------------------------------------------------|
@@ -58,14 +58,14 @@
 // показать все товары
 // показать текущую корзину
 
-void choose(char* inp, char* inp2, int* coup, char coupon_n[], struct item_in_receipt receipt[], int* l, int n, int i);
+void choose(char* inp, char* inp2, int* coup, char coupon_n[], struct item_in_receipt receipt[], int* l, int n, int i, int* cl, int* t);
 void coupon(char* inp, int* coup, char coupon[]);         //+
 void info(char* inp, struct product products[], int n);   //+
 //void help();                                            //+
 //void callthecashier();                                  //+
 void Galya() { ; }   // отмена поз.
 void Galina() { ; }  // отмена покупки
-void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[], int* n, int interactive);
+void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[], int* n, int interactive, int* cli, int* tot);
 void barcode(char* inp, struct product products[], struct item_in_receipt receipt[], int* l, int n);
 void test(char* inp);                                     //+
 void show_all_products(struct product products[], int n); //+
@@ -127,6 +127,7 @@ int main() {
 	char inp[N + 1], error_output[ERL + 1], inp2[N + 1]; //buff[N + 1];    //format[9];
 	char coupon_n[CPL + 1];
 	int n, coup = 0, l = 0, i = 0, hk = 0;
+	unsigned int clients = 0, total = 0;
 	errno_t  error, err2;
 	struct item_in_receipt* receipt;
 	
@@ -214,7 +215,7 @@ int main() {
 	scan;
 	while (strcmp(inp, ".quit") != 0) {
 		
-		choose(inp, inp2, &coup, coupon_n, receipt, &l, n, i);
+		choose(inp, inp2, &coup, coupon_n, receipt, &l, n, i, &clients, &total);
 		if (error_flag) {
 			printf("Ошибка обработки команды пользователя.\n");
 			sprintf_s(error_output, sizeof(char) * ERL, "Сообщение об ошибке: %s\n", error_msg.msg);
@@ -227,6 +228,7 @@ int main() {
 	}
 	free_the_basket(receipt, l);
 	free_the_table(products, n);
+	printf("\nКасса закрыта. Клиентов обслужено: %d. Всего позиций продано: %d\n", clients, total);
 	return 0;
 }
 
@@ -495,7 +497,7 @@ void set_discounts(struct product dst[], int n){
 }
 
 
-void choose(char* inp, char* inp2, int* coup, char coupon_n[], struct item_in_receipt receipt[], int* l, int n, int i) {
+void choose(char* inp, char* inp2, int* coup, char coupon_n[], struct item_in_receipt receipt[], int* l, int n, int i, int* cl, int* t) {
 	if (R(".help"))
 		printf(helpi);
 	else if (R(".callthecashier"))
@@ -509,7 +511,7 @@ void choose(char* inp, char* inp2, int* coup, char coupon_n[], struct item_in_re
 	else if (R(".GalinaOtmena"))
 		Galina();
 	else if (R("..") || R(".fin"))
-		final(inp, coup, coupon_n, receipt, l, i);
+		final(inp, coup, coupon_n, receipt, l, i, cl, t);
 	else if (R(".test"))
 		test(inp);
 	else if (R(".showall"))
@@ -621,7 +623,7 @@ void show_basket(struct item_in_receipt basket[], int n){
 }
 
 
-void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[], int* n, int interactive) {
+void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[], int* n, int interactive, int* cli, int* tot) {
 	int i, c = 0, bare_total = 0, disc_total = 0, total_disc_amount = 0, total;
 	char inpch;
 	char filename[FNL + 2];
@@ -726,16 +728,17 @@ void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[],
 				printf("Не удалось создать файл для чека");
 		}
 		else {
+			//ungetc('\n', stdin);
 			printf("%c", inpch);
 			ungetc(inpch, stdin);
-			scan;
+			{ printf("--------\b\b\b\b\b\b\b\b"); scanf_s(format, inp, sizeof(char) * 1000); };
 		}
 	}
 	else {
 		printf(" введите \".save\"");
 		scan;
 	}
-	if (R(".save")) {
+	if ((strcmp(inp, ".save") == 0)) {
 		file = make_n_open_file_for_receipt(DST_FILE, FNL, filename, FTC);
 		if (file != NULL) {
 			err = make_the_receipt(file, basket, *n, *coup);
@@ -756,6 +759,9 @@ void final(char* inp, int* coup, char coupon[], struct item_in_receipt basket[],
 	//ну и самое важное
 	*n = 0;
 	*coup = 0;
+	*cli += 1;
+	*tot += c;
+	printf("\nДо новых встреч!\n");
 }
 
 
@@ -777,7 +783,7 @@ errno_t make_the_receipt(FILE* stream, struct item_in_receipt receipt[], int n, 
 			receipt[i].item->number,
 			receipt[i].item->name,
 			receipt[i].item->price,
-			receipt[i].item->discount,
+			(coup)? receipt[i].item->discount : 0,
 			t,
 			receipt[i].count,
 			disс_amount, 
