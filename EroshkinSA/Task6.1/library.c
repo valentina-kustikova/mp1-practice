@@ -3,7 +3,7 @@
 #include "library.h"
 #include <stdbool.h>
 
-book* search(char* author, book* lib) {
+/*book* search(char* author, book* lib) {
 	int i, n = sizeof(lib) / sizeof(book), k, j, cnt = 0;
 	bool* flags = (bool*)malloc(n * sizeof(bool));
 	book* result;
@@ -25,5 +25,5 @@ book* search(char* author, book* lib) {
 	}
 	free(flags);
 	return result;
-}
+}*/
 

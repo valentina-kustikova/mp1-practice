@@ -3,7 +3,7 @@
 
 typedef struct {
 	char** authors;
-	char* name, publisher;
+	char* name, *publisher;
 	int year;
 } book;
 
