@@ -3,55 +3,81 @@
 #include "auxilary.h"
 #include "library.h"
 
-/*static int count(FILE* f) {
+static int count(FILE* f) {
 	int cnt = 0;
-	char* buff;
-	while (fgets(buff, 1000, f)) cnt++;
+	char* buff[1000];
+	while (fgets(buff, 1000, f)) {
+		cnt++;
+	}
+	fclose(f);
 	return cnt;
-}*/
+}
 
-void parse(char* s, book* b) {
-	int i, j = 0, z = 0, prev = 0, mx = 0, h = 0, name_length = 0, pub_length = 0;
+static void parse(char* s, book* b) {
+	int i, j = 0, prev = 0, mx = 0, k = 0, name_length = 0, pub_length = 0;
+	(*b).cnt_aut = 1;
 	for (i = 0; s[i] != ';'; i++) if (s[i] == ',') {
-		z++;
+		(*b).cnt_aut++;
 		if (i - prev - 1 > mx) mx = i - prev - 1;
 		prev = i;
 	}
+	if (i - prev > mx) mx = i - prev;
+	i++;
 	for (; s[i] != ';'; i++) name_length++;
+	i++;
 	for (; s[i] != ';'; i++) pub_length++;
+	i++;
 	(*b).year = 0;
-	for (; i < strlen(s); i++) (*b).year = (*b).year * 10 + (s[i] - '0');
-	if (i - prev - 1 > mx) mx = i - prev - 1;
-	(*b).authors = (char**)malloc(z * sizeof(char*));
-	for (i = 0; i < z; i++) (*b).authors[i] = (char*)malloc((mx + 1) * sizeof(char));
+	for (; i < strlen(s) - 1; i++) (*b).year = (*b).year * 10 + (s[i] - '0');
+	(*b).authors = (char**)malloc(((*b).cnt_aut) * sizeof(char*));
+	for (i = 0; i < (*b).cnt_aut; i++) (*b).authors[i] = (char*)malloc((mx + 1) * sizeof(char));
 	(*b).name = (char*)malloc(name_length * sizeof(char));
 	(*b).publisher = (char*)malloc(pub_length * sizeof(char));
+	//___________________________________
+	//___________________________________
+
 	for (i = 0; s[i] != ';'; i++) {
 		if (s[i] == ',') {
-			h++;
+			(*b).authors[k][j] = '\0';
+			k++;
+			i++;
 			j = 0;
 		}
-		else (*b).authors[h][j++] = s[i];
+		else (*b).authors[k][j++] = s[i];
 	}
+	(*b).authors[k][j] = '\0';
+	i++;
 	for (j = 0; s[i] != ';'; i++) (*b).name[j++] = s[i];
+	(*b).name[j] = '\0';
+	i++;
 	for (j = 0; s[i] != ';'; i++) (*b).publisher[j++] = s[i];
+	(*b).publisher[j] = '\0';
 }
 
-void print_book(book b) {
-	int i, n = sizeof(b.authors) / sizeof(char*);
+extern void print_book(book b) {
+	int i;
 	printf("Authors: ");
-	for (i = 0; i < n; i++) printf("%s AND ", b.authors[i]);
+	for (i = 0; i < b.cnt_aut; i++) {
+		printf("%s ", b.authors[i]);
+		if (i != b.cnt_aut - 1) printf("& ");
+	}
 	printf("\nName: %s\nPublished by %s in %d\n", b.name, b.publisher, b.year);
 }
 
-/*void reader(const char* source, book* lib) {
-	FILE* fl = fopen(source, 'r');
-	int n;
+extern book* reader(const char* source, int* n) {
+	FILE* fl = fopen(source, "r");
+	int i;
 	if (fl == NULL) {
 		printf("File doesn't exist\n");
 		return;
 	}
-	n = count(fl);
-	lib = (book*)malloc(n * sizeof(book));
-
-}*/
+	*n = count(fl);
+	book* lib = (book*)malloc(*n * sizeof(book));
+	char* buff[1000];
+	FILE* f = fopen(source, "r");
+	for (i = 0; i < *n; i++) {
+		fgets(buff, 1000, f);
+		parse(buff, lib + i);
+	}
+	return lib;
+}
