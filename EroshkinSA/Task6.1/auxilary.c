@@ -72,6 +72,7 @@ extern book* reader(const char* source, int* n) {
 		return;
 	}
 	*n = count(fl);
+	if (*n == 0) return NULL;
 	book* lib = (book*)malloc(*n * sizeof(book));
 	char* buff[1000];
 	FILE* f = fopen(source, "r");
@@ -80,4 +81,15 @@ extern book* reader(const char* source, int* n) {
 		parse(buff, lib + i);
 	}
 	return lib;
+}
+
+extern void free_all(book* lib, int n) {
+	int i, j;
+	for (i = 0; i < n; i++) {
+		for (j = 0; j < lib[i].cnt_aut; j++) free(lib[i].authors[j]);
+		free(lib[i].authors);
+		free(lib[i].name);
+		free(lib[i].publisher);
+	}
+	free(lib);
 }
