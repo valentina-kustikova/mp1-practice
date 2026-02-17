@@ -11,20 +11,19 @@ int main() {
 		printf("Empty file!\n");
 		return 0;
 	}
-	for (i = 0; i < n; i++) {
-		print_book(lib[i]);
-		printf("#___#\n");
-	}
-	printf("\n\n");
-	char author[1000];
-	fgets(author, 1000, stdin);
-	author[strlen(author) - 1] = '\0';
-	book* ans = search(author, lib, n, &cnt);
-	if (ans == NULL) printf("Doesn't have :(\n");
-	else for (i = 0; i < cnt; i++) {
-		print_book(ans[i]);
-		printf("#___#\n");
-	}
-	free(ans);
+	printf("READ:\n\n");
+	for (i = 0; i < n; i++) print_book(lib[i]);
+	do {
+		char author[1000];
+		printf("Enter finding author(or \"exit\" to end searching): ");
+		fgets(author, 1000, stdin);
+		author[strlen(author) - 1] = '\0';
+		if (strcmp(author, "exit") == 0) break;
+		book** ans = search(author, lib, n, &cnt);
+		if (ans == NULL) printf("Doesn't have this author.\n");
+		else for (i = 0; i < cnt; i++) print_book(*ans[i]);
+		free(ans);
+	} while (1);
+	free_all(lib, n);
 	return 0;
 }

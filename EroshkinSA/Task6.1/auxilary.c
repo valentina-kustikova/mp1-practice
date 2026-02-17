@@ -30,9 +30,9 @@ static void parse(char* s, book* b) {
 	(*b).year = 0;
 	for (; i < strlen(s) - 1; i++) (*b).year = (*b).year * 10 + (s[i] - '0');
 	(*b).authors = (char**)malloc(((*b).cnt_aut) * sizeof(char*));
-	for (i = 0; i < (*b).cnt_aut; i++) (*b).authors[i] = (char*)malloc((mx + 1) * sizeof(char));
-	(*b).name = (char*)malloc(name_length * sizeof(char));
-	(*b).publisher = (char*)malloc(pub_length * sizeof(char));
+	for (i = 0; i < (*b).cnt_aut; i++) (*b).authors[i] = (char*)malloc((mx + 2) * sizeof(char));
+	(*b).name = (char*)malloc((name_length + 1) * sizeof(char));
+	(*b).publisher = (char*)malloc((pub_length + 1) * sizeof(char));
 	//___________________________________
 	//___________________________________
 
@@ -56,12 +56,14 @@ static void parse(char* s, book* b) {
 
 extern void print_book(book b) {
 	int i;
+	printf("#___#\n");
 	printf("Authors: ");
 	for (i = 0; i < b.cnt_aut; i++) {
 		printf("%s ", b.authors[i]);
 		if (i != b.cnt_aut - 1) printf("& ");
 	}
 	printf("\nName: %s\nPublished by %s in %d\n", b.name, b.publisher, b.year);
+	printf("#___#\n\n");
 }
 
 extern book* reader(const char* source, int* n) {
@@ -86,7 +88,9 @@ extern book* reader(const char* source, int* n) {
 extern void free_all(book* lib, int n) {
 	int i, j;
 	for (i = 0; i < n; i++) {
-		for (j = 0; j < lib[i].cnt_aut; j++) free(lib[i].authors[j]);
+		for (j = 0; j < lib[i].cnt_aut; j++) {
+			free(lib[i].authors[j]);
+		}
 		free(lib[i].authors);
 		free(lib[i].name);
 		free(lib[i].publisher);

@@ -7,6 +7,6 @@ typedef struct {
 	int year, cnt_aut;
 } book;
 
-book* search(char* author, book* lib, int n, int* cnt);
+book** search(char* author, book* lib, int n, int* cnt);
 
 #endif
