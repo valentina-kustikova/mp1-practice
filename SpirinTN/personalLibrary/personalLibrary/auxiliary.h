@@ -3,10 +3,23 @@
 
 #include "library.h"
 
-STATUS readLibrary(BOOK** books, int* countBooks);
-int getCountBooks(FILE* fp);
-void stringToStruct(FILE* fp, BOOK* books, const int count);
-void changeField(BOOK* book, const int indexField, const char* str);
+
+#define MAIN_FRAME "\
+|-----------------------------|\n\
+|      Личная библиотека      |\n\
+|-----------------------------|\n\n"
+
+#define OPERATIONS "\
+1. Показать список книг\n\
+2. Найти книги по автору\n\
+0. Выход\n\n"
+
+void printFrame();
+int inputOperation();
+void printError(STATUS status);
+STATUS programCycle(BOOK* books, const int countBooks);
 STATUS printListBooks(const BOOK* books, const int countBooks);
+STATUS searchBooksInterface(const BOOK* books, const int countBooks);
+void inputAuthor(char author[]);
 
 #endif
