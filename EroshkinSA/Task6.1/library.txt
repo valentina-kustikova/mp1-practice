@@ -1,7 +1,7 @@
 A. Conan Doyle;The Adventure of Sherlock Holmes;Moscow;1984
 F. G. Wales;Dune;Saint-Petersburg;2007
 F. G. Wales;Time Machine;Moscow;2007
-T. Pratchett, N. Gaiman;Good Omens;London;2017
+T. Pratchett,N. Gaiman;Good Omens;London;2017
 L. Tolstoy;War and Peace;Sochi;30458
-A, B, C;D;E;5
+A,B,C;D;E;5
 N. Gaiman;Some book;Cardiff;2013

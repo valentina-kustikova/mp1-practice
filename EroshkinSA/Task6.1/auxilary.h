@@ -8,4 +8,6 @@ extern void print_book(book b);
 static int count(FILE* f);
 extern void free_all(book* lib, int n);
 
+extern void game(char* s, book* b);
+
 #endif

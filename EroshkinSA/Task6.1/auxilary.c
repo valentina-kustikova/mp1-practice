@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "auxilary.h"
 #include "library.h"
+#include <string.h>
 
 static int count(FILE* f) {
 	int cnt = 0;
@@ -9,49 +10,7 @@ static int count(FILE* f) {
 	while (fgets(buff, 1000, f)) {
 		cnt++;
 	}
-	fclose(f);
 	return cnt;
-}
-
-static void parse(char* s, book* b) {
-	int i, j = 0, prev = 0, mx = 0, k = 0, name_length = 0, pub_length = 0;
-	(*b).cnt_aut = 1;
-	for (i = 0; s[i] != ';'; i++) if (s[i] == ',') {
-		(*b).cnt_aut++;
-		if (i - prev - 1 > mx) mx = i - prev - 1;
-		prev = i;
-	}
-	if (i - prev > mx) mx = i - prev;
-	i++;
-	for (; s[i] != ';'; i++) name_length++;
-	i++;
-	for (; s[i] != ';'; i++) pub_length++;
-	i++;
-	(*b).year = 0;
-	for (; i < strlen(s) - 1; i++) (*b).year = (*b).year * 10 + (s[i] - '0');
-	(*b).authors = (char**)malloc(((*b).cnt_aut) * sizeof(char*));
-	for (i = 0; i < (*b).cnt_aut; i++) (*b).authors[i] = (char*)malloc((mx + 2) * sizeof(char));
-	(*b).name = (char*)malloc((name_length + 1) * sizeof(char));
-	(*b).publisher = (char*)malloc((pub_length + 1) * sizeof(char));
-	//___________________________________
-	//___________________________________
-
-	for (i = 0; s[i] != ';'; i++) {
-		if (s[i] == ',') {
-			(*b).authors[k][j] = '\0';
-			k++;
-			i++;
-			j = 0;
-		}
-		else (*b).authors[k][j++] = s[i];
-	}
-	(*b).authors[k][j] = '\0';
-	i++;
-	for (j = 0; s[i] != ';'; i++) (*b).name[j++] = s[i];
-	(*b).name[j] = '\0';
-	i++;
-	for (j = 0; s[i] != ';'; i++) (*b).publisher[j++] = s[i];
-	(*b).publisher[j] = '\0';
 }
 
 extern void print_book(book b) {
@@ -74,6 +33,7 @@ extern book* reader(const char* source, int* n) {
 		return;
 	}
 	*n = count(fl);
+	fclose(fl);
 	if (*n == 0) return NULL;
 	book* lib = (book*)malloc(*n * sizeof(book));
 	char* buff[1000];
@@ -82,6 +42,7 @@ extern book* reader(const char* source, int* n) {
 		fgets(buff, 1000, f);
 		parse(buff, lib + i);
 	}
+	fclose(f);
 	return lib;
 }
 
@@ -96,4 +57,18 @@ extern void free_all(book* lib, int n) {
 		free(lib[i].publisher);
 	}
 	free(lib);
+}
+
+static void parse(char* s, book* b) {
+	int i;
+	(*b).cnt_aut = 1;
+	char* authors = strtok(s, ";");
+	(*b).name = strtok(NULL, ";");
+	(*b).publisher = strtok(NULL, ";");
+	(*b).year = atoi(strtok(NULL, ";"));
+	for (i = 0; i < strlen(authors); i++) if (authors[i] == ',') (*b).cnt_aut++;
+	(*b).authors = (char**)malloc((*b).cnt_aut * sizeof(char*));
+	(*b).authors[0] = strtok(authors, ",");
+	for (i = 1; i < (*b).cnt_aut; i++) (*b).authors[i] = strtok(NULL, ",");
+	print_book(*b);
 }
