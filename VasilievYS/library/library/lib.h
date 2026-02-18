@@ -1,6 +1,6 @@
 #ifndef __f
 #define __f
-#define _CRT_SECURE_NO_WARNINGS
+
 typedef struct
 {
 	char avtors[99];
@@ -8,5 +8,6 @@ typedef struct
 	char pub[99];
 	int year;
 }book;
-void find(book* list, int cnt_s);
+
+book* find(book* list, int cnt_s, char *uavtor); // todo: author
 #endif 

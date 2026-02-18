@@ -2,40 +2,27 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#define _CRT_SECURE_NO_WARNINGS
-void find(book* list, int cnt_s)
+
+book* find(book* list, int cnt_s, char *uavtor)
 {
-	char ch, uavtor[99], curr_avtr[99];
-	int i = 0, j = 0, ans=0, curr=0;
-	printf("Author: ");
-	while ((ch = getchar()) != '\n')
-	{
-		uavtor[i] = ch;
-		i++;
-	}
-	uavtor[i] = '\0';
+	int i = 0, cnt_ans = 0, * idx_ans = (int*)malloc(sizeof(int) * cnt_s), k = 0;
+	book* ans;
+	// todo: никаких выводов, создаем новый массив
 	for (i = 0; i < cnt_s; i++)
 	{
-		curr_avtr[curr] = list[i].avtors[0];
-		curr++;
-		for (j = 1; j <= strlen(list[i].avtors); j++)
+		if (strstr(list[i].avtors, uavtor))
 		{
-			if (list[i].avtors[j] == ','|| list[i].avtors[j] == '\0')
-			{ 
-				curr_avtr[curr] = '\0';
-				if (strcmp(curr_avtr, uavtor) == 0)
-				{
-					printf("\n%s, %s, %s, %d", list[i].avtors, list[i].name, list[i].pub, list[i].year);
-					ans++;
-				}
-				curr = 0;
-			}
-			else if (list[i].avtors[j - 1] != ',')
-			{
-				curr_avtr[curr] = list[i].avtors[j];
-				curr++;
-			}
+			cnt_ans++;
+			idx_ans[i] = 1;
 		}
+		else { idx_ans[i] = -1; }
 	}
-	if (ans == 0) { printf("NO"); }
+	ans = (book*)malloc(sizeof(book) * cnt_ans);
+	for (i = 0; i < cnt_s; i++)
+	{
+		if (idx_ans[i] == 1) { ans[k] = list[i]; k++; }
+	}
+	free(idx_ans);
+	return ans;
+	 // todo: через коды ошибок
 }

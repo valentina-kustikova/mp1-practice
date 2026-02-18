@@ -3,7 +3,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-#define _CRT_SECURE_NO_WARNINGS
+
 int cnt_s(const char* fr)
 {
 	char ch;
@@ -24,7 +24,7 @@ void read(const char* fr, book* col, int cnt)
 	FILE* fp = fopen(fr, "r");
 	for (i = 0; i < cnt; i++)
 	{
-		check = fscanf(fp, "%99[^;]; %99[^;]; %99[^;]; %d%*c%*c", col[i].avtors, col[i].name, col[i].pub, &col[i].year);
+		check = fscanf(fp, "%99[^;]; %99[^;]; %99[^;]; %d%*c%*c", col[i].avtors, col[i].name, col[i].pub, &col[i].year); // todo: fgets + strtok
 	}
 	fclose(fp);
 }
