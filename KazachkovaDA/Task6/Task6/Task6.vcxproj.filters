@@ -15,21 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="task4.c">
+    <ClCompile Include="main.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="functions.c">
+    <ClCompile Include="auxiliary.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="global_names.c">
+    <ClCompile Include="library.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="functions.h">
+    <ClInclude Include="library.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="global_names.h">
+    <ClInclude Include="auxiliary.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
