@@ -6,7 +6,9 @@
 
 int main()
 {
-	BOOK* lib; int n, n2, i, j; char str[100]; size_t* idBooks;
+	BOOK* lib; BOOK* findedBooks;
+	int n, n2, i, j;
+	char str[100];
 	system("chcp 1251");
 	system("cls");
 	n = read("lib.txt",&lib);
@@ -15,10 +17,22 @@ int main()
 		printf("¬ведите автора (0 - выход): ");
 		fgets(str, 100, stdin);
 		if (strncmp(str, "0\n", 2) == 0) break;
-		n2 = find(lib, n, str, &idBooks);
+		printf("===========================================\n");
+		n2 = find(lib, &findedBooks, n, str);
 		if (n2 == 0) { printf(" ниг этого автора не найдено\n\n"); }
-		else output(lib, idBooks, n2);
-		free(idBooks);
+		else output(findedBooks, n2);
+
+		for (i = 0; i < n2; i++) {
+			for (j = 0; j < findedBooks[i].numberOfAuthors; j++)
+			{
+				free(findedBooks[i].authors[j]);
+			}
+			free(findedBooks[i].authors);
+			free(findedBooks[i].title);
+			free(findedBooks[i].ed);
+		}
+
+		free(findedBooks);
 	}
 
 	for (i = 0; i < n; i++) {

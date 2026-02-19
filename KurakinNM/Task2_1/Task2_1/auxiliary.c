@@ -11,10 +11,22 @@ void bariers(char* str, int* start, int* numOfSims)
 	while (str[*start + *numOfSims - 1] == ' ') (*numOfSims)--;
 }
 
+void readWord(char* input,char** output,int* start, int* numOfSims)
+{
+	bariers(input, start, numOfSims);
+	*output = (char*)malloc(*numOfSims + 1);
+	memcpy(*output, input + *start, *numOfSims);
+	(*output)[*numOfSims] = '\0';
+	*start += *numOfSims;
+}
+
 int read(char* fileName, BOOK** books)
 {
-	FILE* f; int n = 0, linesCount = 0, i, j, numOfSims, start; char s[100]; char c; char* str; char* year; unsigned int* numOfAuthors;
-	char buffer[256];
+	FILE* f;
+	int n = 0, linesCount = 0, i, j, numOfSims, start;
+	char c; char* str; char* year;
+	unsigned int* numOfAuthors;
+
 	f = fopen(fileName, "r");
 	while (!feof(f))
 	{
@@ -64,53 +76,38 @@ int read(char* fileName, BOOK** books)
 
 		for (j = 0; j < (*books)[i].numberOfAuthors; j++)
 		{
-			bariers(str, &start, &numOfSims);
-			(*books)[i].authors[j] = (char*)malloc(numOfSims + 1);
-			memcpy((*books)[i].authors[j], str + start, numOfSims);
-			(*books)[i].authors[j][numOfSims] = '\0';
-
-			start += numOfSims;
+			readWord(str, &((*books)[i].authors[j]), &start, &numOfSims);
 		}
 
-		bariers(str, &start, &numOfSims);
-		(*books)[i].title = (char*)malloc(numOfSims + 1);
-		memcpy((*books)[i].title, str + start, numOfSims);
-		(*books)[i].title[numOfSims] = '\0';
-		start += numOfSims;
+		readWord(str, &((*books)[i].title), &start, &numOfSims);
+		readWord(str, &((*books)[i].ed), &start, &numOfSims);
+		readWord(str, &year, &start, &numOfSims);
 
-		bariers(str, &start, &numOfSims);
-		(*books)[i].ed = (char*)malloc(numOfSims + 1);
-		memcpy((*books)[i].ed, str + start, numOfSims);
-		(*books)[i].ed[numOfSims] = '\0';
-		start += numOfSims;
-
-		bariers(str, &start, &numOfSims);
-		year = (char*)malloc(numOfSims + 1);
-		memcpy(year, str + start, numOfSims);
-		year[numOfSims] = '\0';
 		(*books)[i].year = atoi(year);
 
 		free(year);
 		free(str);
 	}
 
+	fclose(f);
+
 	return n;
 }
 
-void output(BOOK* lib, int* idBooks, int numOfBooks)
+void output(BOOK* lib, int numOfBooks)
 {
 	int i, j;
 	for (i = 0; i < numOfBooks; i++)
 	{
-		printf("Название книги: %s\n", lib[idBooks[i]].title);
+		printf("Название книги: %s\n", lib[i].title);
 		printf("Авторы: ");
-		for (j = 0; j < lib[idBooks[i]].numberOfAuthors - 1; j++)
+		for (j = 0; j < lib[i].numberOfAuthors - 1; j++)
 		{
-			printf("%s, ", lib[idBooks[i]].authors[j]);
+			printf("%s, ", lib[i].authors[j]);
 		}
-		printf("%s\n", lib[idBooks[i]].authors[j]);
-		printf("Гздатель: %s\n", lib[idBooks[i]].ed);
-		printf("Год издания: %d\n", lib[idBooks[i]].year);
+		printf("%s\n", lib[i].authors[j]);
+		printf("Гздатель: %s\n", lib[i].ed);
+		printf("Год издания: %d\n", lib[i].year);
 		printf("\n");
 	}
 }
