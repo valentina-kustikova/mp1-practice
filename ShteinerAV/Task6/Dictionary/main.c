@@ -36,12 +36,12 @@ int main() {
 			}
 			else {
 				system("cls");
-				Book* arr = (Book*)malloc(sizeof(Book) * cnt_books);
-				int* id_books, cnt_id;
+				Book* arr = (Book*)malloc(sizeof(Book) * cnt_books), * id_books;
+				int cnt_id;
 
 				fill_arr(arr, file);
 				cnt_id = find_book(arr, cnt_books, &id_books);
-				print_books(arr, id_books, cnt_id);
+				print_books(id_books, cnt_id);
 				system("pause");
 			}
 			break;

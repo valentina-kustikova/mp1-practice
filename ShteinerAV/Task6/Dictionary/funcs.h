@@ -10,7 +10,7 @@ void u_answer(char* user);
 void enter_the_author(char* users_choice);
 int scan_file(char* link);
 void fill_arr(Book* arr, char* link);
-void print_books(Book* arr, int* id_books, int size);
+void print_books(Book* id_books, int size);
 
 
 #endif

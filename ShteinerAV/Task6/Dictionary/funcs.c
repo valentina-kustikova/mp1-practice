@@ -76,6 +76,7 @@ void fill_arr(Book* arr, char* link) {
 					cnt_au++;
 					au_token = strtok_s(NULL, ",", &au_context);
 				}
+				free(author_copy);
 
 				arr[current_book].authors = (char**)malloc(cnt_au * sizeof(char*));
 				arr[current_book].cnt_authors = cnt_au;
@@ -90,6 +91,7 @@ void fill_arr(Book* arr, char* link) {
 					arr[current_book].authors[id++] = _strdup(au_token);
 					au_token = strtok_s(NULL, ",", &au_context);
 				}
+				free(author_copy);
 			}
 				break;
 			case 1:
@@ -146,13 +148,15 @@ void enter_the_author(char** users_choice) {
 	}
 }
 
-void print_books(Book* arr, int* id_books, int size) {
+void print_books(Book* id_books, int size) {
 	int i;
+	printf("\n Author: %s\n", id_books[0].authors[0]);
 	for (i = 0; i < size; i++) {
 		printf("---------------------------------------------------\n");
-		printf("| Title: %-40s |\n", arr[id_books[i]].books_name);
-		printf("| Publisher: %-36s |\n", arr[id_books[i]].publishing);
-		printf("| Year: %-41d |\n", arr[id_books[i]].year);
+		printf("| Title: %-40s |\n", id_books[i].books_name);
+		printf("| Publisher: %-36s |\n", id_books[i].publishing);
+		printf("| Year: %-41d |\n", id_books[i].year);
 	}
 	printf("---------------------------------------------------\n");
+	free(id_books);
 }

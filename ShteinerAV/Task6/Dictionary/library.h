@@ -9,6 +9,6 @@ typedef struct {
 	int year;
 }Book;
 
-int find_book(Book* arr, int size, char** id_books);
+int find_book(Book* arr, int size, Book** id_books);
 
 #endif
