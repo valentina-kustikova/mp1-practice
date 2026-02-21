@@ -1,14 +1,22 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #include <locale.h>
-//#include "library.h"
-#include "auxiliary.h"
+
 
 int main()
 {
 	setlocale(LC_ALL, "Russian");
-	read();
+
+	struct book 
+	{
+	char* author, * title, * publisher;
+	int publishing_year;
+	};
+
+	char file_name[] = "library.txt";
+	int * pFileName = &file_name;
+	
+	
+	
 	return 0;
 
 }
