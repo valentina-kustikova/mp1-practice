@@ -35,12 +35,12 @@ extern book* reader(const char* source, int* n) {
 	*n = count(fl);
 	fclose(fl);
 	if (*n == 0) return NULL;
-	book* lib = (book*)malloc(*n * sizeof(book));
+	book* lib = (book*)malloc((*n) * sizeof(book));
 	char* buff[1000];
 	FILE* f = fopen(source, "r");
 	for (i = 0; i < *n; i++) {
 		fgets(buff, 1000, f);
-		parse(buff, lib + i);
+		parse(buff, &(lib[i]));
 	}
 	fclose(f);
 	return lib;
@@ -62,13 +62,12 @@ extern void free_all(book* lib, int n) {
 static void parse(char* s, book* b) {
 	int i;
 	(*b).cnt_aut = 1;
-	char* authors = strtok(s, ";");
-	(*b).name = strtok(NULL, ";");
-	(*b).publisher = strtok(NULL, ";");
+	char* authors = _strdup(strtok(s, ";"));
+	(*b).name = _strdup(strtok(NULL, ";"));
+	(*b).publisher = _strdup(strtok(NULL, ";"));
 	(*b).year = atoi(strtok(NULL, ";"));
 	for (i = 0; i < strlen(authors); i++) if (authors[i] == ',') (*b).cnt_aut++;
 	(*b).authors = (char**)malloc((*b).cnt_aut * sizeof(char*));
-	(*b).authors[0] = strtok(authors, ",");
-	for (i = 1; i < (*b).cnt_aut; i++) (*b).authors[i] = strtok(NULL, ",");
-	print_book(*b);
+	(*b).authors[0] = _strdup(strtok(authors, ","));
+	for (i = 1; i < (*b).cnt_aut; i++) (*b).authors[i] = _strdup(strtok(NULL, ","));
 }
