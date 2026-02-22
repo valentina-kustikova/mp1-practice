@@ -12,7 +12,7 @@ int numberBooks(const char* filename) {
 		printf("mistake");
 		return 1;
 	}
-	while (buff) {
+	while (buff) { 
 		if (fgets(buff, sizeof(buff), file)) {
 			count++;
 		}
@@ -44,7 +44,11 @@ void printResults(struct Book* search, int k) {
 	else {
 		printf("%d books were found\n", k);
 	}
-	for (int i = 0; i < k; i++) {
-		printf("%s; %s; %s; %d\n", search[i].author, search[i].name, search[i].publisher, search[i].year);
+	if (k) {
+		for (int i = 0; i < k; i++) {
+			printf("%s; %s; %s; %d\n", search[i].author, search[i].name, search[i].publisher, search[i].year);
+		}
 	}
+	
 }
+ 

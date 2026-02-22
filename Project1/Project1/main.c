@@ -6,18 +6,17 @@
 
 int main() {
 	char buff[1024], author[100];
-	int count, searching_books;
+	int count, countAuthorBooks;
 	count = numberBooks("catalog.txt");
 	struct Book* array = (struct Book*)malloc(count * sizeof(struct Book));
 	readFile(count, array, "catalog.txt");
-	
+	 
 	printf("\nEnter the author\n");
 	scanf("%[^\n]", author);
-	struct Book* search = (struct Book*)malloc(count * sizeof(struct Book));
 	
-	searching_books = searching(array, count, author, search);
-
-	printResults(search, searching_books);
+	struct Book* search;
+	searching(array, count, author, &search, &countAuthorBooks);
+	printResults(search, countAuthorBooks);
 	
 	free(array);
 	free(search);

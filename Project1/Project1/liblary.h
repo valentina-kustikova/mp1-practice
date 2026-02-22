@@ -6,6 +6,7 @@ struct Book {
 	char publisher[100];
 	int year;
 };
-int searching(struct Book* array, int count, const char* author[], struct Book* search);
+void searching(struct Book* array, int count, const char* author, struct Book** search, int* countAuthorBooks);
 #endif 
 
+ 
