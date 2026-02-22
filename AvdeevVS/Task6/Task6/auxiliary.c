@@ -26,28 +26,31 @@ void Read(book* num){
     strcpy(num[i].writer, _strdup(strtok(s, ";")));
     strcpy(num[i].name, _strdup(strtok(NULL, ";")));
     strcpy(num[i].publish, _strdup(strtok(NULL, ";")));
-    strcpy(num[i].year, _strdup(strtok(NULL, ";")));
+    strcpy(num[i++].year, _strdup(strtok(NULL, ";")));
   }
   fclose(f);
 }
 void Print(int* req, book* num, int n,int* k) {
   int i;
   if (req[0] == 5) {
-    printf("There are no books by this author\n");
+    printf("\nBooks by this author:\n\n");
+    printf("There are no books by this author\n\n");
   }
   else if (req[0] == 10) {
     printf("The end!");
     *(k) = 0;
   }
   else {
+    printf("\nBooks by this author:\n\n");
     for (i = 0; i < n; i++) {
       if (req[i] == 1) {
-        printf("%s ", num[i].writer);
-        printf("%s ", num[i].name);
-        printf("%s ", num[i].publish);
+        printf("%s;", num[i].writer);
+        printf("%s;", num[i].name);
+        printf("%s;", num[i].publish);
         printf("%s", num[i].year);
-        printf("\n");
+        //printf("\n");
       }
     }
+    printf("\n");
   }
 }
