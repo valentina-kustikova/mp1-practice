@@ -5,6 +5,7 @@
 #include <stdlib.h>
 int main() {
   static int n;
+  int proof;
   static int k=1;
   book* num;
   int* req;
