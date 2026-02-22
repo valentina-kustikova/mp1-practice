@@ -6,41 +6,38 @@
 #define O 1
 int Quantity() {
   int count = 0;
-  char a[O];
+  char s[P];
   FILE* f = fopen("books.txt", "r");
   if (f == NULL) {
     printf("Error:The file does not exist or permissions are missing!");
     exit(0);
   }
-  while (a[0] = fgetc(f) != EOF) {
-    if (a[0] == '\n') {
-      count++;
-    }
-  }
-    fclose(f);
+  while ((fgets(s, P, f)) != NULL) {
     count++;
-    return count;
+  }
+  fclose(f);
+  return count;
 }
 void Read(book* num){
   int i = 0;
   char s[P];
   FILE* f = fopen("books.txt", "r"); 
   while ((fgets(s, P, f)) != NULL){
-    num[i].writer = strdup(strtok(s, ";"));
-    num[i].name = strdup(strtok(NULL, ";"));
-    num[i].publish = strdup(strtok(NULL, ";"));
-    num[i++].year = strdup(strtok(NULL, ";"));
+    strcpy(num[i].writer, _strdup(strtok(s, ";")));
+    strcpy(num[i].name, _strdup(strtok(NULL, ";")));
+    strcpy(num[i].publish, _strdup(strtok(NULL, ";")));
+    strcpy(num[i].year, _strdup(strtok(NULL, ";")));
   }
   fclose(f);
-  return 0;
 }
-void Print(int* req, book* num, int n) {
+void Print(int* req, book* num, int n,int* k) {
   int i;
   if (req[0] == 5) {
-    printf("There are no books by this author");
+    printf("There are no books by this author\n");
   }
   else if (req[0] == 10) {
     printf("The end!");
+    *(k) = 0;
   }
   else {
     for (i = 0; i < n; i++) {

@@ -8,6 +8,7 @@ void Search(int* req, book* num,int n) {
   int k = 0;
   char input[S];
   scanf("%s", input);
+  //printf("%s", input);
   if (strcmp(input, "Stop") == 0) {
     req[0] = 10;
     return;

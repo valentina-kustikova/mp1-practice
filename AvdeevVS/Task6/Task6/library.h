@@ -1,3 +1,5 @@
+#ifndef a
+#define a
 #define D 10
 #define S 100
 #define P 500
@@ -9,3 +11,4 @@ typedef struct{
   char year[D];
 } book;
 void Search(int* req, book* num, int n);
+#endif
