@@ -6,7 +6,7 @@
 int main() {
   //D.Protsko   E.Shklarsky
   static int n;
-  int i;
+  int i,j;
   static int k=1;
   book* num;
   int* req;
