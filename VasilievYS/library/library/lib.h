@@ -8,6 +8,5 @@ typedef struct
 	char pub[99];
 	int year;
 }book;
-
-book* find(book* list, int cnt_s, char *uavtor); // todo: author
+book* find(book* list, int cnt_s, char *uavtor, int* c_ans);
 #endif 

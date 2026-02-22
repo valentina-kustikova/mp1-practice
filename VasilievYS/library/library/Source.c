@@ -5,7 +5,7 @@
 
 int main()
 {
-	int cnt,  ch, i=0;
+	int cnt, ch, i=0, cnt_ans;
 	char uavtor[99];
 	book* col,*ans;
 	cnt = cnt_s("data.txt");
@@ -17,9 +17,9 @@ int main()
 		i++;
 	}
 	uavtor[i] = '\0';
-	ans=find(col, cnt, uavtor);
-	printf("%s", ans[0].avtors);
+	ans=find(col, cnt, uavtor, &cnt_ans);
+	print(ans, cnt_ans);
 	free(col);
 	free(ans);
-	return 0;//todo: печать ответа и доделать read
+	return 0;
 }
