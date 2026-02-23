@@ -1,2 +1,20 @@
 L. N. Tolstoy;War and Peace;Alphabet;2025
-Arthur Conan Doyle;The Adventures of Sherlock Holmes;The Strand;1927
+L. N. Tolstoy;Anna Karenina;The Russian Messenger;1877
+L. N. Tolstoy;The Death of Ivan Ilyich;The Russian Messenger;1886
+F. M. Dostoevsky;Crime and Punishment;The Russian Messenger;1866
+F. M. Dostoevsky;The Brothers Karamazov;The Russian Messenger;1880
+F. M. Dostoevsky;Notes from Underground;The Russian Messenger;1864
+A. P. Chekhov;The Cherry Orchard;Petrograd Press;1904
+A. P. Chekhov;The Seagull;Petrograd Press;1896
+A. P. Chekhov;Uncle Vanya;Petrograd Press;1899
+N. V. Gogol;Dead Souls;The Russian Messenger;1842
+N. V. Gogol;The Overcoat;The Russian Messenger;1842
+N. V. Gogol;Taras Bulba;The Russian Messenger;1835
+M. Y. Lermontov;A Hero of Our Time;Sovremennik;1840
+M. Y. Lermontov;The Demon;Sovremennik;1842
+I. S. Turgenev;Fathers and Sons;The Russian Messenger;1862
+I. S. Turgenev;A Month in the Country;The Russian Messenger;1855
+A. S. Pushkin;Eugene Onegin;The Russian Messenger;1833
+A. S. Pushkin;The Captain's Daughter;The Russian Messenger;1836
+A. S. Pushkin;Boris Godunov;The Russian Messenger;1831
+A. S. Pushkin;The Queen of Spades;The Russian Messenger;1834

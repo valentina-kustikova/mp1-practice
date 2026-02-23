@@ -2,61 +2,42 @@
 #include <locale.h>
 #include <stdlib.h>
 #include <string.h>
+#include "library.h"
+#include "auxiliary.h"
 
-struct book
-{
-	char* author, * title, * publisher;
-	int publishing_year;
-};
-
-struct book* file_to_struct(const char* file_name, int *count);
+struct book* find_books_by_author(struct book* books, int count, const char* author_request);
 
 int main()
 {
 	setlocale(LC_ALL, "Russian");
+
 	char file_name[] = "library.txt";
 	int count = 0;
 	
+	struct book* books = file_to_struct(file_name, &count);
+
+    if (!books || count == 0)
+        {
+            printf("Ошибка чтения книг\n");
+            return 1;
+        }
+
+	char request_author[512];
+	printf("Введите фамилию автора (на английском): ");
+	if (!fgets(request_author, sizeof(request_author), stdin))
+	{
+		printf("Ошибка ввода\n");
+		return 1;
+	}
+
+	request_author[strcspn(request_author, "\n")] = 0;
+
+	find_books_by_author(books, count, request_author);
+	
+	free_memory(books, count);
+
 	return 0;
 
 }
 
-struct book* file_to_struct(const char* file_name, int *count)
-{
-	FILE* file = fopen(file_name, "r");
-	int size = 10;
-	struct book* books = malloc(size * sizeof(struct book));
-	char line[512];
-	int n = 0;
 
-	while (fgets(line, sizeof(line), file)) //куда, кол-во символов для считывания, откуда;
-	{											//возвращает NULL, когда достигнут конец файла
-		{
-			line[strcspn(line, "\n")] = 0;//strcspn выводит, сколько символов было встречено до "\n"
-			//элеменрт строки с этим номером заменяем на 0
-		}
-
-		if (n == size)
-		{
-			size += 1;
-			books = realloc(books, size * sizeof(struct book));
-
-		}
-
-		char* author = strtok(line, ";");
-		char* title = strtok(NULL, ";");
-		char* publisher = strtok(NULL, ";");
-		char* publishing_year = strtok(NULL, ";");
-
-		books[n].author = malloc(strlen(author) + 1);
-		books[n].title = malloc(strlen(title) + 1);
-		books[n].publisher = malloc(strlen(publisher) + 1);
-		books[n].publishing_year = malloc(strlen(publishing_year) + 1);
-
-		n++;
-
-	}
-	fclose(file);
-	*count = n;
-	return books;
-}
