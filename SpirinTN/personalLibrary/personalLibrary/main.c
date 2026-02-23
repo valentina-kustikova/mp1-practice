@@ -17,7 +17,10 @@ int main() {
 	
     status = readLibrary(&books, &countBooks);
     if (status != SUCCESS) {
+        printFrame();
 		printError(status);
+        free(books);
+        books = NULL;
         return status;
     }
     status = programCycle(books, countBooks);

@@ -7,24 +7,29 @@
 
 
 STATUS readLibrary(BOOK** books, int* countBooks) {
+	STATUS status—orrectnessLines;
 	FILE* fp = fopen("books.txt", "r");
 	if (fp == NULL) {
-		return ERROR_FILE;
+		return FILE_OPENING_ERROR;
 	}
 
 	*countBooks = getCountBooks(fp);
+	if (*countBooks == 0) {
+		return ERROR_NO_BOOKS;
+	}
+
 	rewind(fp);
 	*books = (BOOK*)malloc((*countBooks) * sizeof(BOOK));
 	if (*books == NULL) {
 		return ERROR_MEMORY;
 	}
-	stringToStruct(fp, *books, *countBooks);
+	status—orrectnessLines = stringToStruct(fp, *books, *countBooks);
 
 	if (fclose(fp) != 0) {
-		return ERROR_FILE;
+		return FILE_CLOSE_ERROR;
 	}
 
-	return SUCCESS;
+	return status—orrectnessLines;
 }
 
 int getCountBooks(FILE* fp) {
@@ -37,7 +42,7 @@ int getCountBooks(FILE* fp) {
 	return count;
 }
 
-void stringToStruct(FILE* fp, BOOK* books, const int count) {
+STATUS stringToStruct(FILE* fp, BOOK* books, const int count) {
 	int indexBook = 0;
 	char line[800];
 	while (indexBook < count && fgets(line, sizeof(line), fp)) {
@@ -49,8 +54,13 @@ void stringToStruct(FILE* fp, BOOK* books, const int count) {
 			token = strtok(NULL, ";");
 		}
 
+		if (i != 4) {
+			return INVALID_FILE;
+		}
+
 		indexBook++;
 	}
+	return SUCCESS;
 }
 
 void changeField(BOOK* book, const int indexField, const char* str) {
@@ -77,12 +87,12 @@ STATUS searchBooksByAuthor(BOOK* books, const int countBooks, const char* author
     int i, k = 0;
 	*countAuthorBooks = 0;
     for (i = 0; i < countBooks; i++) {
-        if (strcmp(books[i].authors, author) == 0) {
+        if (strstr(books[i].authors, author) != NULL) {
 			(*countAuthorBooks)++;
         }
     }
 	if ((*countAuthorBooks) == 0) {
-		return ERROR_NO_BOOKS;
+		return ERROR_NO_FILTRED_BOOKS;
 	}
 	*authorBooks = (BOOK*)malloc(sizeof(BOOK) * (*countAuthorBooks));
 	if ((*authorBooks) == NULL) {

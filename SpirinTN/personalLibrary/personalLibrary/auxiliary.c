@@ -25,16 +25,22 @@ int inputOperation() {
 void printError(STATUS status) {
 	switch (status) {
 	case ERROR_MEMORY:
-		printf("Ошибка выделения памяти!");
+		printf("Ошибка выделения памяти!\n");
 		break;
-	case ERROR_FILE:
-		printf("Ошибка при работе с файлом!");
+	case INVALID_FILE:
+		printf("Текстовый файл некорректный!\n");
+		break;
+	case FILE_OPENING_ERROR:
+		printf("Ошибка при открытии файла!\n");
+		break;
+	case FILE_CLOSE_ERROR:
+		printf("Ошибка при закрытии файла!\n");
 		break;
 	case ERROR_NO_BOOKS:
-		printf("В картотеке книг нет!");
+		printf("В картотеке книг нет!\n");
 		break;
 	case ERROR_NO_FILTRED_BOOKS:
-		printf("Книг заданного автора не найдено!");
+		printf("Книг заданного автора не найдено!\n");
 		break;
 	}
 }
@@ -79,29 +85,40 @@ STATUS printListBooks(const BOOK* books, const int countBooks) {
 }
 
 STATUS searchBooksInterface(const BOOK* books, const int countBooks) {
+	int i;
 	char author[LENGTH_STRING + 1];
 	int countAuthorBooks = 0;
 	BOOK* authorBooks = NULL;
 	STATUS status;
 
 	printFrame();
-	inputAuthor(author);
+	inputAuthor(author, sizeof(author));
 	
 	status = searchBooksByAuthor(books, countBooks, author, &authorBooks, &countAuthorBooks);
-	if (status != SUCCESS) {
-		free(authorBooks);
-		authorBooks = NULL;
+	if (status == ERROR_MEMORY) {
 		return status;
 	}
+
+	if (status != ERROR_NO_FILTRED_BOOKS) {
+		printf("\nКниги автора ...%s... (найдено всего - %d):\n\n", author, countAuthorBooks);
+		for (i = 0; i < countAuthorBooks; i++) {
+			printf("%d. %s\nАвторы: %s\nИздательство: %s\nГод изд-ва: %d\n\n",
+				i + 1, authorBooks[i].title, authorBooks[i].authors, authorBooks[i].publishingHouse, authorBooks[i].yearPublishing);
+		}
+	}
+	else {
+		printf("\nКниг автора ...%s... не найдено!\n\n", author);
+	}
+	system("pause");
 
 	free(authorBooks);
 	authorBooks = NULL;
 	return SUCCESS;
 }
 
-void inputAuthor(char author[]) {
+void inputAuthor(char author[], int maxLen) {
 	printf("Введите фамилию автора: ");
 	while (getchar() != '\n');
-	fgets(author, sizeof(author), stdin);
+	fgets(author, maxLen, stdin);
 	author[strcspn(author, "\n")] = '\0';
 }
