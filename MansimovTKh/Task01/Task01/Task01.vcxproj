@@ -123,17 +123,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="aux.c" />
     <ClCompile Include="libarg.c" />
     <ClCompile Include="task01main.c" />
+    <ClCompile Include="tools.c" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="library.txt" />
     <Text Include="library_new.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="aux.h" />
     <ClInclude Include="libarg.h" />
+    <ClInclude Include="tools.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

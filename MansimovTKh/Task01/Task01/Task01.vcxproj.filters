@@ -18,10 +18,10 @@
     <ClCompile Include="task01main.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="aux.c">
+    <ClCompile Include="libarg.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="libarg.c">
+    <ClCompile Include="tools.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -37,7 +37,7 @@
     <ClInclude Include="libarg.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="aux.h">
+    <ClInclude Include="tools.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
