@@ -77,3 +77,19 @@ void list_class(char* klass, school* list, int n) {
 static print(school s, int n) {
 	printf("%d) %s %s %d.%d.%d\n", n, s.name, s.gen, s.date.day, s.date.month, s.date.year);
 }
+
+void free_all(school* list, int n) {
+	int i;
+	for (i = 0; i < n; i++) {
+		free(list[i].home.country);
+		free(list[i].home.region);
+		free(list[i].home.district);
+		free(list[i].home.city);
+		free(list[i].home.street);
+		free(list[i].home.house); 
+		free(list[i].name);
+		free(list[i].klass);
+		free(list[i].gen);
+	}
+	free(list);
+}
