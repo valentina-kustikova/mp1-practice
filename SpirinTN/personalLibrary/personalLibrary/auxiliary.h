@@ -17,9 +17,9 @@
 void printFrame();
 int inputOperation();
 void printError(STATUS status);
-STATUS programCycle(BOOK* books, const int countBooks);
-STATUS printListBooks(const BOOK* books, const int countBooks);
-STATUS searchBooksInterface(const BOOK* books, const int countBooks);
+STATUS programCycle(BOOK* books, int countBooks);
+STATUS printListBooks(BOOK* books, int countBooks);
+STATUS searchBooksInterface(BOOK* books, int countBooks);
 void inputAuthor(char author[], int maxLen);
 
 #endif

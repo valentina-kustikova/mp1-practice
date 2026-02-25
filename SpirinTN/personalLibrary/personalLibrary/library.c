@@ -1,14 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "library.h"
 #include "auxiliary.h"
 
 
-STATUS readLibrary(BOOK** books, int* countBooks) {
+STATUS readLibrary(BOOK** books, int* countBooks, char* fileName) {
 	STATUS status—orrectnessLines;
-	FILE* fp = fopen("books.txt", "r");
+	FILE* fp = fopen(fileName, "r");
 	if (fp == NULL) {
 		return FILE_OPENING_ERROR;
 	}
@@ -42,7 +43,7 @@ int getCountBooks(FILE* fp) {
 	return count;
 }
 
-STATUS stringToStruct(FILE* fp, BOOK* books, const int count) {
+STATUS stringToStruct(FILE* fp, BOOK* books, int count) {
 	int indexBook = 0;
 	char line[800];
 	while (indexBook < count && fgets(line, sizeof(line), fp)) {
@@ -63,7 +64,7 @@ STATUS stringToStruct(FILE* fp, BOOK* books, const int count) {
 	return SUCCESS;
 }
 
-void changeField(BOOK* book, const int indexField, const char* str) {
+void changeField(BOOK* book, int indexField, char* str) {
 	switch (indexField) {
 	case 0:
 		strncpy(book->authors, str, sizeof(book->authors));
@@ -83,7 +84,7 @@ void changeField(BOOK* book, const int indexField, const char* str) {
 	}
 }
 
-STATUS searchBooksByAuthor(BOOK* books, const int countBooks, const char* author, BOOK** authorBooks, int* countAuthorBooks) {
+STATUS searchBooksByAuthor(BOOK* books, int countBooks, char* author, BOOK** authorBooks, int* countAuthorBooks) {
     int i, k = 0;
 	*countAuthorBooks = 0;
     for (i = 0; i < countBooks; i++) {
@@ -104,4 +105,11 @@ STATUS searchBooksByAuthor(BOOK* books, const int countBooks, const char* author
 		}
 	}
     return SUCCESS;
+}
+
+void toLowerCase(char* str) {
+	int i;
+	for (i = 0; str[i] != '\0'; i++) {
+		str[i] = tolower(str[i]);
+	}
 }

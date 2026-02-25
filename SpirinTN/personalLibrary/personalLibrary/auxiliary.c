@@ -24,6 +24,9 @@ int inputOperation() {
 
 void printError(STATUS status) {
 	switch (status) {
+	case INSUFFICIENT_ARGUMENTS_ERROR:
+		printf("Количество аргументов при запуске программы меньше двух!\n");
+		break;
 	case ERROR_MEMORY:
 		printf("Ошибка выделения памяти!\n");
 		break;
@@ -45,7 +48,7 @@ void printError(STATUS status) {
 	}
 }
 
-STATUS programCycle(BOOK* books, const int countBooks) {
+STATUS programCycle(BOOK* books, int countBooks) {
 	int operation;
 	STATUS status = SUCCESS;
 	while (1) {
@@ -70,7 +73,7 @@ STATUS programCycle(BOOK* books, const int countBooks) {
 	return status;
 }
 
-STATUS printListBooks(const BOOK* books, const int countBooks) {
+STATUS printListBooks(const BOOK* books, int countBooks) {
     int i;
     if (countBooks == 0) {
 		return ERROR_NO_BOOKS;
@@ -84,7 +87,7 @@ STATUS printListBooks(const BOOK* books, const int countBooks) {
     return SUCCESS;
 }
 
-STATUS searchBooksInterface(const BOOK* books, const int countBooks) {
+STATUS searchBooksInterface(const BOOK* books, int countBooks) {
 	int i;
 	char author[LENGTH_STRING + 1];
 	int countAuthorBooks = 0;
@@ -101,15 +104,12 @@ STATUS searchBooksInterface(const BOOK* books, const int countBooks) {
 
 	if (status != ERROR_NO_FILTRED_BOOKS) {
 		printf("\nКниги автора ...%s... (найдено всего - %d):\n\n", author, countAuthorBooks);
-		for (i = 0; i < countAuthorBooks; i++) {
-			printf("%d. %s\nАвторы: %s\nИздательство: %s\nГод изд-ва: %d\n\n",
-				i + 1, authorBooks[i].title, authorBooks[i].authors, authorBooks[i].publishingHouse, authorBooks[i].yearPublishing);
-		}
+		printListBooks(authorBooks, countAuthorBooks);
 	}
 	else {
 		printf("\nКниг автора ...%s... не найдено!\n\n", author);
-	}
-	system("pause");
+		system("pause");
+	}	
 
 	free(authorBooks);
 	authorBooks = NULL;

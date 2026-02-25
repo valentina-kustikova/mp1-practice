@@ -5,6 +5,7 @@
 
 typedef enum {
     SUCCESS,
+	INSUFFICIENT_ARGUMENTS_ERROR,
     ERROR_MEMORY,
     INVALID_FILE,
     FILE_OPENING_ERROR,
@@ -21,11 +22,12 @@ typedef struct {
 } BOOK;
 
 
-STATUS readLibrary(BOOK** books, int* countBooks);
+STATUS readLibrary(BOOK** books, int* countBooks, char* fileName);
 int getCountBooks(FILE* fp);
-STATUS stringToStruct(FILE* fp, BOOK* books, const int count);
-void changeField(BOOK* book, const int indexField, const char* str);
+STATUS stringToStruct(FILE* fp, BOOK* books, int count);
+void changeField(BOOK* book, int indexField, char* str);
 
-STATUS searchBooksByAuthor(BOOK* books, const int countBooks, const char* author, BOOK** authorBooks, int* countAuthorBooks);
+STATUS searchBooksByAuthor(BOOK* books, int countBooks, char* author, BOOK** authorBooks, int* countAuthorBooks);
+void toLowerCase(char* str);
 
 #endif
