@@ -5,27 +5,47 @@
 #include "auxiliary.h"
 #include <locale.h>
 
-int main() {
+int main(int argc, char** argvv) {
 
     setlocale(LC_ALL, "Rus");
-    int n = countbooks("task6.txt");
-    Book* bss = createbooks("task6.txt", n);
+    char* fname;
+    if (argc < 2)
+    {
+        printf("Incorrect parametres");
+        return 1;
+    }
+    fname = argvv[1];
+    int n = countbooks(fname);
+    Book* bss = createbooks(fname, n);
     int i = 0;
     int f = 0;
-    char author[256];
-    printf("Введите ФИО автора (пример: L. N. Tolstoy) : \n");
-    fgets(author, sizeof(author), stdin);
-    author[strcspn(author, "\n")] = '\0';
+    char author[200];
+    printf("Введите автора : \n");
+    scanf("%s", author);
+    int nnew = 0;
     for (; i < n; i++)
     {
         if (findByauthor(&bss[i], author))
         {
             f = 1;
-            prbook(&bss[i]);
+            nnew++;
         }
     }
-    if (f == 0)
-        printf("Книг этого автора нет в картотеке");
-    freeb(bss, n);
+    Book* bssnew = (Book*)malloc(sizeof(Book) * nnew);
+    int j = 0;
+    for (i=0; i < n; i++)
+    {
+        if (findByauthor(&bss[i], author))
+        {
+            bssnew[j] = bss[i];
+            j++;
+        }
+    }
+    for (i = 0; i < j; i++)
+    {
+        prbook(&bssnew[i]);
+    }
+    free(bss);
+    free(bssnew);
     return 0;
 }

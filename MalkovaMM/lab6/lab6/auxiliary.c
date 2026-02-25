@@ -10,11 +10,11 @@ Book createbook(const char* line)
 	strcpy(linec, line);
 	char* t;
 	t = strtok(linec, ";");
-	book.author = strdup(t);
+	book.author = _strdup(t);
 	t = strtok(NULL, ";");
-	book.title = strdup(t);
+	book.title = _strdup(t);
 	t = strtok(NULL, ";");
-	book.publisher = strdup(t);
+	book.publisher = _strdup(t);
 	t = strtok(NULL, ";");
 	book.year = atoi(t);
 	return book;
@@ -25,6 +25,7 @@ int countbooks(const char* fname)
 	FILE* f = fopen(fname, "r");
 	if (f == NULL)
 	{
+		printf("Файл по заданному пути не существует");
 		return -1;
 	}
 	char line[1000];
@@ -46,17 +47,6 @@ Book* createbooks(const char* fname, int count)
 	}
 	fclose(f);
 	return bs;
-}
-void freeb(Book* bs, int count)
-{
-	int i = 0;
-	for (; i < count; i++)
-	{
-		free(bs[i].author);
-		free(bs[i].title);
-		free(bs[i].publisher);
-	}
-	free(bs);
 }
 void prbook(const Book* b)
 {
