@@ -27,7 +27,7 @@ struct book* file_to_struct(const char* file_name, int* count)
 			{
 				printf("Ошибка выделения памяти");
 				for (int i = 0; i < n; i++)
-				{
+				{ 
 					free(books[i].author);
 					free(books[i].title);
 					free(books[i].publisher);
@@ -36,12 +36,12 @@ struct book* file_to_struct(const char* file_name, int* count)
 				free(books);
 				fclose(file);
 				*count = 0;
-				return 0;
+				return NULL;
 			}
 			books = temp;
 		}
 
-		char* author = strtok(line, ";");
+		char* author = strtok(line, ";");//возвращает указатель на первую найденную лексему в строке 
 		char* title = strtok(NULL, ";");
 		char* publisher = strtok(NULL, ";");
 		char* publishing_year = strtok(NULL, ";");

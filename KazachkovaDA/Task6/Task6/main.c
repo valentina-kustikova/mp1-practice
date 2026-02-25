@@ -1,11 +1,7 @@
 #include <stdio.h>
 #include <locale.h>
-#include <stdlib.h>
-#include <string.h>
 #include "library.h"
 #include "auxiliary.h"
-
-struct book* find_books_by_author(struct book* books, int count, const char* author_request);
 
 int main()
 {
