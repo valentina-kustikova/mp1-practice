@@ -12,5 +12,10 @@ int getrange(FILE* file) {
 }
 
 book* loadbooks(FILE* file, int n) {
-	book* books = (book*)malloc(sizeof(book * n));
+	int i = 0;
+	book* books = (book*)malloc(sizeof(book) * n);
+	for (i = 0; i < n; i++) {
+		fscanf(file, "%39s;%19s;%19s;%d", books[i].autors, books[i].name, books[i].publisher, books[i].year);
+	}
+	return books;
 }

@@ -5,5 +5,7 @@
 int main() {
 	FILE* file = fopen("biblo.txt", "r");
 	int biblen = getrange(file);
-	book* books = loadbooks
+	book* books = loadbooks(file, biblen);
+	char aut[40];
+	gets(aut);
 }
