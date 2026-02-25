@@ -4,7 +4,7 @@
 #include "library.h"
 #include <string.h>
 
-static int count(FILE* f) {
+int count(FILE* f) {
 	int cnt = 0;
 	char* buff[1000];
 	while (fgets(buff, 1000, f)) {
@@ -13,7 +13,7 @@ static int count(FILE* f) {
 	return cnt;
 }
 
-extern void print_book(book b) {
+void print_book(book b) {
 	int i;
 	printf("#___#\n");
 	printf("Authors: ");
@@ -25,28 +25,27 @@ extern void print_book(book b) {
 	printf("#___#\n\n");
 }
 
-extern book* reader(const char* source, int* n) {
+book* reader(const char* source, int* n) {
 	FILE* fl = fopen(source, "r");
 	int i;
-	if (fl == NULL) {
-		printf("File doesn't exist\n");
-		return;
-	}
+	char* buff[1000];
+	book* lib;
+	if (fl == NULL) return NULL;
 	*n = count(fl);
 	fclose(fl);
 	if (*n == 0) return NULL;
-	book* lib = (book*)malloc((*n) * sizeof(book));
-	char* buff[1000];
-	FILE* f = fopen(source, "r");
+	lib = (book*)malloc((*n) * sizeof(book));
+	buff[1000];
+	fl = fopen(source, "r");
 	for (i = 0; i < *n; i++) {
-		fgets(buff, 1000, f);
+		fgets(buff, 1000, fl);
 		parse(buff, &(lib[i]));
 	}
-	fclose(f);
+	fclose(fl);
 	return lib;
 }
 
-extern void free_all(book* lib, int n) {
+void free_all(book* lib, int n) {
 	int i, j;
 	for (i = 0; i < n; i++) {
 		for (j = 0; j < lib[i].cnt_aut; j++) {
@@ -59,15 +58,17 @@ extern void free_all(book* lib, int n) {
 	free(lib);
 }
 
-static void parse(char* s, book* b) {
-	int i;
-	(*b).cnt_aut = 1;
+void parse(char* s, book* b) {
+	int i, j;
 	char* authors = _strdup(strtok(s, ";"));
+	(*b).cnt_aut = 1;
 	(*b).name = _strdup(strtok(NULL, ";"));
 	(*b).publisher = _strdup(strtok(NULL, ";"));
 	(*b).year = atoi(strtok(NULL, ";"));
 	for (i = 0; i < strlen(authors); i++) if (authors[i] == ',') (*b).cnt_aut++;
 	(*b).authors = (char**)malloc((*b).cnt_aut * sizeof(char*));
 	(*b).authors[0] = _strdup(strtok(authors, ","));
-	for (i = 1; i < (*b).cnt_aut; i++) (*b).authors[i] = _strdup(strtok(NULL, ","));
+	for (i = 1; i < (*b).cnt_aut; i++) {
+		(*b).authors[i] = _strdup(strtok(NULL, ","));
+	}
 }

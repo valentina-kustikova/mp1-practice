@@ -2,12 +2,11 @@
 #define __AUX_H
 #include "library.h"
 
-extern book* reader(const char* source, int* n);
-static void parse(char* s, book* b);
-extern void print_book(book b);
-static int count(FILE* f);
-extern void free_all(book* lib, int n);
+book* reader(const char* source, int* n);
+void parse(char* s, book* b);
+void print_book(book b);
+int count(FILE* f);
+void free_all(book* lib, int n);
 
-extern void game(char* s, book* b);
 
 #endif
