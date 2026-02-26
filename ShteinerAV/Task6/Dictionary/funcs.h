@@ -1,7 +1,7 @@
-﻿#include "library.h"
-
-#ifndef _FUNCS_
+﻿#ifndef _FUNCS_
 #define _FUNCS_
+
+#include "library.h"
 
 #define sektors 4
 #define max_simbols_in_line 512
@@ -11,6 +11,5 @@ void enter_the_author(char* users_choice);
 int scan_file(char* link);
 void fill_arr(Book* arr, char* link);
 void print_books(Book* id_books, int size);
-
 
 #endif
