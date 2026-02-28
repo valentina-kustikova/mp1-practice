@@ -3,11 +3,10 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-int Quantity(int con,char* adress) {
+int Quantity(char* adress) {
   int count = 0;
   char s[P];
-  //FILE* f = fopen("books.txt", "r");
-  FILE* f = fopen(adress[1], "r");
+  FILE* f = fopen(adress, "r");
   if (f == NULL) {
     printf("Error:The file does not exist or permissions are missing!");
     exit(0);
@@ -21,8 +20,7 @@ int Quantity(int con,char* adress) {
 void Read(book* num, char* adress){
   int i = 0;
   char s[P];
-  //FILE* f=open("books.txt,"r");
-  FILE* f = fopen(adress[1], "r");
+  FILE* f = fopen(adress, "r");
   while ((fgets(s, P, f)) != NULL){
     strcpy(num[i].writer, _strdup(strtok(s, ";")));
     strcpy(num[i].name, _strdup(strtok(NULL, ";")));

@@ -1,9 +1,0 @@
-A.Sapkowski;The witcher. Last wish;ACT;1993
-E.Shklarsky;And there is not, and never will be;Livebook;2025
-E.Shklarsky;Whiter than white;Livebook;2024
-E.Lafleriel;Fallout;Bombora;2023
-F.Extanasi;Skyrim;Bombora;2025
-D.Protsko;Epidemia. Notes from Crazy Tours;Livebook;2009
-P.Tobin;Plants vs Zombies. The Apocalypse on the Lawn;ACT;2021
-R.Thornton;The accident, the lie;HarperCollins;2013
-E.Shklarsky,A.Sapkowski;Wars of Worlds;ACT;2020
