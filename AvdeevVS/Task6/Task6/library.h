@@ -10,5 +10,5 @@ typedef struct{
   char publish[P];
   char year[D];
 } book;
-void Search(int* req, book* num, int n);
+void Search(int* req, book* num, int n, char* input);
 #endif

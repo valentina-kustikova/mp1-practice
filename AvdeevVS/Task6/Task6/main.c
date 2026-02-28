@@ -3,19 +3,26 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-int main() {
+int main(char** adress) {
   //D.Protsko   E.Shklarsky
-  static int n;
-  static int k=1;
+  int n;
+  int k=1;
+  char stop[5] = "stop";
   book* num;
   int* req;
-  n = Quantity();
+  n = Quantity(adress);
   req = (int*)malloc(sizeof(int)*n);
   num = (book*)malloc(sizeof(book) * n);
-  Read(num);
+  Read(num, adress);
   while (k) {
-    Search(req, num, n);
-    Print(req, num, n, &k);
+    char input[S];
+    scanf("%s", input);
+    if (strcmp(input, stop) == 0) {
+      printf("The end!");
+      break;
+    }
+    Search(req, num, n, input);
+    Print(req, num, n);
   }
   free(num);
   free(req);

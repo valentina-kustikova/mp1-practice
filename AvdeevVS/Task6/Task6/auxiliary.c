@@ -3,11 +3,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#define O 1
-int Quantity() {
+int Quantity(int con,char* adress) {
   int count = 0;
   char s[P];
-  FILE* f = fopen("books.txt", "r");
+  //FILE* f = fopen("books.txt", "r");
+  FILE* f = fopen(adress[1], "r");
   if (f == NULL) {
     printf("Error:The file does not exist or permissions are missing!");
     exit(0);
@@ -18,10 +18,11 @@ int Quantity() {
   fclose(f);
   return count;
 }
-void Read(book* num){
+void Read(book* num, char* adress){
   int i = 0;
   char s[P];
-  FILE* f = fopen("books.txt", "r"); 
+  //FILE* f=open("books.txt,"r");
+  FILE* f = fopen(adress[1], "r");
   while ((fgets(s, P, f)) != NULL){
     strcpy(num[i].writer, _strdup(strtok(s, ";")));
     strcpy(num[i].name, _strdup(strtok(NULL, ";")));
@@ -30,15 +31,11 @@ void Read(book* num){
   }
   fclose(f);
 }
-void Print(int* req, book* num, int n,int* k) {
+void Print(int* req, book* num, int n) {
   int i;
   if (req[0] == 5) {
     printf("\nBooks by this author:\n\n");
     printf("There are no books by this author\n\n");
-  }
-  else if (req[0] == 10) {
-    printf("The end!");
-    *(k) = 0;
   }
   else {
     printf("\nBooks by this author:\n\n");
@@ -48,7 +45,6 @@ void Print(int* req, book* num, int n,int* k) {
         printf("%s;", num[i].name);
         printf("%s;", num[i].publish);
         printf("%s", num[i].year);
-        //printf("\n");
       }
     }
     printf("\n");

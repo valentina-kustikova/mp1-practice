@@ -2,25 +2,29 @@
 #include "auxiliary.h"
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 #include <stdlib.h>
-void Search(int* req, book* num,int n) {
-  int i;
-  int k = 0;
-  char input[S];
-  scanf("%s", input);
-  //printf("%s", input);
-  if (strcmp(input, "Stop") == 0) {
-    req[0] = 10;
-    return;
+void Search(int* req, book* num,int n,char* input) {
+  int i,j;
+  int flag = 0;
+  char* res;
+  for (i = 0; i < S; i++) {
+    input[i] = tolower(input[i]);
   }
-  for (int i = 0; i < n; i++) {
+  for (i = 0; i < n; i++) {
+    char temp[S];
+    strcpy(temp, num[i].writer);
     req[i] = 0;
-    if (strcmp(input, num[i].writer)==0) {
+    for (j = 0; j < S; j++) {
+      temp[j] = tolower(temp[j]);
+    }
+    res = strstr(temp, input);
+    if (res != NULL) {
       req[i] = 1;
-      k++;
+      flag = 1;
     }
   }
-  if (k == 0) {
+  if (flag == 0) {
     req[0] = 5;
   }
 }
