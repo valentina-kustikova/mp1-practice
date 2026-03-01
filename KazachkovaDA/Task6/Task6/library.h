@@ -9,8 +9,7 @@ struct book
 	int publishing_year;
 };
 
-//struct book* find_books_by_author(struct book* books,
-//	int count,
-//	const char* author_request);
+struct book* find_books_by_author(struct book* books,
+	int count, const char* author_request, int* found_count);
 
 #endif
