@@ -22,7 +22,7 @@ int numberBooks(const char* filename) {
 	return count;
 }
 
-void readFile(int count, struct Book* array, const char* filename) {
+void readFile(int count, Book* array, const char* filename) {
 	char buff[2048];
 	FILE* file = fopen(filename, "r");
 	for (int i = 0; i < count; i++) {
@@ -37,7 +37,7 @@ void readFile(int count, struct Book* array, const char* filename) {
 	fclose(file);
 }
 
-void printResults(struct Book* search, int k) {
+void printResults(Book* search, int k) {
 	if (k == 1) {
 		printf("%d book were found\n", k);
 	}

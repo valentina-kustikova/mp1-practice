@@ -1,12 +1,12 @@
 #ifndef LIBLARY_H
 #define LIBLARY_H
-struct Book {
+typedef struct Book {
 	char author[100];
 	char name[100];
 	char publisher[100];
 	int year;
-};
-void searching(struct Book* array, int count, const char* author, struct Book** search, int* countAuthorBooks);
+} Book;
+void searching(Book* array, int count, const char* author,Book** search, int* countAuthorBooks);
 #endif 
 
  

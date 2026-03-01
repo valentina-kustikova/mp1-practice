@@ -4,17 +4,23 @@
 #include "liblary.h"
 #include "auxiliary.h"
 
-int main() {
-	char buff[1024], author[100];
+int main(int argc, char **argv) {
+	char author[100], *filename;
 	int count, countAuthorBooks;
-	count = numberBooks("catalog.txt");
-	struct Book* array = (struct Book*)malloc(count * sizeof(struct Book));
-	readFile(count, array, "catalog.txt");
+	if (argc < 2) {
+		printf("incorrect number of argc");
+		return 1;
+	}
+	filename = argv[1];
+
+	count = numberBooks(filename);
+	Book* array = (Book*)malloc(count * sizeof(Book));
+	readFile(count, array, filename);
 	 
 	printf("\nEnter the author\n");
 	scanf("%[^\n]", author);
 	
-	struct Book* search;
+	Book* search;
 	searching(array, count, author, &search, &countAuthorBooks);
 	printResults(search, countAuthorBooks);
 	
