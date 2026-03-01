@@ -7,5 +7,5 @@ typedef struct {
 	int year;
 }Book;
 
-int findByauthor(const Book* book, const char *findauthor);
+Book* findByauthor(Book* bss, int n, const char* findauthor, int* nnew);
 #endif

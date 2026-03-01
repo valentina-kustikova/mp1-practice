@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,12 +10,14 @@ int main(int argc, char** argvv) {
 
     setlocale(LC_ALL, "Rus");
     char* fname;
-    if (argc < 2)
+    if (argc < 1)
     {
-        printf("Incorrect parametres");
+        printf("Incorrect parametres!");
         return 1;
     }
-    fname = argvv[1];
+    //fname = argvv[1];
+    fname = "task6.txt";
+    printf("ָלÿ פאיכא: %s\n", fname);
     int n = countbooks(fname);
     Book* bss = createbooks(fname, n);
     int i = 0;
@@ -22,26 +25,9 @@ int main(int argc, char** argvv) {
     char author[200];
     printf("ֲגוהטעו אגעמנא : \n");
     scanf("%s", author);
-    int nnew = 0;
-    for (; i < n; i++)
-    {
-        if (findByauthor(&bss[i], author))
-        {
-            f = 1;
-            nnew++;
-        }
-    }
-    Book* bssnew = (Book*)malloc(sizeof(Book) * nnew);
-    int j = 0;
-    for (i=0; i < n; i++)
-    {
-        if (findByauthor(&bss[i], author))
-        {
-            bssnew[j] = bss[i];
-            j++;
-        }
-    }
-    for (i = 0; i < j; i++)
+    int nnew;
+    Book* bssnew = findByauthor(bss, n, author, &nnew);
+    for (i = 0; i < nnew; i++)
     {
         prbook(&bssnew[i]);
     }
