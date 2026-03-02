@@ -1,15 +1,16 @@
-#ifndef LIBRARY_H
-#define LIBRARY_H
+#ifndef LIST_H
+#define LIST_H
 
-struct book
+struct quote
 {
+	char* the_line;
 	char* author;
-	char* title;
-	char* publisher;
-	int publishing_year;
+	char* source;
+	char* topic;
+	char* key_words;
 };
 
-struct book* find_books_by_author(struct book* books,
+struct quote* find_quotes_by_words(struct quote* quotes,
 	int count, const char* author_request, int* found_count);
 
 #endif

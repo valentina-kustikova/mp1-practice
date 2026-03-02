@@ -4,22 +4,22 @@
 #include "list.h"
 #include "additional.h"
 
-struct book* find_books_by_author(struct book* books,
-	int count, const char* author_request, int* found_count)
+struct quote* find_quotes_by_words(struct quote* quotes,
+	int count, const char* word_request, int* found_count)
 {
 	*found_count = 0;
 
 	char lowercase_request[512];
-	to_lowercase(author_request, lowercase_request);
+	to_lowercase(word_request, lowercase_request);
 
 	int  i;
 	for (i = 0; i < count; i++)
 	{
-		if (books[i].author)
+		if (quotes[i].key_words)
 		{
-			char lowercase_author[512];
-			to_lowercase(books[i].author, lowercase_author);
-			if (strstr(lowercase_author, lowercase_request))
+			char lowercase_key_words[512];
+			to_lowercase(quotes[i].key_words, lowercase_key_words);
+			if (strstr(lowercase_key_words, lowercase_request))
 			{
 				(*found_count)++;
 			}
@@ -29,12 +29,12 @@ struct book* find_books_by_author(struct book* books,
 
 	if (*found_count == 0)
 	{
-		printf("\n");
+		printf("No phrases found\n");
 		return NULL;
 	}
 
-	struct book* found_books = malloc(*found_count * sizeof(struct book));
-	if (found_books == NULL)
+	struct quote* found_quotes = malloc(*found_count * sizeof(struct quote));
+	if (found_quotes == NULL)
 	{
 		printf("");
 		*found_count = -1;
@@ -44,23 +44,27 @@ struct book* find_books_by_author(struct book* books,
 	int j = 0;
 	for (i = 0; i < count; i++)
 	{
-		if (books[i].author)
+		if (quotes[i].key_words)
 		{
-			char lowercase_author[512];
-			to_lowercase(books[i].author, lowercase_author);
-			if (strstr(lowercase_author, lowercase_request))
+			char lowercase_key_words[512];
+			to_lowercase(quotes[i].key_words, lowercase_key_words);
+			if (strstr(lowercase_key_words, lowercase_request))
 			{
 
-				found_books[j].author = malloc(strlen(books[i].author) + 1);
-				strcpy_s(found_books[j].author, strlen(books[i].author) + 1, books[i].author);
+				found_quotes[j].the_line = malloc(strlen(quotes[i].the_line) + 1);
+				strcpy_s(found_quotes[j].the_line, strlen(quotes[i].the_line) + 1, quotes[i].the_line);
 
-				found_books[j].title = malloc(strlen(books[i].title) + 1);
-				strcpy_s(found_books[j].title, strlen(books[i].title) + 1, books[i].title);
+				found_quotes[j].author = malloc(strlen(quotes[i].author) + 1);
+				strcpy_s(found_quotes[j].author, strlen(quotes[i].author) + 1, quotes[i].author);
 
-				found_books[j].publisher = malloc(strlen(books[i].publisher) + 1);
-				strcpy_s(found_books[j].publisher, strlen(books[i].publisher) + 1, books[i].publisher);
+				found_quotes[j].source = malloc(strlen(quotes[i].source) + 1);
+				strcpy_s(found_quotes[j].source, strlen(quotes[i].source) + 1, quotes[i].source);
 
-				found_books[j].publishing_year = books[i].publishing_year;
+				found_quotes[j].topic = malloc(strlen(quotes[i].topic) + 1);
+				strcpy_s(found_quotes[j].topic, strlen(quotes[i].topic) + 1, quotes[i].topic);
+
+				found_quotes[j].key_words = malloc(strlen(quotes[i].key_words) + 1);
+				strcpy_s(found_quotes[j].key_words, strlen(quotes[i].key_words) + 1, quotes[i].key_words);
 
 				j++;
 			}
@@ -69,5 +73,5 @@ struct book* find_books_by_author(struct book* books,
 	}
 
 	*found_count = j;
-	return found_books;
+	return found_quotes;
 }

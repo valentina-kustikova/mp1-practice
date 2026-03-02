@@ -4,19 +4,19 @@
 #include "list.h"
 #include <ctype.h>
 
-struct book* file_to_struct(const char* file_name, int* count)
+struct quote* file_to_struct(const char* file_name, int* count)
 {
 	int n = 0;
 	FILE* file = fopen(file_name, "r");
 
 	if (file == NULL)
 	{
-		printf("");
+		printf("File reading error\n");
 		*count = -1;
 		return NULL;
 	}
 
-	char line[512];
+	char line[2048];
 
 	while (fgets(line, sizeof(line), file))
 	{
@@ -31,10 +31,10 @@ struct book* file_to_struct(const char* file_name, int* count)
 
 	rewind(file);
 
-	struct book* books = malloc(n * sizeof(struct book));
-	if (books == NULL)
+	struct quote* quotes = malloc(n * sizeof(struct quote));
+	if (quotes == NULL)
 	{
-		printf("");
+		printf("Memory allocation error\n");
 		*count = -1;
 		fclose(file);
 		return NULL;
@@ -45,28 +45,33 @@ struct book* file_to_struct(const char* file_name, int* count)
 	{
 		line[strcspn(line, "\n")] = 0;
 
-		char* author = strtok(line, ";");
-		char* title = strtok(NULL, ";");
-		char* publisher = strtok(NULL, ";");
-		char* publishing_year = strtok(NULL, ";");
+		char* the_line = strtok(line, ";");
+		char* author = strtok(NULL, ";");
+		char* source = strtok(NULL, ";");
+		char* topic = strtok(NULL, ";");
+		char* key_words = strtok(NULL, ";");
 
-		books[i].author = malloc(strlen(author) + 1);
-		strcpy_s(books[i].author, strlen(author) + 1, author);
+		quotes[i].the_line = malloc(strlen(the_line) + 1);
+		strcpy_s(quotes[i].the_line, strlen(the_line) + 1, the_line);
 
-		books[i].title = malloc(strlen(title) + 1);
-		strcpy_s(books[i].title, strlen(title) + 1, title);
+		quotes[i].author = malloc(strlen(author) + 1);
+		strcpy_s(quotes[i].author, strlen(author) + 1, author);
 
-		books[i].publisher = malloc(strlen(publisher) + 1);
-		strcpy_s(books[i].publisher, strlen(publisher) + 1, publisher);
+		quotes[i].source = malloc(strlen(source) + 1);
+		strcpy_s(quotes[i].source, strlen(source) + 1, source);
 
-		books[i].publishing_year = atoi(publishing_year);
+		quotes[i].topic = malloc(strlen(topic) + 1);
+		strcpy_s(quotes[i].topic, strlen(topic) + 1, topic);
+
+		quotes[i].key_words = malloc(strlen(key_words) + 1);
+		strcpy_s(quotes[i].key_words, strlen(key_words) + 1, key_words);
 
 		i++;
 	}
 
 	fclose(file);
 	*count = n;
-	return books;
+	return quotes;
 }
 
 void to_lowercase(const char* before, char* after)
@@ -78,22 +83,24 @@ void to_lowercase(const char* before, char* after)
 	*after = '\0';
 }
 
-void print_found_books(struct book* found_books, int found_count)
+void print_found_quotes(struct quote* found_quotes, int found_count)
 {
 	int i;
 	for (i = 0; i < found_count; i++)
 	{
-		printf(": %s, : %s, : %d\n", found_books[i].title, found_books[i].publisher, found_books[i].publishing_year);
+		printf("The found quote: %s\n", found_quotes[i].the_line);
 	}
 }
 
-void free_memory(struct book* books, int count)
+void free_memory(struct quote* quotes, int count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		free(books[i].author);
-		free(books[i].title);
-		free(books[i].publisher);
+		free(quotes[i].the_line);
+		free(quotes[i].author);
+		free(quotes[i].source);
+		free(quotes[i].topic);
+		free(quotes[i].key_words);
 	}
-	free(books);
+	free(quotes);
 }

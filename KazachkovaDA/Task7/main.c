@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <locale.h>
+#include <string.h>
 #include "list.h"
 #include "additional.h"
 
@@ -9,33 +10,35 @@ int main()
 
 	char file_name[] = "list.txt";
 	int count = 0;
-	struct book* books = file_to_struct(file_name, &count);
+	struct quote* quotes = file_to_struct(file_name, &count);
 
 
-	char request_author[512];
+	char request_word[512];
 	char exit[] = "exit";
 
 	do
 	{
-		printf("Enter the author's surname: ");
-		if (!fgets(request_author, sizeof(request_author), stdin))
+		printf("Enter the key word: ");
+		if (!fgets(request_word, sizeof(request_word), stdin))
 		{
 			printf("Entry error\n");
 			return 1;
 		}
 
-		request_author[strcspn(request_author, "\n")] = 0;
+		request_word[strcspn(request_word, "\n")] = 0;
 
-		if (strcmp(request_author, exit) == 0)
+		if (strcmp(request_word, exit) == 0)
 		{
-			free_memory(books, count);
+			free_memory(quotes, count);
 			return 0;
 		}
 
 		int found_count;
-		struct book* found_books = find_books_by_author(books, count, request_author, &found_count);
+		struct quote* found_quotes = find_quotes_by_words(quotes, count, request_word, &found_count);
 
-		print_found_books(found_books, found_count);
+		print_found_quotes(found_quotes, found_count);
+
+		free_memory(found_quotes, found_count);
 
 	} while (1);
 
