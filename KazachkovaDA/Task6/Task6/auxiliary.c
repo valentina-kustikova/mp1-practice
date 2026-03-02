@@ -11,7 +11,7 @@ struct book* file_to_struct(const char* file_name, int* count)
 
 	if (file == NULL)
 	{
-		printf("Ошибка считывания файла");
+		printf("File reading error\n");
 		*count = -1;
 		return NULL;
 	}
@@ -34,7 +34,7 @@ struct book* file_to_struct(const char* file_name, int* count)
 	struct book* books = malloc(n * sizeof(struct book));
 	if (books == NULL)
 	{
-		printf("Ошибка выделения памяти");
+		printf("Storage allocation error\n");
 		*count = -1;
 		fclose(file);
 		return NULL;
@@ -83,7 +83,8 @@ void print_found_books(struct book* found_books, int found_count)
 	int i;
 	for (i = 0; i < found_count; i++)
 	{
-		printf("Название книги: %s, издательство книги: %s, дата издания: %d\n", found_books[i].title, found_books[i].publisher, found_books[i].publishing_year);
+		printf("The book's title: %s, the book's publisher: %s, year of publishing: %d\n", 
+			found_books[i].title, found_books[i].publisher, found_books[i].publishing_year);
 	}
 }
 

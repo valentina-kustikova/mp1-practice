@@ -29,14 +29,14 @@ struct book* find_books_by_author(struct book* books,
 
 	if (*found_count == 0)
 	{
-		printf("Не найдено книг этого автора\n");
+		printf("The books of this author are not found\n");
 		return NULL;
 	}
 
 	struct book* found_books = malloc(*found_count * sizeof(struct book));
 	if (found_books == NULL)
 	{
-		printf("Ошибка выделения памяти");
+		printf("Storage allocation error\n");
 		*found_count = -1;
 		return NULL;
 	}
