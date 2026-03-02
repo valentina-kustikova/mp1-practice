@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "library.h"
+#include <ctype.h>
 
 struct book* file_to_struct(const char* file_name, int* count)
 {
@@ -66,6 +67,15 @@ struct book* file_to_struct(const char* file_name, int* count)
 	fclose(file);
 	*count = n;
 	return books;
+}
+
+void to_lowercase(const char* before, char* after)
+{
+	for (; *before != '\0'; before++, after++)//пробегаемся по символам строки до \0
+	{
+		*after = tolower((unsigned char)*before);
+	}
+	*after = '\0';
 }
 
 void print_found_books(struct book* found_books, int found_count)

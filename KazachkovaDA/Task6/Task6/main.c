@@ -1,12 +1,7 @@
 #include <stdio.h>
 #include <locale.h>
-#include <string.h>
-#include <stdlib.h>
 #include "library.h"
 #include "auxiliary.h"
-#include <ctype.h>
-
-void to_lowercase()
 
 int main()
 {
@@ -18,23 +13,30 @@ int main()
 
 
 	char request_author[512];
+	char exit[] = "exit";
 
-	printf("Введите фамилию автора (на английском): ");
-	if (!fgets(request_author, sizeof(request_author), stdin))
+	do
 	{
-		printf("Ошибка ввода\n");
-		return 1;
-	}
+		printf("Enter the author's surname: ");
+		if (!fgets(request_author, sizeof(request_author), stdin))//В случае успеха функция возвращает указатель на строкy
+		{
+			printf("Entry error\n");
+			return 1;
+		}
 
-	request_author[strcspn(request_author, "\n")] = 0;
+		request_author[strcspn(request_author, "\n")] = 0;
 
-	int found_count;
-	struct book *found_books = find_books_by_author(books, count, request_author, &found_count);
+		if (strcmp(request_author, exit) == 0)
+		{
+			free_memory(books, count);
+			return 0;
+		}
 
-	print_found_books(found_books, found_count);
-	
-	free_memory(books, count);
+		int found_count;
+		struct book* found_books = find_books_by_author(books, count, request_author, &found_count);
 
-	return 0;
+		print_found_books(found_books, found_count);
+
+	} while (1);
 
 }
