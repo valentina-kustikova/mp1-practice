@@ -1,0 +1,26 @@
+﻿F. Scott Fitzgerald;The Great Gatsby;Charles Scribner's Sons;1925
+Harper Lee;To Kill a Mockingbird;J.B. Lippincott & Co.;1960
+George Orwell;Nineteen Eighty-Four;Secker & Warburg;1949
+Jane Austen;Pride and Prejudice;T. Egerton;1813
+J.D. Salinger;The Catcher in the Rye;Little, Brown and Company;1951
+J.R.R. Tolkien;The Hobbit;George Allen & Unwin;1937
+Herman Melville;Moby-Dick;Harper & Brothers;1851
+Leo Tolstoy;Anna Karenina;The Russian Messenger;1877
+Mark Twain;Adventures of Huckleberry Finn;Charles L. Webster and Co.;1884
+Mary Shelley;Frankenstein;Lackington, Hughes, Harding, Mavor & Jones;1818
+Ernest Hemingway;The Old Man and the Sea;Charles Scribner's Sons;1952
+William Golding;Lord of the Flies;Faber and Faber;1954
+Aldous Huxley;Brave New World;Chatto & Windus;1932
+Bram Stoker;Dracula;Archibald Constable and Company;1897
+Oscar Wilde;The Picture of Dorian Gray;Lippincott's Monthly Magazine;1890
+John Steinbeck;The Grapes of Wrath;The Viking Press;1939
+Ray Bradbury;Fahrenheit 451;Ballantine Books;1953
+Kurt Vonnegut;Slaughterhouse-Five;Delacorte Press;1969
+Joseph Heller;Catch-22;Simon & Schuster;1961
+Gabriel García Márquez;One Hundred Years of Solitude;Harper & Row;1967
+Emily Brontë;Wuthering Heights;Thomas Cautley Newby;1847
+Charles Dickens;Great Expectations;Chapman & Hall;1861
+Fyodor Dostoevsky;Crime and Punishment;The Russian Messenger;1866
+H.G. Wells;The War of the Worlds;William Heinemann;1898
+Virginia Woolf;Mrs Dalloway;Hogarth Press;1925
+Leo Tolstoy;War and Peace;The Russian Messenger;1869
