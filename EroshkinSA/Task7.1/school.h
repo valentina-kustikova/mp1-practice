@@ -16,11 +16,12 @@ typedef struct {
 	home_address home;
 } school;
 
-static void swap(school* a, school* b);
-extern school* read(const char* source, int* n);
-static void school_sort(school* list, int n);
-extern void list_class(char* klass, school* list, int n);
+void swap(school* a, school* b);
+school* read(const char* source, int* n);
+void school_sort(school* list, int n);
+void class_sort(school* list, int n);
+void sorted_list(school* list, int n);
 void print_school(school s);
-static print(school s, int n);
+void free_all(school* list, int n);
 
 #endif

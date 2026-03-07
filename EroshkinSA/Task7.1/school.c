@@ -3,18 +3,17 @@
 #include <string.h>
 #include "school.h"
 
-int f = 0;
-
-extern school* read(const char* source, int* n) {
+school* read(const char* source, int* n) {
 	FILE* f = fopen(source, "r");
-	if (f == NULL) return NULL;
-	char buff[1000], *temp;
+	char buff[1000], * temp;
 	int i, count = 0;
+	school* list;
+	if (f == NULL) return NULL;
 	while (fgets(buff, 1000, f)) count++;
 	fclose(f);
 	*n = count;
 	if (n == 0) return NULL;
-	school* list = (school*)malloc(count * sizeof(school));
+	list = (school*)malloc(count * sizeof(school));
 	f = fopen(source, "r");
 	for (i = 0; i < count; i++) {
 		fgets(buff, 1000, f);
@@ -48,34 +47,39 @@ void print_school(school s) {
 	printf("BIRTH DATE: %d.%d.%d\n#___#\n", s.date.day, s.date.month, s.date.year);
 }
 
-static void school_sort(school* list, int n) {
-	if (f) return;
-	f = 1;
+void school_sort(school* list, int n) {
 	int i, j;
 	for (i = 0; i < n - 1; i++) {
 		for (j = 0; j < n - i - 1; j++) {
-			if (strcmp(list[j].name, list[j + 1].name) > 0) swap(list + j, list + j + 1);
+			if (strcmp(list[j].klass, list[j + 1].klass) == 0 && strcmp(list[j].name, list[j + 1].name) > 0) swap(list + j, list + j + 1);
 		}
 	}
 }
 
-static void swap(school* a, school* b) {
+void class_sort(school* list, int n) {
+	int i, j;
+	for (i = 0; i < n - 1; i++) {
+		j = i + 1;
+		while (j != n && strcmp(list[j].klass, list[i].klass) != 0) j++;
+		if (j == n) continue;
+		swap(list + i + 1, list + j);
+	}
+}
+
+void swap(school* a, school* b) {
 	school t = *a;
 	*a = *b;
 	*b = t;
 }
 
-void list_class(char* klass, school* list, int n) {
+void sorted_list(school* list, int n) {
+	int i;
+	class_sort(list, n);
 	school_sort(list, n);
-	int i, pos = 1;
-	printf("###_______CLASS %s_______###\n", klass);
-	for (i = 0; i < n; i++) if (strcmp(klass, list[i].klass) == 0) print(list[i], pos++);
-	if (pos == 1) printf("This class is empty right now\n");
 	printf("###_______________________###\n");
-}
-
-static print(school s, int n) {
-	printf("%d) %s %s %d.%d.%d\n", n, s.name, s.gen, s.date.day, s.date.month, s.date.year);
+	for (i = 0; i < n; i++) printf("%d) %s %s %s %d.%d.%d\n", i + 1,
+		list[i].klass, list[i].name, list[i].gen, list[i].date.day, list[i].date.month, list[i].date.year);
+	printf("###_______________________###\n");
 }
 
 void free_all(school* list, int n) {
