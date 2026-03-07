@@ -1,0 +1,10 @@
+Name; Ownership form; Demand deposit - %; Time deposit - %; Savings deposit - %;
+Sberbank; State-owned; 0.01; 5.6; 5.2;
+VTB; State-owned; 0.1; 4.8; 5.5;
+Gazprombank; Private; 0.5; 5.0; 5.8;
+Alfa-Bank; Private; 0.5; 5.2; 6.0;
+Tinkoff; Private; 1.0; 5.5; 6.5;
+Rosselkhozbank; State-owned; 0.1; 4.6; 5.3;
+Moscow Credit Bank; Private; 0.4; 5.1; 5.9;
+Sovcombank; Private; 0.6; 5.3; 6.2;
+Promsvyazbank; State-owned; 0.2; 4.7; 6.7;
