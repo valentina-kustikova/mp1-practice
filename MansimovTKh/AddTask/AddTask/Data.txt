@@ -1,0 +1,30 @@
+Mansimov;Talekh;Khabil oglu;Male;Azerbaijani;182;64;05.12.2007;+79938003811;602030 Russia Nizhny Novgorod region Nizhny Novgorod Gagarin Avenue 23
+Smith;John;William;Male;American;188;85;14.03.1991;+12125551234;10001 USA New York New York Broadway 150 5B
+Johnson;Emily;Rose;Female;British;165;58;22.08.1989;+442079460123;SW1A1AA United Kingdom Greater London London Buckingham Palace Road 12 45
+Garcia;Carlos;Jose;Male;Spanish;175;77;03.11.1975;+34912345678;28001 Spain Community of Madrid Madrid Gran Via 30 3A
+Muller;Anna;Maria;Female;German;170;62;29.04.1995;+49301234567;10115 Germany Berlin Berlin Friedrichstrasse 100 12
+Rossi;Marco;Antonio;Male;Italian;180;80;17.06.1988;+39061234567;00186 Italy Lazio Rome Via del Corso 220 8
+Kim;Minji;Soo;Female;South Korean;162;51;11.02.2002;+8221234567;04524 South Korea Seoul Seoul Teheran-ro 123 1501
+Ivanov;Dmitri;Alexeyevich;Male;Russian;178;78;08.09.1982;+74951234567;101000 Russia Moscow Moscow Tverskaya Street 15 34
+Dubois;Sophie;Marie;Female;French;168;59;25.12.1993;+33123456789;75001 France Île-de-France Paris Rue de Rivoli 50 22
+Kowalski;Piotr;Tomasz;Male;Polish;183;88;30.07.1980;+48221234567;00-001 Poland Masovian Voivodeship Warsaw Krakowskie Przedmiescie 5 10
+Schmidt;Klaus;Friedrich;Male;German;176;74;19.09.1970;+49351234567;01067 Germany Saxony Dresden Prager Strasse 18 4
+Chen;Wei;Ming;Male;Chinese;172;70;05.05.1998;+86101234567;100710 China Beijing Beijing Chang'an Avenue 1 1608
+Nakamura;Yuki;Takeshi;Male;Japanese;169;65;14.10.1986;+81312345678;100-0001 Japan Tokyo Tokyo Marunouchi 2-1 901
+Andersen;Lars;Erik;Male;Danish;186;83;23.02.1978;+4532123456;1050 Denmark Capital Region Copenhagen Stroget 40 3th
+Silva;Isabella;Sofia;Female;Brazilian;164;57;07.06.1999;+551112345678;01001-000 Brazil São Paulo São Paulo Avenida Paulista 1000 507
+Brown;Olivia;Grace;Female;Canadian;170;63;16.04.1992;+16131234567;M5V2T6 Canada Ontario Toronto King Street West 350 410
+Popov;Andrei;Igorovich;Male;Ukrainian;181;79;02.12.1984;+380441234567;01001 Ukraine Kyiv City Kyiv Khreshchatyk 25 12
+Lopez;Mateo;Alejandro;Male;Mexican;173;71;21.01.1987;+52551234567;06600 Mexico Mexico City Mexico City Paseo de la Reforma 300 12B
+Janssen;Emma;Petra;Female;Dutch;169;61;09.09.1996;+31201234567;1012JS Netherlands North Holland Amsterdam Damrak 88 5
+Novak;Eva;Marie;Female;Czech;167;55;12.12.2001;+42021234567;11000 Czech Republic Prague Prague Wenceslas Square 10 22
+Virtanen;Mikko;Olavi;Male;Finnish;179;77;28.05.1981;+35891234567;00100 Finland Uusimaa Helsinki Mannerheimintie 20 7B
+O'Connor;Sean;Patrick;Male;Irish;175;76;03.03.1990;+35311234567;D02XF67 Ireland Dublin Dublin O'Connell Street Lower 42 3
+Cohen;David;Yosef;Male;Israeli;174;68;17.07.1993;+97231234567;9414102 Israel Jerusalem District Jerusalem Jaffa Street 100 6
+Haddad;Layla;Nour;Female;Lebanese;162;54;24.06.1997;+96111234567;1100 Lebanon Beirut Beirut Hamra Street 150 8A
+Olsen;Nora;Mette;Female;Norwegian;168;60;08.08.2003;+4721234567;0150 Norway Oslo Oslo Karl Johans gate 25 401
+Papadopoulos;Georgios;Nikos;Male;Greek;182;82;19.02.1975;+30211234567;10557 Greece Attica Athens Ermou Street 45 12
+Horvath;Istvan;Laszlo;Male;Hungarian;177;79;31.10.1985;+3611234567;1051 Hungary Budapest Budapest Andrassy Avenue 60 3
+Meyer;Helena;Katharina;Female;Swiss;166;57;14.04.1991;+41441234567;8001 Switzerland Zurich Zurich Bahnhofstrasse 80 20
+Van Dijk;Emma;Johanna;Female;Belgian;170;61;26.09.1988;+3221234567;1000 Belgium Brussels Capital Brussels Anspach Boulevard 40 15
+Carter;James;Ethan;Male;Australian;185;84;06.01.1980;+61212345678;2000 Australia New South Wales Sydney George Street 123 3001
