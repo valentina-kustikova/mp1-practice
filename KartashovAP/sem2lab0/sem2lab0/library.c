@@ -1,18 +1,26 @@
 #include <string.h>
 #include <stdlib.h>
 #include "library.h"
-void searching(struct Book* array, int count, const char* author, struct Book** search, int* countAuthorBooks) {
-	int k = 0, i, j;
+
+//реализация самого поиска
+
+void searching(Book* masbook, int count_book, const char* author, Book** search, int* countAuthorBooks) {
+	int kol = 0;
+	int i, j;
 	*countAuthorBooks = 0;
-	for (i = 0; i < count; i++) {
-		if (strcmp(author, array[i].author) == 0) {
+	for (i = 0; i < count_book; i++) {
+		if (strstr(masbook[i].author, author) != NULL) {
 			(*countAuthorBooks)++;
 		}
 	}
-	*search = (struct Book*)malloc((*countAuthorBooks) * sizeof(struct Book));
-	for (j = 0; j < count; j++) {
-		if (strcmp(author, array[j].author) == 0) {
-			(*search)[k++] = array[j];
+	if (*countAuthorBooks == 0) {
+		*search = NULL;
+		return;
+	}
+	*search = (Book*)malloc((*countAuthorBooks) * sizeof(Book));
+	for (j = 0; j < count_book; j++) {
+		if (strstr(masbook[j].author, author) != NULL) {
+			(*search)[kol++] = masbook[j];
 		}
 	}
 }

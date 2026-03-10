@@ -4,21 +4,27 @@
 #include "library.h"
 #include "auxli.h"
 
-int main() {
-	char buff[1024], author[100];
-	int count, countAuthorBooks;
-	count = numberBooks("catalog.txt");
-	struct Book* array = (struct Book*)malloc(count * sizeof(struct Book));
-	readFile(count, array, "catalog.txt");
+int main(int argc, char** argv) {
+	char author[100], * filename;
+	int count_book, countAuthorBooks;
+	if (argc < 2) {
+		printf("incorrect number of argc");
+		return 1;
+	}
+	filename = argv[1];
+
+	count_book = countingBooks(filename);
+	Book* mas_book = (Book*)malloc(count_book * sizeof(Book));
+	readFile(count_book, mas_book, filename);
 
 	printf("\nEnter the author\n");
-	scanf("%[^\n]", author);;
+	scanf("%[^\n]", author);
 
-	struct Book* search;
-	searching(array, count, author, &search, &countAuthorBooks);
-	printResults(search, countAuthorBooks);
+	Book* search;
+	searching(mas_book, count_book, author, &search, &countAuthorBooks);
+	printRes(search, countAuthorBooks);
 
-	free(array);
+	free(mas_book);
 	free(search);
 
 	return 0;

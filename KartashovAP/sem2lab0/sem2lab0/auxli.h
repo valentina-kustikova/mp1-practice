@@ -1,7 +1,11 @@
-#ifndef AUXILI_H
+#ifndef AUXLI_H
 #define AUXLI_H
 #include "library.h"
-int numberBooks(const char* filename);
-void readFile(int count, struct Book* array, const char* filename);
-void printResults(struct Book* search, int k);
+
+//доп. функции (кол-во книг, чтение заполнение, вывод рез)
+int countingBooks(const char* filename);
+void readFile(int count_book, Book* masbook, const char* filename);
+void printRes(Book* search, int kol_res);
+
 #endif
+

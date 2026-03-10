@@ -4,47 +4,52 @@
 #include "library.h"
 #include "auxli.h"
 
-int numberBooks(const char* filename) {
+//подсчет книг
+int countingBooks(const char* filename) {
 	char buff[1024];
 	int count = 0;
 	FILE* file = fopen(filename, "r");
 	if (file == NULL) {
-		printf("Ошибка открытия файла");
-		return 0;  // Возвращайте 0 при ошибке, а не 1
+		printf("it is global mistake");
+		return 0;
 	}
-
-	while (fgets(buff, sizeof(buff), file) != NULL) {
-		count++;
+	while (buff) {
+		if (fgets(buff, sizeof(buff), file)) {
+			count++;
+		}
+		else break;
 	}
-
 	fclose(file);
 	return count;
 }
 
-void readFile(int count, struct Book* array, const char* filename) {
+//чтение и заполнение массива структур
+
+void readFile(int count, Book* masbook, const char* filename) {
 	char buff[2048];
 	FILE* file = fopen(filename, "r");
 	for (int i = 0; i < count; i++) {
 		fgets(buff, sizeof(buff), file);
 		buff[strcspn(buff, "\n")] = 0;
-		strcpy(array[i].author, strtok(buff, ";"));
-		strcpy(array[i].name, strtok(NULL, ";"));
-		strcpy(array[i].publisher, strtok(NULL, ";"));
-		array[i].year = atoi(strtok(NULL, ";"));
+		strcpy(masbook[i].author, strtok(buff, ";"));
+		strcpy(masbook[i].name, strtok(NULL, ";"));
+		strcpy(masbook[i].publish, strtok(NULL, ";"));
+		masbook[i].year = atoi(strtok(NULL, ";"));
+		//printf("%s\n", masbook[i].author);
 	}
 	fclose(file);
 }
-
-void printResults(struct Book* search, int k) {
-	if (k == 1) {
-		printf("%d book were found\n", k);
+//вывод результатов
+void printRes(Book* search, int kol_res) {
+	if (kol_res == 1) {
+		printf("%d book was found\n", kol_res);
 	}
 	else {
-		printf("%d books were found\n", k);
+		printf("%d books were found\n", kol_res);
 	}
-	if (k) {
-		for (int i = 0; i < k; i++) {
-			printf("%s; %s; %s; %d\n", search[i].author, search[i].name, search[i].publisher, search[i].year);
+	if (kol_res) {
+		for (int i = 0; i < kol_res; i++) {
+			printf("%s; %s; %s; %d\n", search[i].author, search[i].name, search[i].publish, search[i].year);
 		}
 	}
 
