@@ -6,24 +6,17 @@
 #include "tools.h"
 #define BUFFER_SIZE 1024
 
-int main() {
+int main(int argc, char **argv) {
 	int lines = 0, i;
 	person_info* person = NULL;
 
+	if (argc < 2) {
+		printf("Incorrect number of arguments\n"); return 1;
+	}
+	printf("%d\n %s\n %s\n\n", argc, argv[0], argv[1]);
+
 	read_data("Data.txt", &person, &lines);
-	/*for (i=0; i<lines; i++)
-	{
-		printf(" %s %s %s %s %s %d %d %s %s %s", person[i].surname, person[i].name, person[i].patronymic,
-			person[i].gender, person[i].nation, person[i].height, person[i].weight, person[i].birth, person[i].number, person[i].address);
-	}*/
-	/*for (i = 0; i < lines; i++) {
-		printf(" %s\n", person[i].surname);
-	}*/
-	/*printf("\n\n");*/
 	sort_person(person, lines);
-	/*for (i = 0; i < lines; i++) {
-		printf(" %s\n", person[i].surname);
-	}*/
 	print_sort_person(person, lines);
 
 	for (i = 0; i < lines; i++) {
