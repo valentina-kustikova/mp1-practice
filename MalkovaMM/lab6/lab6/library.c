@@ -5,21 +5,17 @@
 
 Book* findByauthor(Book* bss, int n, const char* findauthor, int* nnew)
 {
-	//if (book == NULL || (*book).author == NULL || findauthor == NULL)
-		//return NULL;
-    int i = 0;
-    *nnew = 0;
-    int f = 0;
+    int i = 0, j = 0;
+    Book* bssnew;
+    *nnew = 0;    
     for (; i < n; i++)
     {
         if (strstr(bss[i].author, findauthor) != NULL)
         {
-            f = 1;
             (*nnew)++;
         }
     }
-    Book* bssnew = (Book*)malloc(sizeof(Book) * (*nnew));
-    int j = 0;
+    bssnew = (Book*)malloc(sizeof(Book) * (*nnew));
     for (i = 0; i < n; i++)
     {
         if (strstr(bss[i].author, findauthor) != NULL)
@@ -28,7 +24,6 @@ Book* findByauthor(Book* bss, int n, const char* findauthor, int* nnew)
             bssnew[j].publisher = _strdup(bss[i].publisher);
             bssnew[j].title = _strdup(bss[i].title);
             bssnew[j].year = bss[i].year;
-
             j++;
         }
     }

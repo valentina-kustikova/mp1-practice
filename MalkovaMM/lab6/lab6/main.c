@@ -7,30 +7,30 @@
 #include <locale.h>
 
 int main(int argc, char** argvv) {
+    int i = 0;
+    int f = 0;
+    int nnew;
+    char author[200];
+    int n;
+    Book* bss;
+    char* fname;
 
     setlocale(LC_ALL, "Rus");
-    char* fname;
-    if (argc < 1)
+    
+    if (argc < 2)
     {
         printf("Incorrect parametres!");
         return 1;
     }
-    //fname = argvv[1];
-    fname = "task6.txt";
+    fname = argvv[1];
     printf("ָלÿ פאיכא: %s\n", fname);
-    int n = countbooks(fname);
-    Book* bss = createbooks(fname, n);
-    int i = 0;
-    int f = 0;
-    char author[200];
+    n = countbooks(fname);
+    bss = createbooks(fname, n);
     printf("ֲגוהטעו אגעמנא : \n");
     scanf("%s", author);
-    int nnew;
     Book* bssnew = findByauthor(bss, n, author, &nnew);
     for (i = 0; i < nnew; i++)
-    {
-        prbook(&bssnew[i]);
-    }
+       prbook(&bssnew[i]);
     free(bss);
     free(bssnew);
     return 0;
