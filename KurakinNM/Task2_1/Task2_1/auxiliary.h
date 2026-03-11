@@ -3,6 +3,7 @@
 
 #include "library.h"
 #include <stdlib.h>
+#include <string.h>
 
 void bariers(char* str, int* start, int* numOfSims);
 int read(char* fileName, BOOK** books);
