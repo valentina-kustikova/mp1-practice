@@ -1,30 +1,42 @@
-#include "library.h"
-#include "auxiliary.h"
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
-void Search(int* req, book* num,int n,char* input) {
-  int i,j;
+#include "library.h"
+#include "auxiliary.h"
+
+void Search(book* books, int nBooks, char* author,
+    int** indecesAuthorBooks, int* nAuthorBooks) {
+  int i, j, k = 0;
   int flag = 0;
-  char* res;
-  for (i = 0; i < S; i++) {
-    input[i] = tolower(input[i]);
+  *nAuthorBooks = 0;
+  for (i = 0; i < strlen(author); i++) {
+    author[i] = tolower(author[i]);
   }
-  for (i = 0; i < n; i++) {
-    char temp[S];
-    strcpy(temp, num[i].writer);
-    req[i] = 0;
-    for (j = 0; j < S; j++) {
+  for (i = 0; i < nBooks; i++) {
+    char temp[MAX_WRITER_LEN];
+    strcpy(temp, books[i].writer);
+    for (j = 0; j < strlen(temp) + 1; j++) {
       temp[j] = tolower(temp[j]);
-    }
-    res = strstr(temp, input);
-    if (res != NULL) {
-      req[i] = 1;
-      flag = 1;
+    }    
+    if (strstr(temp, author) != NULL) {
+        (*nAuthorBooks)++;
     }
   }
-  if (flag == 0) {
-    req[0] = 5;
+  if ((*nAuthorBooks) == 0)
+  {
+      *indecesAuthorBooks = NULL;
+      return;
+  }
+  *indecesAuthorBooks = (int*)malloc((*nAuthorBooks) * sizeof(int));
+  for (i = 0; i < nBooks; i++) {
+      char temp[MAX_WRITER_LEN];
+      strcpy(temp, books[i].writer);
+      for (j = 0; j < strlen(temp) + 1; j++) {
+          temp[j] = tolower(temp[j]);
+      }
+      if (strstr(temp, author) != NULL) {
+          (*indecesAuthorBooks)[k++] = i;
+      }
   }
 }

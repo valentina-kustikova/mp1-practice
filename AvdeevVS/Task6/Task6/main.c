@@ -1,30 +1,37 @@
-#include "library.h"
-#include "auxiliary.h"
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-int main(int con,char** adress) {
+#include "library.h"
+#include "auxiliary.h"
+
+int main(int argc,char** argv) {
   //D.Protsko   E.Shklarsky
-  int n;
-  int k=1;
+  int nBooks, nAuthorBooks;
   char stop[5] = "stop";
-  book* num;
-  int* req;
-  n = Quantity(adress[1]);
-  req = (int*)malloc(sizeof(int)*n);
-  num = (book*)malloc(sizeof(book) * n);
-  Read(num, adress[1]);
-  while (k) {
-    char input[S];
-    scanf("%s", input);
-    if (strcmp(input, stop) == 0) {
+  book* books;
+  int* indecesAuthorBooks = NULL;
+  if (argc < 2) {
+      printf("Incorrect parameters");
+      return 1;
+  }
+  nBooks = get_books_num(argv[1]);
+  books = (book*)malloc(sizeof(book) * nBooks);
+  read_books(books, argv[1]);
+  while (1) {
+    char author[MAX_NAME_LEN];
+    printf("Input author name or stop to exit:");
+    scanf("%s", author);
+    if (strcmp(author, stop) == 0) {
       printf("The end!");
       break;
     }
-    Search(req, num, n, input);
-    Print(req, num, n);
+    indecesAuthorBooks = NULL;
+    Search(books, nBooks, author, &indecesAuthorBooks, &nAuthorBooks);
+    print_books(books, nBooks, indecesAuthorBooks, nAuthorBooks);
+    if (indecesAuthorBooks != NULL) {
+        free(indecesAuthorBooks);
+    }
   }
-  free(num);
-  free(req);
+  free(books);  
   return 0;
 }

@@ -1,7 +1,11 @@
-#ifndef b
-#define b
+#ifndef _AUXILIARY_H
+#define _AUXILIARY_H
+
+#include <stdlib.h>
 #include "library.h"
-int Quantity(char* adress);
-void Read(book* num, char* adress);
-void Print(int* req, book* num, int n);
+
+int get_books_num(char* filename);
+void read_books(book* books, char* filename);
+void print_books(book* books, int nBooks, int *indecesAuthorBooks, int kAuthorBooks);
+
 #endif
