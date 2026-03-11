@@ -11,8 +11,8 @@ int read_csv(FILE* file, csv* tbl) {
 		return 1;
 
 	tbl->str = NULL;
-	read_file(file, tbl->str, &len);
-	tbl->lines_cnt = count_char(tbl->str, '\n');
+	read_file(file, &(tbl->str), &len);
+	tbl->lines_cnt = 1 + count_char(tbl->str, '\n');
 	tbl->cells_cnt = (int*)calloc(tbl->lines_cnt, sizeof(int));
 	tbl->cells = (char***)malloc(tbl->lines_cnt * sizeof(char**));
 
@@ -20,17 +20,20 @@ int read_csv(FILE* file, csv* tbl) {
 	line = 0;
 	while (line < tbl->lines_cnt) {
 		char *end_line = strchr(pch, '\n');
-		*end_line = '\0';
+		char *next_token;
+		if (end_line != NULL)
+			*end_line = '\0';
 
-		tbl->cells_cnt[line] = count_char(pch, ';');
+		tbl->cells_cnt[line] = 1 + count_char(pch, ';');
 		tbl->cells[line] = (char**)malloc(tbl->cells_cnt[line] * sizeof(char*));
 
-		pch = strtok(pch, ";");
+		pch = strtok_s(pch, ";", &next_token);
 		for (i = 0; i < tbl->cells_cnt[line]; i++) {
 			tbl->cells[line][i] = pch;
-			pch = strtok(NULL, ";");
+			pch = strtok_s(NULL, ";", &next_token);
 		}
 
+		line++;
 		pch = end_line + 1;
 	}
 	return 0;

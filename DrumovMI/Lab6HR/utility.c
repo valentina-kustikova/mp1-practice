@@ -14,7 +14,7 @@ void read_file(FILE* file, char** buf, int* len) {
 		return NULL;
 	fseek(file, 0L, SEEK_SET);
 	*len = fread(*buf, sizeof(char), bufsize, file);
-	buf[(*len)++] = '\0';
+	(*buf)[(*len)++] = '\0';
 }
 
 int count_char(char *str, char ch) {

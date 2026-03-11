@@ -15,5 +15,13 @@ struct Date to_date(char *str) {
 }
 
 void print_date(struct Date date) {
+	printf("%02d/%02d/%04d", date.day, date.month, date.year);
+}
 
+int year_diff(Date date1, Date date2) {
+	int ans = date2.year - date1.year;
+	if (date1.month > date2.month ||
+		date1.month == date2.month && date1.day > date2.day)
+		ans--;
+	return ans;
 }

@@ -7,5 +7,6 @@ typedef struct Date {
 
 Date to_date(char *str);
 void print_date(Date date);
+int year_diff(Date date1, Date date2);
 
 #endif
