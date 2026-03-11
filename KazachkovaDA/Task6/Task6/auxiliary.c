@@ -31,7 +31,7 @@ struct book* file_to_struct(const char* file_name, int* count)
 
 	rewind(file);
 
-	struct book* books = malloc(n * sizeof(struct book));
+	struct book* books = (struct book*)malloc(n * sizeof(struct book));
 	if (books == NULL)
 	{
 		printf("Storage allocation error\n");
@@ -50,13 +50,13 @@ struct book* file_to_struct(const char* file_name, int* count)
 		char* publisher = strtok(NULL, ";");
 		char* publishing_year = strtok(NULL, ";");
 
-		books[i].author = malloc(strlen(author) + 1);
+		books[i].author = (struct book*)malloc(strlen(author) + 1);
 		strcpy_s(books[i].author, strlen(author) + 1, author);
 
-		books[i].title = malloc(strlen(title) + 1);
+		books[i].title = (struct book*)malloc(strlen(title) + 1);
 		strcpy_s(books[i].title, strlen(title) + 1, title);
 
-		books[i].publisher = malloc(strlen(publisher) + 1);
+		books[i].publisher = (struct book*)malloc(strlen(publisher) + 1);
 		strcpy_s(books[i].publisher, strlen(publisher) + 1, publisher);
 
 		books[i].publishing_year = atoi(publishing_year);
