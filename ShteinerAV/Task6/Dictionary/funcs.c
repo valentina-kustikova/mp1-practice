@@ -11,7 +11,7 @@ void u_answer(char *user) {
 	while (1) {
 		cnt = 0;
 		printf("Enter your choice: ");
-		scanf_s(" %c", user);
+		scanf("%c", user);
 
 		while ((c = getchar()) != '\n') cnt++;
 		
@@ -108,13 +108,12 @@ void fill_arr(Book* arr, char* link) {
 	fclose(fp);
 }
 
-void enter_the_author(char** users_choice) {	
+void enter_the_author(char** users_choice) {
+	*users_choice = (char*)malloc(max_simbols_in_line);
 	while (1) {
 		int i, flag = 0, cnt = 0, c = 0;
-
 		printf("Enter the authors last name to search: ");
-		*users_choice = (char*)malloc(max_simbols_in_line);
-		scanf(" %s", *users_choice);
+		scanf(" %s", *users_choice); 
 
 		while ((c = getchar()) != '\n') cnt++;
 
@@ -135,13 +134,17 @@ void enter_the_author(char** users_choice) {
 }
 
 void print_books(Book* id_books, int size) {
-	int i, cnt=0;
+	int i, j, cnt=0;
 	for (i = 0; i < size; i++) {
 		printf("---------------------------------------------------\n");
-		printf("| Author: %s\n", id_books[i].authors[0]);
-		printf("| Title: %-40s |\n", id_books[i].books_name);
-		printf("| Publisher: %-36s |\n", id_books[i].publishing);
-		printf("| Year: %-41d |\n", id_books[i].year);
+		printf("| Author: ");
+		for (j = 0; j < id_books[i].cnt_authors; j++) {	
+			printf("%s ", id_books[i].authors[j]);
+		}
+		printf("\n");
+		printf("| Title: %-40s \n", id_books[i].books_name);
+		printf("| Publisher: %-36s \n", id_books[i].publishing);
+		printf("| Year: %-41d \n", id_books[i].year);
 		cnt++;
 	}
 
