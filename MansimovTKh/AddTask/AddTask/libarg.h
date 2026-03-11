@@ -9,9 +9,14 @@ typedef struct {
 	char* nation;
 	int height;
 	int weight;
-	char* birth;
+	int day; 
+	int month;
+	int year;
 	char* number;
-	char* address;
+	char* index;
+	char* country;
+	char* region_city;
+	char* street;
 } person_info;
 
 void sort_person(person_info* person, int n);
