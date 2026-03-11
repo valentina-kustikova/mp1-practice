@@ -6,8 +6,10 @@
 void bariers(char* str, int* start, int* numOfSims)
 {
 	*numOfSims = 0;
-	while (str[*start] == ' ' || str[*start] == ',' || str[*start] == ';') (*start)++;
-	while (str[*start + *numOfSims] != ',' && str[*start + *numOfSims] != ';' && str[*start + *numOfSims] != '\0') (*numOfSims)++;
+	while (str[*start] == ' ' || str[*start] == ',' ||
+		   str[*start] == ';') (*start)++;
+	while (str[*start + *numOfSims] != ',' && str[*start + *numOfSims] != ';' &&
+		   str[*start + *numOfSims] != '\0') (*numOfSims)++;
 	while (str[*start + *numOfSims - 1] == ' ') (*numOfSims)--;
 }
 
@@ -20,7 +22,7 @@ void readWord(char* input,char** output,int* start, int* numOfSims)
 	*start += *numOfSims;
 }
 
-int read(char* fileName, BOOK** books)
+int read(char* fileName, BOOK** books) // fgets + strtok + strcpy + sscanf
 {
 	FILE* f;
 	int n = 0, linesCount = 0, i, j, numOfSims, start;

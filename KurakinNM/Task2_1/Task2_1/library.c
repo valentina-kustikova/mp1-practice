@@ -18,7 +18,7 @@ int find(BOOK* lib, BOOK** findedBooks, int numOfBooks, char* str)
 	{
 		for (j = 0; j < lib[i].numberOfAuthors; j++)
 		{
-			if (strncmp(str, lib[i].authors[j], strLen) == 0) n++;
+			if (strncmp(str, lib[i].authors[j], strLen) == 0) n++; // strstr
 		}
 	}
 
@@ -29,7 +29,7 @@ int find(BOOK* lib, BOOK** findedBooks, int numOfBooks, char* str)
 	{
 		for (j = 0; j < lib[i].numberOfAuthors; j++)
 		{
-			if (strncmp(str, lib[i].authors[j], strLen) == 0)
+			if (strncmp(str, lib[i].authors[j], strLen) == 0) // strstr
 			{
 				cpy(lib[i].title, &((*findedBooks)[n].title), strlen(lib[i].title));
 				cpy(lib[i].ed, &((*findedBooks)[n].ed), strlen(lib[i].ed));
