@@ -22,7 +22,7 @@ void readWord(char* input,char** output,int* start, int* numOfSims)
 	*start += *numOfSims;
 }
 
-int read(char* fileName, BOOK** books) // fgets + strtok + strcpy + sscanf
+int read(char* fileName, BOOK** books) // fgets + strtok + strcpy + sscanf + strdub
 {
 	FILE* f;
 	int n = 0, linesCount = 0, i, j, numOfSims, start;
