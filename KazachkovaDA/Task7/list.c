@@ -33,7 +33,7 @@ struct quote* find_quotes_by_words(struct quote* quotes,
 		return NULL;
 	}
 
-	struct quote* found_quotes = malloc(*found_count * sizeof(struct quote));
+	struct quote* found_quotes = (struct quote*)malloc(*found_count * sizeof(struct quote));
 	if (found_quotes == NULL)
 	{
 		printf("");
@@ -51,19 +51,19 @@ struct quote* find_quotes_by_words(struct quote* quotes,
 			if (strstr(lowercase_key_words, lowercase_request))
 			{
 
-				found_quotes[j].the_line = malloc(strlen(quotes[i].the_line) + 1);
+				found_quotes[j].the_line = (struct quote*)malloc(strlen(quotes[i].the_line) + 1);
 				strcpy_s(found_quotes[j].the_line, strlen(quotes[i].the_line) + 1, quotes[i].the_line);
 
-				found_quotes[j].author = malloc(strlen(quotes[i].author) + 1);
+				found_quotes[j].author = (struct quote*)malloc(strlen(quotes[i].author) + 1);
 				strcpy_s(found_quotes[j].author, strlen(quotes[i].author) + 1, quotes[i].author);
 
-				found_quotes[j].source = malloc(strlen(quotes[i].source) + 1);
+				found_quotes[j].source = (struct quote*)malloc(strlen(quotes[i].source) + 1);
 				strcpy_s(found_quotes[j].source, strlen(quotes[i].source) + 1, quotes[i].source);
 
-				found_quotes[j].topic = malloc(strlen(quotes[i].topic) + 1);
+				found_quotes[j].topic = (struct quote*)malloc(strlen(quotes[i].topic) + 1);
 				strcpy_s(found_quotes[j].topic, strlen(quotes[i].topic) + 1, quotes[i].topic);
 
-				found_quotes[j].key_words = malloc(strlen(quotes[i].key_words) + 1);
+				found_quotes[j].key_words = (struct quote*)malloc(strlen(quotes[i].key_words) + 1);
 				strcpy_s(found_quotes[j].key_words, strlen(quotes[i].key_words) + 1, quotes[i].key_words);
 
 				j++;

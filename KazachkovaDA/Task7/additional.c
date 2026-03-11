@@ -31,7 +31,7 @@ struct quote* file_to_struct(const char* file_name, int* count)
 
 	rewind(file);
 
-	struct quote* quotes = malloc(n * sizeof(struct quote));
+	struct quote* quotes = (struct quote*)malloc(n * sizeof(struct quote));
 	if (quotes == NULL)
 	{
 		printf("Memory allocation error\n");
@@ -51,19 +51,19 @@ struct quote* file_to_struct(const char* file_name, int* count)
 		char* topic = strtok(NULL, ";");
 		char* key_words = strtok(NULL, ";");
 
-		quotes[i].the_line = malloc(strlen(the_line) + 1);
+		quotes[i].the_line = (struct quote*)malloc(strlen(the_line) + 1);
 		strcpy_s(quotes[i].the_line, strlen(the_line) + 1, the_line);
 
-		quotes[i].author = malloc(strlen(author) + 1);
+		quotes[i].author = (struct quote*)malloc(strlen(author) + 1);
 		strcpy_s(quotes[i].author, strlen(author) + 1, author);
 
-		quotes[i].source = malloc(strlen(source) + 1);
+		quotes[i].source = (struct quote*)malloc(strlen(source) + 1);
 		strcpy_s(quotes[i].source, strlen(source) + 1, source);
 
-		quotes[i].topic = malloc(strlen(topic) + 1);
+		quotes[i].topic = (struct quote*)malloc(strlen(topic) + 1);
 		strcpy_s(quotes[i].topic, strlen(topic) + 1, topic);
 
-		quotes[i].key_words = malloc(strlen(key_words) + 1);
+		quotes[i].key_words = (struct quote*)malloc(strlen(key_words) + 1);
 		strcpy_s(quotes[i].key_words, strlen(key_words) + 1, key_words);
 
 		i++;
