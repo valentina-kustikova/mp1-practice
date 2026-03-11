@@ -3,10 +3,12 @@
 #include "library.h"
 #include "auxiliary.h"
 
+//int main(int argc, char **argv)
 int main()
 {
 	setlocale(LC_ALL, "Russian");
 
+	//char file_name[] = argv[2];
 	char file_name[] = "library.txt";
 	int count = 0;
 	struct book* books = file_to_struct(file_name, &count);
