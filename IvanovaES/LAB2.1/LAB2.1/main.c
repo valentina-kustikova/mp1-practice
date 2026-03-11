@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,17 +6,18 @@
 
 int main(int argc, char** argv) {
 	char* filename;
-	char author[100];
+	char author[MAX_LEN];
 	int cnt, foundBooks;
 	BookData* array;
 	BookData* result;
+	FILE* file;
 	if (argc < 2) {
 		printf("Incorrect number of arguments");
 		return 1;
 	}
 	filename = argv[1];
 
-	FILE* file = fopen(filename, "r");
+	file = fopen(filename, "r");
 	if (file == NULL) {
 		printf("Error: cant open file");
 		return 1;
@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 	fclose(file);
 
 	printf("Enter the author - ");
-	scanf(" %[^\n]", author);
+	scanf("%[^\n]", author);
 
 	search(array, cnt, author, &result, &foundBooks);
 

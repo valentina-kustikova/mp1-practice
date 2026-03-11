@@ -1,10 +1,12 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
 
+#define MAX_LEN 2048
+
 typedef struct BookData {
-	char author[100];
-	char name[100];
-	char publishing[100];
+	char author[MAX_LEN];
+	char name[MAX_LEN];
+	char publishing[MAX_LEN];
 	int year;
 } BookData;
 

@@ -1,5 +1,6 @@
 #ifndef AUXX_H
 #define AUXX_H
+
 #include <stdio.h>
 #include "library.h"
 

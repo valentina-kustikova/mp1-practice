@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,7 +11,6 @@ void search(BookData* array, int cnt,char* author, BookData** result, int* found
 	for (i = 0; i < cnt; i++) {
 		if (strstr(array[i].author, author) != NULL) {
 			(*foundBooks)++;
-
 		}
 	}
 
@@ -25,7 +23,11 @@ void search(BookData* array, int cnt,char* author, BookData** result, int* found
 	
 	for (i = 0; i < cnt; i++) {
 		if (strstr(array[i].author, author) != NULL) {
-			(*result)[k++] = array[i];
+			strcpy((*result)[k].author, array[i].author);
+			strcpy((*result)[k].name, array[i].name);
+			strcpy((*result)[k].publishing, array[i].publishing);
+			(*result)[k].year = array[i].year;
+			k++;
 		}
 	}
 }
