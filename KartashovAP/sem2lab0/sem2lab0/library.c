@@ -20,7 +20,12 @@ void searching(Book* masbook, int count_book, const char* author, Book** search,
 	*search = (Book*)malloc((*countAuthorBooks) * sizeof(Book));
 	for (j = 0; j < count_book; j++) {
 		if (strstr(masbook[j].author, author) != NULL) {
-			(*search)[kol++] = masbook[j];
+			strcpy((*search)[kol].author, masbook[j].author);
+			strcpy((*search)[kol].name, masbook[j].name);
+			strcpy((*search)[kol].publish, masbook[j].publish);
+			(*search)[kol].year = masbook[j].year;
+			kol++;
+
 		}
 	}
 }

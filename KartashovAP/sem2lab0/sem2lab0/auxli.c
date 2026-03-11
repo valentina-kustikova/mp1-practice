@@ -6,21 +6,22 @@
 
 //подсчет книг
 int countingBooks(const char* filename) {
-	char buff[1024];
-	int count = 0;
+	char buff[MAX_LEN];
+	int count_book = 0;
+
 	FILE* file = fopen(filename, "r");
 	if (file == NULL) {
 		printf("it is global mistake");
 		return 0;
 	}
-	while (buff) {
+	while (1) {
 		if (fgets(buff, sizeof(buff), file)) {
-			count++;
+			count_book++;
 		}
 		else break;
 	}
 	fclose(file);
-	return count;
+	return count_book;
 }
 
 //чтение и заполнение массива структур

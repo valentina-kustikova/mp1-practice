@@ -1,12 +1,13 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
 
+#define MAX_LEN 1024
 //наша структура
 
 typedef struct Book {
-	char author[100];
-	char name[100];
-	char publish[100];
+	char author[MAX_LEN];
+	char name[MAX_LEN];
+	char publish[MAX_LEN];
 	int year;
 } Book;
 

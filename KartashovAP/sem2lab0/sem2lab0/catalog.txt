@@ -1,26 +1,3 @@
-Harper Lee; Nineteen Eighty-Four; J.B. Lippincott & Co.; 1949
-F. Scott Fitzgerald; Moby-Dick; Charles Scribner's Sons; 1851
-Herman Melville; The Great Gatsby; Harper & Brothers; 1925
-Jane Austen; Frankenstein; T. Egerton; 1818
-J.R.R. Tolkien; To Kill a Mockingbird; George Allen & Unwin; 1960
-J.D. Salinger; The Hobbit; Little, Brown and Company; 1937
-Ernest Hemingway; The Catcher in the Rye; Charles Scribner's Sons; 1951
-Mary Shelley; Pride and Prejudice; Lackington, Hughes, Harding, Mavor & Jones; 1813
-Leo Tolstoy; Dracula; The Russian Messenger; 1897
-Mark Twain; Anna Karenina; Charles L. Webster and Co.; 1877
-Virginia Woolf; Lord of the Flies; Hogarth Press; 1954
-George Orwell; Mrs Dalloway; Secker & Warburg; 1925
-Bram Stoker; Animal Farm; Archibald Constable and Company; 1945
-Oscar Wilde; The Grapes of Wrath; Lippincott's Monthly Magazine; 1939
-H.G. Wells; The Picture of Dorian Gray; William Heinemann; 1890
-Ray Bradbury; Slaughterhouse-Five; Ballantine Books; 1969
-Kurt Vonnegut; Fahrenheit 451; Delacorte Press; 1953
-Joseph Heller; Brave New World; Simon & Schuster; 1932
-John Steinbeck; Catch-22; The Viking Press; 1961
-Aldous Huxley; One Hundred Years of Solitude; Chatto & Windus; 1967
-C.S. Lewis; Gone with the Wind; Geoffrey Bles; 1936
-William Golding; The Lion, the Witch and the Wardrobe; Faber and Faber; 1950
-Margaret Mitchell; The Wind in the Willows; Macmillan Publishers; 1908
 Fyodor Dostoevsky; Crime and Punishment; The Russian Messenger; 1866
 Fyodor Dostoevsky; The Brothers Karamazov; The Russian Messenger; 1880
 Leo Tolstoy; War and Peace; The Russian Messenger; 1869
