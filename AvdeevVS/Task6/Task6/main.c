@@ -19,7 +19,7 @@ int main(int argc,char** argv) {
   read_books(books, argv[1]);
   while (1) {
     char author[MAX_NAME_LEN];
-    printf("Input author name or stop to exit:");
+    printf("Input author name or stop to exit: ");
     scanf("%s", author);
     if (strcmp(author, stop) == 0) {
       printf("The end!");

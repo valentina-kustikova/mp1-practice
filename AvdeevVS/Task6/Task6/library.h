@@ -1,9 +1,9 @@
 #ifndef _LIBRARY_H
 #define _LIBRARY_H
 
-#define MAX_WRITER_LEN 15
-#define MAX_NAME_LEN 100
-#define MAX_PUBLISHER_NAME 500
+#define MAX_WRITER_LEN 200
+#define MAX_NAME_LEN 250
+#define MAX_PUBLISHER_NAME 300
 #define MAX_LEN 1000
 
 typedef struct{

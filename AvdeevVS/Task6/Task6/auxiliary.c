@@ -49,7 +49,7 @@ void print_books(book* books, int nBooks, int* indecesAuthorBooks, int kAuthorBo
         printf("%s;", books[indecesAuthorBooks[i]].writer);
         printf("%s;", books[indecesAuthorBooks[i]].name);
         printf("%s;", books[indecesAuthorBooks[i]].publish);
-        printf("%d", books[indecesAuthorBooks[i]].year);        
+        printf("%d\n", books[indecesAuthorBooks[i]].year);        
     }
     printf("\n");
 }
