@@ -1,30 +1,33 @@
-#ifndef find
-#define find
-#define S 100
-#define P 50
-#define D 200
-#define T 1000
+#ifndef _FIND_H_
+#define _FIND_H_
+#define MAX_LEN 1000
 typedef struct {
   int day;
   int month;
   int year;
-} birth1;
+} date_of_birth;
 typedef struct {
-  char post[S];
-  char place[S];
-  char reason[P];
-} last_job1;
+  char* position;
+  char* place;
+  char* reason_for_termination;
+} last_job;
 typedef struct {
-  char phone[P];
-  char adress[S];
-} contact1;
+  char* town;
+  char* street;
+  int home;
+  int flat;
+} str_address;
 typedef struct {
-  char name[S];
-  birth1 birth;
-  char craft[P];
-  char education[D];
-  last_job1 last_job;
-  char family[P];
-  contact1 contact;
-} jobless;
+  char* phone_number;
+  str_address address;
+} str_contact;
+typedef struct {
+  char* full_name;
+  date_of_birth birth_date;
+  char* profession;
+  char* education;
+  last_job previous_job;
+  char* marital_status;
+  str_contact contact_information;
+} jobless_people;
 #endif
