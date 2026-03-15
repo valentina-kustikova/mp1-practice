@@ -3,10 +3,10 @@
 #include <stdlib.h>
 #include "find.h"
 #include "additional.h"
-int Number_of_jobless() {
+int Number_of_jobless(char* filename) {
   int count = 0;
   char s[MAX_LEN];
-  FILE* f = fopen("data_base1.txt", "r");
+  FILE* f = fopen(filename, "r");
   if (f == NULL) {
     printf("Error:The file does not exist or permissions are missing!");
     exit(0);
@@ -21,10 +21,10 @@ int Number_of_jobless() {
   fclose(f);
   return count;
 }
-void Filling_from_file(jobless_people* jobless) {
+void Filling_from_file(jobless_people* jobless, char* filename) {
   int i = 0;
   char s[MAX_LEN];
-  FILE* f = fopen("data_base1.txt", "r");
+  FILE* f = fopen(filename, "r");
   if (f == NULL) {
     printf("Error:The file does not exist or permissions are missing!");
     exit(0);
@@ -54,9 +54,10 @@ void Print_of_result(jobless_people* jobless, int* required_indexes, int nrequir
     printf("Unemployed people with higher education:\n");
     return;
   } 
-  printf("\nPercentage of unemployed with higher education --> %.0f%%\n\n", ((nrequired_indexes * 100.f)/ njobless));
-  printf("Unemployed people with higher education:\n\n");
+  printf("\n Percentage of unemployed with higher education --> %.0f%%\n\n", ((nrequired_indexes * 100.f)/ njobless));
+  printf(" Unemployed people with higher education:\n\n");
   for (i = 0; i < nrequired_indexes; i++) {
+    printf("%d) --> ", i+1);
     printf("%s;", jobless[required_indexes[i]].full_name);
     if (jobless[required_indexes[i]].birth_date.day < 10) printf("0%d.", jobless[required_indexes[i]].birth_date.day);
     else printf("%d.", jobless[required_indexes[i]].birth_date.day);

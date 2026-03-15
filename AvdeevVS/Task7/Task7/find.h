@@ -30,6 +30,6 @@ typedef struct {
   char* marital_status;
   str_contact contact_information;
 } jobless_people;
-void finding_right_options(jobless_people* jobless, int njobless, int* nrequired_indexes, int** required_indexes);
+void Finding_right_options(jobless_people* jobless, int njobless, int* nrequired_indexes, int** required_indexes);
 //float percentage_of_higher_education(int nrequired_indexes, int njobless);
 #endif

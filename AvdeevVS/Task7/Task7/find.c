@@ -5,7 +5,7 @@
 #include "find.h"
 #include "additional.h"
 #define MAX_EDUCATION_LEN 20
-void finding_right_options(jobless_people* jobless, int njobless,int* nrequired_indexes, int** required_indexes){
+void Finding_right_options(jobless_people* jobless, int njobless,int* nrequired_indexes, int** required_indexes){
   int i,j,k=0;
   char higher_education[MAX_EDUCATION_LEN] = "higher education";
   for (i = 0; i < njobless; i++) {
