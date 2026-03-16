@@ -1,0 +1,15 @@
+Leonardo da Vinci;1452;Renaissance
+Michelangelo Buonarroti;1475;Renaissance
+Raphael Sanzio;1483;Renaissance
+Rembrandt van Rijn;1606;Baroque
+Johannes Vermeer;1632;Baroque
+Diego Velazquez;1599;Baroque
+Claude Monet;1840;Impressionism
+Pierre-Auguste Renoir;1841;Impressionism
+Edgar Degas;1834;Impressionism
+Vincent van Gogh;1853;Post-Impressionism
+Paul Cezanne;1839;Post-Impressionism
+Pablo Picasso;1881;Cubism
+Salvador Dali;1904;Surrealism
+Frida Kahlo;1907;Surrealism
+Andy Warhol;1928;Pop Art
