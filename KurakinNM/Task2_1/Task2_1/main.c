@@ -8,21 +8,22 @@ int main()
 {
 	BOOK* lib; BOOK* findedBooks;
 	int n, n2, i, j;
-	char str[100];
+	char str[255];
 	system("chcp 1251");
 	system("cls");
 	n = read("lib.txt",&lib);
 
 	while (1) {
 		printf("¬ведите автора (0 - выход): ");
-		fgets(str, 100, stdin);
+		fgets(str, 255, stdin);
 		if (strncmp(str, "0\n", 2) == 0) break;
+		str[strlen(str) - 1] = '\0';
 		printf("===========================================\n");
 		n2 = find(lib, &findedBooks, n, str);
 		if (n2 == 0) { printf(" ниг этого автора не найдено\n\n"); }
 		else output(findedBooks, n2);
 
-		for (i = 0; i < n2; i++) {
+		/*for (i = 0; i < n2; i++) {
 			for (j = 0; j < findedBooks[i].numberOfAuthors; j++)
 			{
 				free(findedBooks[i].authors[j]);
@@ -32,7 +33,7 @@ int main()
 			free(findedBooks[i].ed);
 		}
 
-		free(findedBooks);
+		free(findedBooks);*/
 	}
 
 	for (i = 0; i < n; i++) {

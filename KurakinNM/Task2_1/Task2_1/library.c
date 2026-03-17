@@ -13,12 +13,17 @@ void cpy(char* input, char** output, int len)
 int find(BOOK* lib, BOOK** findedBooks, int numOfBooks, char* str)
 {
 	int i,j,k,n = 0, strLen;
+	char* p;
 	strLen = strlen(str) - 1;
 	for (i = 0; i < numOfBooks; i++)
 	{
 		for (j = 0; j < lib[i].numberOfAuthors; j++)
 		{
-			if (strncmp(str, lib[i].authors[j], strLen) == 0) n++; // strstr
+			if (strstr(lib[i].authors[j], str))
+			{
+				n++;
+				break;
+			};
 		}
 	}
 
@@ -29,7 +34,7 @@ int find(BOOK* lib, BOOK** findedBooks, int numOfBooks, char* str)
 	{
 		for (j = 0; j < lib[i].numberOfAuthors; j++)
 		{
-			if (strncmp(str, lib[i].authors[j], strLen) == 0) // strstr
+			if (strstr(lib[i].authors[j], str))
 			{
 				cpy(lib[i].title, &((*findedBooks)[n].title), strlen(lib[i].title));
 				cpy(lib[i].ed, &((*findedBooks)[n].ed), strlen(lib[i].ed));

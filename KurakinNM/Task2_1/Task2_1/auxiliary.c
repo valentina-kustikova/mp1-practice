@@ -5,66 +5,40 @@
 
 void bariers(char* str, int* start, int* numOfSims)
 {
-	*numOfSims = 0;
-	while (str[*start] == ' ' || str[*start] == ',' ||
-		   str[*start] == ';') (*start)++;
-	while (str[*start + *numOfSims] != ',' && str[*start + *numOfSims] != ';' &&
-		   str[*start + *numOfSims] != '\0') (*numOfSims)++;
-	while (str[*start + *numOfSims - 1] == ' ') (*numOfSims)--;
+	while (str[*start] == ' ') (*start)++;
+	while (str[*numOfSims - 1] == ' ') (*numOfSims)--;
+	*numOfSims -= *start;
 }
 
-void readWord(char* input,char** output,int* start, int* numOfSims)
+void readWord(char* input,char** output)
 {
-	bariers(input, start, numOfSims);
-	*output = (char*)malloc(*numOfSims + 1);
-	memcpy(*output, input + *start, *numOfSims);
-	(*output)[*numOfSims] = '\0';
-	*start += *numOfSims;
+	int start = 0, numOfSims = strlen(input);
+	bariers(input, &start, &numOfSims);
+	(*output) = (char*)malloc(numOfSims+1);
+	memcpy(*output, input + start, numOfSims);
+	(*output)[numOfSims] = '\0';
 }
 
 int read(char* fileName, BOOK** books) // fgets + strtok + strcpy + fscanf + strdub
 {
 	FILE* f;
-	int n = 0, linesCount = 0, i, j, numOfSims, start;
-	char c; char* str; char* year;
+	int n = 0, i, j;
+	char* year;
 	char buffer[255]; char* token;
 	unsigned int* numOfAuthors;
 
 	f = fopen(fileName, "r");
 	while (!feof(f))
 	{
-		/*c = fgetc(f);
-		if (c == ';') linesCount++;
-		if (linesCount == 3) {
-			n++;
-			linesCount = 0;
-		}*/
 		fgets(buffer,255,f);
 		n++;
 	}
-	/*token = strtok(buffer, ",;");
-	printf("%s\n", token);
-	while (token != NULL)
-	{
-		printf("%s\n", token);
-		token = strtok(NULL, ",;");
-	}
-	token = strtok(buffer, ",;");
-	printf("%s\n", token);*/
 
 
 	numOfAuthors = (unsigned int*)malloc(n*sizeof(unsigned int));
 	for (i = 0; i < n; i++) { numOfAuthors[i] = 0; }
-	token = strtok(buffer, ";");
 	i = 0;
 	fseek(f, 0, SEEK_SET);
-	/*fseek(f, 0, SEEK_SET);
-	while (!feof(f))
-	{
-		c = fgetc(f);
-		if (c == ',') numOfAuthors[i]++;
-		if (c == '\n') i++;
-	}*/
 	for (i = 0; i < n; i++)
 	{
 		fgets(buffer, 255, f);
@@ -89,30 +63,22 @@ int read(char* fileName, BOOK** books) // fgets + strtok + strcpy + fscanf + str
 	fseek(f, 0, SEEK_SET);
 	for (i = 0; i < n; i++)
 	{
-		numOfSims = 1;
-		do {
-			numOfSims++;
-			c = fgetc(f);
-		} while (c != '\n' && !feof(f));
-		str = malloc(numOfSims);
-		fseek(f, -numOfSims, SEEK_CUR);
-		fgets(str, numOfSims, f);
-
-		start = 0;
-
+		fgets(buffer, 255, f);
+		token = strtok(buffer, ",;");
 		for (j = 0; j < (*books)[i].numberOfAuthors; j++)
 		{
-			readWord(str, &((*books)[i].authors[j]), &start, &numOfSims);
+			readWord(token, &((*books)[i].authors[j]));
+			token = strtok(NULL, ",;");
 		}
-
-		readWord(str, &((*books)[i].title), &start, &numOfSims);
-		readWord(str, &((*books)[i].ed), &start, &numOfSims);
-		readWord(str, &year, &start, &numOfSims);
+		readWord(token, &((*books)[i].title));
+		token = strtok(NULL, ",;");
+		readWord(token, &((*books)[i].ed));
+		token = strtok(NULL, ",;");
+		readWord(token, &year);
 
 		(*books)[i].year = atoi(year);
 
 		free(year);
-		free(str);
 	}
 
 	fclose(f);
