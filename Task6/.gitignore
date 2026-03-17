@@ -1,0 +1,10 @@
+# Visual Studio files 
+.vs/ 
+*.user 
+x64/ 
+Debug/ 
+Release/ 
+*.exe 
+*.obj 
+*.pdb 
+Task6/Task6/ 
