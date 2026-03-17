@@ -34,7 +34,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\..\Users\Matvey\Desktop\catalog.txt">
+    <Text Include="..\..\..\..\..\Users\Matvey\Desktop\catalog1.txt">
       <Filter>Исходные файлы</Filter>
     </Text>
   </ItemGroup>

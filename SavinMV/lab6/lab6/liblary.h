@@ -1,10 +1,10 @@
 #ifndef LIBLARY_H
 #define LIBLARY_H
-struct Book {
-	char author[100];
-	char name[100];
-	char publisher[100];
-	int year;
-};
-void searching(struct Book* array, int count, const char* author, struct Book** search, int* countAuthorBooks);
+typedef struct Book {
+    char avtor[100];
+    char name[100];
+    char izdanie[100];
+    int year;
+} Book;
+void poisk(Book* arr, int count, const char* avtor, Book** itogpoiska, int* kolvonaydenknig);
 #endif 

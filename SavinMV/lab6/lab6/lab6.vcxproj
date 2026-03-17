@@ -132,7 +132,7 @@
     <ClInclude Include="liblary.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\..\..\..\..\Users\Matvey\Desktop\catalog.txt" />
+    <Text Include="..\..\..\..\..\Users\Matvey\Desktop\catalog1.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

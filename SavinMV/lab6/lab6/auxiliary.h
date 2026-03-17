@@ -2,6 +2,6 @@
 #define AUXILIARY_H
 #include "liblary.h"
 int numberBooks(const char* filename);
-void readFile(int count, struct Book* array, const char* filename);
-void printResults(struct Book* search, int k);
+void readFile(int count, Book* arr, const char* filename);
+void printResults(Book* search, int k);
 #endif
