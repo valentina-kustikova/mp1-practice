@@ -1,77 +1,99 @@
-#include <stdio.h>
-#include <stdlib.h> //для памяти malloc()
-#include <locale.h>
-#include <string.h>//для strtok
+#define _CRT_SECURE_NO_WARNINGS 
+#include <stdio.h> 
+#include <stdlib.h> //для памяти malloc() 
+#include <locale.h> 
+#include <string.h>//для strtok 
 
 
-#define MAX_LINE_LEN 512
+#define MAX_LINE_LEN 512 
 
 typedef struct {
-	char* authors;
-	char* title;
-	char* publisher;
-	int year;
+    char* authors;
+    char* title;
+    char* publisher;
+    int year;
 }Book;
 
 
-//выделение памяти 
-void* safe_malloc(size_t size) {
-	void* memory_book = malloc(size);
-	return memory_book;
-}
-
-//деление строки
+//деление строки 
 Book divide_line(char* line) {
-	Book book;
-	char* token;
+    Book book;
+    char* token = strtok(line, ";");
+    book.authors = (char*)malloc(sizeof(char) * (strlen(token) + 1));
+    strcpy(book.authors, token);
 
-	book.authors = safe_malloc(MAX_LINE_LEN);
-	book.title = safe_malloc(MAX_LINE_LEN);
-	book.publisher= safe_malloc(MAX_LINE_LEN);
-	//год
+    token = strtok(NULL, ";");
+    book.title = (char*)malloc(sizeof(char) * (strlen(token) + 1));
+    strcpy(book.title, token);
 
+    token = strtok(NULL, ";");
+    book.publisher = (char*)malloc(sizeof(char) * (strlen(token) + 1));
+    strcpy(book.publisher, token);
 
-	token = strtok(line, ";");
-	if (token != NULL) {
-		strcpy(book.authors, token);
-	}
-	else {
-		strcpy(book.authors, "");
-	}
+    token = strtok(NULL, ";");
+    book.year = atoi(token);
 
-
-	token = strtok(line, ";");
-	if (token != NULL) {
-		strcpy(book.title, token);
-	}
-	else {
-		strcpy(book.title, "");
-	}
-
-	token = strtok(line, ";");
-	if (token != NULL) {
-		strcpy(book.publisher, token);
-	}
-	else {
-		strcpy(book.publisher, "");
-	}
-	//год
-
-	return book;
+    return book;
 }
 
-//освобождение памяти
+void show_books(Book* books, int n) {
+    for (int i = 0; i < n; i++)
+    {
+        printf("%s;%s;%s;%d\n", books[i].authors, books[i].title, books[i].publisher, books[i].year);
+    }
+    printf("\n");
+}
 
+void find_by_author(Book* books, int n, char* author) {
+    for (int i = 0; i < n; i++) {
+        if (strstr(books[i].authors, author)) {
+            printf("%s;%s;%s;%d\n", books[i].authors, books[i].title, books[i].publisher, books[i].year);
+        }
+    }
+}
+
+void free_books(Book* books, int n) {
+    for (int i = 0; i < n; i++) {
+        free(books[i].authors);
+        free(books[i].title);
+        free(books[i].publisher);
+    }
+    free(books);
+}
 
 
 int main() {
-	char* filename = "gggg.txt";
-	setlocale(LC_ALL, "Russian");
+    const char* filename = "kartoteka.txt";
+    setlocale(LC_ALL, "Russian");
 
-	FILE* file = fopen(filename, "r");
-	if (file == NULL) {
-		return NULL;
-	}
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        return 1;
+    }
 
+    int n = 0;
+    Book* books = (Book*)malloc(sizeof(Book) * n);
+
+    while (!feof(file))
+    {
+        char line[MAX_LINE_LEN];
+        if (fgets(line, MAX_LINE_LEN, file)) {
+            books = (Book*)realloc(books, sizeof(Book) * (n + 1));
+
+            books[n] = divide_line(line);
+            n++;
+        }
+    }
+    fclose(file);
+
+    show_books(books, n);
+
+    char find_author[100];
+    printf("Введите фамилию автора: ");
+    fgets(find_author, 100, stdin);
+    find_author[strlen(find_author) - 1] = '\0';
+
+    find_by_author(books, n, find_author);
+    free_books(books, n);
 
 }
