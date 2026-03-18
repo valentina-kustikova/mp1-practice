@@ -3,25 +3,29 @@
 #include <string.h>
 #include "school.h"
 
-school* read(const char* source, int* n) {
+pupil* read(const char* source, int* n) {
 	FILE* f = fopen(source, "r");
 	char buff[1000], * temp;
 	int i, count = 0;
-	school* list;
+	pupil* list;
 	if (f == NULL) return NULL;
 	while (fgets(buff, 1000, f)) count++;
 	fclose(f);
 	*n = count;
 	if (n == 0) return NULL;
-	list = (school*)malloc(count * sizeof(school));
+	list = (pupil*)malloc(count * sizeof(pupil));
 	f = fopen(source, "r");
 	for (i = 0; i < count; i++) {
 		fgets(buff, 1000, f);
-		list[i].name = _strdup(strtok(buff, ";"));
+		list[i].surname = _strdup(strtok(buff, " "));
+		list[i].name = _strdup(strtok(NULL, " "));
+		list[i].fathername = _strdup(strtok(NULL, ";"));
 		list[i].klass = _strdup(strtok(NULL, ";"));
 		list[i].gen = _strdup(strtok(NULL, ";"));
-		temp = strtok(NULL, ";");
-		list[i].home.index = atoi(strtok(NULL, ","));
+		list[i].date.day = atoi(strtok(NULL, "."));
+		list[i].date.month = atoi(strtok(NULL, "."));
+		list[i].date.year = atoi(strtok(NULL, ";"));
+		strncpy(list[i].home.index, strtok(NULL, ","), 7);
 		list[i].home.country = _strdup(strtok(NULL, ","));
 		list[i].home.region = _strdup(strtok(NULL, ","));
 		list[i].home.district = _strdup(strtok(NULL, ","));
@@ -31,23 +35,20 @@ school* read(const char* source, int* n) {
 		list[i].home.flat = atoi(strtok(NULL, ","));
 		//_________________________________
 		//_________________________________
-		list[i].date.day = atoi(strtok(temp, "."));
-		list[i].date.month = atoi(strtok(NULL, "."));
-		list[i].date.year = atoi(strtok(NULL, "."));
 	}
 	fclose(f);
 	return list;
 }
 
-void print_school(school s) {
+void print_pupil(pupil s) {
 	printf("#___#\n");
 	printf("NAME: %s\n", s.name);
-	printf("CLASS: %s   GENDER: %s\nHOME ADDRESS: %d - %s, %s, %s, %s, %s, %s, %d\n", s.klass, s.gen,
+	printf("CLASS: %s   GENDER: %s\nHOME ADDRESS: %s - %s, %d, %s, %s, %s, %s, %d\n", s.klass, s.gen,
 		s.home.index, s.home.country, s.home.region, s.home.district, s.home.city, s.home.street, s.home.house, s.home.flat);
 	printf("BIRTH DATE: %d.%d.%d\n#___#\n", s.date.day, s.date.month, s.date.year);
 }
 
-void school_sort(school* list, int n) {
+void school_sort(pupil* list, int n) {
 	int i, j;
 	for (i = 0; i < n - 1; i++) {
 		for (j = 0; j < n - i - 1; j++) {
@@ -56,7 +57,7 @@ void school_sort(school* list, int n) {
 	}
 }
 
-void class_sort(school* list, int n) {
+void class_sort(pupil* list, int n) {
 	int i, j;
 	for (i = 0; i < n - 1; i++) {
 		j = i + 1;
@@ -66,23 +67,24 @@ void class_sort(school* list, int n) {
 	}
 }
 
-void swap(school* a, school* b) {
-	school t = *a;
+void swap(pupil* a, pupil* b) {
+	pupil t = *a;
 	*a = *b;
 	*b = t;
 }
 
-void sorted_list(school* list, int n) {
+void sorted_list(pupil* list, int n) {
 	int i;
 	class_sort(list, n);
 	school_sort(list, n);
 	printf("###_______________________###\n");
-	for (i = 0; i < n; i++) printf("%d) %s %s %s %d.%d.%d\n", i + 1,
-		list[i].klass, list[i].name, list[i].gen, list[i].date.day, list[i].date.month, list[i].date.year);
+	for (i = 0; i < n; i++) //printf("%d) %s %s %s %d.%d.%d\n", i + 1,
+		//list[i].klass, list[i].name, list[i].gen, list[i].date.day, list[i].date.month, list[i].date.year);
+		print_pupil(list[i]);
 	printf("###_______________________###\n");
 }
 
-void free_all(school* list, int n) {
+void free_all(pupil* list, int n) {
 	int i;
 	for (i = 0; i < n; i++) {
 		free(list[i].home.country);
@@ -92,8 +94,9 @@ void free_all(school* list, int n) {
 		free(list[i].home.street);
 		free(list[i].home.house); 
 		free(list[i].name);
+		free(list[i].surname);
+		free(list[i].fathername);
 		free(list[i].klass);
-		free(list[i].gen);
 	}
 	free(list);
 }

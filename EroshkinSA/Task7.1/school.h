@@ -2,7 +2,8 @@
 #define __SCH_H_
 
 typedef struct {
-	int index, flat;
+	char index[6];
+	int flat;
 	char* country, * region, * district, * city, * street, * house;
 } home_address;
 
@@ -10,18 +11,23 @@ typedef struct {
 	int day, month, year;
 } birth_date;
 
+typedef enum {
+	MEN = 1, WOMAN
+} genders;
+
 typedef struct {
-	char* name, * klass, * gen;
+	char* surname, * name, * fathername, * klass;
+	char* gen; // gen - enum 
 	birth_date date;
 	home_address home;
-} school;
+} pupil;
 
-void swap(school* a, school* b);
-school* read(const char* source, int* n);
-void school_sort(school* list, int n);
-void class_sort(school* list, int n);
-void sorted_list(school* list, int n);
-void print_school(school s);
-void free_all(school* list, int n);
+void swap(pupil* a, pupil* b);
+pupil* read(const char* source, int* n);
+void school_sort(pupil* list, int n);
+void class_sort(pupil* list, int n);
+void sorted_list(pupil* list, int n);         // struct iz pupil + n
+void print_pupil(pupil s);
+void free_all(pupil* list, int n);
 
 #endif

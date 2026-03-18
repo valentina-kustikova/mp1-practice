@@ -3,9 +3,8 @@
 #include "school.h"
 
 int main(int argc, char** argv) {
-	school* list;
+	pupil* list;
 	int n;
-	char klass[50], name[1000];
 	if (argc < 2) {
 		printf("Incorrect parameters!");
 		return 1;
