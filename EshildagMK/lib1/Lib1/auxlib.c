@@ -1,10 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "auxlib.h"
 
-#define BUFFER 1024
+
 void get_library(const char* filename, book_info** books, int* lines) {
 	FILE* filep = fopen(filename, "r");
 	int i;
@@ -72,9 +71,9 @@ void printer(book_info* found_books, int found_count) {
 		printf("%s -- %s -- %s -- %d\n", found_books[i].author, found_books[i].book_name, found_books[i].publisher, found_books[i].book_year);
 	}
 }
-//void print_books(book_info* books, int lines) {
-//	int i;
-//	for (i = 0; i < lines; i++) {
-//		printf("%s -- %s -- %s -- %d\n", books[i].author, books[i].book_name, books[i].publisher, books[i].book_year);
-//	}
-//}
+void print_books(book_info* books, int lines) {
+	int i;
+	for (i = 0; i < lines; i++) {
+		printf("%s -- %s -- %s -- %d\n", books[i].author, books[i].book_name, books[i].publisher, books[i].book_year);
+	}
+}

@@ -1,10 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "libfi.h"	
 
-#define BUFFER 1024
 
 void searcher(book_info* books, int lines, const char* auth_name, book_info** found_books, int* found_count) {
 	int i, j, kfound = 0;

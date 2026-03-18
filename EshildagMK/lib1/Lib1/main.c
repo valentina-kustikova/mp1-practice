@@ -1,24 +1,10 @@
-#define _CRT_SECURE_NO_WARNINGS
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include "libfi.h"	
+#include "auxlib.h"	
 
-#define BUFFER 1024
-#define NAME_max 128
-
-
-typedef struct {
-	char* author;
-	char* book_name;
-	char* publisher;
-	int book_year;
-} book_info;
-		
-//void get_library(const char* filename, book_info** books, int* lines);
-//void print_books(book_info* books, int lines);
-//void searcher(book_info* books, int lines, const char* auth_name,
-//	book_info** found_books, int* found_count);
-//void printer(book_info* found_books, int found_count);
 
 int main() {
 	int lines = 0, kfound = 0;
@@ -79,7 +65,3 @@ int main() {
 
 	return 0;
 }
-
-
-
-
