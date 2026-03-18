@@ -8,3 +8,4 @@ Rosselkhozbank; State-owned; 0.1; 4.6; 5.3;
 Moscow Credit Bank; Private; 0.4; 5.1; 5.9;
 Sovcombank; Private; 0.6; 5.3; 6.2;
 Promsvyazbank; State-owned; 0.2; 4.7; 6.7;
+Sberbank; State-owned; До востребования, бессрочный, 0.01; Накопительный, 6 месяцев, 5.6
