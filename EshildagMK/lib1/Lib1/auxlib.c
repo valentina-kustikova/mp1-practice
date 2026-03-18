@@ -65,12 +65,6 @@ void get_library(const char* filename, book_info** books, int* lines) {
 	fclose(filep);
 }
 
-void printer(book_info* found_books, int found_count) {
-	int i;
-	for (i = 0; i < found_count; i++) {
-		printf("%s -- %s -- %s -- %d\n", found_books[i].author, found_books[i].book_name, found_books[i].publisher, found_books[i].book_year);
-	}
-}
 void print_books(book_info* books, int lines) {
 	int i;
 	for (i = 0; i < lines; i++) {

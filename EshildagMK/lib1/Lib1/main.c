@@ -1,4 +1,3 @@
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -38,7 +37,7 @@ int main() {
 			searcher(books, lines, author_name, &found_books, &kfound);
 
 			if (found_books != NULL && kfound > 0) {
-				printer(found_books, kfound);
+				print_books(found_books, kfound);
 
 				
 				for (int i = 0; i < kfound; i++) {
@@ -48,6 +47,7 @@ int main() {
 				}
 				free(found_books);
 				found_books = NULL;
+				kfound = 0;
 			}
 			else {
 				printf("No books found for author '%s'.\n", author_name);

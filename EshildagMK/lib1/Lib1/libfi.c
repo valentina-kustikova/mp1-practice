@@ -9,19 +9,18 @@ void searcher(book_info* books, int lines, const char* auth_name, book_info** fo
 	int i, j, kfound = 0;
 	j = 0;
 	for (i = 0; i < lines; i++) {
-		if (!strcmp(auth_name, books[i].author)) {
+		if (strstr(books[i].author, auth_name) != NULL) {
 			kfound++;
 		}
 	}
 	if (kfound == 0) {
 		*found_books = NULL;
-		printf("Ничего не найдено\n");
+		printf("Books not found\n");
 		return;
 	}
 	(*found_books) = (book_info*)malloc(kfound * sizeof(book_info));
 	for (i = 0; i < lines; i++) {
-
-		if (!strcmp(auth_name, books[i].author)) {
+		if (strstr(books[i].author, auth_name) != NULL) {
 			(*found_books)[j].author = malloc((strlen(books[i].author) + 1) * sizeof(char));
 			(*found_books)[j].book_name = malloc((strlen(books[i].book_name) + 1) * sizeof(char));
 			(*found_books)[j].publisher = malloc((strlen(books[i].publisher) + 1) * sizeof(char));
