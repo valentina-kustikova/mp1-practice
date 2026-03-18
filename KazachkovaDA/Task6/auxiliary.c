@@ -1,0 +1,100 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "library.h"
+#include <ctype.h>
+
+struct book* file_to_struct(const char* file_name, int* count)
+{
+	int n = 0, i = 0;
+	FILE* file = fopen(file_name, "r");
+	char line[512];
+	struct book* books = NULL;
+
+	if (file == NULL)
+	{
+		printf("File reading error\n");
+		*count = -1;
+		return NULL;
+	}
+
+	while (fgets(line, sizeof(line), file))
+	{
+		n++;
+	}
+
+	if (n == 0)
+	{
+		*count = 0;
+		return NULL;
+	}
+
+	rewind(file);
+
+	books = (struct book*)malloc(n * sizeof(struct book));
+	if (books == NULL)
+	{
+		printf("Storage allocation error\n");
+		*count = -1;
+		fclose(file);
+		return NULL;
+	}
+
+	while (i < n && fgets(line, sizeof(line), file))
+	{
+		char* author, *title, *publisher, *publishing_year;
+		line[strcspn(line, "\n")] = 0;
+
+		author = strtok(line, ";");//возвращает указатель на первую найденную лексему в строке 
+		title = strtok(NULL, ";");
+		publisher = strtok(NULL, ";");
+		publishing_year = strtok(NULL, ";");
+
+		books[i].author = (struct book*)malloc(strlen(author) + 1);
+		strcpy_s(books[i].author, strlen(author) + 1, author);
+
+		books[i].title = (struct book*)malloc(strlen(title) + 1);
+		strcpy_s(books[i].title, strlen(title) + 1, title);
+
+		books[i].publisher = (struct book*)malloc(strlen(publisher) + 1);
+		strcpy_s(books[i].publisher, strlen(publisher) + 1, publisher);
+
+		books[i].publishing_year = atoi(publishing_year);
+
+		i++;
+	}
+
+	fclose(file);
+	*count = n;
+	return books;
+}
+
+void to_lowercase(const char* before, char* after)
+{
+	for (; *before != '\0'; before++, after++)//пробегаемся по символам строки до \0
+	{
+		*after = tolower((unsigned char)*before);
+	}
+	*after = '\0';
+}
+
+void print_found_books(struct book* found_books, int found_count)
+{
+	int i;
+	for (i = 0; i < found_count; i++)
+	{
+		printf("The book's title: %s, the book's publisher: %s, year of publishing: %d\n", 
+			found_books[i].title, found_books[i].publisher, found_books[i].publishing_year);
+	}
+}
+
+void free_memory(struct book *books, int count)
+{
+	for (int i = 0; i < count; i++)
+	{
+		free(books[i].author);
+		free(books[i].title);
+		free(books[i].publisher);
+	}
+	free(books);
+}
