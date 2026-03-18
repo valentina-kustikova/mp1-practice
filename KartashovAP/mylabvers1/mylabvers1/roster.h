@@ -1,7 +1,7 @@
 #ifndef ROSTER_H
 #define ROSTER_H
 
-#define MAX_LEN 1024
+#define MAX_LEN 2048
 
 
 typedef struct student {
