@@ -8,6 +8,7 @@ typedef struct {
 	int year;
 } book_info;
 
-void find_books(const char* author_surname, book_info** found_books, book_info* books, int lines, int* found);
+void find_books(book_info* books, int lines, const char* author_surname,
+	book_info** found_books, int* found);
 
 #endif

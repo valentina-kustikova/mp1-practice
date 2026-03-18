@@ -4,7 +4,8 @@
 #include <string.h>
 #include "libarg.h"
 
-void find_books(const char* author_surname, book_info** found_books, book_info* books, int lines, int* found) {
+void find_books(book_info* books, int lines, const char* author_surname,
+		book_info** found_books, int* found) {
 	int j, index = 0;
 	*found = 0;
 	for (j = 0; j < lines; j++) {
@@ -40,5 +41,4 @@ void find_books(const char* author_surname, book_info** found_books, book_info* 
 
 		}
 	}
-
 }

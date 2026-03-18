@@ -1,12 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "tools.h"
 #include "libarg.h"
 
-#define BUFFER_SIZE 1024
 #define SURNAME_SIZE 30
 
 int main(int argc, char **argv) {
@@ -16,17 +13,18 @@ int main(int argc, char **argv) {
 	char author_surname[SURNAME_SIZE]; 
 
 	if (argc < 2) {
-		printf("Incorrect number of arguments\n"); return 1;
+		printf("Incorrect number of arguments\n");
+		return 1;
 	}
 	printf("%d %s %s\n\n", argc, argv[0], argv[1]);
 
-	read_library(argv[1], &books, &lines); // todo: args
+	read_library(argv[1], &books, &lines); 
 
 	printf("Enter the surname of the author whose works you want to view : ");
 	scanf("%s", author_surname);
 
 	printf("Searching for author: %s ...\n\n", author_surname);
-	find_books(author_surname, &found_books, books, lines, &found);
+	find_books(books, lines, author_surname, &found_books, &found);
 
 	if (found != 0) print_found_books(found_books, found);
 

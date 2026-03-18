@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,7 +9,8 @@ void print_found_books(book_info* found_books, int found) {
 	int i;
 	printf("The author's found works in the library:\n\n");
 	for (i = 0; i < found; i++) {
-		printf("%s -- %s -- %s -- %d\n", found_books[i].authors, found_books[i].title, found_books[i].publisher, found_books[i].year);
+		printf("%s -- %s -- %s -- %d\n", found_books[i].authors, found_books[i].title,
+			found_books[i].publisher, found_books[i].year);
 	}
 }
 
