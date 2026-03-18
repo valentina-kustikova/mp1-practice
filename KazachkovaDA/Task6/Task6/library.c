@@ -7,15 +7,15 @@
 struct book* find_books_by_author(struct book* books,
 	int count, const char* author_request, int* found_count)
 {
-	*found_count = 0;
-
+	int  i, j = 0;
 	char lowercase_request[512];
+	struct book* found_books = NULL;
 	to_lowercase(author_request, lowercase_request);
 
-	int  i;
+	*found_count = 0;
 	for (i = 0; i < count; i++)
 	{
-		if (books[i].author )
+		if (books[i].author)
 		{
 			char lowercase_author[512];
 			to_lowercase(books[i].author, lowercase_author);
@@ -33,15 +33,14 @@ struct book* find_books_by_author(struct book* books,
 		return NULL;
 	}
 
-	struct book* found_books = (struct book*)malloc(*found_count * sizeof(struct book));
+	found_books = (struct book*)malloc((*found_count) * sizeof(struct book));
 	if (found_books == NULL)
 	{
 		printf("Storage allocation error\n");
 		*found_count = -1;
 		return NULL;
 	}
-
-	int j = 0;
+	
 	for (i = 0; i < count; i++)
 	{
 		if (books[i].author)
@@ -68,6 +67,5 @@ struct book* find_books_by_author(struct book* books,
 
 	}
 
-	*found_count = j;
 	return found_books;
 }

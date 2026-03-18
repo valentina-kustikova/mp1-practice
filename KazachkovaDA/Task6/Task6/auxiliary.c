@@ -6,8 +6,10 @@
 
 struct book* file_to_struct(const char* file_name, int* count)
 {
-	int n = 0;
+	int n = 0, i = 0;
 	FILE* file = fopen(file_name, "r");
+	char line[512];
+	struct book* books = NULL;
 
 	if (file == NULL)
 	{
@@ -15,8 +17,6 @@ struct book* file_to_struct(const char* file_name, int* count)
 		*count = -1;
 		return NULL;
 	}
-
-	char line[512];
 
 	while (fgets(line, sizeof(line), file))
 	{
@@ -31,7 +31,7 @@ struct book* file_to_struct(const char* file_name, int* count)
 
 	rewind(file);
 
-	struct book* books = (struct book*)malloc(n * sizeof(struct book));
+	books = (struct book*)malloc(n * sizeof(struct book));
 	if (books == NULL)
 	{
 		printf("Storage allocation error\n");
@@ -40,15 +40,15 @@ struct book* file_to_struct(const char* file_name, int* count)
 		return NULL;
 	}
 
-	int i = 0;
 	while (i < n && fgets(line, sizeof(line), file))
 	{
+		char* author, *title, *publisher, *publishing_year;
 		line[strcspn(line, "\n")] = 0;
 
-		char* author = strtok(line, ";");//возвращает указатель на первую найденную лексему в строке 
-		char* title = strtok(NULL, ";");
-		char* publisher = strtok(NULL, ";");
-		char* publishing_year = strtok(NULL, ";");
+		author = strtok(line, ";");//возвращает указатель на первую найденную лексему в строке 
+		title = strtok(NULL, ";");
+		publisher = strtok(NULL, ";");
+		publishing_year = strtok(NULL, ";");
 
 		books[i].author = (struct book*)malloc(strlen(author) + 1);
 		strcpy_s(books[i].author, strlen(author) + 1, author);
