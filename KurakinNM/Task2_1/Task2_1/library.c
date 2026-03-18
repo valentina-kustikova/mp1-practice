@@ -6,8 +6,7 @@ void cpy(char* input, char** output, int len)
 {
 
 	(*output) = (char*)malloc(len+1);
-	memcpy(*output, input, len);
-	(*output)[len] = '\0';
+	strncpy(*output, input, len+1);
 }
 
 int find(BOOK* lib, BOOK** findedBooks, int numOfBooks, char* str)
