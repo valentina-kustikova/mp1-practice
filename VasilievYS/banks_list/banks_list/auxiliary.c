@@ -20,7 +20,7 @@ int cnt_s(const char* fr)
 void read(const char* fr, bank* col, int cnt)
 {
 	int check = 0, i, j;
-	char line[512], * token;
+	char line[MAX_LEN], * token;
 	FILE* fp = fopen(fr, "r");
 	fgets(line, sizeof(line), fp);
 	for (i = 0; i < cnt; i++)
