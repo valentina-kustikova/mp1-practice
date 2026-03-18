@@ -6,15 +6,18 @@
 
 int main()
 {
-	setlocale(LC_ALL, "Russian");
-
+	quote* quotes;
+	quote* found_quotes;
 	char file_name[] = "list.txt";
 	int count = 0;
-	struct quote* quotes = file_to_struct(file_name, &count);
 
 
 	char request_word[512];
 	char exit[] = "exit";
+	quotes = file_to_struct(file_name, &count);
+	int found_count;
+
+	setlocale(LC_ALL, "Russian");
 
 	do
 	{
@@ -33,8 +36,7 @@ int main()
 			return 0;
 		}
 
-		int found_count;
-		struct quote* found_quotes = find_quotes_by_words(quotes, count, request_word, &found_count);
+		found_quotes = find_quotes_by_words(quotes, count, request_word, &found_count);
 
 		print_found_quotes(found_quotes, found_count);
 
