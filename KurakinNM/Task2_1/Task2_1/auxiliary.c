@@ -15,7 +15,7 @@ void readWord(char* input,char** output)
 	int start = 0, numOfSims = strlen(input);
 	bariers(input, &start, &numOfSims);
 	(*output) = (char*)malloc(numOfSims+1);
-	memcpy(*output, input + start, numOfSims);
+	strncpy(*output, input + start, numOfSims);
 	(*output)[numOfSims] = '\0';
 }
 
@@ -91,15 +91,15 @@ void output(BOOK* lib, int numOfBooks)
 	int i, j;
 	for (i = 0; i < numOfBooks; i++)
 	{
-		printf("Íàçâàíèå êíèãè: %s\n", lib[i].title);
-		printf("Àâòîðû: ");
+		printf("ÃÃ Ã§Ã¢Ã Ã­Ã¨Ã¥ ÃªÃ­Ã¨Ã£Ã¨: %s\n", lib[i].title);
+		printf("Ã€Ã¢Ã²Ã®Ã°Ã»: ");
 		for (j = 0; j < lib[i].numberOfAuthors - 1; j++)
 		{
 			printf("%s, ", lib[i].authors[j]);
 		}
 		printf("%s\n", lib[i].authors[j]);
-		printf("Ãçäàòåëü: %s\n", lib[i].ed);
-		printf("Ãîä èçäàíèÿ: %d\n", lib[i].year);
+		printf("ÃƒÃ§Ã¤Ã Ã²Ã¥Ã«Ã¼: %s\n", lib[i].ed);
+		printf("ÃƒÃ®Ã¤ Ã¨Ã§Ã¤Ã Ã­Ã¨Ã¿: %d\n", lib[i].year);
 		printf("\n");
 	}
 }
