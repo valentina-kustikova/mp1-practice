@@ -11,10 +11,13 @@ typedef struct Painting {
 	char location[MAX_LEN];
 } Painting;
 
-void findPaintings(Painting* paintings, int cnt, char* artistName,
-	Painting** result, int* foundCountPaintings);
+typedef struct PaintingsLibrary {
+	Painting* works;
+	int cnt;
+} PaintingsLibrary;
 
-void calculateLocationStats(Painting* paintings, int cnt,
-	int* museumCount, int* privateCount);
+PaintingsLibrary* findPaintings(PaintingsLibrary* paintings, char* artistName);
+
+float calculateLocationStats(PaintingsLibrary* paintings);
 
 #endif

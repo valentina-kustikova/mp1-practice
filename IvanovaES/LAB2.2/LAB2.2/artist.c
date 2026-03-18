@@ -1,18 +1,17 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "artist.h"
 
-void findArtist(Artist* artists, int cnt, char* name, Artist** foundArtist) {
+Artist* findArtist(ArtistLibrary* artists, char* name) {
 	
 	int i;
-	*foundArtist = NULL;
+	int cnt = artists->cnt;
 
 	for (i = 0; i < cnt; i++) {
-		if (strstr(artists[i].name, name) != NULL) {
-			*foundArtist = &artists[i];
+		if (strstr(artists->persons[i].name, name) != NULL) {
+			return &artists->persons[i];
 		}
 	}
-	return;
+	return NULL;
 }

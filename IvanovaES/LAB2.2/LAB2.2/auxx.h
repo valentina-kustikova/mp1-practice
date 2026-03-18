@@ -6,8 +6,8 @@
 #include "paintings.h"
 
 int countLines(FILE* file);
-void readArtists(FILE* file, Artist* artists, int cnt);
-void readPaintings(FILE* file, Painting* paintings, int cnt);
+void readArtists(FILE* file, ArtistLibrary* artists);
+void readPaintings(FILE* file, PaintingsLibrary* paintings);
 void printResult(Artist* foundArtist, Painting* paintings, int cnt,
     int museumCount, int privateCount);
 

@@ -1,4 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,33 +14,35 @@ int countLines(FILE* file) {
     return cnt;
 }
 
-void readArtists(FILE* file, Artist* artists, int cnt) {
+void readArtists(FILE* file, ArtistLibrary* artists) {
     int i;
     char buffer[MAX_LEN];
+    int cnt = artists->cnt;
 
     for (i = 0; i < cnt; i++) {
         fgets(buffer, sizeof(buffer), file);
         buffer[strcspn(buffer, "\n")] = 0;
 
-        strcpy(artists[i].name, strtok(buffer, ";"));
-        artists[i].birthYear = atoi(strtok(NULL, ";"));
-        strcpy(artists[i].style, strtok(NULL, ";"));
+        strcpy(artists->persons[i].name, strtok(buffer, ";"));
+        artists->persons[i].birthYear = atoi(strtok(NULL, ";"));
+        strcpy(artists->persons[i].style, strtok(NULL, ";"));
     }
 }
 
-void readPaintings(FILE* file, Painting* paintings, int cnt) {
+void readPaintings(FILE* file, PaintingsLibrary* paintings) {
     int i;
     char buffer[MAX_LEN];
+    int cnt = paintings->cnt;
 
     for (i = 0; i < cnt; i++) {
         fgets(buffer, sizeof(buffer), file);
         buffer[strcspn(buffer, "\n")] = 0;
 
-        strcpy(paintings[i].artistName, strtok(buffer, ";"));
-        strcpy(paintings[i].title, strtok(NULL, ";"));
-        paintings[i].year = atoi(strtok(NULL, ";"));
-        strcpy(paintings[i].genre, strtok(NULL, ";"));
-        strcpy(paintings[i].location, strtok(NULL, ";"));
+        strcpy(paintings->works[i].artistName, strtok(buffer, ";"));
+        strcpy(paintings->works[i].title, strtok(NULL, ";"));
+        paintings->works[i].year = atoi(strtok(NULL, ";"));
+        strcpy(paintings->works[i].genre, strtok(NULL, ";"));
+        strcpy(paintings->works[i].location, strtok(NULL, ";"));
     }
 }
 
