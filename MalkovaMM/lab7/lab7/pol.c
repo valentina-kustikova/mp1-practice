@@ -2,12 +2,48 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
+#include <string.h>
 
-polinom pcreate(int deg)
+int degpol(const char* fname)
+{
+	int dg = 1;
+	int i = 0;
+	FILE* f = fopen(fname, "r");
+	if (f == NULL)
+	{
+		printf("Файл по заданному пути не существует");
+		return -1;
+	}
+	char line[MAX_LEN];
+	fgets(line, sizeof(line), f);
+	for (; line[i] != '\0'; i++)
+	{
+		if (line[i] == ';')
+			dg++;
+	}
+	fclose(f);
+	return dg;
+}
+polinom pcreate(const char* fname, int deg)
 {
 	polinom p;
+	int i = 0;
+	char* t;
+	char line[MAX_LEN];
+	char* context = NULL;
 	p.deg = deg;
 	p.coef = (int*)malloc((deg + 1) * sizeof(int));
+	FILE* f = fopen(fname, "r");
+	fgets(line, sizeof(line), f);
+	t = strtok_s(line, ";",&context);
+	p.coef[0] = atoi(t);
+	i = 1;
+	for (; i < deg; i++)
+	{
+		t = strtok_s(NULL, ";", &context);
+		p.coef[i] = atoi(t);
+	}
+	return p;
 }
 polinom pplus(polinom* p1, polinom* p2)
 {
@@ -79,7 +115,7 @@ polinom pumn(polinom* p1, polinom* p2)
 	int j = 0;
 	for (; i <= (*p1).deg; i++)
 	{
-		for (; j <= (*p2).deg; j++) 
+		for (; j <= (*p2).deg; j++)
 		{
 			pu.coef[i + j] += (*p1).coef[i] * (*p2).coef[j];
 		}
