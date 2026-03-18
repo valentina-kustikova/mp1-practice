@@ -14,16 +14,16 @@ int main()
 	n = read("lib.txt",&lib);
 
 	while (1) {
-		printf("Введите автора (0 - выход): ");
+		printf("Г‚ГўГҐГ¤ГЁГІГҐ Г ГўГІГ®Г°Г  (0 - ГўГ»ГµГ®Г¤): ");
 		fgets(str, 255, stdin);
 		if (strncmp(str, "0\n", 2) == 0) break;
 		str[strlen(str) - 1] = '\0';
 		printf("===========================================\n");
 		n2 = find(lib, &findedBooks, n, str);
-		if (n2 == 0) { printf("Книг этого автора не найдено\n\n"); }
+		if (n2 == 0) { printf("ГЉГ­ГЁГЈ ГЅГІГ®ГЈГ® Г ГўГІГ®Г°Г  Г­ГҐ Г­Г Г©Г¤ГҐГ­Г®\n\n"); }
 		else output(findedBooks, n2);
 
-		/*for (i = 0; i < n2; i++) {
+		for (i = 0; i < n2; i++) {
 			for (j = 0; j < findedBooks[i].numberOfAuthors; j++)
 			{
 				free(findedBooks[i].authors[j]);
@@ -33,7 +33,7 @@ int main()
 			free(findedBooks[i].ed);
 		}
 
-		free(findedBooks);*/
+		free(findedBooks);
 	}
 
 	for (i = 0; i < n; i++) {
