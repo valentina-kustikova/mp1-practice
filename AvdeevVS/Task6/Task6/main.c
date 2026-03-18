@@ -10,6 +10,7 @@ int main(int argc,char** argv) {
   char stop[5] = "stop";
   book* books;
   int* indecesAuthorBooks = NULL;
+
   if (argc < 2) {
       printf("Incorrect parameters");
       return 1;

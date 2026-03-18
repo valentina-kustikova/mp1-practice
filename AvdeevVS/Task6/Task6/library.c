@@ -15,8 +15,8 @@ void Search(book* books, int nBooks, char* author,
   }
   for (i = 0; i < nBooks; i++) {
     char temp[MAX_WRITER_LEN];
-    strcpy(temp, books[i].writer);
-    for (j = 0; j < strlen(temp) + 1; j++) {
+    strncpy(temp, books[i].writer, strlen(books[i].writer) + 1);
+    for (j = 0; j < strlen(temp); j++) {
       temp[j] = tolower(temp[j]);
     }    
     if (strstr(temp, author) != NULL) {
@@ -31,8 +31,8 @@ void Search(book* books, int nBooks, char* author,
   *indecesAuthorBooks = (int*)malloc((*nAuthorBooks) * sizeof(int));
   for (i = 0; i < nBooks; i++) {
       char temp[MAX_WRITER_LEN];
-      strcpy(temp, books[i].writer);
-      for (j = 0; j < strlen(temp) + 1; j++) {
+      strncpy(temp, books[i].writer, strlen(books[i].writer) + 1);
+      for (j = 0; j < strlen(temp); j++) {
           temp[j] = tolower(temp[j]);
       }
       if (strstr(temp, author) != NULL) {
