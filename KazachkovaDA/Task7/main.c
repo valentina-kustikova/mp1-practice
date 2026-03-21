@@ -10,11 +10,11 @@ int main()
 	quote* found_quotes;
 	char file_name[] = "list.txt";
 	int count = 0;
+	quotes = file_to_struct(file_name, &count);
 
 
 	char request_word[512];
 	char exit[] = "exit";
-	quotes = file_to_struct(file_name, &count);
 	int found_count;
 
 	setlocale(LC_ALL, "Russian");

@@ -7,12 +7,12 @@
 struct quote* find_quotes_by_words(struct quote* quotes,
 	int count, const char* word_request, int* found_count)
 {
-	*found_count = 0;
-
+	int  i, j = 0;
 	char lowercase_request[512];
+	quote* found_quotes = NULL;
 	to_lowercase(word_request, lowercase_request);
 
-	int  i;
+
 	for (i = 0; i < count; i++)
 	{
 		if (quotes[i].key_words)
@@ -33,7 +33,7 @@ struct quote* find_quotes_by_words(struct quote* quotes,
 		return NULL;
 	}
 
-	struct quote* found_quotes = (struct quote*)malloc(*found_count * sizeof(struct quote));
+	found_quotes = (struct quote*)malloc(*found_count * sizeof(struct quote));
 	if (found_quotes == NULL)
 	{
 		printf("");
@@ -41,7 +41,6 @@ struct quote* find_quotes_by_words(struct quote* quotes,
 		return NULL;
 	}
 
-	int j = 0;
 	for (i = 0; i < count; i++)
 	{
 		if (quotes[i].key_words)

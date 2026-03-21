@@ -4,10 +4,12 @@
 #include "list.h"
 #include <ctype.h>
 
-struct quote* file_to_struct(const char* file_name, int* count)
+struct phrase_library* file_to_struct(const char* file_name, int* count)
 {
-	int n = 0;
+	int n = 0, i = 0;
 	FILE* file = fopen(file_name, "r");
+	char line[2048];
+	quote* quotes = NULL;
 
 	if (file == NULL)
 	{
@@ -15,8 +17,6 @@ struct quote* file_to_struct(const char* file_name, int* count)
 		*count = -1;
 		return NULL;
 	}
-
-	char line[2048];
 
 	while (fgets(line, sizeof(line), file))
 	{
@@ -26,12 +26,14 @@ struct quote* file_to_struct(const char* file_name, int* count)
 	if (n == 0)
 	{
 		*count = 0;
+		printf("No info found in the file");
+		fclose(file);
 		return NULL;
 	}
 
 	rewind(file);
 
-	struct quote* quotes = (struct quote*)malloc(n * sizeof(struct quote));
+	quotes  = (struct quote*)malloc(n * sizeof(quote));
 	if (quotes == NULL)
 	{
 		printf("Memory allocation error\n");
@@ -40,7 +42,6 @@ struct quote* file_to_struct(const char* file_name, int* count)
 		return NULL;
 	}
 
-	int i = 0;
 	while (i < n && fgets(line, sizeof(line), file))
 	{
 		line[strcspn(line, "\n")] = 0;
@@ -63,15 +64,26 @@ struct quote* file_to_struct(const char* file_name, int* count)
 		quotes[i].topic = (struct quote*)malloc(strlen(topic) + 1);
 		strcpy_s(quotes[i].topic, strlen(topic) + 1, topic);
 
-		quotes[i].key_words = (struct quote*)malloc(strlen(key_words) + 1);
-		strcpy_s(quotes[i].key_words, strlen(key_words) + 1, key_words);
+		char* a_word = strtok(key_words, ",");
+		if (a_word == NULL)
+		{
+			printf("No keywords found in this line");
+			continue;
+		}
+
+		int key_words_count = 0;
+		while (a_word != NULL)
+		{	
+
+			a_word = strtok(NULL, ",");
+		}
 
 		i++;
 	}
 
 	fclose(file);
 	*count = n;
-	return quotes;
+	return phrase_library;
 }
 
 void to_lowercase(const char* before, char* after)
