@@ -4,73 +4,75 @@
 #include "list.h"
 #include "additional.h"
 
-struct quote* find_quotes_by_words(struct quote* quotes,
-	int count, const char* word_request, int* found_count)
+void find_quotes_by_key_words(phrase_library* library, const char* keyword_request,
+	phrase_library* keyword_phrases)
 {
-	int  i, j = 0;
+	int  i, j, k = 0;
 	char lowercase_request[512];
 	quote* found_quotes = NULL;
-	to_lowercase(word_request, lowercase_request);
+	int found_count = 0;
+	to_lowercase(keyword_request, lowercase_request);
 
 
-	for (i = 0; i < count; i++)
+	for (i = 0; i < (*library).count; i++)
 	{
-		if (quotes[i].key_words)
+		for (j = 0; j < (*library).phrases[i].key_words_count; j++)
 		{
 			char lowercase_key_words[512];
-			to_lowercase(quotes[i].key_words, lowercase_key_words);
+			to_lowercase((*library).phrases[i].key_words[j], lowercase_key_words);
 			if (strstr(lowercase_key_words, lowercase_request))
 			{
-				(*found_count)++;
+				found_count++;
+				break;
 			}
 		}
 
 	}
 
-	if (*found_count == 0)
+	if (found_count == 0)
 	{
 		printf("No phrases found\n");
-		return NULL;
 	}
 
-	found_quotes = (struct quote*)malloc(*found_count * sizeof(struct quote));
+	found_quotes = (struct quote*)malloc(found_count * sizeof(quote));
 	if (found_quotes == NULL)
 	{
-		printf("");
-		*found_count = -1;
-		return NULL;
+		printf("Memory allocation error");
 	}
 
-	for (i = 0; i < count; i++)
+	for (i = 0; i < (*library).count; i++)
 	{
-		if (quotes[i].key_words)
+		for (j = 0; j < (*library).phrases[i].key_words_count; j++)
 		{
 			char lowercase_key_words[512];
-			to_lowercase(quotes[i].key_words, lowercase_key_words);
+			to_lowercase((*library).phrases[i].key_words[j], lowercase_key_words);
 			if (strstr(lowercase_key_words, lowercase_request))
 			{
 
-				found_quotes[j].the_line = (struct quote*)malloc(strlen(quotes[i].the_line) + 1);
-				strcpy_s(found_quotes[j].the_line, strlen(quotes[i].the_line) + 1, quotes[i].the_line);
+				found_quotes[i].the_line = (char*)malloc(strlen((*library).phrases[i].the_line) + 1);
+				strcpy_s(found_quotes[j].the_line, strlen((*library).phrases[i].the_line) + 1, (*library).phrases[i].the_line);
 
-				found_quotes[j].author = (struct quote*)malloc(strlen(quotes[i].author) + 1);
-				strcpy_s(found_quotes[j].author, strlen(quotes[i].author) + 1, quotes[i].author);
+				found_quotes[i].author = (char*)malloc(strlen((*library).phrases[i].author) + 1);
+				strcpy_s(found_quotes[j].author, strlen((*library).phrases[i].author) + 1, (*library).phrases[i].author);
 
-				found_quotes[j].source = (struct quote*)malloc(strlen(quotes[i].source) + 1);
-				strcpy_s(found_quotes[j].source, strlen(quotes[i].source) + 1, quotes[i].source);
+				found_quotes[i].source = (char*)malloc(strlen((*library).phrases[i].source) + 1);
+				strcpy_s(found_quotes[j].source, strlen((*library).phrases[i].source) + 1, (*library).phrases[i].source);
 
-				found_quotes[j].topic = (struct quote*)malloc(strlen(quotes[i].topic) + 1);
-				strcpy_s(found_quotes[j].topic, strlen(quotes[i].topic) + 1, quotes[i].topic);
+				found_quotes[i].topic = (char*)malloc(strlen((*library).phrases[i].topic) + 1);
+				strcpy_s(found_quotes[j].topic, strlen((*library).phrases[i].topic) + 1, (*library).phrases[i].topic);
 
-				found_quotes[j].key_words = (struct quote*)malloc(strlen(quotes[i].key_words) + 1);
-				strcpy_s(found_quotes[j].key_words, strlen(quotes[i].key_words) + 1, quotes[i].key_words);
+				for (k = 0; k < (*library).phrases[i].key_words_count[j]; k++)
+				{
+					found_quotes[i].key_words = (char**)malloc(sizeof(char*) * (*library).phrases[i].key_words_count);
+					found_quotes[i].key_words_count = (*library).phrases[i].key_words_count;
+					found_quotes[i].key_words[k] = (char*)malloc(sizeof((*library).phrases[i].key_words[k]) + 1);
+					strcpy_s(found_quotes[i].key_words[k], strlen((*library).phrases[i].key_words[k]) + 1, 
+																		(*library).phrases[i].key_words[k]);
+				}
 
-				j++;
 			}
+
 		}
 
 	}
-
-	*found_count = j;
-	return found_quotes;
 }

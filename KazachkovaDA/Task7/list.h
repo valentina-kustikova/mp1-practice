@@ -7,8 +7,8 @@ typedef struct
 	char* author;
 	char* source;
 	char* topic;
-	char **key_words;
-	int words_num;
+	char** key_words;
+	int key_words_count;
 	
 } quote;
 
@@ -18,11 +18,8 @@ typedef struct
 	int count;
 } phrase_library;
 
-quote* find_quotes_by_words(quote* quotes,
-	int count, const char* keyword_request, int* found_count);
-/*
-void find_quotes_by_words(phrase_library *library, const char* keyword_request,
-	phrase_library *keyword_phrases)
-*/
+void find_quotes_by_key_words(phrase_library* library, const char* keyword_request,
+	phrase_library* keyword_phrases);
+
 
 #endif

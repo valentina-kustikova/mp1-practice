@@ -74,16 +74,31 @@ struct phrase_library* file_to_struct(const char* file_name, int* count)
 		int key_words_count = 0;
 		while (a_word != NULL)
 		{	
-
+			key_words_count += 1;
 			a_word = strtok(NULL, ",");
 		}
 
+		quotes[i].key_words = (char**)malloc(sizeof(char*) * key_words_count);
+		quotes[i].key_words_count = key_words_count;
+		int j = 0;
+		a_word = strtok(key_words, ",");
+		while (a_word != NULL)
+		{
+			quotes[i].key_words[j] = (char*)malloc(sizeof(a_word) + 1);
+			strcpy_s(quotes[i].key_words[j], strlen(a_word) + 1, a_word);
+			j++;
+			a_word = strtok(NULL, ",");
+		}
+		
 		i++;
 	}
 
+	phrase_library* library = (struct phrase_library*)malloc(sizeof(phrase_library));
+	(*library).phrases = quotes;
+	(*library).count = n;
+
 	fclose(file);
-	*count = n;
-	return phrase_library;
+	return library;
 }
 
 void to_lowercase(const char* before, char* after)
