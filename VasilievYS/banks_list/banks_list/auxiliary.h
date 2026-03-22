@@ -1,7 +1,8 @@
 #ifndef __au
 #define __au
-#define MAX_LEN 512
 int cnt_s(const char* fr);
-void read(const char* fr, bank* col, int cnt_s);
+void read(const char* fr, banks_library* lib);
+void to_low(char* str);
 void print(bank ans);
+void free_b(banks_library* lib);
 #endif

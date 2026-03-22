@@ -1,16 +1,17 @@
 #ifndef __f
 #define __f
-//константы как макс размер сьроки
+#define MAX_LEN 512
+
 typedef struct
 {
-	char name[100];
+	char name[MAX_LEN];
 	float percentage;
 } deposit;
 
 typedef struct
 {
-	char name[99];
-	char owner[99];
+	char name[MAX_LEN];
+	char owner[MAX_LEN];
 	deposit* deposites;
 	int deposits_count;
 }bank;

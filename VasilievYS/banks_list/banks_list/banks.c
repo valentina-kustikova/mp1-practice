@@ -2,37 +2,34 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
-int find(bank* list, int cnt_s, char* udep)
+int find(banks_library* lib, char* udep)
 {
-	int idx_ans=0, i;
-	float k;
-	if (strstr("Demand deposit", udep)) 
+	int idx_ans=0, idx, i, j, cnt_b=0;
+	float* percent_list= (float*)malloc(sizeof(float) * lib->cnt), max_p;
+	int* idx_list = (int*)malloc(sizeof(int) * lib->cnt);
+	for (i = 0; i < lib->cnt; i++)
 	{
-		k = list[0].demand;
-		for (i = 1; i < cnt_s; i++)
+		for (j = 0; j < lib->banks[i].deposits_count; j++)
 		{
-			if (list[i].demand > k) { k = list[i].demand; idx_ans = i; }
+			if (strstr(lib->banks[i].deposites[j].name, udep))
+			{
+				idx_list[cnt_b] = i;
+				percent_list[cnt_b] = lib->banks[i].deposites[j].percentage;
+				cnt_b++;
+				break;
+			}
 		}
 	}
-	else if (strstr("Time deposit", udep)) 
+	if (cnt_b == 0) { free(percent_list); free(idx_list); return -1; }
+	max_p = percent_list[0];
+	idx = 0;
+	for (i = 1; i < cnt_b; i++)
 	{
-		k = list[0].term;
-		for (i = 1; i < cnt_s; i++)
-		{
-			if (list[i].term > k) { k = list[i].term; idx_ans = i; }
-		}
+		if (percent_list[i] > max_p) { max_p = percent_list[i]; idx = i; }
 	}
-	else if (strstr("Savings deposit", udep)) 
-	{
-		k = list[0].save;
-		for (i = 1; i < cnt_s; i++)
-		{
-			if (list[i].save > k) { k = list[i].save; idx_ans = i; }
-		}
-	}
-	else
-	{
-		return -1;
-	}
-	return idx_ans;
+	idx_ans = idx_list[idx];
+	free(percent_list);
+	free(idx_list);
+	return idx_ans; 
+	
 }
