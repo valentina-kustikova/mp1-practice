@@ -5,12 +5,12 @@
 #include "find.h"
 #include "additional.h"
 #define MAX_EDUCATION_LEN 20
-void Finding_right_options(jobless_people* jobless, int njobless,int* nrequired_indexes, int** required_indexes){
+void Finding_right_options(jobless_base jobless, int* nrequired_indexes, int** required_indexes){
   int i,j,k=0;
   char higher_education[MAX_EDUCATION_LEN] = "higher education";
-  for (i = 0; i < njobless; i++) {
+  for (i = 0; i < jobless.njobless; i++) {
     char temp[MAX_LEN];
-    strcpy(temp, jobless[i].education);
+    strcpy(temp, jobless.persons[i].education);
     for (j = 0; j < strlen(temp); j++) {
       temp[j] = tolower(temp[j]);
     }
@@ -25,9 +25,9 @@ void Finding_right_options(jobless_people* jobless, int njobless,int* nrequired_
   else {
     *required_indexes = (int*)malloc((*nrequired_indexes) * sizeof(int));
   }
-  for (i = 0; i < njobless; i++) {
+  for (i = 0; i < jobless.njobless; i++) {
     char temp[MAX_LEN];
-    strcpy(temp, jobless[i].education);
+    strcpy(temp, jobless.persons[i].education);
     for (j = 0; j < strlen(temp); j++) {
       temp[j] = tolower(temp[j]);
     }
@@ -36,7 +36,3 @@ void Finding_right_options(jobless_people* jobless, int njobless,int* nrequired_
     }
   }
 }
-/*float percentage_of_higher_education(int nrequired_indexes, int njobless) {
-  float percent = (nrequired_indexes / njobless) * 100.f;
-  return percent;
-}*/

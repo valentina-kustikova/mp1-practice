@@ -28,7 +28,14 @@ typedef struct {
 } str_contact;
 
 typedef struct {
-  char* full_name; // fio
+  char* first_name;
+  char* surname;
+  char* patronymic;
+} str_full_name;
+
+typedef struct {
+  //char* full_name;
+  str_full_name full_name;
   date_of_birth birth_date;
   char* profession;
   char* education;
@@ -39,10 +46,9 @@ typedef struct {
 
 typedef struct {
 	jobless_people* persons;
-	int count;
-} person_library;
+	int njobless;
+} jobless_base;
 
-void Finding_right_options(jobless_people* jobless, int njobless, int* nrequired_indexes, int** required_indexes);
-void Finding_right_options(person_library *library, int* nrequired_indexes, int** required_indexes);
-//float percentage_of_higher_education(int nrequired_indexes, int njobless);
+void Finding_right_options(jobless_base jobless, int* nrequired_indexes, int** required_indexes);
+//void Finding_right_options(person_library *library, int* nrequired_indexes, int** required_indexes);
 #endif
