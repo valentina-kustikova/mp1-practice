@@ -3,7 +3,7 @@
 
 #define MAX_LEN 2048
 
-typedef struct Artist{
+typedef struct Artist {
 	char name[MAX_LEN];
 	int birthYear; // Date
 	char style[MAX_LEN];

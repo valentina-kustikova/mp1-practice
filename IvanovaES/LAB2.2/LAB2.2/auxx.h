@@ -8,7 +8,6 @@
 int countLines(FILE* file);
 void readArtists(FILE* file, ArtistLibrary* artists);
 void readPaintings(FILE* file, PaintingsLibrary* paintings);
-void printResult(Artist* foundArtist, Painting* paintings, int cnt,
-    int museumCount, int privateCount);
+void printResult(Artist* foundArtist, PaintingsLibrary* foundPaintings, float result);
 
 #endif

@@ -46,33 +46,29 @@ void readPaintings(FILE* file, PaintingsLibrary* paintings) {
     }
 }
 
-void printResult(Artist* foundArtist, Painting* foundPaintings, int cnt,
-    int museumCount, int privateCount) {
-    int i;
-    float privatePercent;
-    
+void printResult(Artist* foundArtist, PaintingsLibrary* foundPaintings, float percent) {     int i;
+
+int cnt = foundPaintings->cnt;
+
     if (foundArtist != NULL) {
         printf("%s (%d, %s) - %d paintings found\n",
             foundArtist->name, foundArtist->birthYear, foundArtist->style, cnt);
-       
+
         printf("\nPaintings:\n");
         for (i = 0; i < cnt; i++) {
             printf("%s (%d), %s, %s\n",
-                foundPaintings[i].title, foundPaintings[i].year,
-                foundPaintings[i].genre, foundPaintings[i].location);
+                foundPaintings->works[i].title, foundPaintings->works[i].year,
+                foundPaintings->works[i].genre, foundPaintings->works[i].location);
         }
-        
+
         printf("\nLocation statistics:\n");
-        
-        privatePercent = (float)privateCount / cnt * 100;
 
         printf("Privet: %.1f%% paintings (museum - %.1f%%)",
-            privatePercent, 100 - privatePercent);
+            percent, 100 - percent);
     }
     else {
         printf("Error: artist not found");
     }
 
-    
-}
 
+}

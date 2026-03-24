@@ -4,7 +4,6 @@
 #include "artist.h"
 
 Artist* findArtist(ArtistLibrary* artists, char* name) {
-	
 	int i;
 	int cnt = artists->cnt;
 

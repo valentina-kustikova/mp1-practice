@@ -3,7 +3,8 @@
 #include <string.h>
 #include "paintings.h"
 
-void findPaintings(PaintingsLibrary* paintings, char* artistName) {
+PaintingsLibrary* findPaintings(PaintingsLibrary* paintings, char* artistName) {
+
 
 	int i;
 	int k = 0, foundCountPaintings = 0;
@@ -30,22 +31,21 @@ void findPaintings(PaintingsLibrary* paintings, char* artistName) {
 			k++;
 		}
 	}
+	return result;
 }
 
-void calculateLocationStats(Painting* paintings, int cnt,
-	int* museumCount, int* privateCount) {
-	
-	int i;
-	
-	*museumCount = 0;
-	*privateCount = 0;
+float calculateLocationStats(PaintingsLibrary* paintings){
+
+	int i, privateCount = 0;
+	int cnt = paintings->cnt;
+	if (cnt == 0) {
+		return 0;
+	}
 
 	for (i = 0; i < cnt; i++) {
-		if (strstr(paintings[i].location, "museum") != NULL) {
-			(*museumCount)++;
-		}
-		else if (strstr(paintings[i].location, "private") != NULL) {
-			(*privateCount)++;
+		if (strstr(paintings->works[i].location, "private") != NULL) {
+			privateCount++;
 		}
 	}
+	return (float)privateCount / paintings->cnt * 100;
 }

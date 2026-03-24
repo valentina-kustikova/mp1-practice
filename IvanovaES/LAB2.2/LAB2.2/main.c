@@ -9,11 +9,12 @@ int main(int argc, char* argv[]) {
 	char* fileArtist;
 	char* filePaintings;
 	FILE* file;
-	int cntArtists, cntPaintings, foundCountPaintings, museum, private;
-	Artist* artists;
+	int museum = 0, private = 0;
+	float percent;
+	ArtistLibrary libArtists;
 	Artist* foundArtist;
-	Painting* paintings;
-	Painting* foundPaintings;
+	PaintingsLibrary libPaintings;
+	PaintingsLibrary* foundPaintings;
 	char name[MAX_LEN];
 
 	if (argc < 3) {
@@ -31,11 +32,11 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	cntArtists = countLines(file);
+	libArtists.cnt = countLines(file);
 	rewind(file);
 	
-	artists = malloc(cntArtists * sizeof(Artist));
-	readArtists(file, artists, cntArtists);
+	libArtists.persons = malloc(libArtists.cnt * sizeof(Artist));
+	readArtists(file, &libArtists);
 	fclose(file);
 
 	//     ×ÈÒÀÅÌ ÊÀÐÒÈÍÛ
@@ -46,11 +47,11 @@ int main(int argc, char* argv[]) {
 		return 1;
 	}
 
-	cntPaintings = countLines(file);
+	libPaintings.cnt = countLines(file);
 	rewind(file);
 
-	paintings = malloc(cntPaintings * sizeof(Painting));
-	readPaintings(file, paintings, cntPaintings);
+	libPaintings.works = malloc(libPaintings.cnt * sizeof(Painting));
+	readPaintings(file, &libPaintings);
 	fclose(file);
 
 	//       ÏÎÈÑÊ
@@ -58,25 +59,23 @@ int main(int argc, char* argv[]) {
 	printf("Enter artist name - ");
 	scanf("%[^\n]", name);
 	
-	findArtist(artists, cntArtists, name, &foundArtist);
-	findPaintings(paintings, cntPaintings, name, 
-		&foundPaintings, &foundCountPaintings);
+	foundArtist = findArtist(&libArtists, name);
+	foundPaintings = findPaintings(&libPaintings, name);
 
-	museum = 0;
-	private = 0;
-	if (foundCountPaintings > 0) {
-		calculateLocationStats(foundPaintings, foundCountPaintings,
-			&museum, &private);
+	if (foundPaintings->cnt > 0) {
+		percent = calculateLocationStats(foundPaintings);
 	}
 
 	//        ÐÅÇÓËÜÒÀÒÛ
 
-	printResult(foundArtist, foundPaintings, foundCountPaintings,
-		museum, private);
+	printResult(foundArtist, foundPaintings, percent);
 
-	free(artists);
-	free(paintings);
-	if (foundPaintings != NULL) free(foundPaintings);
+	free(libArtists.persons);
+	free(libPaintings.works);
+	if (foundPaintings != NULL) {
+		free(foundPaintings->works);
+		free(foundPaintings);
+	}
 
 	return 0;
 
