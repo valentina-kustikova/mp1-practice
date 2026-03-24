@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 typedef struct {
 	unsigned int numOfSpecialties;
@@ -16,5 +17,11 @@ typedef struct {
 } UNIV;
 
 int read(char* fileName, UNIV** universities);
+void output(UNIV* univs, int numOfUnivers);
+
+void allAboutUniver(UNIV* univers, char* name, int numOfUnivers);
+void allAboutSpec(UNIV* univers, char* special, int numOfUnivers);
+void minContestSpec(UNIV* univers, char* special, int numOfUnivers);
+void findSpec(UNIV* univers, char* special, int numOfUnivers);
 
 #endif

@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="auxiliary.c" />
+    <ClCompile Include="find.c" />
     <ClCompile Include="main.c" />
   </ItemGroup>
   <ItemGroup>

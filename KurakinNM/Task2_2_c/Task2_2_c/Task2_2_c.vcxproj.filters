@@ -21,6 +21,9 @@
     <ClCompile Include="auxiliary.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="find.c">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="universities.txt">
