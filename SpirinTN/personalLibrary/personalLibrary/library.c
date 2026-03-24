@@ -86,13 +86,31 @@ void changeField(BOOK* book, int indexField, char* str) {
 
 STATUS searchBooksByAuthor(BOOK* books, int countBooks, char* author, BOOK** authorBooks, int* countAuthorBooks) {
     int i, k = 0;
+	BOOK* tempBooks = NULL;
+	char tempAuthor[LENGTH_STRING + 1];
+
+	strncpy(tempAuthor, author, sizeof(tempAuthor));
+	tempBooks = (BOOK*)malloc(sizeof(BOOK) * countBooks);
+
+	if (tempBooks == NULL) {
+		return ERROR_MEMORY;
+	}
+
+	toLowerCase(tempAuthor);
+	for (i = 0; i < countBooks; i++) {
+		tempBooks[i] = books[i];
+		toLowerCase(tempBooks[i].authors);
+	}
+
 	*countAuthorBooks = 0;
     for (i = 0; i < countBooks; i++) {
-        if (strstr(books[i].authors, author) != NULL) {
+        if (strstr(tempBooks[i].authors, tempAuthor) != NULL) {
 			(*countAuthorBooks)++;
         }
     }
 	if ((*countAuthorBooks) == 0) {
+		free(tempBooks);
+		tempBooks = NULL;
 		return ERROR_NO_FILTRED_BOOKS;
 	}
 	*authorBooks = (BOOK*)malloc(sizeof(BOOK) * (*countAuthorBooks));
@@ -100,10 +118,12 @@ STATUS searchBooksByAuthor(BOOK* books, int countBooks, char* author, BOOK** aut
 		return ERROR_MEMORY;
 	}
 	for (i = 0; i < countBooks; i++) {
-		if (strstr(books[i].authors, author) != NULL) {
+		if (strstr(tempBooks[i].authors, tempAuthor) != NULL) {
 			(*authorBooks)[k++] = books[i];
 		}
 	}
+	free(tempBooks);
+	tempBooks = NULL;
     return SUCCESS;
 }
 
