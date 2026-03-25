@@ -19,7 +19,7 @@ int main() {
     setlocale(LC_ALL, "Russian");
 
     /// отдельная функция чтения
-    file = fopen(filename, "r");
+    /*file = fopen(filename, "r");
     if (file == NULL) {
         printf("File not found\n");
         return 1;
@@ -36,7 +36,7 @@ int main() {
         }
     }
     fclose(file);
-    ///
+    ///*/
 
     show_books(books, n);
 

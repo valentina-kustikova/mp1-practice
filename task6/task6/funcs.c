@@ -9,6 +9,27 @@
 #define MAX_LINE_LEN 512 
 #include "funcs.h"
 
+void file_open(FILE* file, Book* books, const char* filename, int n, int i) {
+
+    file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("File not found\n");
+        return 1;
+    }
+
+    fscanf(file, "%d", &n);
+    books = (Book*)malloc(sizeof(Book) * n);
+
+    while (!feof(file))
+    {
+        char line[MAX_LINE_LEN];
+        if (fgets(line, MAX_LINE_LEN, file)) {
+            books[i++] = divide_line(line);
+        }
+    }
+    fclose(file);
+}
+
 Book divide_line(char* line) {
     Book book;
     char* token = strtok(line, ";");
@@ -47,8 +68,13 @@ char* to_lower(char* arr) {
 
 
 void find_by_author(Book* books, int n, char* author) {
+    Book arr;
     for (int i = 0; i < n; i++) {
-        if (strstr(books[i].authors, author)) {
+
+        strcpy(arr[i].authors, books[i].authors);
+        to_lower(arr[i].authors); // при поиске создать копию и в ней регитр поменять
+
+        if (strstr(arr[i].authors, author)) {
             printf("%s;%s;%s;%d\n", books[i].authors, books[i].title, books[i].publisher, books[i].year);
         }
     }
