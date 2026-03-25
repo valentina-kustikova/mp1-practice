@@ -10,7 +10,7 @@ int cnt_s(const char* fr)
 	char ch;
 	int cnt = 0;
 	FILE* fp = fopen(fr, "r");
-	if (fp == NULL) { printf("nnnn"); return NULL; }
+	if (fp == NULL) { printf("File note found"); return NULL; }
 	while ((ch = fgetc(fp)) != EOF)
 	{
 		if (ch == '\n') { cnt++; }
@@ -18,6 +18,7 @@ int cnt_s(const char* fr)
 	fclose(fp);
 	return cnt;
 }
+
 void read(const char* fr, banks_library* lib)
 {
 	int check = 0, i;
@@ -39,7 +40,6 @@ void read(const char* fr, banks_library* lib)
 		}
 		lib->banks[i].deposits_count = dep_cnt;
 		lib->banks[i].deposites = (deposit*)malloc(sizeof(deposit) * dep_cnt);
-		//
 		token = strtok(line, ";");
 		strcpy(lib->banks[i].name, token);
 		token = strtok(NULL, ";");
@@ -63,6 +63,7 @@ void read(const char* fr, banks_library* lib)
 	}
 	fclose(fp);
 }
+
 void to_low(char* str)
 {
 	int i;
@@ -71,12 +72,14 @@ void to_low(char* str)
 		str[i]=tolower(str[i]);
 	}
 }
-void print(bank ans)
+
+void print(bank* ans)
 {
 	int i;
 	printf("%s; Ownership form:%s\n",
-		ans.name, ans.owner);
+		ans->name, ans->owner);
 }
+
 void free_b(banks_library* lib)
 {
 	int i;

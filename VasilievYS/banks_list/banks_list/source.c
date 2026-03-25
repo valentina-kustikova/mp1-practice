@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include"banks.h"
 #include"auxiliary.h"
+
 int main(int argc, char** argv)
 {
 	int j=0, ch, i = 0, idx_ans;
@@ -15,7 +16,7 @@ int main(int argc, char** argv)
 	to_low(udep);
 	idx_ans = find(&lib, udep);
 	if (idx_ans == -1) { printf("NO"); free_b(&lib); return 1; }
-	print(lib.banks[idx_ans]);
+	print(&lib.banks[idx_ans]);
 	free_b(&lib);
 	return 0;
 }
