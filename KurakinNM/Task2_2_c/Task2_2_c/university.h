@@ -33,7 +33,7 @@ void read(char* fileName, DBUniversities* universities); // DBUniversities*
 void output(DBUniversities univs); // DBUniversities*
 
 void allAboutUniver(DBUniversities univs, char* name); // DBUniversities*
-void allAboutSpec(University* univers, char* special, int numOfUnivers); // DBUniversities*
+void allAboutSpec(DBUniversities univs, char* special); // DBUniversities*
 void minContestSpec(University* univers, char* special, int numOfUnivers); // DBUniversities* //возвращать найденные
 void findSpec(University* univers, char* special, int numOfUnivers); // DBUniversities* // поиск минимального конкурса по какой-либо специальности любого вуза
 
