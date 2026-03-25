@@ -4,12 +4,12 @@
 
 int main()
 {
-	University* univers;
-	int n, i, j, work = 1,option;
+	DBUniversities DBUnivers;
+	int i, j, work = 1,option;
 	char str[255];
 	system("chcp 1251");
 	system("cls");
-	n = read("universities.txt", &univers);
+	read("universities.txt", &DBUnivers);
 
 	while(work)
 	{
@@ -26,31 +26,31 @@ int main()
 			printf("¬ведите название вуза: ");
 			fgets(str, 255, stdin);
 			str[strlen(str) - 1] = '\0';
-			allAboutUniver(univers, str, n);
+			//allAboutUniver(univers, str, n);
 			break;
 		case 2:
 			while (getchar() != '\n');
 			printf("¬ведите название специальности: ");
 			fgets(str, 255, stdin);
 			str[strlen(str) - 1] = '\0';
-			allAboutSpec(univers, str, n);
+			//allAboutSpec(univers, str, n);
 			break;
 		case 3:
 			while (getchar() != '\n');
 			printf("¬ведите название специальности: ");
 			fgets(str, 255, stdin);
 			str[strlen(str) - 1] = '\0';
-			minContestSpec(univers, str, n);
+			//minContestSpec(univers, str, n);
 			break;
 		case 4:
 			while (getchar() != '\n');
 			printf("¬ведите название специальности: ");
 			fgets(str, 255, stdin);
 			str[strlen(str) - 1] = '\0';
-			findSpec(univers, str, n);
+			//findSpec(univers, str, n);
 			break;
 		case 5:
-			output(univers, n);
+			output(DBUnivers);
 			break;
 		default:
 			while (getchar() != '\n');
@@ -59,21 +59,21 @@ int main()
 		}
 	}
 
-	for (i = 0; i < n; i++) {
-		for (j = 0; j < univers[i].numOfSpecialties; j++)
+	for (i = 0; i < DBUnivers.count; i++) {
+		for (j = 0; j < DBUnivers.universities[i].numOfSpecialties; j++)
 		{
-			free(univers[i].specialties[j]);
+			free(DBUnivers.universities[i].specialties[j]);
 		}
-		free(univers[i].name);
-		free(univers[i].adres.city);
-		free(univers[i].adres.street);
-		free(univers[i].adres.home);
-		free(univers[i].contestDay);
-		free(univers[i].contestNight);
-		free(univers[i].contestOnline);
-		free(univers[i].cost);
+		free(DBUnivers.universities[i].name);
+		free(DBUnivers.universities[i].adres.city);
+		free(DBUnivers.universities[i].adres.street);
+		free(DBUnivers.universities[i].adres.home);
+		free(DBUnivers.universities[i].contestDay);
+		free(DBUnivers.universities[i].contestNight);
+		free(DBUnivers.universities[i].contestOnline);
+		free(DBUnivers.universities[i].cost);
 	}
-	free(univers);
+	free(DBUnivers.universities);
 
 	return 0;
 }

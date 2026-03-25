@@ -43,7 +43,7 @@ void readFloatLine(char** input, float* outNums, int len)
 	}
 }
 
-int read(char* fileName, University** universities)
+void read(char* fileName, DBUniversities* DBunivers)
 {
 	FILE* f;
 	int n = 0, i, j;
@@ -57,6 +57,7 @@ int read(char* fileName, University** universities)
 		fgets(buffer, 255, f);
 		n++;
 	}
+	DBunivers->count = n;
 
 
 	numOfSpecialties = (unsigned int*)malloc(n * sizeof(unsigned int));
@@ -77,15 +78,15 @@ int read(char* fileName, University** universities)
 	}
 
 
-	*universities = (University*)malloc(n * sizeof(University));
+	DBunivers->universities = (University*)malloc(n * sizeof(University));
 	for (i = 0; i < n; i++)
 	{
-		(*universities)[i].numOfSpecialties = numOfSpecialties[i];
-		(*universities)[i].specialties = (char**)malloc(numOfSpecialties[i] * sizeof(char*));
-		(*universities)[i].contestDay = (unsigned int*)malloc(numOfSpecialties[i] * sizeof(unsigned int));
-		(*universities)[i].contestNight = (unsigned int*)malloc(numOfSpecialties[i] * sizeof(unsigned int));
-		(*universities)[i].contestOnline = (unsigned int*)malloc(numOfSpecialties[i] * sizeof(unsigned int));
-		(*universities)[i].cost = (unsigned int*)malloc(numOfSpecialties[i] * sizeof(unsigned int));
+		DBunivers->universities[i].numOfSpecialties = numOfSpecialties[i];
+		DBunivers->universities[i].specialties = (char**)malloc(numOfSpecialties[i] * sizeof(char*));
+		DBunivers->universities[i].contestDay = (unsigned int*)malloc(numOfSpecialties[i] * sizeof(unsigned int));
+		DBunivers->universities[i].contestNight = (unsigned int*)malloc(numOfSpecialties[i] * sizeof(unsigned int));
+		DBunivers->universities[i].contestOnline = (unsigned int*)malloc(numOfSpecialties[i] * sizeof(unsigned int));
+		DBunivers->universities[i].cost = (unsigned int*)malloc(numOfSpecialties[i] * sizeof(unsigned int));
 	}
 	free(numOfSpecialties);
 
@@ -95,17 +96,17 @@ int read(char* fileName, University** universities)
 	{
 		fgets(buffer, 255, f);
 		token = strtok(buffer, ",;");
-		readWord(token, &((*universities)[i].name));
+		readWord(token, &(DBunivers->universities[i].name));
 		token = strtok(NULL, ",;");
-		readWord(token, &((*universities)[i].adres.city));
+		readWord(token, &(DBunivers->universities[i].adres.city));
 		token = strtok(NULL, ",;");
-		readWord(token, &((*universities)[i].adres.street));
+		readWord(token, &(DBunivers->universities[i].adres.street));
 		token = strtok(NULL, ",;");
-		readWord(token, &((*universities)[i].adres.home));
+		readWord(token, &(DBunivers->universities[i].adres.home));
 		token = strtok(NULL, ",;");
-		for (j = 0; j < (*universities)[i].numOfSpecialties; j++)
+		for (j = 0; j < DBunivers->universities[i].numOfSpecialties; j++)
 		{
-			readWord(token, &((*universities)[i].specialties[j]));
+			readWord(token, &(DBunivers->universities[i].specialties[j]));
 			token = strtok(NULL, ",;");
 		}
 		/*for (j = 0; j < (*universities)[i].numOfSpecialties; j++)
@@ -114,30 +115,30 @@ int read(char* fileName, University** universities)
 			(*universities)[i].contestDay[j] = atoi(num);
 			token = strtok(NULL, ",;");
 		}*/
-		readNumLine(&token, (*universities)[i].contestDay, (*universities)[i].numOfSpecialties);
-		readNumLine(&token, (*universities)[i].contestNight, (*universities)[i].numOfSpecialties);
-		readNumLine(&token, (*universities)[i].contestOnline, (*universities)[i].numOfSpecialties);
-		readFloatLine(&token, (*universities)[i].cost, (*universities)[i].numOfSpecialties);
+		readNumLine(&token, DBunivers->universities[i].contestDay, DBunivers->universities[i].numOfSpecialties);
+		readNumLine(&token, DBunivers->universities[i].contestNight, DBunivers->universities[i].numOfSpecialties);
+		readNumLine(&token, DBunivers->universities[i].contestOnline, DBunivers->universities[i].numOfSpecialties);
+		readFloatLine(&token, DBunivers->universities[i].cost, DBunivers->universities[i].numOfSpecialties);
 	}
 
 	fclose(f);
-
 	return n;
 }
 
-void output(University* univs, int numOfUnivers)
+void output(DBUniversities univs)
 {
 	int i, j;
-	for (i = 0; i < numOfUnivers; i++)
+	for (i = 0; i < univs.count; i++)
 	{
-		printf("Название вуза: %s\n", univs[i].name);
-		printf("Адрес: %s, %s, %s\n", univs[i].adres.city, univs[i].adres.street, univs[i].adres.home);
+		printf("Название вуза: %s\n", univs.universities[i].name);
+		printf("Адрес: %s, %s, %s\n", univs.universities[i].adres.city, univs.universities[i].adres.street, univs.universities[i].adres.home);
 		printf("Специальности:\n");
-		for (j = 0; j < univs[i].numOfSpecialties; j++)
+		for (j = 0; j < univs.universities[i].numOfSpecialties; j++)
 		{
-			printf("%s\n", univs[i].specialties[j]);
-			printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n", univs[i].contestDay[j], univs[i].contestNight[j], univs[i].contestOnline[j]);
-			printf("Оплата при договорном обучении: %.2fр.\n", univs[i].cost[j]);
+			printf("%s\n", univs.universities[i].specialties[j]);
+			printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n",
+				univs.universities[i].contestDay[j], univs.universities[i].contestNight[j], univs.universities[i].contestOnline[j]);
+			printf("Оплата при договорном обучении: %.2fр.\n", univs.universities[i].cost[j]);
 		}
 		printf("\n");
 	}

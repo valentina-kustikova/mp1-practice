@@ -27,8 +27,8 @@ typedef struct {
 	int count;
 } DBUniversities;
 
-int read(char* fileName, University** universities); // DBUniversities*
-void output(University* univs, int numOfUnivers); // DBUniversities*
+void read(char* fileName, DBUniversities* universities); // DBUniversities*
+void output(DBUniversities univs); // DBUniversities*
 
 void allAboutUniver(University* univers, char* name, int numOfUnivers); // DBUniversities*
 void allAboutSpec(University* univers, char* special, int numOfUnivers); // DBUniversities*
