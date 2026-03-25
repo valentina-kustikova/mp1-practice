@@ -7,8 +7,8 @@ typedef struct {
 	int deg;
 }polinom;
 
-int degpol(const char* fname);
-polinom pcreate(const char* fname, int deg);
+int degpol(const char* fname, int num);
+polinom pcreate(const char* fname, int deg, int num);
 polinom pplus(polinom* p1, polinom* p2);
 polinom pminus(polinom* p1, polinom* p2);
 polinom pumn(polinom* p1, polinom* p2);

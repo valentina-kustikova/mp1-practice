@@ -4,7 +4,7 @@
 #include <math.h>
 #include <string.h>
 
-int degpol(const char* fname)
+int degpol(const char* fname, int num)
 {
 	int dg = 1;
 	int i = 0;
@@ -16,15 +16,18 @@ int degpol(const char* fname)
 	}
 	char line[MAX_LEN];
 	fgets(line, sizeof(line), f);
+	if (num==2)
+		fgets(line, sizeof(line), f);
 	for (; line[i] != '\0'; i++)
 	{
 		if (line[i] == ';')
 			dg++;
 	}
+	dg--;
 	fclose(f);
 	return dg;
 }
-polinom pcreate(const char* fname, int deg)
+polinom pcreate(const char* fname, int deg, int num)
 {
 	polinom p;
 	int i = 0;
@@ -35,10 +38,12 @@ polinom pcreate(const char* fname, int deg)
 	p.coef = (int*)malloc((deg + 1) * sizeof(int));
 	FILE* f = fopen(fname, "r");
 	fgets(line, sizeof(line), f);
-	t = strtok_s(line, ";",&context);
-	p.coef[0] = atoi(t);
-	i = 1;
-	for (; i < deg; i++)
+	if (num == 2)
+		fgets(line, sizeof(line), f);
+	t = strtok_s(line, ";", &context);
+	p.coef[deg] = atoi(t);
+	i = deg-1;
+	for (; i >=0; i--)
 	{
 		t = strtok_s(NULL, ";", &context);
 		p.coef[i] = atoi(t);
@@ -83,7 +88,7 @@ polinom pminus(polinom* p1, polinom* p2)
 	pm.coef = (int*)malloc((pm.deg + 1) * sizeof(int));
 	for (; i <= mindeg; i++)
 	{
-		pm.coef[i] = abs((*p1).coef[i] - (*p2).coef[i]);
+		pm.coef[i] = (*p1).coef[i] - (*p2).coef[i];
 	}
 	if ((*p1).deg == mindeg)
 	{
@@ -103,6 +108,7 @@ polinom pminus(polinom* p1, polinom* p2)
 }
 polinom pumn(polinom* p1, polinom* p2)
 {
+	//ÏÅÐÅÑÌÎÒÐÅÒÜ, ÓÌÍÎÆÀÅÒ ÍÅÏÐÀÂÈËÜÍÎ
 	polinom pu;
 	pu.deg = (*p1).deg + (*p2).deg;
 	pu.coef = (int*)malloc((pu.deg + 1) * sizeof(int));
