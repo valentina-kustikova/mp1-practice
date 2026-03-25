@@ -25,7 +25,21 @@ void readNumLine(char** input, unsigned int* outNums, int len)
 	{
 		readWord(*input, &num);
 		outNums[i] = atoi(num);
-		*input = strtok(NULL, "|;");
+		*input = strtok(NULL, ",;");
+		free(num);
+	}
+}
+
+void readFloatLine(char** input, float* outNums, int len)
+{
+	int i;
+	char* num;
+	for (i = 0; i < len; i++)
+	{
+		readWord(*input, &num);
+		outNums[i] = atof(num);
+		*input = strtok(NULL, ",;");
+		free(num);
 	}
 }
 
@@ -57,7 +71,7 @@ int read(char* fileName, University** universities)
 		token = strtok(NULL, ";");
 		while (token != NULL)
 		{
-			token = strstr(token + 1, "|");
+			token = strstr(token + 1, ",");
 			numOfSpecialties[i]++;
 		}
 	}
@@ -80,15 +94,19 @@ int read(char* fileName, University** universities)
 	for (i = 0; i < n; i++)
 	{
 		fgets(buffer, 255, f);
-		token = strtok(buffer, "|;");
+		token = strtok(buffer, ",;");
 		readWord(token, &((*universities)[i].name));
-		token = strtok(NULL, "|;");
-		readWord(token, &((*universities)[i].adres));
-		token = strtok(NULL, "|;");
+		token = strtok(NULL, ",;");
+		readWord(token, &((*universities)[i].adres.city));
+		token = strtok(NULL, ",;");
+		readWord(token, &((*universities)[i].adres.street));
+		token = strtok(NULL, ",;");
+		readWord(token, &((*universities)[i].adres.home));
+		token = strtok(NULL, ",;");
 		for (j = 0; j < (*universities)[i].numOfSpecialties; j++)
 		{
 			readWord(token, &((*universities)[i].specialties[j]));
-			token = strtok(NULL, "|;");
+			token = strtok(NULL, ",;");
 		}
 		/*for (j = 0; j < (*universities)[i].numOfSpecialties; j++)
 		{
@@ -99,7 +117,7 @@ int read(char* fileName, University** universities)
 		readNumLine(&token, (*universities)[i].contestDay, (*universities)[i].numOfSpecialties);
 		readNumLine(&token, (*universities)[i].contestNight, (*universities)[i].numOfSpecialties);
 		readNumLine(&token, (*universities)[i].contestOnline, (*universities)[i].numOfSpecialties);
-		readNumLine(&token, (*universities)[i].cost, (*universities)[i].numOfSpecialties);
+		readFloatLine(&token, (*universities)[i].cost, (*universities)[i].numOfSpecialties);
 	}
 
 	fclose(f);
@@ -113,13 +131,13 @@ void output(University* univs, int numOfUnivers)
 	for (i = 0; i < numOfUnivers; i++)
 	{
 		printf("Название вуза: %s\n", univs[i].name);
-		printf("Адрес: %s\n", univs[i].adres);
+		printf("Адрес: %s, %s, %s\n", univs[i].adres.city, univs[i].adres.street, univs[i].adres.home);
 		printf("Специальности:\n");
 		for (j = 0; j < univs[i].numOfSpecialties; j++)
 		{
 			printf("%s\n", univs[i].specialties[j]);
 			printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n", univs[i].contestDay[j], univs[i].contestNight[j], univs[i].contestOnline[j]);
-			printf("Оплата при договорном обучении: %dр.\n", univs[i].cost[j]);
+			printf("Оплата при договорном обучении: %.2fр.\n", univs[i].cost[j]);
 		}
 		printf("\n");
 	}

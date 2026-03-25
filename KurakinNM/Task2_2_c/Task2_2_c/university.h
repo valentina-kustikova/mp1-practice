@@ -6,14 +6,20 @@
 #include <stdio.h>
 
 typedef struct {
+	char* city;
+	char* street;
+	char* home;
+} Adres;
+
+typedef struct {
 	char* name;
-	char* adres; // struct
+	Adres adres;
 	unsigned int numOfSpecialties;
 	char** specialties;
 	unsigned int* contestDay;
 	unsigned int* contestNight;
 	unsigned int* contestOnline;
-	unsigned int* cost; // float
+	float* cost; // float
 } University;
 
 typedef struct {
@@ -26,7 +32,7 @@ void output(University* univs, int numOfUnivers); // DBUniversities*
 
 void allAboutUniver(University* univers, char* name, int numOfUnivers); // DBUniversities*
 void allAboutSpec(University* univers, char* special, int numOfUnivers); // DBUniversities*
-void minContestSpec(University* univers, char* special, int numOfUnivers); 
-void findSpec(University* univers, char* special, int numOfUnivers);
+void minContestSpec(University* univers, char* special, int numOfUnivers); // DBUniversities* //возвращать найденные
+void findSpec(University* univers, char* special, int numOfUnivers); // DBUniversities* // поиск минимального конкурса по какой-либо специальности любого вуза
 
 #endif

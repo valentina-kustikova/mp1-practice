@@ -8,13 +8,13 @@ void allAboutUniver(University* univers, char* name, int numOfUnivers)
 		if (strstr(univers[i].name, name))
 		{
 			printf("Название вуза: %s\n", univers[i].name);
-			printf("Адрес: %s\n", univers[i].adres);
+			printf("Адрес: %s, %s, %s\n", univers[i].adres.city, univers[i].adres.street, univers[i].adres.home);
 			printf("Специальности:\n");
 			for (j = 0; j < univers[i].numOfSpecialties; j++)
 			{
 				printf("%s\n", univers[i].specialties[j]);
 				printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n", univers[i].contestDay[j], univers[i].contestNight[j], univers[i].contestOnline[j]);
-				printf("Оплата при договорном обучении: %dр.\n", univers[i].cost[j]);
+				printf("Оплата при договорном обучении: %.2fр.\n", univers[i].cost[j]);
 			}
 			printf("\n");
 			break;
@@ -38,7 +38,7 @@ void allAboutSpec(University* univers, char* special, int numOfUnivers)
 				printf("Специальность: %s\n", univers[i].specialties[j]);
 				printf("Вуз: %s\n", univers[i].name);
 				printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n", univers[i].contestDay[j], univers[i].contestNight[j], univers[i].contestOnline[j]);
-				printf("Оплата при договорном обучении: %dр.\n", univers[i].cost[j]);
+				printf("Оплата при договорном обучении: %.2fр.\n", univers[i].cost[j]);
 				printf("\n");
 
 				n++;
@@ -111,13 +111,13 @@ void findSpec(University* univers, char* special, int numOfUnivers)
 			if (strstr(univers[i].specialties[j], special))
 			{
 				printf("Название вуза: %s\n", univers[i].name);
-				printf("Адрес: %s\n", univers[i].adres);
+				printf("Адрес: %s, %s, %s\n", univers[i].adres.city, univers[i].adres.street, univers[i].adres.home);
 				printf("Специальности:\n");
 				for (c = 0; c < univers[i].numOfSpecialties; c++)
 				{
 					printf("%s\n", univers[i].specialties[c]);
 					printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n", univers[i].contestDay[c], univers[i].contestNight[c], univers[i].contestOnline[c]);
-					printf("Оплата при договорном обучении: %dр.\n", univers[i].cost[c]);
+					printf("Оплата при договорном обучении: %.2fр.\n", univers[i].cost[c]);
 				}
 				printf("\n");
 

@@ -65,7 +65,9 @@ int main()
 			free(univers[i].specialties[j]);
 		}
 		free(univers[i].name);
-		free(univers[i].adres);
+		free(univers[i].adres.city);
+		free(univers[i].adres.street);
+		free(univers[i].adres.home);
 		free(univers[i].contestDay);
 		free(univers[i].contestNight);
 		free(univers[i].contestOnline);
