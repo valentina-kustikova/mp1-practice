@@ -1,6 +1,8 @@
 #ifndef LIST_H
 #define LIST_H
 
+#include <stdlib.h>
+
 typedef struct
 {
 	char* the_line;
@@ -18,8 +20,7 @@ typedef struct
 	int count;
 } phrase_library;
 
-void find_quotes_by_key_words(phrase_library* library, const char* keyword_request,
-	phrase_library* keyword_phrases);
+//void find_quotes_by_key_words(phrase_library* library, const char* keyword_request);
 
 
 #endif

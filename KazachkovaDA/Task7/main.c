@@ -6,8 +6,7 @@
 
 int main()
 {
-	quote* quotes;
-	quote* found_quotes;
+	phrase_library* quotes;
 	char file_name[] = "list.txt";
 	int count = 0;
 	quotes = file_to_struct(file_name, &count);
@@ -15,7 +14,6 @@ int main()
 
 	char request_word[512];
 	char exit[] = "exit";
-	int found_count;
 
 	setlocale(LC_ALL, "Russian");
 
@@ -32,16 +30,15 @@ int main()
 
 		if (strcmp(request_word, exit) == 0)
 		{
-			free_memory(quotes, count);
+			free_memory(quotes);
 			return 0;
 		}
 
-		found_quotes = find_quotes_by_words(quotes, count, request_word, &found_count);
+		//find_quotes_by_key_words(quotes, request_word);
 
-		print_found_quotes(found_quotes, found_count);
-
-		free_memory(found_quotes, found_count);
+		print_found_quotes(quotes);		
 
 	} while (1);
-
+	free_memory(quotes);
+	return 0;
 }

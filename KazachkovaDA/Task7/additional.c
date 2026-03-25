@@ -1,10 +1,10 @@
- #include <stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "list.h"
 #include <ctype.h>
 
-struct phrase_library* file_to_struct(const char* file_name, int* count)
+phrase_library* file_to_struct(const char* file_name, int* count)
 {
 	int n = 0, i = 0;
 	FILE* file = fopen(file_name, "r");
@@ -33,7 +33,7 @@ struct phrase_library* file_to_struct(const char* file_name, int* count)
 
 	rewind(file);
 
-	quotes  = (struct quote*)malloc(n * sizeof(quote));
+	quotes  = (quote*)malloc(n * sizeof(quote));
 	if (quotes == NULL)
 	{
 		printf("Memory allocation error\n");
@@ -52,16 +52,16 @@ struct phrase_library* file_to_struct(const char* file_name, int* count)
 		char* topic = strtok(NULL, ";");
 		char* key_words = strtok(NULL, ";");
 
-		quotes[i].the_line = (struct quote*)malloc(strlen(the_line) + 1);
+		quotes[i].the_line = (quote*)malloc(strlen(the_line) + 1);
 		strcpy_s(quotes[i].the_line, strlen(the_line) + 1, the_line);
 
-		quotes[i].author = (struct quote*)malloc(strlen(author) + 1);
+		quotes[i].author = (quote*)malloc(strlen(author) + 1);
 		strcpy_s(quotes[i].author, strlen(author) + 1, author);
 
-		quotes[i].source = (struct quote*)malloc(strlen(source) + 1);
+		quotes[i].source = (quote*)malloc(strlen(source) + 1);
 		strcpy_s(quotes[i].source, strlen(source) + 1, source);
 
-		quotes[i].topic = (struct quote*)malloc(strlen(topic) + 1);
+		quotes[i].topic = (quote*)malloc(strlen(topic) + 1);
 		strcpy_s(quotes[i].topic, strlen(topic) + 1, topic);
 
 		char* a_word = strtok(key_words, ",");
@@ -93,7 +93,7 @@ struct phrase_library* file_to_struct(const char* file_name, int* count)
 		i++;
 	}
 
-	phrase_library* library = (struct phrase_library*)malloc(sizeof(phrase_library));
+	phrase_library* library = (phrase_library*)malloc(sizeof(phrase_library));
 	(*library).phrases = quotes;
 	(*library).count = n;
 
@@ -110,24 +110,29 @@ void to_lowercase(const char* before, char* after)
 	*after = '\0';
 }
 
-void print_found_quotes(struct quote* found_quotes, int found_count)
+void print_found_quotes(phrase_library* library)
 {
 	int i;
-	for (i = 0; i < found_count; i++)
+	for (i = 0; i < library->count; i++)
 	{
-		printf("The found quote: %s\n", found_quotes[i].the_line);
+		printf("The found quote: %s\n", library->phrases[i].the_line);
 	}
 }
 
-void free_memory(struct quote* quotes, int count)
+void free_memory(phrase_library* library)
 {
-	for (int i = 0; i < count; i++)
+	int i, j = 0;
+	for (i = 0; i < (*library).count; i++)
 	{
-		free(quotes[i].the_line);
-		free(quotes[i].author);
-		free(quotes[i].source);
-		free(quotes[i].topic);
-		free(quotes[i].key_words);
+		free((*library).phrases[i].the_line);
+		free((*library).phrases[i].author);
+		free((*library).phrases[i].source);
+		free((*library).phrases[i].topic);
+		for (j = 0; i < (*library).phrases[i].key_words_count; i++)
+		{
+			free((*library).phrases[i].key_words[j]);
+		}
+		free((*library).phrases[i].key_words);
 	}
-	free(quotes);
+	free(library);
 }
