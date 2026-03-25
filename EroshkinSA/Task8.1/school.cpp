@@ -73,15 +73,33 @@ school::school(const char* fn) {
 	freopen(fn, "r", stdin);
 	string s;
 	string FIO = "", klass = "", gen = "", date = "", address = "";
-	int i, cnt = 0;
+	int i, cnt = 0, cur = 0;
 	this->count = 0;
 	while (getline(cin, s)) this->count++;
 	this->list = new pupil[this->count];
 	freopen(fn, "r", stdin);
 	cin.clear();
-	while (getline(cin, s)){
+	while (getline(cin, s)) {
 		FIO = ""; klass = ""; gen = ""; date = ""; address = "";
-		for (i = 0;; i++) {
+		FIO = s.substr(cur, s.find(";") - cur);
+		cur = s.find(";");
+		s[cur] = ' ';
+		cur++;
+		klass = s.substr(cur, s.find(";") - cur);
+		cur = s.find(";");
+		s[cur] = ' ';
+		cur++;
+		gen = s.substr(cur, s.find(";") - cur);
+		cur = s.find(";");
+		s[cur] = ' ';
+		cur++;
+		date = s.substr(cur, s.find(";") - cur);
+		cur = s.find(";");
+		s[cur] = ' ';
+		cur++;
+		address = s.substr(cur, s.size() - cur);
+		cur = 0;
+		/*for (i = 0;; i++) {
 			if (s[i] == ';') {
 				i++;
 				break;
@@ -107,10 +125,8 @@ school::school(const char* fn) {
 				i++;
 				break;
 			}
-			date += s[i];
-		}
-		for (; i < s.size(); i++)  address += s[i];
-		pupil p(FIO, klass, gen, date, address);
-		this->list[cnt++] = p;
+			date += s[i];*/
 	}
+	pupil p(FIO, klass, gen, date, address);
+	this->list[cnt++] = p;
 }
