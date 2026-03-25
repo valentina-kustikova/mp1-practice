@@ -127,17 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="csv.c" />
-    <ClCompile Include="date.c" />
-    <ClCompile Include="hr_db.c" />
+    <ClCompile Include="hr_db.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="utility.c" />
+    <ClCompile Include="parse.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="csv.h" />
-    <ClInclude Include="date.h" />
-    <ClInclude Include="hr_db.h" />
-    <ClInclude Include="utility.h" />
+    <ClInclude Include="hr_db.hpp" />
+    <ClInclude Include="parse.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="employees.txt" />
