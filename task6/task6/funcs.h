@@ -8,6 +8,8 @@ typedef struct {
     int year;
 }Book;
 
+
+//void file_open(FILE* file, Book* books, int n);
 Book divide_line(char* line);
 void show_books(Book* books, int n);
 char* to_lower(char* arr);
