@@ -6,22 +6,27 @@
 #include <stdio.h>
 
 typedef struct {
-	unsigned int numOfSpecialties;
 	char* name;
-	char* adres;
+	char* adres; // struct
+	unsigned int numOfSpecialties;
 	char** specialties;
 	unsigned int* contestDay;
 	unsigned int* contestNight;
 	unsigned int* contestOnline;
-	unsigned int* cost;
-} UNIV;
+	unsigned int* cost; // float
+} University;
 
-int read(char* fileName, UNIV** universities);
-void output(UNIV* univs, int numOfUnivers);
+typedef struct {
+	University* universities;
+	int count;
+} DBUniversities;
 
-void allAboutUniver(UNIV* univers, char* name, int numOfUnivers);
-void allAboutSpec(UNIV* univers, char* special, int numOfUnivers);
-void minContestSpec(UNIV* univers, char* special, int numOfUnivers);
-void findSpec(UNIV* univers, char* special, int numOfUnivers);
+int read(char* fileName, University** universities); // DBUniversities*
+void output(University* univs, int numOfUnivers); // DBUniversities*
+
+void allAboutUniver(University* univers, char* name, int numOfUnivers); // DBUniversities*
+void allAboutSpec(University* univers, char* special, int numOfUnivers); // DBUniversities*
+void minContestSpec(University* univers, char* special, int numOfUnivers); 
+void findSpec(University* univers, char* special, int numOfUnivers);
 
 #endif

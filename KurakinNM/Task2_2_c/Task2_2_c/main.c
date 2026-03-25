@@ -4,7 +4,7 @@
 
 int main()
 {
-	UNIV* univers;
+	University* univers;
 	int n, i, j, work = 1,option;
 	char str[255];
 	system("chcp 1251");

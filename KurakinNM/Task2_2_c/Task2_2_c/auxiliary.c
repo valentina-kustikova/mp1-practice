@@ -29,7 +29,7 @@ void readNumLine(char** input, unsigned int* outNums, int len)
 	}
 }
 
-int read(char* fileName, UNIV** universities)
+int read(char* fileName, University** universities)
 {
 	FILE* f;
 	int n = 0, i, j;
@@ -63,7 +63,7 @@ int read(char* fileName, UNIV** universities)
 	}
 
 
-	*universities = (UNIV*)malloc(n * sizeof(UNIV));
+	*universities = (University*)malloc(n * sizeof(University));
 	for (i = 0; i < n; i++)
 	{
 		(*universities)[i].numOfSpecialties = numOfSpecialties[i];
@@ -107,7 +107,7 @@ int read(char* fileName, UNIV** universities)
 	return n;
 }
 
-void output(UNIV* univs, int numOfUnivers)
+void output(University* univs, int numOfUnivers)
 {
 	int i, j;
 	for (i = 0; i < numOfUnivers; i++)

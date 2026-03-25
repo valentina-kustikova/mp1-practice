@@ -1,6 +1,6 @@
 #include "university.h"
 
-void allAboutUniver(UNIV* univers, char* name, int numOfUnivers)
+void allAboutUniver(University* univers, char* name, int numOfUnivers)
 {
 	int i, j;
 	for (i = 0; i < numOfUnivers; i++)
@@ -26,7 +26,7 @@ void allAboutUniver(UNIV* univers, char* name, int numOfUnivers)
 	}
 }
 
-void allAboutSpec(UNIV* univers, char* special, int numOfUnivers)
+void allAboutSpec(University* univers, char* special, int numOfUnivers)
 {
 	int i, j, n = 0;
 	for (i = 0; i < numOfUnivers; i++)
@@ -52,7 +52,7 @@ void allAboutSpec(UNIV* univers, char* special, int numOfUnivers)
 	}
 }
 
-void minContestSpec(UNIV* univers, char* special, int numOfUnivers)
+void minContestSpec(University* univers, char* special, int numOfUnivers)
 {
 	int i, j, n = 0;
 	int DU = -1, DS = -1;
@@ -101,7 +101,7 @@ void minContestSpec(UNIV* univers, char* special, int numOfUnivers)
 	else printf("Специальность не найдена.\n");
 }
 
-void findSpec(UNIV* univers, char* special, int numOfUnivers)
+void findSpec(University* univers, char* special, int numOfUnivers)
 {
 	int i, j, c, n = 0;
 	for (i = 0; i < numOfUnivers; i++)
