@@ -1,26 +1,27 @@
 #include "university.h"
 
-void allAboutUniver(University* univers, char* name, int numOfUnivers)
+void allAboutUniver(DBUniversities univers, char* name)
 {
 	int i, j;
-	for (i = 0; i < numOfUnivers; i++)
+	for (i = 0; i < univers.count; i++)
 	{
-		if (strstr(univers[i].name, name))
+		if (strstr(univers.universities[i].name, name))
 		{
-			printf("Название вуза: %s\n", univers[i].name);
-			printf("Адрес: %s, %s, %s\n", univers[i].adres.city, univers[i].adres.street, univers[i].adres.home);
+			printf("Название вуза: %s\n", univers.universities[i].name);
+			printf("Адрес: %s, %s, %s\n", univers.universities[i].adres.city, univers.universities[i].adres.street, univers.universities[i].adres.home);
 			printf("Специальности:\n");
-			for (j = 0; j < univers[i].numOfSpecialties; j++)
+			for (j = 0; j < univers.universities[i].numOfSpecialties; j++)
 			{
-				printf("%s\n", univers[i].specialties[j]);
-				printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n", univers[i].contestDay[j], univers[i].contestNight[j], univers[i].contestOnline[j]);
-				printf("Оплата при договорном обучении: %.2fр.\n", univers[i].cost[j]);
+				printf("%s\n", univers.universities[i].specialties[j]);
+				printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n",
+					univers.universities[i].contestDay[j], univers.universities[i].contestNight[j], univers.universities[i].contestOnline[j]);
+				printf("Оплата при договорном обучении: %.2fр.\n", univers.universities[i].cost[j]);
 			}
 			printf("\n");
 			break;
 		};
 	}
-	if (i == numOfUnivers)
+	if (i == univers.count)
 	{
 		printf("Вуз не найден.\n");
 	}

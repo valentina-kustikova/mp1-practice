@@ -27,10 +27,12 @@ typedef struct {
 	int count;
 } DBUniversities;
 
+void freeDBU(DBUniversities* DB);
+
 void read(char* fileName, DBUniversities* universities); // DBUniversities*
 void output(DBUniversities univs); // DBUniversities*
 
-void allAboutUniver(University* univers, char* name, int numOfUnivers); // DBUniversities*
+void allAboutUniver(DBUniversities univs, char* name); // DBUniversities*
 void allAboutSpec(University* univers, char* special, int numOfUnivers); // DBUniversities*
 void minContestSpec(University* univers, char* special, int numOfUnivers); // DBUniversities* //возвращать найденные
 void findSpec(University* univers, char* special, int numOfUnivers); // DBUniversities* // поиск минимального конкурса по какой-либо специальности любого вуза

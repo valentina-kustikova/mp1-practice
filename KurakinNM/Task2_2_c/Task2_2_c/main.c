@@ -26,7 +26,7 @@ int main()
 			printf("¬ведите название вуза: ");
 			fgets(str, 255, stdin);
 			str[strlen(str) - 1] = '\0';
-			//allAboutUniver(univers, str, n);
+			allAboutUniver(DBUnivers, str);
 			break;
 		case 2:
 			while (getchar() != '\n');
@@ -59,21 +59,7 @@ int main()
 		}
 	}
 
-	for (i = 0; i < DBUnivers.count; i++) {
-		for (j = 0; j < DBUnivers.universities[i].numOfSpecialties; j++)
-		{
-			free(DBUnivers.universities[i].specialties[j]);
-		}
-		free(DBUnivers.universities[i].name);
-		free(DBUnivers.universities[i].adres.city);
-		free(DBUnivers.universities[i].adres.street);
-		free(DBUnivers.universities[i].adres.home);
-		free(DBUnivers.universities[i].contestDay);
-		free(DBUnivers.universities[i].contestNight);
-		free(DBUnivers.universities[i].contestOnline);
-		free(DBUnivers.universities[i].cost);
-	}
-	free(DBUnivers.universities);
+	freeDBU(&DBUnivers);
 
 	return 0;
 }

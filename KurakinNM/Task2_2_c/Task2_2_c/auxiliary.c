@@ -2,6 +2,26 @@
 
 #include "university.h"
 
+void freeDBU(DBUniversities* DB)
+{
+	int i, j;
+	for (i = 0; i < DB->count; i++) {
+		for (j = 0; j < DB->universities[i].numOfSpecialties; j++)
+		{
+			free(DB->universities[i].specialties[j]);
+		}
+		free(DB->universities[i].name);
+		free(DB->universities[i].adres.city);
+		free(DB->universities[i].adres.street);
+		free(DB->universities[i].adres.home);
+		free(DB->universities[i].contestDay);
+		free(DB->universities[i].contestNight);
+		free(DB->universities[i].contestOnline);
+		free(DB->universities[i].cost);
+	}
+	free(DB->universities);
+}
+
 void bariers(char* str, int* start, int* numOfSims)
 {
 	while (str[*start] == ' ') (*start)++;
