@@ -1,6 +1,7 @@
 #include "auxilary.h"
 #include "library.h"
 #include <stdio.h>
+#include <string.h>
 
 int getrange(FILE* file) {
 	int a = 0;
@@ -8,16 +9,24 @@ int getrange(FILE* file) {
 	while (fgets(str, 100, file) != NULL) {
 		a++;
 	}
+	rewind(file);
 	return a;
 }
 
-book* loadbooks(FILE* file, int n) {
+void loadbooks(FILE *file, book* books, int n) {
 	int i = 0;
+	char tmp[1000];
 	rewind(file);
-	book *books = (book*)malloc(sizeof(book) * n);
 	for (i = 0; i < n; i++) {
-		fscanf(file, "%39s;%19s;%19s;%d", &books[i].autors, &books[i].name, &books[i].publisher, &books[i].year);
+		printf("ok");
+		fgets(tmp, 999, file);
+		strcpy(books[i].authors, strtok(tmp, ":"));
+		strcpy(books[i].name, strtok(NULL, ":"));
+		strcpy(books[i].publisher, strtok(NULL, ":"));
+		if (sscanf(strtok(NULL, ":"), "%d", &books[i].year) != 1) {
+			printf("error");
+		}
+		printf("neok");
 	}
-	return books;
 }
 

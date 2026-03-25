@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 typedef struct {
-	char autors[40];
-	char name[20];
-	char publisher[20];
+	char* authors;
+	char* name;
+	char* publisher;
 	int year;
 } book;
 

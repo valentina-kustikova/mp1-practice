@@ -5,6 +5,6 @@
 #include <stdio.h>
 
 int getrange(FILE* file);
-book* loadbooks(FILE* file, int n);
+void loadbooks(FILE* file, book* books, int n);
 
 #endif
