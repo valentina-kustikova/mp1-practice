@@ -33,7 +33,7 @@ int main()
 			printf("¬ведите название специальности: ");
 			fgets(str, 255, stdin);
 			str[strlen(str) - 1] = '\0';
-			//allAboutSpec(univers, str, n);
+			allAboutSpec(DBUnivers, str);
 			break;
 		case 3:
 			while (getchar() != '\n');

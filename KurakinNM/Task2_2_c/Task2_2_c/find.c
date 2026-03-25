@@ -27,19 +27,20 @@ void allAboutUniver(DBUniversities univers, char* name)
 	}
 }
 
-void allAboutSpec(University* univers, char* special, int numOfUnivers)
+void allAboutSpec(DBUniversities univs, char* special)
 {
 	int i, j, n = 0;
-	for (i = 0; i < numOfUnivers; i++)
+	for (i = 0; i < univs.count; i++)
 	{
-		for (j = 0; j < univers[i].numOfSpecialties; j++)
+		for (j = 0; j < univs.universities[i].numOfSpecialties; j++)
 		{
-			if (strstr(univers[i].specialties[j], special))
+			if (strstr(univs.universities[i].specialties[j], special))
 			{
-				printf("Специальность: %s\n", univers[i].specialties[j]);
-				printf("Вуз: %s\n", univers[i].name);
-				printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n", univers[i].contestDay[j], univers[i].contestNight[j], univers[i].contestOnline[j]);
-				printf("Оплата при договорном обучении: %.2fр.\n", univers[i].cost[j]);
+				printf("Специальность: %s\n", univs.universities[i].specialties[j]);
+				printf("Вуз: %s\n", univs.universities[i].name);
+				printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n",
+					univs.universities[i].contestDay[j], univs.universities[i].contestNight[j], univs.universities[i].contestOnline[j]);
+				printf("Оплата при договорном обучении: %.2fр.\n", univs.universities[i].cost[j]);
 				printf("\n");
 
 				n++;
