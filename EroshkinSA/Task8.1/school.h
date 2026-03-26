@@ -47,16 +47,4 @@ struct school {
 
 void swap(pupil& a, pupil& b);
 
-//____________________________________________
-//____________________________________________
-
-void swap(pupil* a, pupil* b); // +
-void read(const char* source, school* sch); // constructor
-void school_sort(school* sch); // +
-void class_sort(school* sch); // inside of school_sort
-int compare(pupil* a, pupil* b); 
-void sorted_list(school* sch); // -
-void print_pupil(pupil s); // +
-void free_all(school* sch); // ?
-
 #endif

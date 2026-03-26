@@ -103,6 +103,39 @@ school::school(const char* fn) {
 	}
 }
 
+void school::sort() {
+	// class sort
+	for (int i = 0; i < this->count - 1; i++) {
+		for (int j = 0; j < this->count - i - 1; j++) {
+			string a = this->list[j].klass, b = this->list[j + 1].klass;
+			int codeA = stoi(a.substr(0, a.size() - 1)) * 100 + (a.back() - 'A'),
+				codeB = stoi(b.substr(0, b.size() - 1)) * 100 + (b.back() - 'A');
+			if (codeB < codeA) swap(this->list[j], this->list[j + 1]);
+		}
+	}
+	// name sort
+	for (int i = 0; i < this->count - 1; i++) {
+		for (int j = 0; j < this->count - i - 1; j++) {
+			if (this->list[j].klass == this->list[j + 1].klass) {
+				if (this->list[j].surname != this->list[j + 1].surname) {
+					if (this->list[j].surname > this->list[j + 1].surname)
+						swap(this->list[j], this->list[j + 1]);
+				}
+				else {
+					if (this->list[j].name != this->list[j + 1].name) {
+						if (this->list[j].name > this->list[j + 1].name)
+							swap(this->list[j], this->list[j + 1]);
+					}
+					else {
+						if (this->list[j].fathername > this->list[j + 1].fathername)
+							swap(this->list[j], this->list[j + 1]);
+					}
+				}
+			}
+		}
+	}
+}
+
 school::~school() {
 	delete[]this->list;
 }
