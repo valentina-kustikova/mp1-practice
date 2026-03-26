@@ -6,6 +6,6 @@ Koltsov Dmitriy Sergeevich;10B;Male;12.12.2008;603056,Russia,Nizhegorodskaya obl
 Volchkov Stepan Aleksandrovich;10A;Male;30.01.2008;603233,Russia,Nizhegorodskaya oblast,Avtozavodskiy district,Nizhniy Novgorod,Kirova avenue,9,2
 Volchkov Stepan Aleksandrovich;10B;Male;30.01.2008;603233,Russia,Nizhegorodskaya oblast,Avtozavodskiy district,Nizhniy Novgorod,Kirova avenue,9,2
 Barinova Viktoria Alekseevna;9A;Female;05.08.2006;603017,Russia,Nizhegorodskaya oblast,Nizhegorodskiy district,Nizhniy Novgorod,Varvarskaya street,1,1
-Zharkov Peter Ivanovich;10B;Male;20.01.2008;603833,Russia,Nizhegorodskaya oblast,Avtozavodskiy district,Nizhniy Novgorod,Busygin avenue,16,8
+Zharkov Vladimir Ivanovich;10B;Male;20.01.2008;603833,Russia,Nizhegorodskaya oblast,Avtozavodskiy district,Nizhniy Novgorod,Busygin avenue,16,8
 Barinova Arina Alekseevna;9A;Female;05.08.2009;603017,Russia,Nizhegorodskaya oblast,Nizhegorodskiy district,Nizhniy Novgorod,Varvarskaya street,1,1
 Romanov Sergey Aleksandrovich;8A;Male;20.09.2007;603131,Russia,Nizhegorodskaya oblast,Avtozavodskiy district,Nizhniy Novgorod,Krasnyh Partizan street,16,25

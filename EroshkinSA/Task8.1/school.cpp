@@ -1,48 +1,43 @@
 #include <string>
 #include <iostream>
+#include <sstream>
 #include "school.h"
 using namespace std;
 
 birth_date::birth_date(string s) {
-	char* buff = new char[s.size() + 1];
-	s.copy(buff, s.size());
-	buff[s.size()] = '\0';
-	this->day = stoi(strtok(buff, "."));
-	this->month = stoi(strtok(NULL, "."));
-	this->year = stoi(strtok(NULL, "."));
-	delete[]buff;
+	istringstream ss(s);
+	string buff = "";
+	getline(ss, buff, '.');  this->day = stoi(buff);
+	getline(ss, buff, '.');  this->month = stoi(buff);
+	getline(ss, buff, '.');  this->year = stoi(buff);
 }
 
 home_address::home_address(string s) {
-	char* buff = new char[s.size() + 1];
-	s.copy(buff, s.size());
-	buff[s.size()] = '\0';
-	for (int i = 0; i < 6; i++) this->index[i] = buff[i];
-	strtok(buff, ",");
-	this->country = strtok(NULL, ",");
-	this->region = strtok(NULL, ",");
-	this->district = strtok(NULL, ",");
-	this->city = strtok(NULL, ",");
-	this->street = strtok(NULL, ",");
-	this->house = strtok(NULL, ",");
-	this->flat = stoi(strtok(NULL, ","));
-	delete[]buff;
+	for (int i = 0; i < 6; i++) this->index[i] = s[i];
+	s = s.substr(7);
+	istringstream ss(s);
+	getline(ss, this->country, ',');
+	getline(ss, this->region, ',');
+	getline(ss, this->district, ',');
+	getline(ss, this->city, ',');
+	getline(ss, this->street, ',');
+	getline(ss, this->house, ',');
+	string buff = ""; getline(ss, buff, ',');
+	this->flat = stoi(buff);
 }
 
-pupil::pupil(string FIO, string klass, string gen, string date, string address) : home(address), date(date) {
-	char* buff = new char[FIO.size() + 1];
-	FIO.copy(buff, FIO.size());
-	buff[FIO.size()] = '\0';
-	this->surname = strtok(buff, " ");
-	this->name = strtok(NULL, " ");
-	this->fathername = strtok(NULL, ";");
+pupil::pupil(string FIO, string klass, string gen, string date,
+	string address) : home(address), date(date) {
+	istringstream ss(FIO);
+	getline(ss, this->surname, ' ');
+	getline(ss, this->name, ' ');
+	getline(ss, this->fathername, ' ');
 	this->klass = klass;
 	if (gen == "Male") this->gen = gender::MAN;
 	else this->gen = gender::WOMAN;
-	delete[]buff;
 }
 
-pupil::pupil() : home("111111, a, b, c, d, e, f, 1"), date("1.1.1") {
+pupil::pupil() : home("111111,a,b,c,d,e,f,1"), date("1.1.1") {
 	this->surname = "";
 	this->name = "";
 	this->fathername = "";
@@ -52,81 +47,68 @@ pupil::pupil() : home("111111, a, b, c, d, e, f, 1"), date("1.1.1") {
 
 void pupil::print() {
 	cout << "#___#" << endl;
-	cout << "NAME: " << this->surname << " " << this->name << " " << this->fathername << endl;
+	cout << "NAME: " << this->surname << " " << this->name << " "
+		 << this->fathername << endl;
 	cout << "CLASS: " << this->klass << "   GENDER: ";
 	if (this->gen == gender::MAN) cout << "Male";
 	else cout << "Female";
 	cout << endl << "HOME ADDRESS: ";
 	for (int i = 0; i < 6; i++) cout << this->home.index[i];
 	cout << " - " << this->home.country << ", " << this->home.region << ", "
-		<< this->home.district << ", " << this->home.city << ", " << this->home.street << ", "
+		<< this->home.district << ", " << this->home.city << ", "
+		<< this->home.street << ", "
 		<< this->home.house << ", " << this->home.flat << endl;
 	cout << "BIRTH DATE: ";
 	if (this->date.day < 10) cout << '0';
 	cout << this->date.day << ".";
 	if (this->date.month < 10) cout << '0';
-	cout << this->date.month << "." << this->date.year << endl << "#___#" << endl;
+	cout << this->date.month << "." << this->date.year << endl
+		 << "#___#" << endl;
+}
+
+void school::print() {
+	cout << "#_________________________#\n";
+	for (int i = 0; i < this->count; i++) {
+		cout << i + 1 << ") " << this->list[i].klass << "\t"
+			<< this->list[i].surname << " " << this->list[i].name << " "
+			<< this->list[i].fathername << "\t";
+		if (this->list[i].gen == gender::MAN) cout << "Male\t";
+		else cout << "Female\t";
+		if (this->list[i].date.day < 10) cout << '0';
+		cout << this->list[i].date.day << ".";
+		if (this->list[i].date.month < 10) cout << '0';
+		cout << this->list[i].date.month << "." << this->list[i].date.year << endl;
+	}
+	cout << "#_________________________#\n";
 }
 
 
 school::school(const char* fn) {
 	freopen(fn, "r", stdin);
-	string s;
 	string FIO = "", klass = "", gen = "", date = "", address = "";
-	int i, cnt = 0, cur = 0;
+	int i = 0, cnt = 0, cur = 0;
 	this->count = 0;
-	while (getline(cin, s)) this->count++;
+	while (getline(cin, FIO)) this->count++;
 	this->list = new pupil[this->count];
 	freopen(fn, "r", stdin);
 	cin.clear();
-	while (getline(cin, s)) {
-		FIO = ""; klass = ""; gen = ""; date = ""; address = "";
-		FIO = s.substr(cur, s.find(";") - cur);
-		cur = s.find(";");
-		s[cur] = ' ';
-		cur++;
-		klass = s.substr(cur, s.find(";") - cur);
-		cur = s.find(";");
-		s[cur] = ' ';
-		cur++;
-		gen = s.substr(cur, s.find(";") - cur);
-		cur = s.find(";");
-		s[cur] = ' ';
-		cur++;
-		date = s.substr(cur, s.find(";") - cur);
-		cur = s.find(";");
-		s[cur] = ' ';
-		cur++;
-		address = s.substr(cur, s.size() - cur);
-		cur = 0;
-		/*for (i = 0;; i++) {
-			if (s[i] == ';') {
-				i++;
-				break;
-			}
-			FIO += s[i];
-		}
-		for (;; i++) {
-			if (s[i] == ';') {
-				i++;
-				break;
-			}
-			klass += s[i];
-		}
-		for (;; i++) {
-			if (s[i] == ';') {
-				i++;
-				break;
-			}
-			gen += s[i];
-		}
-		for (;; i++) {
-			if (s[i] == ';') {
-				i++;
-				break;
-			}
-			date += s[i];*/
+	for(i = 0; i < this->count; i++) {
+		getline(cin, FIO, ';');
+		getline(cin, klass, ';');
+		getline(cin, gen, ';');
+		getline(cin, date, ';');
+		getline(cin, address, '\n');
+		pupil p(FIO, klass, gen, date, address);
+		this->list[i] = p;
 	}
-	pupil p(FIO, klass, gen, date, address);
-	this->list[cnt++] = p;
+}
+
+school::~school() {
+	delete[]this->list;
+}
+
+void swap(pupil& a, pupil& b) {
+	pupil temp = a;
+	a = b;
+	b = temp;
 }

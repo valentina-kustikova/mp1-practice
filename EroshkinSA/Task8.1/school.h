@@ -8,14 +8,12 @@ struct home_address {
 	string country, region, district, city, street, house;
 
 	home_address(string);
-	//~home_address();
 };
 
 struct birth_date {
 	int day, month, year;
 
 	birth_date(string);
-	//~birth_date();
 };
 
 enum class gender{
@@ -30,7 +28,6 @@ struct pupil {
 
 	pupil (string, string, string, string, string);
 	pupil();
-	//~pupil();
 
 	void print();
 };
@@ -40,7 +37,7 @@ struct school {
 	pupil* list;
 
 	school(const char*);
-	//~school();
+	~school();
 
 	void sort();
 	void print();
