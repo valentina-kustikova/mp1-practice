@@ -5,7 +5,7 @@
 #include "auxiliary.h"
 
 int numberBooks(const char* filename) {   
-    char buff[1024];
+    char buff[2048];
     int count = 0;
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
