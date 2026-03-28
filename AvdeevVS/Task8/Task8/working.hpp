@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cctype>
 
 using namespace std;
 
@@ -50,5 +51,6 @@ struct jobless_base{
   jobless_people* persons;
   int njobless;
   jobless_base(char* filename);
+  ~jobless_base() {delete[] this->persons;}
 };
 #endif
