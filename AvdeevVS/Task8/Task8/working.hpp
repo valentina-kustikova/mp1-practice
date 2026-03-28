@@ -45,12 +45,16 @@ struct  jobless_people{
   last_job previous_job;
   string marital_status;
   str_contact contact_information;
+  jobless_people();
+  const jobless_people& operator= (const jobless_people&);
 };
 
 struct jobless_base{
   jobless_people* persons;
   int njobless;
+  jobless_base();
   jobless_base(char* filename);
   ~jobless_base() {delete[] this->persons;}
+  void Finding_right_options(jobless_base required);
 };
 #endif
