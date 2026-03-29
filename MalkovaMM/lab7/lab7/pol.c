@@ -108,7 +108,6 @@ polinom pminus(polinom* p1, polinom* p2)
 }
 polinom pumn(polinom* p1, polinom* p2)
 {
-	//оепеялнрперэ, слмнфюер меопюбхкэмн
 	polinom pu;
 	pu.deg = (*p1).deg + (*p2).deg;
 	pu.coef = (int*)malloc((pu.deg + 1) * sizeof(int));
@@ -119,9 +118,9 @@ polinom pumn(polinom* p1, polinom* p2)
 	}
 	int i = 0;
 	int j = 0;
-	for (; i <= (*p1).deg; i++)
+	for (i=0; i <= (*p1).deg; i++)
 	{
-		for (; j <= (*p2).deg; j++)
+		for (j=0; j <= (*p2).deg; j++)
 		{
 			pu.coef[i + j] += (*p1).coef[i] * (*p2).coef[j];
 		}
