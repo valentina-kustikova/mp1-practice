@@ -23,12 +23,15 @@ jobless_base::jobless_base() {
 jobless_base::jobless_base(char* filename ) {
   ifstream f(filename);
   if (f.is_open() == false) {
-    cout << "Error:The file does not exist or permissions are missing!";
+     throw "Error --> The file does not exist or permissions are missing!";
   }
   string s;
   int count = 0;
   while (getline(f, s)) {
     count++;
+  }
+  if (count == 0) {
+    throw "Error --> The database is empty!";
   }
   this->njobless = count;
   this->persons = new jobless_people[this->njobless];
@@ -109,6 +112,10 @@ void jobless_base::Finding_right_options(jobless_base required) {
       count++;
     }
   }
+  if(count == 0) {
+    cout << "There are no unemployed people with higher education in the database!";
+    exit(0);
+  }
   required.njobless = count;
   delete[] required.persons;
   required.persons = new jobless_people[required.njobless];
@@ -132,10 +139,6 @@ ostream& operator<< (ostream& out, const jobless_base& a) {
     out << a.persons[i].full_name.surname<<" ";
     out << a.persons[i].full_name.first_name << " ";
     out << a.persons[i].full_name.patronymic << ";";
-    //printf("%d) --> ", i + 1);
-    //printf("%s ", jobless.persons[required_indexes[i]].full_name.surname);
-    //printf("%s ", jobless.persons[required_indexes[i]].full_name.first_name);
-    //printf("%s;", jobless.persons[required_indexes[i]].full_name.patronymic);
     if (a.persons[i].birth_date.day < 10) out << "0" << a.persons[i].birth_date.day << ".";
     else out << a.persons[i].birth_date.day << ".";
     if (a.persons[i].birth_date.month < 10) out << "0" << a.persons[i].birth_date.month << ".";
@@ -153,21 +156,5 @@ ostream& operator<< (ostream& out, const jobless_base& a) {
     out << a.persons[i].contact_information.address.home << ",";
     out << a.persons[i].contact_information.address.flat << endl << endl;
     return out;
-    //if (jobless.persons[required_indexes[i]].birth_date.day < 10) printf("0%d.", jobless.persons[required_indexes[i]].birth_date.day);
-    //else printf("%d.", jobless.persons[required_indexes[i]].birth_date.day);
-    //if (jobless.persons[required_indexes[i]].birth_date.month < 10) printf("0%d.", jobless.persons[required_indexes[i]].birth_date.month);
-    //else printf("%d.", jobless.persons[required_indexes[i]].birth_date.month);
-    //printf("%d;", jobless.persons[required_indexes[i]].birth_date.year);
-   // printf("%s;", jobless.persons[required_indexes[i]].profession);
-    //printf("%s;", jobless.persons[required_indexes[i]].education);
-    //printf("%s;", jobless.persons[required_indexes[i]].previous_job.position);
-    //printf("%s;", jobless.persons[required_indexes[i]].previous_job.place);
-    //printf("%s;", jobless.persons[required_indexes[i]].previous_job.reason_for_termination);
-    //printf("%s;", jobless.persons[required_indexes[i]].marital_status);
-    //printf("%s;", jobless.persons[required_indexes[i]].contact_information.phone_number);
-    //printf("%s,", jobless.persons[required_indexes[i]].contact_information.address.street);
-    //printf("%s,", jobless.persons[required_indexes[i]].contact_information.address.town);
-    //printf("%d,", jobless.persons[required_indexes[i]].contact_information.address.home);
-    //printf("%d\n\n", jobless.persons[required_indexes[i]].contact_information.address.flat);
   }
 }
