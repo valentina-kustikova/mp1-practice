@@ -56,5 +56,7 @@ struct jobless_base{
   jobless_base(char* filename);
   ~jobless_base() {delete[] this->persons;}
   void Finding_right_options(jobless_base required);
+  friend ostream& operator<< (ostream&, jobless_base& const);
+  float Required_percent(jobless_base required);
 };
 #endif
