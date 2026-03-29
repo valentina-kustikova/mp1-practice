@@ -38,7 +38,7 @@ jobless_base::jobless_base(char* filename ) {
   f.clear();
   f.seekg(0, ios::beg);
   int i=0;
-  while (getline(f, s)) {
+  for (int i = 0; i < this->njobless; i++) {
     getline(f, s, ' '); persons[i].full_name.surname = s;
     getline(f, s, ' '); persons[i].full_name.first_name = s;
     getline(f, s, ';'); persons[i].full_name.patronymic = s;
@@ -55,7 +55,7 @@ jobless_base::jobless_base(char* filename ) {
     getline(f, s, ','); persons[i].contact_information.address.town = s;
     getline(f, s, ','); persons[i].contact_information.address.street = s;
     getline(f, s, ','); persons[i].contact_information.address.home = stoi(s);
-    getline(f, s, ','); persons[i++].contact_information.address.flat = stoi(s);
+    getline(f, s); persons[i].contact_information.address.flat = stoi(s);
   }
   f.close();
 }
@@ -88,18 +88,18 @@ const jobless_people& jobless_people::operator= (const jobless_people& a) {
   this->birth_date.year = a.birth_date.year;
   this->profession = a.profession;
   this->education = a.education;
-  this->previous_job.position = previous_job.position;
-  this->previous_job.place = previous_job.place;
+  this->previous_job.position = a.previous_job.position;
+  this->previous_job.place = a.previous_job.place;
   this->previous_job.reason_for_termination = a.previous_job.reason_for_termination;
   this->marital_status = a.marital_status;
   this->contact_information.phone_number = a.contact_information.phone_number;
   this->contact_information.address.town = a.contact_information.address.town;
-  this->contact_information.address.street = contact_information.address.street;
+  this->contact_information.address.street = a.contact_information.address.street;
   this->contact_information.address.home = a.contact_information.address.home;
   this->contact_information.address.flat = a.contact_information.address.flat;
   return *this;
 }
-void jobless_base::Finding_right_options(jobless_base required) {
+void jobless_base::Finding_right_options(jobless_base& required) {
   string s = "higher education";
   string temp;
   int count = 0;
@@ -111,10 +111,6 @@ void jobless_base::Finding_right_options(jobless_base required) {
     if (temp.find(s) != string::npos) {       //maybe contains() c++23
       count++;
     }
-  }
-  if(count == 0) {
-    cout << "There are no unemployed people with higher education in the database!";
-    exit(0);
   }
   required.njobless = count;
   delete[] required.persons;
@@ -130,13 +126,13 @@ void jobless_base::Finding_right_options(jobless_base required) {
     }
   }
 }
-float jobless_base::Required_percent(jobless_base required) {
+float jobless_base::Required_percent(jobless_base& required) {
   return (100.0f * required.njobless) / this->njobless;
 }
 ostream& operator<< (ostream& out, const jobless_base& a) {
   for (int i = 0; i < a.njobless; i++) {
     out << i + 1 << ") --> ";
-    out << a.persons[i].full_name.surname<<" ";
+    out << a.persons[i].full_name.surname << " ";
     out << a.persons[i].full_name.first_name << " ";
     out << a.persons[i].full_name.patronymic << ";";
     if (a.persons[i].birth_date.day < 10) out << "0" << a.persons[i].birth_date.day << ".";
@@ -151,10 +147,10 @@ ostream& operator<< (ostream& out, const jobless_base& a) {
     out << a.persons[i].previous_job.reason_for_termination << ";";
     out << a.persons[i].marital_status << ";";
     out << a.persons[i].contact_information.phone_number << ";";
-    out << a.persons[i].contact_information.address.street << ",";
     out << a.persons[i].contact_information.address.town << ",";
+    out << a.persons[i].contact_information.address.street << ",";
     out << a.persons[i].contact_information.address.home << ",";
     out << a.persons[i].contact_information.address.flat << endl << endl;
-    return out;
   }
+    return out;
 }
