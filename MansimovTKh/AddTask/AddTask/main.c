@@ -5,25 +5,22 @@
 #include "tools.h"
 
 int main(int argc, char **argv) {
-	int lines = 0, i;
-	person_info* person = NULL;
+	PersonsLibrary* lib = NULL;
 
 	if (argc < 2) {
 		printf("Incorrect number of arguments\n"); return 1;
 	}
 	printf("%d\n %s\n %s\n\n", argc, argv[0], argv[1]);
 
-	read_data(argv[1], &person, &lines);
-	sort_person(person, lines);
-	print_sort_person(person, lines);
+	lib = (PersonsLibrary*)malloc(sizeof(PersonsLibrary));
+	lib->count = 0; lib->persons = NULL;
+	read_data(argv[1], lib);
 
-	for (i = 0; i < lines; i++) {
-		free(person[i].surname); free(person[i].name); free(person[i].patronymic);
-		free(person[i].gender); free(person[i].nation);free(person[i].number); 
-		free(person[i].index); free(person[i].country); free(person[i].region_city);
-		free(person[i].street);
-	}
+	sort_person(lib);
+	print_sort_person(lib);
 
-	free(person);
+	free_persons_lib(lib);
+	free(lib);
+
 	return 0;
 }

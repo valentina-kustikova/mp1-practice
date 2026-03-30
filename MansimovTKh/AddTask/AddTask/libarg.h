@@ -1,25 +1,49 @@
 #ifndef _LIBARG_H
 #define _LIBARG_H
 
+typedef enum {
+	male,
+	female,
+	unknown
+} Gender;
+
 typedef struct {
 	char* surname;
 	char* name;
 	char* patronymic;
-	char* gender;
-	char* nation;
-	int height;
-	int weight;
+}FullName;
+
+typedef struct {
 	int day; 
 	int month;
 	int year;
-	char* number;
-	char* index;
+} Date;
+
+typedef struct {
+	char* index; 
 	char* country;
 	char* region_city;
 	char* street;
-} person_info;
+}Address;
 
-void sort_person(person_info* person, int n);
+typedef struct {
+	FullName full_name;
+	Gender gender;
+	char* nation;
+	int height;
+	int weight;
+	Date date_of_birth;
+	char* number;
+	Address address;
+} PersonInfo;
+
+
+typedef struct {
+	PersonInfo* persons;
+	int count;
+} PersonsLibrary;
+
+void sort_person(PersonsLibrary* lib_persons);
 
 #endif
 
