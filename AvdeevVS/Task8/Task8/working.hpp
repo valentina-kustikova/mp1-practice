@@ -60,5 +60,5 @@ struct jobless_base{
   friend ostream& operator<< (ostream&, const jobless_base&);
   float Required_percent(jobless_base& required);
 };
-//ostream& operator<< (ostream&, const jobless_base&);
+//ostream& operator<< (ostream&, const jobless_base&); --> рабочий вариант
 #endif

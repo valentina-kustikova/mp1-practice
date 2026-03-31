@@ -1,7 +1,11 @@
 #include "working.hpp"
 jobless_base::jobless_base() {
+  /*this->njobless = 0;
+  this->persons = nullptr;*/ // --> рабочий вариант
   this->njobless = 1;
   this->persons = new jobless_people[this->njobless];
+  /*jobless_people a;
+  persons[0] = a;*/
   persons[0].full_name.surname = ' ';
   persons[0].full_name.first_name = ' ';
   persons[0].full_name.patronymic = ' ';
