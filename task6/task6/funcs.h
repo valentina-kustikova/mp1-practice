@@ -9,7 +9,7 @@ typedef struct {
 }Book;
 
 
-void file_open(FILE* file, Book* books, const char* filename, int n, int i);
+Book* file_open(const char* filename, int* n);
 Book divide_line(char* line);
 void show_books(Book* books, int n);
 char* to_lower(char* arr);

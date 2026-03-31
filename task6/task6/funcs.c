@@ -9,26 +9,40 @@
 #define MAX_LINE_LEN 512 
 #include "funcs.h"
 
-void file_open(FILE* file, Book* books, const char* filename, int n, int i) {
 
-    file = fopen(filename, "r");
-    if (file == NULL) {
+Book* file_open(const char* filename, int* n) {
+
+    char line[MAX_LINE_LEN];
+    int i = 0;
+    int book_count;
+
+    FILE* file = fopen(filename, "r");
+    if (file==NULL) {
         printf("File not found\n");
-        return 1;
+        *n = 0;
+        return NULL;
     }
 
-    fscanf(file, "%d", &n);
-    books = (Book*)malloc(sizeof(Book) * n);
-
-    while (!feof(file))
-    {
-        char line[MAX_LINE_LEN];
-        if (fgets(line, MAX_LINE_LEN, file)) {
-            books[i++] = divide_line(line);
-        }
+    if (fscanf(file, "%d\n", &book_count) != 1) {
+        printf("Error reading book count\n");
+        fclose(file);
+        *n = 0;
+        return NULL;
     }
+
+    Book* books = (Book*)malloc(sizeof(Book) * book_count);
+
+    while (i < book_count && fgets(line, MAX_LINE_LEN, file)) {
+        books[i] = divide_line(line);
+        i++;
+    }
+
     fclose(file);
+
+    *n = i;
+    return books;
 }
+
 
 Book divide_line(char* line) {
     Book book;
@@ -68,13 +82,16 @@ char* to_lower(char* arr) {
 
 
 void find_by_author(Book* books, int n, char* author) {
-    Book arr;
+    char author_copy[100];
+    strcpy(author_copy, author);
+    to_lower(author_copy);
+    char buffer[512];
+
     for (int i = 0; i < n; i++) {
 
-        strcpy(arr[i].authors, books[i].authors);
-        to_lower(arr[i].authors); // при поиске создать копию и в ней регитр поменять
-
-        if (strstr(arr[i].authors, author)) {
+        strcpy(buffer, books[i].authors);
+        to_lower(buffer);
+        if (strstr(buffer, author_copy)) {
             printf("%s;%s;%s;%d\n", books[i].authors, books[i].title, books[i].publisher, books[i].year);
         }
     }
