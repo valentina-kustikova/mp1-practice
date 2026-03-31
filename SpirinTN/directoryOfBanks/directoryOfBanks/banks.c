@@ -43,6 +43,7 @@ int getCountBanks(FILE* fp) {
 STATUS stringToBank(FILE* fp, BANK* banks, int count) {
     int indexBank = 0;
     char line[1000];
+
     while (indexBank < count && fgets(line, sizeof(line), fp)) {
         STATUS status;
         char* token = NULL;
@@ -58,7 +59,7 @@ STATUS stringToBank(FILE* fp, BANK* banks, int count) {
         strncpy(banks[indexBank].ownership, token, LENGTH_STRING);
         banks[indexBank].ownership[LENGTH_STRING] = '\0';
 
-        token = strtok(NULL, ";");
+        token = strtok(NULL, "\n");
         if (token == NULL) return INVALID_FILE;
         status = parseDeposits(&banks[indexBank], token);
         if (status != SUCCESS) {
@@ -78,12 +79,12 @@ STATUS parseDeposits(BANK* bank, char* depositsStr) {
     char temp[600];
     strcpy(temp, depositsStr);
 
-    token = strtok(temp, ",");
+    token = strtok(temp, ";");
     while (token != NULL) {
         count++;
-        token = strtok(NULL, ",");
+        token = strtok(NULL, ";");
     }
-    printf("%d", count);
+    //printf("%d", count); 50 ÌÈÍÓÒ ÑÒÐÀÄÀÍÈÉ ÈÇ-ÇÀ ÝÒÎÉ ÑÒÐÎ×ÊÈ ! ! !
 
     if (count == 0) {
         return INVALID_FILE;
@@ -97,7 +98,7 @@ STATUS parseDeposits(BANK* bank, char* depositsStr) {
 
     strcpy(temp, depositsStr);
     i = 0;
-    token = strtok(temp, ",");
+    token = strtok(temp, ";");
     while (token != NULL && i < count) {
         char* colon = strchr(token, ':');
         if (colon != NULL) {
@@ -110,7 +111,7 @@ STATUS parseDeposits(BANK* bank, char* depositsStr) {
 
         }
         i++;
-        token = strtok(NULL, ",");
+        token = strtok(NULL, ";");
     }
     if (count != countColon) {
         return INVALID_FILE;
