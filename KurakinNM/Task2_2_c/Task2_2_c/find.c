@@ -54,23 +54,23 @@ void allAboutSpec(DBUniversities univs, char* special)
 	}
 }
 
-void minContestSpec(University* univers, char* special, int numOfUnivers)
+void minContestSpec(DBUniversities* universResult, DBUniversities univers, char* special)
 {
 	int i, j, n = 0;
 	int DU = -1, DS = -1;
 	int NU = -1, NS = -1;
 	int OU = -1, OS = -1;
-	for (i = 0; i < numOfUnivers; i++)
+	for (i = 0; i < univers.count; i++)
 	{
-		for (j = 0; j < univers[i].numOfSpecialties; j++)
+		for (j = 0; j < univers.universities[i].numOfSpecialties; j++)
 		{
-			if (strstr(univers[i].specialties[j], special))
+			if (strstr(univers.universities[i].specialties[j], special))
 			{
 				if (DU != -1)
 				{
-					if (univers[i].contestDay[j] < univers[DU].contestDay[DS]) { DU = i; DS = j; }
-					if (univers[i].contestNight[j] < univers[NU].contestNight[NS]) { NU = i; NS = j; }
-					if (univers[i].contestOnline[j] < univers[OU].contestOnline[OS]) { OU = i; OS = j; }
+					if (univers.universities[i].contestDay[j] < univers.universities[DU].contestDay[DS]) { DU = i; DS = j; }
+					if (univers.universities[i].contestNight[j] < univers.universities[NU].contestNight[NS]) { NU = i; NS = j; }
+					if (univers.universities[i].contestOnline[j] < univers.universities[OU].contestOnline[OS]) { OU = i; OS = j; }
 				}
 				else
 				{
@@ -82,8 +82,29 @@ void minContestSpec(University* univers, char* special, int numOfUnivers)
 			}
 		}
 	}
-	if (DU != -1)
-	{
+	if (DU == -1) printf("Специальность не найдена.\n");
+	else {
+		if (DU != NU && NU != OU && DU != OU) {
+			universResult->count = 3;
+			universResult->universities = (University*)malloc(3 * sizeof(University));
+			CopyUOnlyOneSpec(&(universResult->universities[0]), univers.universities[DU], special);
+			CopyUOnlyOneSpec(&(universResult->universities[1]), univers.universities[NU], special);
+			CopyUOnlyOneSpec(&(universResult->universities[2]), univers.universities[OU], special);
+		}
+		else if (DU == NU && NU == OU) {
+			universResult->count = 1;
+			universResult->universities = (University*)malloc(1 * sizeof(University));
+			CopyUOnlyOneSpec(&(universResult->universities[0]), univers.universities[DU], special);
+		}
+		else {
+			universResult->count = 2;
+			universResult->universities = (University*)malloc(2 * sizeof(University));
+			CopyUOnlyOneSpec(&(universResult->universities[0]), univers.universities[DU], special);
+			if (DU == NU) CopyUOnlyOneSpec(&(universResult->universities[1]), univers.universities[NU], special);
+			else CopyUOnlyOneSpec(&(universResult->universities[1]), univers.universities[OU], special);
+		};
+	}
+	/* {
 		printf("Дневная форма:\n");
 		printf("Специальность: %s\n", univers[DU].specialties[DS]);
 		printf("Вуз: %s\n", univers[DU].name);
@@ -100,37 +121,45 @@ void minContestSpec(University* univers, char* special, int numOfUnivers)
 		printf("Конкурс прошлого года: %d\n", univers[OU].contestOnline[OS]);
 		printf("\n");
 	}
-	else printf("Специальность не найдена.\n");
+	else printf("Специальность не найдена.\n");*/
 }
 
-void findSpec(University* univers, char* special, int numOfUnivers)
+void findSpec(DBUniversities univs)
 {
-	int i, j, c, n = 0;
-	for (i = 0; i < numOfUnivers; i++)
+	int i, j;
+	int DS = -1;
+	int NS = -1;
+	int OS = -1;
+	for (i = 0; i < univs.count; i++)
 	{
-		for (j = 0; j < univers[i].numOfSpecialties; j++)
-		{
-			if (strstr(univers[i].specialties[j], special))
-			{
-				printf("Название вуза: %s\n", univers[i].name);
-				printf("Адрес: %s, %s, %s\n", univers[i].adres.city, univers[i].adres.street, univers[i].adres.home);
-				printf("Специальности:\n");
-				for (c = 0; c < univers[i].numOfSpecialties; c++)
-				{
-					printf("%s\n", univers[i].specialties[c]);
-					printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n", univers[i].contestDay[c], univers[i].contestNight[c], univers[i].contestOnline[c]);
-					printf("Оплата при договорном обучении: %.2fр.\n", univers[i].cost[c]);
-				}
-				printf("\n");
+		DS = -1;
+		NS = -1;
+		OS = -1;
+		printf("Название вуза: %s\n", univs.universities[i].name);
+		printf("Адрес: %s, %s, %s\n", univs.universities[i].adres.city,
+			univs.universities[i].adres.street, univs.universities[i].adres.home);
 
-				n++;
-				break;
+		for (j = 0; j < univs.universities[i].numOfSpecialties; j++)
+		{
+			if (DS != -1)
+			{
+				if (univs.universities[i].contestDay[j] < univs.universities[i].contestDay[DS]) DS = j;
+				if (univs.universities[i].contestNight[j] < univs.universities[i].contestNight[NS]) NS = j;
+				if (univs.universities[i].contestOnline[j] < univs.universities[i].contestOnline[OS]) OS = j;
+			}
+			else
+			{
+				DS = j;
+				NS = j;
+				OS = j;
 			}
 		}
-	}
-	if (n == 0)
-	{
-		printf("Специальность не найдена.\n");
+		printf("Минимальный дневной конкурс: %d\nСпециальность: %s\n",
+			univs.universities[i].contestDay[DS], univs.universities[i].specialties[DS]);
+		printf("Минимальный вечерний конкурс: %d\nСпециальность: %s\n",
+			univs.universities[i].contestNight[NS], univs.universities[i].specialties[NS]);
+		printf("Минимальный заочный конкурс: %d\nСпециальность: %s\n\n",
+			univs.universities[i].contestOnline[OS], univs.universities[i].specialties[OS]);
 	}
 }
 

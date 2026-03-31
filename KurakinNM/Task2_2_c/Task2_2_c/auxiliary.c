@@ -22,6 +22,62 @@ void freeDBU(DBUniversities* DB)
 	free(DB->universities);
 }
 
+void cpy(char** output, const char* input)
+{
+	int len = strlen(input);
+	(*output) = (char*)malloc(len + 1);
+	strncpy(*output, input, len + 1);
+}
+
+void CopyU(University* universityCopy, const University universityOriginal)
+{
+	int i;
+	universityCopy->numOfSpecialties = universityOriginal.numOfSpecialties;
+	universityCopy->specialties = (char**)malloc(universityOriginal.numOfSpecialties * sizeof(char*));
+	universityCopy->contestDay = (unsigned int*)malloc(universityOriginal.numOfSpecialties * sizeof(unsigned int));
+	universityCopy->contestNight = (unsigned int*)malloc(universityOriginal.numOfSpecialties * sizeof(unsigned int));
+	universityCopy->contestOnline = (unsigned int*)malloc(universityOriginal.numOfSpecialties * sizeof(unsigned int));
+	universityCopy->cost = (unsigned int*)malloc(universityOriginal.numOfSpecialties * sizeof(unsigned int));
+	for (i = 0; i < universityOriginal.numOfSpecialties; i++)
+	{
+		cpy(&(universityCopy->specialties[i]), universityOriginal.specialties[i]);
+		universityCopy->contestDay[i] = universityOriginal.contestDay[i];
+		universityCopy->contestNight[i] = universityOriginal.contestNight[i];
+		universityCopy->contestOnline[i] = universityOriginal.contestOnline[i];
+		universityCopy->cost[i] = universityOriginal.cost[i];
+	}
+	cpy(&(universityCopy->adres.city), universityOriginal.adres.city);
+	cpy(&(universityCopy->adres.street), universityOriginal.adres.street);
+	cpy(&(universityCopy->adres.home), universityOriginal.adres.home);
+	cpy(&(universityCopy->name), universityOriginal.name);
+}
+
+void CopyUOnlyOneSpec(University* universityCopy, const University universityOriginal, char* spec)
+{
+	int i;
+	universityCopy->numOfSpecialties = 1;
+	universityCopy->specialties = (char**)malloc(sizeof(char*));
+	universityCopy->contestDay = (unsigned int*)malloc(sizeof(unsigned int));
+	universityCopy->contestNight = (unsigned int*)malloc(sizeof(unsigned int));
+	universityCopy->contestOnline = (unsigned int*)malloc(sizeof(unsigned int));
+	universityCopy->cost = (unsigned int*)malloc(sizeof(unsigned int));
+	for (i = 0; i < universityOriginal.numOfSpecialties; i++)
+	{
+		if (strstr(universityOriginal.specialties[i], spec)) {
+			cpy(&(universityCopy->specialties[0]), universityOriginal.specialties[i]);
+			universityCopy->contestDay[0] = universityOriginal.contestDay[i];
+			universityCopy->contestNight[0] = universityOriginal.contestNight[i];
+			universityCopy->contestOnline[0] = universityOriginal.contestOnline[i];
+			universityCopy->cost[0] = universityOriginal.cost[i];
+			break;
+		}
+	}
+	cpy(&(universityCopy->adres.city), universityOriginal.adres.city);
+	cpy(&(universityCopy->adres.street), universityOriginal.adres.street);
+	cpy(&(universityCopy->adres.home), universityOriginal.adres.home);
+	cpy(&(universityCopy->name), universityOriginal.name);
+}
+
 void bariers(char* str, int* start, int* numOfSims)
 {
 	while (str[*start] == ' ') (*start)++;

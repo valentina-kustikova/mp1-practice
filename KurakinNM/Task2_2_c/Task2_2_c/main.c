@@ -4,7 +4,7 @@
 
 int main()
 {
-	DBUniversities DBUnivers;
+	DBUniversities DBUnivers, FindedDBUnivers;
 	int i, j, work = 1,option;
 	char str[255];
 	system("chcp 1251");
@@ -40,14 +40,13 @@ int main()
 			printf("¬ведите название специальности: ");
 			fgets(str, 255, stdin);
 			str[strlen(str) - 1] = '\0';
-			//minContestSpec(univers, str, n);
+			minContestSpec(&FindedDBUnivers, DBUnivers, str);
+			printf("%d\n\n", FindedDBUnivers.count);
+			output(FindedDBUnivers);
+			freeDBU(&FindedDBUnivers);
 			break;
 		case 4:
-			while (getchar() != '\n');
-			printf("¬ведите название специальности: ");
-			fgets(str, 255, stdin);
-			str[strlen(str) - 1] = '\0';
-			//findSpec(univers, str, n);
+			findSpec(DBUnivers);
 			break;
 		case 5:
 			output(DBUnivers);
