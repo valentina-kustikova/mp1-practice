@@ -1,15 +1,15 @@
-Leonardo da Vinci;1452;Renaissance
-Michelangelo Buonarroti;1475;Renaissance
-Raphael Sanzio;1483;Renaissance
-Rembrandt van Rijn;1606;Baroque
-Johannes Vermeer;1632;Baroque
-Diego Velazquez;1599;Baroque
-Claude Monet;1840;Impressionism
-Pierre-Auguste Renoir;1841;Impressionism
-Edgar Degas;1834;Impressionism
-Vincent van Gogh;1853;Post-Impressionism
-Paul Cezanne;1839;Post-Impressionism
-Pablo Picasso;1881;Cubism
-Salvador Dali;1904;Surrealism
-Frida Kahlo;1907;Surrealism
-Andy Warhol;1928;Pop Art
+00;Leonardo da Vinci;1452;Renaissance
+01;Michelangelo Buonarroti;1475;Renaissance
+02;Raphael Sanzio;1483;Renaissance
+03;Rembrandt van Rijn;1606;Baroque
+04;Johannes Vermeer;1632;Baroque
+05;Diego Velazquez;1599;Baroque
+06;Claude Monet;1840;Impressionism
+07;Pierre-Auguste Renoir;1841;Impressionism
+08;Edgar Degas;1834;Impressionism
+09;Vincent van Gogh;1853;Post_Impressionism
+10;Paul Cezanne;1839;Post_Impressionism
+11;Pablo Picasso;1881;Cubism
+12;Salvador Dali;1904;Surrealism
+13;Frida Kahlo;1907;Surrealism
+14;Andy Warhol;1928;Pop_Art

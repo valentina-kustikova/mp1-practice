@@ -1,58 +1,57 @@
-Leonardo da Vinci;Mona Lisa;1503;portrait;museum
-Leonardo da Vinci;The Last Supper;1495;religious;museum
-Leonardo da Vinci;Vitruvian Man;1490;drawing;museum
-Leonardo da Vinci;Lady with an Ermine;1489;portrait;private
-Leonardo da Vinci;Ginevra de' Benci;1474;portrait;museum
-Leonardo da Vinci;Saint John the Baptist;1516;religious;museum
-Leonardo da Vinci;The Annunciation;1472;religious;private
-Leonardo da Vinci;Adoration of the Magi;1481;religious;museum
-Leonardo da Vinci;The Baptism of Christ;1475;religious;museum
-Leonardo da Vinci;Benois Madonna;1478;religious;private
-Leonardo da Vinci;Portrait of a Musician;1485;portrait;private
-Michelangelo Buonarroti;The Creation of Adam;1512;religious;museum
-Michelangelo Buonarroti;David;1504;sculpture;museum
-Michelangelo Buonarroti;The Last Judgment;1541;religious;museum
-Raphael Sanzio;The School of Athens;1511;history;museum
-Raphael Sanzio;Sistine Madonna;1512;religious;private
-Raphael Sanzio;The Transfiguration;1520;religious;museum
-Rembrandt van Rijn;The Night Watch;1642;group portrait;museum
-Rembrandt van Rijn;Self-Portrait with Two Circles;1665;self-portrait;museum
-Rembrandt van Rijn;The Anatomy Lesson of Dr. Nicolaes Tulp;1632;genre;museum
-Rembrandt van Rijn;Danae;1636;mythological;private
-Rembrandt van Rijn;The Storm on the Sea of Galilee;1633;seascape;private
-Rembrandt van Rijn;The Jewish Bride;1667;portrait;museum
-Rembrandt van Rijn;Belshazzar's Feast;1635;religious;museum
-Rembrandt van Rijn;The Mill;1645;landscape;museum
-Rembrandt van Rijn;Portrait of Jan Six;1654;portrait;private
-Johannes Vermeer;Girl with a Pearl Earring;1665;portrait;museum
-Johannes Vermeer;The Milkmaid;1660;genre;museum
-Diego Velazquez;Las Meninas;1656;group portrait;museum
-Diego Velazquez;The Surrender of Breda;1635;history;museum
-Claude Monet;Water Lilies;1919;landscape;museum
-Claude Monet;Impression, Sunrise;1872;landscape;museum
-Claude Monet;Woman with a Parasol;1875;genre;museum
-Claude Monet;Rouen Cathedral Series;1894;landscape;museum
-Claude Monet;The Japanese Bridge;1899;landscape;private
-Claude Monet;The Artist's Garden at Giverny;1900;landscape;museum
-Claude Monet;Poppies;1873;landscape;private
-Pierre-Auguste Renoir;Luncheon of the Boating Party;1881;genre;museum
-Pierre-Auguste Renoir;Dance at Le Moulin de la Galette;1876;genre;museum
-Edgar Degas;The Dance Class;1874;genre;museum
-Vincent van Gogh;Starry Night;1889;landscape;museum
-Vincent van Gogh;Sunflowers;1888;still life;private
-Vincent van Gogh;Irises;1889;still life;private
-Vincent van Gogh;Cafe Terrace at Night;1888;genre;museum
-Vincent van Gogh;The Bedroom;1888;interior;museum
-Vincent van Gogh;Self-Portrait with Bandaged Ear;1889;self-portrait;private
-Vincent van Gogh;Wheatfield with Crows;1890;landscape;museum
-Paul Cezanne;The Basket of Apples;1895;still life;museum
-Paul Cezanne;Mont Sainte-Victoire;1904;landscape;museum
-Pablo Picasso;Guernica;1937;history;museum
-Pablo Picasso;Les Demoiselles d'Avignon;1907;portrait;private
-Pablo Picasso;The Weeping Woman;1937;portrait;museum
-Salvador Dali;The Persistence of Memory;1931;surreal;museum
-Salvador Dali;The Elephants;1948;surreal;private
-Frida Kahlo;The Two Fridas;1939;self-portrait;museum
-Frida Kahlo;Self-Portrait with Thorn Necklace;1940;self-portrait;museum
-Andy Warhol;Campbell's Soup Cans;1962;pop art;museum
-Andy Warhol;Marilyn Diptych;1962;pop art;private
+00;Mona Lisa;1503;portrait;museum
+00;The Last Supper;1495;religious;museum
+00;Vitruvian Man;1490;drawing;museum
+00;Lady with an Ermine;1489;portrait;private
+00;Ginevra de' Benci;1474;portrait;museum
+00;Saint John the Baptist;1516;religious;museum
+00;The Annunciation;1472;religious;private
+00;Adoration of the Magi;1481;religious;museum
+00;The Baptism of Christ;1475;religious;museum
+00;Benois Madonna;1478;religious;private
+00;Portrait of a Musician;1485;portrait;private
+01;The Creation of Adam;1512;religious;museum
+01;David;1504;sculpture;museum
+01;The Last Judgment;1541;religious;museum
+02;The School of Athens;1511;history;museum
+02;Sistine Madonna;1512;religious;private
+02;The Transfiguration;1520;religious;museum
+03;The Night Watch;1642;group_portrait;museum
+03;Self-Portrait with Two Circles;1665;self_portrait;museum
+03;The Anatomy Lesson of Dr. Nicolaes Tulp;1632;portrait;museum
+03;The Storm on the Sea of Galilee;1633;seascape;private
+03;The Jewish Bride;1667;portrait;museum
+03;Belshazzar's Feast;1635;religious;museum
+03;The Mill;1645;landscape;museum
+03;Portrait of Jan Six;1654;portrait;private
+04;Girl with a Pearl Earring;1665;portrait;museum
+04;The Milkmaid;1660;portrait;museum
+05;Las Meninas;1656;group_portrait;museum
+05;The Surrender of Breda;1635;history;museum
+06;Water Lilies;1919;landscape;museum
+06;Impression, Sunrise;1872;landscape;museum
+06;Woman with a Parasol;1875;portrait;museum
+06;Rouen Cathedral Series;1894;landscape;museum
+06;The Japanese Bridge;1899;landscape;private
+06;The Artist's Garden at Giverny;1900;landscape;museum
+06;Poppies;1873;landscape;private
+07;Luncheon of the Boating Party;1881;landscape;museum
+07;Dance at Le Moulin de la Galette;1876;landscape;museum
+08;The Dance Class;1874;portrait;museum
+09;Starry Night;1889;landscape;museum
+09;Sunflowers;1888;still_life;private
+09;Irises;1889;still_life;private
+09;Cafe Terrace at Night;1888;landscape;museum
+09;The Bedroom;1888;interior;museum
+09;Self-Portrait with Bandaged Ear;1889;self_portrait;private
+09;Wheatfield with Crows;1890;landscape;museum
+10;The Basket of Apples;1895;still_life;museum
+10;Mont Sainte-Victoire;1904;landscape;museum
+11;Guernica;1937;history;museum
+11;Les Demoiselles d'Avignon;1907;portrait;private
+11;The Weeping Woman;1937;portrait;museum
+12;The Persistence of Memory;1931;surreal;museum
+12;The Elephants;1948;surreal;private
+13;The Two Fridas;1939;self_portrait;museum
+13;Self-Portrait with Thorn Necklace;1940;self_portrait;museum
+14;Campbell's Soup Cans;1962;pop_art;museum
+14;Marilyn Diptych;1962;pop_art;private
