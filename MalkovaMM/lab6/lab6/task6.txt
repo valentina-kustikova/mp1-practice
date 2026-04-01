@@ -1,0 +1,10 @@
+"L. N. Tolstoy";"War and Peace";"Alphabet";2025
+"Arthur Conan Doyle";"The Adventures of Sherlock Holmes";"The Strand";1927
+"L. N. Tolstoy";"Anna Karenina";"The Russian Messenger";1877
+"Arthur Conan Doyle";"A Study in Scarlet";"Beeton's Christmas Annual";1887
+"F. M. Dostoevsky";"Crime and Punishment";"The Russian Messenger";1866
+"Arthur Conan Doyle";"The Hound of the Baskervilles";"The Strand";1902
+"L. N. Tolstoy";"The Death of Ivan Ilyich";"Prosveshcheniye";1886
+"F. M. Dostoevsky";"The Idiot";"The Russian Messenger";1869
+"Arthur Conan Doyle";"The Sign of the Four";"Lippincott's Monthly Magazine";1890
+"F. M. Dostoevsky";"The Brothers Karamazov";"The Russian Messenger";1880
