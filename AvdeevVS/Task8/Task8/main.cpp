@@ -5,6 +5,7 @@ int main(int argc, char** argv) {
       throw "Error --> Incorrect parameters of argv!";
     }
     jobless_base required;
+    //jobless_base jobless(std::string(argv[1]));
     jobless_base jobless(argv[1]);
     //cout << jobless;
     jobless.Finding_right_options(required);

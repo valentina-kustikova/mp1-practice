@@ -12,12 +12,16 @@ struct date_of_birth{
   int day;
   int month;
   int year;
+  //date_of_birth(int, int, int);
+  //friend ostream& operator<< (ostream&, const ...)
 };
 
 struct last_job {
   string position;
   string place;
   string reason_for_termination;
+  //last_job(const string&, const string&, const string&);
+  //friend ostream& operator<< (ostream&, const ...)
 };
 
 struct str_address{
@@ -25,17 +29,23 @@ struct str_address{
   string street;
   int home;
   int flat;
+  // str_address(...)
+  //friend ostream& operator<< (ostream&, const ...)
 };
 
 struct str_contact{
   string phone_number;
   str_address address;
+  // str_contact(...)
+  //friend ostream& operator<< (ostream&, const ...)
 };
 
 struct str_full_name{
   string first_name;
   string surname;
   string patronymic;
+  // str_full_name(...)
+  //friend ostream& operator<< (ostream&, const ...)
 };
 
 struct  jobless_people{
@@ -48,17 +58,19 @@ struct  jobless_people{
   str_contact contact_information;
   jobless_people();
   const jobless_people& operator= (const jobless_people&);
+  //friend ostream& operator<< (ostream&, const ...)
 };
 
 struct jobless_base{
   jobless_people* persons;
   int njobless;
+
   jobless_base();
-  jobless_base(char* filename);
+  jobless_base(char* filename); // jobless_base(const string&);
   ~jobless_base() {delete[] this->persons;}
   void Finding_right_options(jobless_base& required);
   friend ostream& operator<< (ostream&, const jobless_base&);
-  float Required_percent(jobless_base& required);
+  float Required_percent(const jobless_base& required) const;
 };
 //ostream& operator<< (ostream&, const jobless_base&); --> рабочий вариант
 #endif

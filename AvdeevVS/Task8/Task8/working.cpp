@@ -1,12 +1,12 @@
 #include "working.hpp"
 jobless_base::jobless_base() {
-  /*this->njobless = 0;
-  this->persons = nullptr;*/ // --> рабочий вариант
-  this->njobless = 1;
-  this->persons = new jobless_people[this->njobless];
+  this->njobless = 0;
+  this->persons = nullptr; // --> рабочий вариант
+  /*this->njobless = 1;
+  this->persons = new jobless_people[this->njobless];*/
   /*jobless_people a;
   persons[0] = a;*/
-  persons[0].full_name.surname = ' ';
+  /*persons[0].full_name.surname = ' ';
   persons[0].full_name.first_name = ' ';
   persons[0].full_name.patronymic = ' ';
   persons[0].birth_date.day = 0;
@@ -22,7 +22,7 @@ jobless_base::jobless_base() {
   persons[0].contact_information.address.town = ' ';
   persons[0].contact_information.address.street = ' ';
   persons[0].contact_information.address.home = 0;
-  persons[0].contact_information.address.flat = 0;
+  persons[0].contact_information.address.flat = 0;*/
 }
 jobless_base::jobless_base(char* filename ) {
   ifstream f(filename);
@@ -67,9 +67,7 @@ jobless_people::jobless_people() {
   this->full_name.surname = ' ';
   this->full_name.first_name = ' ';
   this->full_name.patronymic = ' ';
-  this->birth_date.day = 0;
-  this->birth_date.month = 0;
-  this->birth_date.year = 0;
+  //this->birth_date = date_of_birth(0, 0, 0);
   this->profession = ' ';
   this->education = ' ';
   this->previous_job.position = ' ';
@@ -130,7 +128,7 @@ void jobless_base::Finding_right_options(jobless_base& required) {
     }
   }
 }
-float jobless_base::Required_percent(jobless_base& required) {
+float jobless_base::Required_percent(const jobless_base& required) const {
   return (100.0f * required.njobless) / this->njobless;
 }
 ostream& operator<< (ostream& out, const jobless_base& a) {
