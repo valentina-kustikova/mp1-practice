@@ -6,6 +6,7 @@
 
 phrase_library* file_to_struct(const char* file_name, int* count)
 {
+	char key_words_copy[512];
 	int n = 0, i = 0;
 	FILE* file = fopen(file_name, "r");
 	char line[2048];
@@ -64,13 +65,9 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 		quotes[i].topic = (quote*)malloc(strlen(topic) + 1);
 		strcpy_s(quotes[i].topic, strlen(topic) + 1, topic);
 
-		char* a_word = strtok(key_words, ",");
-		if (a_word == NULL)
-		{
-			printf("No keywords found in this line");
-			continue;
-		}
+		strcpy(key_words_copy, key_words);
 
+		char* a_word = strtok(key_words_copy, ",");
 		int key_words_count = 0;
 		while (a_word != NULL)
 		{	
@@ -87,6 +84,7 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 			quotes[i].key_words[j] = (char*)malloc(sizeof(a_word) + 1);
 			strcpy_s(quotes[i].key_words[j], strlen(a_word) + 1, a_word);
 			j++;
+			printf_s("%s", &quotes[i].key_words[j]);
 			a_word = strtok(NULL, ",");
 		}
 		
@@ -94,8 +92,8 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 	}
 
 	phrase_library* library = (phrase_library*)malloc(sizeof(phrase_library));
-	(*library).phrases = quotes;
-	(*library).count = n;
+	library->phrases = quotes;
+	library->count = n;
 
 	fclose(file);
 	return library;
@@ -122,17 +120,17 @@ void print_found_quotes(phrase_library* library)
 void free_memory(phrase_library* library)
 {
 	int i, j = 0;
-	for (i = 0; i < (*library).count; i++)
+	for (i = 0; i < library->count; i++)
 	{
-		free((*library).phrases[i].the_line);
-		free((*library).phrases[i].author);
-		free((*library).phrases[i].source);
-		free((*library).phrases[i].topic);
-		for (j = 0; i < (*library).phrases[i].key_words_count; i++)
+		free(library->phrases[i].the_line);
+		free(library->phrases[i].author);
+		free(library->phrases[i].source);
+		free(library->phrases[i].topic);
+		for (j = 0; i < library->phrases[i].key_words_count; i++)
 		{
-			free((*library).phrases[i].key_words[j]);
+			free(library->phrases[i].key_words[j]);
 		}
-		free((*library).phrases[i].key_words);
+		free(library->phrases[i].key_words);
 	}
 	free(library);
 }
