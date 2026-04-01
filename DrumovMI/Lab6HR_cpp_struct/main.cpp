@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include <fstream>
 #include <vector>
 #include "hr_db.hpp"
@@ -9,5 +10,14 @@ int main(int argc, char** argv) {
 		std::cout << "Usage: " << argv[0] << " <filename> <date>\n";
 		return 1;
 	}
-	vector<Employee> employees = read_employees(argv[1]);
+
+	auto now = std::chrono::system_clock::now();
+	auto today = std::chrono::floor<std::chrono::days>(now);
+	std::chrono::year_month_day ymd{ today };
+	std::vector<Employee> employees = read_employees(argv[1]);
+	for (auto employee : employees) {
+		if (employee.age_by_date(ymd) >= 60) {
+		
+		}
+	}
 }
