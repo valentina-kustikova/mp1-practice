@@ -1,0 +1,40 @@
+39
+L. N. Tolstoy;War and Peace;Alphabet;2025
+Arthur Conan Doyle;The Adventures of Sherlock Holmes;The Strand;1927
+F. M. Dostoevsky;Crime and Punishment;Russian Herald;1866
+I. S. Turgenev;Fathers and Sons;Russian Herald;1862
+A. S. Pushkin;Eugene Onegin;Sovremennik;1833
+L. N. Tolstoy;Anna Karenina;Russian Herald;1877
+Arthur Conan Doyle;The Hound of the Baskervilles;The Strand;1902
+M. A. Bulgakov;The Master and Margarita;Moscow;1967
+N. V. Gogol;Dead Souls;Sovremennik;1842
+A. P. Chekhov;The Cherry Orchard;Russian Thought;1904
+I. A. Bunin;The Gentleman from San Francisco;Modern Notes;1915
+M. Gorky;Mother;Knowledge;1906
+B. L. Pasternak;Doctor Zhivago;Feltrinelli;1957
+A. I. Solzhenitsyn;One Day in the Life of Ivan Denisovich;Novy Mir;1962
+V. V. Nabokov;Lolita;Olympia Press;1955
+M. Yu. Lermontov;A Hero of Our Time;Notes of the Fatherland;1840
+N. A. Nekrasov;Who Can Be Happy in Russia?;Notes of the Fatherland;1877
+A. A. Blok;The Twelve;Znamya Truda;1918
+S. A. Yesenin;Anna Snegina;Krasnaya Nov';1925
+I. Ilf and E. Petrov;The Twelve Chairs;Land and Factory;1928
+M. A. Sholokhov;And Quiet Flows the Don;October;1928
+A. T. Tvardovsky;Vasili Tyorkin;Novy Mir;1945
+K. G. Paustovsky;The Story of a Life;Soviet Writer;1945
+V. P. Astafyev;The King Fish;Our Contemporary;1976
+V. G. Rasputin;Farewell to Matyora;Our Contemporary;1976
+Chingiz Aitmatov;The Day Lasts More Than a Hundred Years;Novy Mir;1980
+Fazil Iskander;Sandro of Chegem;Novy Mir;1973
+V. S. Vysotsky;Nervous;Moscow;1981
+B. Sh. Okudzhava;A Date with Bonaparte;Moscow;1985
+T. N. Tolstaya;On the Golden Porch;Aurora;1983
+L. E. Ulitskaya;Sonechka;Novy Mir;1992
+V. O. Pelevin;Chapayev and Void;Vagrius;1996
+Z. Prilepin;Sankya;Ad Marginem;2006
+G. Sh. Yakhina;Zuleikha Opens Her Eyes;AST;2015
+E. Vodolazkin;Laurus;AST;2012
+M. Stepnova;The Women of Lazarus;AST;2011
+A. Ivanov;The Geographer Drank His Globe Away;AST;2003
+D. Rubina;Leonardo's Handwriting;EKSMO;2008
+P. Sanaev;Bury Me Behind the Baseboard;MK-Periodika;2003
