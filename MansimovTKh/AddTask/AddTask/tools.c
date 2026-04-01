@@ -6,8 +6,9 @@
 
 
 void print_sort_person(PersonsLibrary* lib_persons) {
-	if (lib_persons == NULL || lib_persons->persons == NULL) return;
 	int i;
+	if (lib_persons == NULL || lib_persons->persons == NULL) return;
+	
 	for (i = 0; i < lib_persons->count; i++) {
 		printf("%s | %s | %s | ", lib_persons->persons[i].full_name.surname, 
 			lib_persons->persons[i].full_name.name, lib_persons->persons[i].full_name.patronymic);
@@ -28,9 +29,9 @@ void print_sort_person(PersonsLibrary* lib_persons) {
 void read_data(const char* filename, PersonsLibrary* lib_persons) {
 	int i, h, w, d, m, y;
 	char buffer[BUFFER_SIZE];
-	char* s, * n, * p, * g, * nat,
-		* str_h, * str_w, * str_d, * str_m, 
-		* str_y, * num, * ind, * cou, *cr, *st;
+	char *s, *n, *p, *g, *nat,
+		 *str_h, *str_w, *str_d, *str_m, 
+		 *str_y, *num, *ind, *cou, *cr, *st;
 	FILE* fp = fopen(filename, "r");
 
 	if (fp == NULL) {
@@ -124,5 +125,5 @@ void free_persons_lib(PersonsLibrary* lib_persons) {
 		free(lib_persons->persons[i].address.country); free(lib_persons->persons[i].address.region_city); free(lib_persons->persons[i].address.street);
 	}
 	free(lib_persons->persons);
-
+	free(lib_persons);
 }

@@ -20,7 +20,6 @@ int main(int argc, char **argv) {
 	print_sort_person(lib);
 
 	free_persons_lib(lib);
-	free(lib);
 
 	return 0;
 }

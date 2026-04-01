@@ -3,7 +3,7 @@
 #include "libarg.h"
 
 void sort_person(PersonsLibrary* lib_persons){
-	if (lib_persons == NULL || lib_persons->persons == NULL || lib_persons->count <= 0) return;
+	if (lib_persons == NULL || lib_persons->persons == NULL || lib_persons->count == 0) return;
 	int i, j, min_idx;
 	for (i = 0; i < lib_persons->count - 1; i++) {
 		min_idx = i;
