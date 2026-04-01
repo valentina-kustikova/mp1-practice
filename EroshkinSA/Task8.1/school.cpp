@@ -2,9 +2,10 @@
 #include <iostream>
 #include <sstream>
 #include "school.h"
+#include <fstream>
 using namespace std;
 
-birth_date::birth_date(string s) {
+birth_date::birth_date(const string& s) {
 	istringstream ss(s);
 	string buff = "";
 	getline(ss, buff, '.');  this->day = stoi(buff);
@@ -12,13 +13,15 @@ birth_date::birth_date(string s) {
 	getline(ss, buff, '.');  this->year = stoi(buff);
 }
 
-home_address::home_address(string s) {
+birth_date::birth_date() {}
+
+home_address::home_address(const string& s) {
 	for (int i = 0; i < 6; i++) this->index[i] = s[i];
-	s = s.substr(7);
+	//s = s.substr(7);
 	istringstream ss(s);
 	getline(ss, this->country, ',');
 	getline(ss, this->region, ',');
-	getline(ss, this->district, ',');
+	getline(ss, this->district, ',');          // решить вопрос с индексом
 	getline(ss, this->city, ',');
 	getline(ss, this->street, ',');
 	getline(ss, this->house, ',');
@@ -26,8 +29,10 @@ home_address::home_address(string s) {
 	this->flat = stoi(buff);
 }
 
-pupil::pupil(string FIO, string klass, string gen, string date,
-	string address) : home(address), date(date) {
+home_address::home_address() {}
+
+pupil::pupil(const string& FIO, const string& klass, const string& gen, const string& date,
+	const string& address) : home(address), date(date) {
 	istringstream ss(FIO);
 	getline(ss, this->surname, ' ');
 	getline(ss, this->name, ' ');
@@ -37,13 +42,7 @@ pupil::pupil(string FIO, string klass, string gen, string date,
 	else this->gen = gender::WOMAN;
 }
 
-pupil::pupil() : home("111111,a,b,c,d,e,f,1"), date("1.1.1") {
-	this->surname = "";
-	this->name = "";
-	this->fathername = "";
-	this->gen = gender::MAN;
-	this->klass = "";
-}
+pupil::pupil() {}
 
 void pupil::print() {
 	cout << "#___#" << endl;
@@ -72,7 +71,7 @@ void school::print() {
 		cout << i + 1 << ") " << this->list[i].klass << "\t"
 			<< this->list[i].surname << " " << this->list[i].name << " "
 			<< this->list[i].fathername << "\t";
-		if (this->list[i].gen == gender::MAN) cout << "Male\t";
+		if (this->list[i].gen == gender::MAN) cout << "Male\t";        // переписать на перегрузку оператора
 		else cout << "Female\t";
 		if (this->list[i].date.day < 10) cout << '0';
 		cout << this->list[i].date.day << ".";
@@ -83,22 +82,22 @@ void school::print() {
 }
 
 
-school::school(const char* fn) {
-	freopen(fn, "r", stdin);
+school::school(const string& fn) {
+	cout << fn << endl;
+	ifstream file(fn);
 	string FIO = "", klass = "", gen = "", date = "", address = "";
 	int i = 0, cnt = 0, cur = 0;
 	this->count = 0;
-	while (getline(cin, FIO)) this->count++;
+	while (getline(file, FIO)) this->count++;
 	this->list = new pupil[this->count];
-	freopen(fn, "r", stdin);
-	cin.clear();
 	for(i = 0; i < this->count; i++) {
 		getline(cin, FIO, ';');
-		getline(cin, klass, ';');
+		getline(cin, klass, ';');          // использовать фстрим
 		getline(cin, gen, ';');
 		getline(cin, date, ';');
 		getline(cin, address, '\n');
 		pupil p(FIO, klass, gen, date, address);
+		p.print();
 		this->list[i] = p;
 	}
 }
