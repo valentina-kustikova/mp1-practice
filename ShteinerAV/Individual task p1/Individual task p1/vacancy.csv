@@ -1,0 +1,24 @@
+vacancy_id;company_id;name;conditions;requirements;salary
+1;1;Manager;schedule 5/2, office;knowledge of 1C, experience from 1 year;60000
+2;3;Engineer;schedule 5/2, flexible start;knowledge of AutoCAD, experience from 1 year;55000
+3;1;Manager;schedule 5/2, office, medical insurance;knowledge of 1C, experience from 3 years, team management;90000
+4;4;TechSupport;schedule 2/2, office;customer service skills, basic networking;50000
+5;5;Developer;schedule flexible, remote;Python, Django, experience from 2 years;120000
+6;7;Salesman;schedule 5/2, office;active sales experience, negotiation skills;75000
+7;8;Engineer;schedule 5/2, site visits;construction supervision, estimate preparation;85000
+8;11;Admin;schedule 5/2, office;customer service, MS Office, experience from 1 year;45000
+9;15;Analyst;schedule flexible, remote;SQL, BPMN, experience from 3 years;110000
+10;17;Support;schedule 5/2, office;hardware troubleshooting, Windows;60000
+11;19;Manager;schedule 5/2, hybrid;SMM, copywriting, Photoshop;65000
+12;1;Manager;schedule 5/2, office, corporate events;knowledge of 1C, experience from 1 year, team player;65000
+13;3;Engineer;schedule 5/2, flexible start, project work;knowledge of AutoCAD, experience from 3 years;70000
+14;11;Manager;schedule 5/2, office, business trips;supply chain management, 1C:Logistics, experience from 2 years;85000
+15;16;Operator;schedule 2/2, warehouse, shift bonuses;attention to detail, physical fitness, forklift license;55000
+16;4;Admin;schedule 5/2, hybrid, corporate training;Windows/Linux administration, experience from 3 years, networking;80000
+17;6;TechSupport;schedule 2/2, office, night shifts;customer service skills, advanced networking, ticketing systems;55000
+18;17;Support;schedule 5/2, hybrid, on-call rotation;hardware troubleshooting, Windows, MacOS, experience from 1 year;70000
+19;7;Salesman;schedule 5/2, remote possible, KPIs;active sales experience, negotiation skills, CRM;80000
+20;19;Manager;schedule flexible, remote, performance bonus;SMM, copywriting, Photoshop, analytics;70000
+21;9;Engineer;schedule 5/2, site visits, overtime pay;construction supervision, estimate preparation, safety protocols;90000
+22;20;Engineer;schedule 5/2, office, housing allowance;project management, team leadership, experience from 6 years;140000
+23;18;Analyst;schedule flexible, remote, stock options;SQL, BPMN, Python, experience from 4 years;130000
