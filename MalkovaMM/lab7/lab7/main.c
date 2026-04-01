@@ -5,17 +5,8 @@
 
 int main(int argc, char** argv) {
 	char* fname;
-	int deg1;
-	int deg2;
-	int resdeg;
-	polinom p1;
-	polinom p2;
-	polinom pres;
-	int res;
-	int i;
-	int choice;
-	int num;
-	int x;
+	int deg1, deg2, resdeg, res, i, choice, num, x;
+	polinom p1, p2, pres;
 	setlocale(LC_ALL, "Rus");
 	if (argc < 2) {
 		printf("Incorrect parametres");
@@ -26,62 +17,34 @@ int main(int argc, char** argv) {
 	deg2 = degpol(fname, 2);
 	p1 = pcreate(fname, deg1, 1);
 	p2 = pcreate(fname, deg2, 2);
-	printf("Полиномы:\n");
-	printf("1) Степень: %d\n", deg1);
-	printf("Коэффициенты: ");
-	for (i = deg1;i >=0 ;i--) 
-	{
-		printf("%d ", p1.coef[i]);
-	}
-	printf("\n2) Степень: %d\n", deg2);
-	printf("Коэффициенты: ");
-	for (i = deg2; i >= 0; i--)
-	{
-		printf("%d ", p2.coef[i]);
-	}
-	printf("\nвыберите какую операцию вы хотите проделать с ними:\n");
-	printf("сложить: 1\n");
-	printf("вычесть: 2\n");
-	printf("умножить: 3\n");
-	printf("дифференцировать: 4\n");
-	printf("вычислить значение в точке: 5\n");
+	printf("Полиномы:\n1)");
+	pprint(&p1);
+	printf("\n2)");
+	pprint(&p2);
+	printf("\nвыберите какую операцию вы хотите проделать с ними:\nсложить: 1\nвычесть: 2\nумножить: 3\nдифференцировать: 4\nвычислить значение в точке: 5\n");
 	scanf_s("%d", &choice);
-	if (choice == 1)
-		pres = pplus(&p1, &p2);
-	if (choice == 2)
-		pres = pminus(&p1, &p2);
-	if (choice == 3)
-		pres = pumn(&p1, &p2);
-	if (choice == 4)
-	{
+	if (choice == 1) pres = pplus(&p1, &p2);
+	if (choice == 2) pres = pminus(&p1, &p2);
+	if (choice == 3) pres = pumn(&p1, &p2);
+	if (choice == 4){
 		printf("введите 1 или 2 - номер полинома: ");
 		scanf_s("%d", &num);
-		if (num == 1)
-			pres = pdif(&p1);
-		else if (num == 2)
-			pres = pdif(&p2);
+		if (num == 1) pres = pdif(&p1);
+		else if (num == 2) pres = pdif(&p2);
 	}
-	if (choice == 5)
-	{
+	if (choice == 5){
 		printf("введите 1 или 2 - номер полинома: ");
 		scanf_s("%d", &num);
 		printf("введите число, от которого будем считать значение: ");
 		scanf_s("%d", &x);
-		if (num==1)
-			res = pznach(&p1, x);
-		else if (num==2)
-			res = pznach(&p2, x);
+		if (num==1) res = pznach(&p1, x);
+		else if (num==2) res = pznach(&p2, x);
 		printf("значение полинома в этой точке: %d", res);
 	}
-	if ((choice >= 1) && (choice <= 4))
-	{
+	if ((choice >= 1) && (choice <= 4)){
 		resdeg = pres.deg;
-		printf("Степень получившегося полинома: %d\n", resdeg);
-		printf("Коэффициенты: ");
-		for (i = resdeg; i >=0; i--)
-		{
-			printf("%d ", pres.coef[i]);
-		}
+		printf("Получившийся полином: \n");
+		pprint(&pres);
 	}
 	return 0;
 }

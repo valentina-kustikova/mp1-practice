@@ -14,6 +14,7 @@ polinom pminus(polinom* p1, polinom* p2);
 polinom pumn(polinom* p1, polinom* p2);
 int pznach(polinom* p, double  x);
 polinom pdif(polinom* p);
+void pprint(polinom* p);
 
 #endif
 
