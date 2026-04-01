@@ -4,8 +4,13 @@
 #include "hr_db.hpp"
 
 int Employee::age_by_date(std::chrono::year_month_day date) const {
-	auto diff = std::chrono::sys_days(passport.birthday) - std::chrono::sys_days(date);
-	return std::chrono::duration_cast<std::chrono::years>(diff).count();
+	auto birth_sys = std::chrono::sys_days(passport.birthday);
+	auto date_sys = std::chrono::sys_days(date);
+	auto year_diff = date.year() - passport.birthday.year();
+	int age = static_cast<int>(year_diff.count());
+	if (date_sys < birth_sys + std::chrono::years(age))
+		age--;
+	return age;
 }
 
 std::ostream& operator<<(std::ostream& out, Employee employee) {
