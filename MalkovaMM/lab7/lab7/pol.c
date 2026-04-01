@@ -117,9 +117,9 @@ polinom pumn(polinom* p1, polinom* p2)
 		pu.coef[k] = 0;
 	}
 	int i = 0;
-	int j;
 	for (; i <= p1->deg; i++)
 	{
+		int j;
 		for (j=0; j <= p2->deg; j++)
 		{
 			pu.coef[i + j] += p1->coef[i] * p2->coef[j];
