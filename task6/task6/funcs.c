@@ -12,6 +12,7 @@
 
 Book* file_open(const char* filename, int* n) {
 
+    Book* books;
     char line[MAX_LINE_LEN];
     int i = 0;
     int book_count;
@@ -19,20 +20,14 @@ Book* file_open(const char* filename, int* n) {
     FILE* file = fopen(filename, "r");
     if (file==NULL) {
         printf("File not found\n");
-        *n = 0;
         return NULL;
     }
 
-    if (fscanf(file, "%d\n", &book_count) != 1) {
-        printf("Error reading book count\n");
-        fclose(file);
-        *n = 0;
-        return NULL;
-    }
+    fscanf(file, "%d\n", &book_count);
 
-    Book* books = (Book*)malloc(sizeof(Book) * book_count);
+    books = (Book*)malloc(sizeof(Book) * book_count);
 
-    while (i < book_count && fgets(line, MAX_LINE_LEN, file)) {
+    while (i < book_count && fgets(line, MAX_LINE_LEN, file) != NULL) {
         books[i] = divide_line(line);
         i++;
     }
@@ -83,9 +78,11 @@ char* to_lower(char* arr) {
 
 void find_by_author(Book* books, int n, char* author) {
     char author_copy[100];
+    char buffer[512];
+
     strcpy(author_copy, author);
     to_lower(author_copy);
-    char buffer[512];
+
 
     for (int i = 0; i < n; i++) {
 
