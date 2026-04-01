@@ -29,30 +29,30 @@ void cpy(char** output, const char* input)
 	strncpy(*output, input, len + 1);
 }
 
-void CopyU(University* universityCopy, const University universityOriginal)
+void CopyU(University* universityCopy, const University* universityOriginal)
 {
 	int i;
-	universityCopy->numOfSpecialties = universityOriginal.numOfSpecialties;
-	universityCopy->specialties = (char**)malloc(universityOriginal.numOfSpecialties * sizeof(char*));
-	universityCopy->contestDay = (unsigned int*)malloc(universityOriginal.numOfSpecialties * sizeof(unsigned int));
-	universityCopy->contestNight = (unsigned int*)malloc(universityOriginal.numOfSpecialties * sizeof(unsigned int));
-	universityCopy->contestOnline = (unsigned int*)malloc(universityOriginal.numOfSpecialties * sizeof(unsigned int));
-	universityCopy->cost = (unsigned int*)malloc(universityOriginal.numOfSpecialties * sizeof(unsigned int));
-	for (i = 0; i < universityOriginal.numOfSpecialties; i++)
+	universityCopy->numOfSpecialties = universityOriginal->numOfSpecialties;
+	universityCopy->specialties = (char**)malloc(universityOriginal->numOfSpecialties * sizeof(char*));
+	universityCopy->contestDay = (unsigned int*)malloc(universityOriginal->numOfSpecialties * sizeof(unsigned int));
+	universityCopy->contestNight = (unsigned int*)malloc(universityOriginal->numOfSpecialties * sizeof(unsigned int));
+	universityCopy->contestOnline = (unsigned int*)malloc(universityOriginal->numOfSpecialties * sizeof(unsigned int));
+	universityCopy->cost = (unsigned int*)malloc(universityOriginal->numOfSpecialties * sizeof(unsigned int));
+	for (i = 0; i < universityOriginal->numOfSpecialties; i++)
 	{
-		cpy(&(universityCopy->specialties[i]), universityOriginal.specialties[i]);
-		universityCopy->contestDay[i] = universityOriginal.contestDay[i];
-		universityCopy->contestNight[i] = universityOriginal.contestNight[i];
-		universityCopy->contestOnline[i] = universityOriginal.contestOnline[i];
-		universityCopy->cost[i] = universityOriginal.cost[i];
+		cpy(&(universityCopy->specialties[i]), universityOriginal->specialties[i]);
+		universityCopy->contestDay[i] = universityOriginal->contestDay[i];
+		universityCopy->contestNight[i] = universityOriginal->contestNight[i];
+		universityCopy->contestOnline[i] = universityOriginal->contestOnline[i];
+		universityCopy->cost[i] = universityOriginal->cost[i];
 	}
-	cpy(&(universityCopy->adres.city), universityOriginal.adres.city);
-	cpy(&(universityCopy->adres.street), universityOriginal.adres.street);
-	cpy(&(universityCopy->adres.home), universityOriginal.adres.home);
-	cpy(&(universityCopy->name), universityOriginal.name);
+	cpy(&(universityCopy->adres.city), universityOriginal->adres.city);
+	cpy(&(universityCopy->adres.street), universityOriginal->adres.street);
+	cpy(&(universityCopy->adres.home), universityOriginal->adres.home);
+	cpy(&(universityCopy->name), universityOriginal->name);
 }
 
-void CopyUOnlyOneSpec(University* universityCopy, const University universityOriginal, char* spec)
+void CopyUOnlyOneSpec(University* universityCopy, const University*  universityOriginal, char* spec)
 {
 	int i;
 	universityCopy->numOfSpecialties = 1;
@@ -61,21 +61,21 @@ void CopyUOnlyOneSpec(University* universityCopy, const University universityOri
 	universityCopy->contestNight = (unsigned int*)malloc(sizeof(unsigned int));
 	universityCopy->contestOnline = (unsigned int*)malloc(sizeof(unsigned int));
 	universityCopy->cost = (unsigned int*)malloc(sizeof(unsigned int));
-	for (i = 0; i < universityOriginal.numOfSpecialties; i++)
+	for (i = 0; i < universityOriginal->numOfSpecialties; i++)
 	{
-		if (strstr(universityOriginal.specialties[i], spec)) {
-			cpy(&(universityCopy->specialties[0]), universityOriginal.specialties[i]);
-			universityCopy->contestDay[0] = universityOriginal.contestDay[i];
-			universityCopy->contestNight[0] = universityOriginal.contestNight[i];
-			universityCopy->contestOnline[0] = universityOriginal.contestOnline[i];
-			universityCopy->cost[0] = universityOriginal.cost[i];
+		if (strstr(universityOriginal->specialties[i], spec)) {
+			cpy(&(universityCopy->specialties[0]), universityOriginal->specialties[i]);
+			universityCopy->contestDay[0] = universityOriginal->contestDay[i];
+			universityCopy->contestNight[0] = universityOriginal->contestNight[i];
+			universityCopy->contestOnline[0] = universityOriginal->contestOnline[i];
+			universityCopy->cost[0] = universityOriginal->cost[i];
 			break;
 		}
 	}
-	cpy(&(universityCopy->adres.city), universityOriginal.adres.city);
-	cpy(&(universityCopy->adres.street), universityOriginal.adres.street);
-	cpy(&(universityCopy->adres.home), universityOriginal.adres.home);
-	cpy(&(universityCopy->name), universityOriginal.name);
+	cpy(&(universityCopy->adres.city), universityOriginal->adres.city);
+	cpy(&(universityCopy->adres.street), universityOriginal->adres.street);
+	cpy(&(universityCopy->adres.home), universityOriginal->adres.home);
+	cpy(&(universityCopy->name), universityOriginal->name);
 }
 
 void bariers(char* str, int* start, int* numOfSims)
@@ -201,20 +201,21 @@ void read(char* fileName, DBUniversities* DBunivers)
 	return n;
 }
 
-void output(DBUniversities univs)
+void output(DBUniversities* univs)
 {
 	int i, j;
-	for (i = 0; i < univs.count; i++)
+	for (i = 0; i < univs->count; i++)
 	{
-		printf("Название вуза: %s\n", univs.universities[i].name);
-		printf("Адрес: %s, %s, %s\n", univs.universities[i].adres.city, univs.universities[i].adres.street, univs.universities[i].adres.home);
+		printf("Название вуза: %s\n", univs->universities[i].name);
+		printf("Адрес: %s, %s, %s\n", univs->universities[i].adres.city,
+			univs->universities[i].adres.street, univs->universities[i].adres.home);
 		printf("Специальности:\n");
-		for (j = 0; j < univs.universities[i].numOfSpecialties; j++)
+		for (j = 0; j < univs->universities[i].numOfSpecialties; j++)
 		{
-			printf("%s\n", univs.universities[i].specialties[j]);
+			printf("%s\n", univs->universities[i].specialties[j]);
 			printf("Конкурс прошлого года (Дневной/Вечерний/Заочный): %d/%d/%d\n",
-				univs.universities[i].contestDay[j], univs.universities[i].contestNight[j], univs.universities[i].contestOnline[j]);
-			printf("Оплата при договорном обучении: %.2fр.\n", univs.universities[i].cost[j]);
+				univs->universities[i].contestDay[j], univs->universities[i].contestNight[j], univs->universities[i].contestOnline[j]);
+			printf("Оплата при договорном обучении: %.2fр.\n", univs->universities[i].cost[j]);
 		}
 		printf("\n");
 	}

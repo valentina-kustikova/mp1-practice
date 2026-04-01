@@ -26,30 +26,29 @@ int main()
 			printf("¬ведите название вуза: ");
 			fgets(str, 255, stdin);
 			str[strlen(str) - 1] = '\0';
-			allAboutUniver(DBUnivers, str);
+			allAboutUniver(&DBUnivers, str);
 			break;
 		case 2:
 			while (getchar() != '\n');
 			printf("¬ведите название специальности: ");
 			fgets(str, 255, stdin);
 			str[strlen(str) - 1] = '\0';
-			allAboutSpec(DBUnivers, str);
+			allAboutSpec(&DBUnivers, str);
 			break;
 		case 3:
 			while (getchar() != '\n');
 			printf("¬ведите название специальности: ");
 			fgets(str, 255, stdin);
 			str[strlen(str) - 1] = '\0';
-			minContestSpec(&FindedDBUnivers, DBUnivers, str);
-			printf("%d\n\n", FindedDBUnivers.count);
-			output(FindedDBUnivers);
+			minContestSpec(&FindedDBUnivers, &DBUnivers, str);
+			output(&FindedDBUnivers);
 			freeDBU(&FindedDBUnivers);
 			break;
 		case 4:
-			findSpec(DBUnivers);
+			findSpec(&DBUnivers);
 			break;
 		case 5:
-			output(DBUnivers);
+			output(&DBUnivers);
 			break;
 		default:
 			while (getchar() != '\n');
