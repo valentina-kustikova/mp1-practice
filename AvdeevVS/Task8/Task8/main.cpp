@@ -1,12 +1,14 @@
 #include "working.hpp"
 int main(int argc, char** argv) {
   try {
+    system("color F5"); //5-violet 0-black
+
+    string str_argv = argv[1];
     if (argc < 2) {
       throw "Error --> Incorrect parameters of argv!";
     }
     jobless_base required;
-    //jobless_base jobless(std::string(argv[1]));
-    jobless_base jobless(argv[1]);
+    jobless_base jobless(str_argv);
     //cout << jobless;
     jobless.Finding_right_options(required);
     if (required.njobless == 0) {

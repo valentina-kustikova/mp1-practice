@@ -1,33 +1,128 @@
 #include "working.hpp"
+
+date_of_birth::date_of_birth(int day, int month, int year) {
+  this->day = day;
+  this->month = month;
+  this->year = year;
+}
+ostream& operator<< (ostream& out, const date_of_birth& a) {
+  if (a.day < 10) out << "0" << a.day << ".";
+  else out << a.day << ".";
+  if (a.month < 10) out << "0" << a.month << ".";
+  else out << a.month << ".";
+  out << a.year << ";";
+  return out;
+}
+const date_of_birth& date_of_birth::operator= (const date_of_birth& a) {
+  if (this == &a) return *this;
+  this->day = a.day;
+  this->month = a.month;
+  this->year = a.year;
+  return *this;
+}
+
+last_job::last_job(const string& position, const string& place, const string& reason_for_termination) {
+  this->position = position;
+  this->place = place;
+  this->reason_for_termination = reason_for_termination;
+}
+ostream& operator<< (ostream& out, const last_job& a) {
+  out << a.position << ";" << a.place << ";" << a.reason_for_termination << ";";
+  return out;
+}
+const last_job& last_job::operator= (const last_job& a) {
+  if (this == &a) return *this;
+  this->position = a.position;
+  this->place = a.place;
+  this->reason_for_termination = a.reason_for_termination;
+  return *this;
+}
+
+str_address::str_address(const string& town, const string& street, int home, int flat) {
+  this->town = town;
+  this->street = street;
+  this->home = home;
+  this->flat = flat;
+}
+ostream& operator<< (ostream& out, const str_address& a) {
+  out << a.town << "," << a.street << "," << a.home << "," << a.flat;
+  return out;
+}
+const str_address& str_address::operator= (const str_address& a) {
+  if (this == &a) return *this;
+  this->town = a.town;
+  this->street = a.street;
+  this->home = a.home;
+  this->flat = a.flat;
+  return *this;
+}
+
+str_contact::str_contact(const string& phone_number, const string& town, const string& street, int home, int flat) {
+  this->phone_number = phone_number;
+  this->address = str_address(town,street,home,flat);
+}
+ostream& operator<< (ostream& out, const str_contact& a) {
+  out << a.phone_number << ";" << a.address;
+  return out;
+}
+const str_contact& str_contact::operator= (const str_contact& a) {
+  if (this == &a) return *this;
+  this->phone_number = a.phone_number;
+  this->address = a.address;
+  return *this;
+}
+
+str_full_name::str_full_name(const string& first_name, const string& surname, const string& patronymic) {
+  this->first_name = first_name;
+  this->surname = surname;
+  this->patronymic = patronymic;
+}
+ostream& operator<< (ostream& out, const str_full_name& a) {
+  out << a.surname << " " << a.first_name << " " << a.patronymic << ";";
+  return out;
+}
+const str_full_name& str_full_name::operator= (const str_full_name& a) {
+  if (this == &a) return *this;
+  this->surname = a.surname;
+  this->first_name = a.first_name;
+  this->patronymic = a.patronymic;
+  return *this;
+}
+
+jobless_people::jobless_people() {
+  this->full_name = str_full_name(" ", " ", " ");
+  this->birth_date = date_of_birth(0, 0, 0);
+  this->profession = ' ';
+  this->education = ' ';
+  this->previous_job = last_job(" "," "," ");
+  this->marital_status = ' ';
+  this->contact_information = str_contact("", "", "", 0, 0);
+}
+const jobless_people& jobless_people::operator= (const jobless_people& a) {
+  if (this == &a) return *this;
+  this->full_name = a.full_name;
+  this->birth_date = a.birth_date;
+  this->profession = a.profession;
+  this->education = a.education;
+  this->previous_job = a.previous_job;
+  this->marital_status = a.marital_status;
+  this->contact_information= a.contact_information;
+  return *this;
+}
+ostream& operator<< (ostream& out, const jobless_people& a) {
+  out << a.full_name << a.birth_date << a.profession<<";"
+    << a.education << ";" << a.previous_job << a.marital_status << ";" << a.contact_information;
+  return out;
+}
+
 jobless_base::jobless_base() {
   this->njobless = 0;
   this->persons = nullptr; // --> рабочий вариант
-  /*this->njobless = 1;
-  this->persons = new jobless_people[this->njobless];*/
-  /*jobless_people a;
-  persons[0] = a;*/
-  /*persons[0].full_name.surname = ' ';
-  persons[0].full_name.first_name = ' ';
-  persons[0].full_name.patronymic = ' ';
-  persons[0].birth_date.day = 0;
-  persons[0].birth_date.month = 0;
-  persons[0].birth_date.year = 0;
-  persons[0].profession = ' ';
-  persons[0].education = ' ';
-  persons[0].previous_job.position = ' ';
-  persons[0].previous_job.place = ' ';
-  persons[0].previous_job.reason_for_termination = ' ';
-  persons[0].marital_status = ' ';
-  persons[0].contact_information.phone_number = ' ';
-  persons[0].contact_information.address.town = ' ';
-  persons[0].contact_information.address.street = ' ';
-  persons[0].contact_information.address.home = 0;
-  persons[0].contact_information.address.flat = 0;*/
 }
-jobless_base::jobless_base(char* filename ) {
+jobless_base::jobless_base(const string& filename) {
   ifstream f(filename);
   if (f.is_open() == false) {
-     throw "Error --> The file does not exist or permissions are missing!";
+    throw "Error --> The file does not exist or permissions are missing!";
   }
   string s;
   int count = 0;
@@ -41,65 +136,40 @@ jobless_base::jobless_base(char* filename ) {
   this->persons = new jobless_people[this->njobless];
   f.clear();
   f.seekg(0, ios::beg);
-  int i=0;
+  int i = 0;
   for (int i = 0; i < this->njobless; i++) {
-    getline(f, s, ' '); persons[i].full_name.surname = s;
-    getline(f, s, ' '); persons[i].full_name.first_name = s;
-    getline(f, s, ';'); persons[i].full_name.patronymic = s;
-    getline(f, s, '.'); persons[i].birth_date.day = stoi(s);
-    getline(f, s, '.'); persons[i].birth_date.month = stoi(s);
-    getline(f, s, ';'); persons[i].birth_date.year = stoi(s);
+    string surname, first_name, patronymic;
+    getline(f, s, ' '); surname = s;
+    getline(f, s, ' '); first_name = s;
+    getline(f, s, ';'); patronymic = s;
+    this->persons[i].full_name = str_full_name(first_name,surname, patronymic);
+
+    int day, month, year;
+    getline(f, s, '.'); day = stoi(s);
+    getline(f, s, '.'); month = stoi(s);
+    getline(f, s, ';'); year = stoi(s);
+    this->persons[i].birth_date = date_of_birth(day, month, year);
+
     getline(f, s, ';'); persons[i].profession = s;
     getline(f, s, ';'); persons[i].education = s;
-    getline(f, s, ';'); persons[i].previous_job.position = s;
-    getline(f, s, ';'); persons[i].previous_job.place = s;
-    getline(f, s, ';'); persons[i].previous_job.reason_for_termination = s;
+
+    string position, place, reason_for_termination;
+    getline(f, s, ';'); position = s;
+    getline(f, s, ';'); place = s;
+    getline(f, s, ';'); reason_for_termination = s;
+    this->persons[i].previous_job = last_job(position, place, reason_for_termination);
+
     getline(f, s, ';'); persons[i].marital_status = s;
-    getline(f, s, ';'); persons[i].contact_information.phone_number = s;
-    getline(f, s, ','); persons[i].contact_information.address.town = s;
-    getline(f, s, ','); persons[i].contact_information.address.street = s;
-    getline(f, s, ','); persons[i].contact_information.address.home = stoi(s);
-    getline(f, s); persons[i].contact_information.address.flat = stoi(s);
+
+    string phone_number, town, street; int home, flat;
+    getline(f, s, ';'); phone_number = s;
+    getline(f, s, ','); town = s;
+    getline(f, s, ','); street = s;
+    getline(f, s, ','); home = stoi(s);
+    getline(f, s); flat = stoi(s);
+    this->persons[i].contact_information = str_contact(phone_number, town, street, home, flat);
   }
   f.close();
-}
-jobless_people::jobless_people() {
-  this->full_name.surname = ' ';
-  this->full_name.first_name = ' ';
-  this->full_name.patronymic = ' ';
-  //this->birth_date = date_of_birth(0, 0, 0);
-  this->profession = ' ';
-  this->education = ' ';
-  this->previous_job.position = ' ';
-  this->previous_job.place = ' ';
-  this->previous_job.reason_for_termination = ' ';
-  this->marital_status = ' ';
-  this->contact_information.phone_number = ' ';
-  this->contact_information.address.town = ' ';
-  this->contact_information.address.street = ' ';
-  this->contact_information.address.home = 0;
-  this->contact_information.address.flat = 0;
-}
-const jobless_people& jobless_people::operator= (const jobless_people& a) {
-  if (this == &a) return *this;
-  this->full_name.surname = a.full_name.surname;
-  this->full_name.first_name = a.full_name.first_name;
-  this->full_name.patronymic = a.full_name.patronymic;
-  this->birth_date.day = a.birth_date.day;
-  this->birth_date.month = a.birth_date.month;
-  this->birth_date.year = a.birth_date.year;
-  this->profession = a.profession;
-  this->education = a.education;
-  this->previous_job.position = a.previous_job.position;
-  this->previous_job.place = a.previous_job.place;
-  this->previous_job.reason_for_termination = a.previous_job.reason_for_termination;
-  this->marital_status = a.marital_status;
-  this->contact_information.phone_number = a.contact_information.phone_number;
-  this->contact_information.address.town = a.contact_information.address.town;
-  this->contact_information.address.street = a.contact_information.address.street;
-  this->contact_information.address.home = a.contact_information.address.home;
-  this->contact_information.address.flat = a.contact_information.address.flat;
-  return *this;
 }
 void jobless_base::Finding_right_options(jobless_base& required) {
   string s = "higher education";
@@ -110,7 +180,7 @@ void jobless_base::Finding_right_options(jobless_base& required) {
     for (int j = 0; j < temp.size(); j++) {
       temp[j] = tolower(temp[j]);
     }
-    if (temp.find(s) != string::npos) {       //maybe contains() c++23
+    if (temp.find(s) != string::npos) {       //возможен contains() c++23
       count++;
     }
   }
@@ -134,25 +204,8 @@ float jobless_base::Required_percent(const jobless_base& required) const {
 ostream& operator<< (ostream& out, const jobless_base& a) {
   for (int i = 0; i < a.njobless; i++) {
     out << i + 1 << ") --> ";
-    out << a.persons[i].full_name.surname << " ";
-    out << a.persons[i].full_name.first_name << " ";
-    out << a.persons[i].full_name.patronymic << ";";
-    if (a.persons[i].birth_date.day < 10) out << "0" << a.persons[i].birth_date.day << ".";
-    else out << a.persons[i].birth_date.day << ".";
-    if (a.persons[i].birth_date.month < 10) out << "0" << a.persons[i].birth_date.month << ".";
-    else out << a.persons[i].birth_date.month << ".";
-    out << a.persons[i].birth_date.year << ";";
-    out << a.persons[i].profession << ";";
-    out << a.persons[i].education << ";";
-    out << a.persons[i].previous_job.position << ";";
-    out << a.persons[i].previous_job.place << ";";
-    out << a.persons[i].previous_job.reason_for_termination << ";";
-    out << a.persons[i].marital_status << ";";
-    out << a.persons[i].contact_information.phone_number << ";";
-    out << a.persons[i].contact_information.address.town << ",";
-    out << a.persons[i].contact_information.address.street << ",";
-    out << a.persons[i].contact_information.address.home << ",";
-    out << a.persons[i].contact_information.address.flat << endl << endl;
+    out << a.persons[i];
+    out << endl << endl;
   }
     return out;
 }
