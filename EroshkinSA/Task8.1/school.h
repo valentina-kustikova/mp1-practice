@@ -8,14 +8,14 @@ struct home_address {
 	string country, region, district, city, street, house;
 
 	home_address(const string&);
-	home_address();
+	home_address() {};
 };
 
 struct birth_date {
 	int day, month, year;
 
 	birth_date(const string&);
-	birth_date();
+	birth_date() {};
 };
 
 enum class gender{
@@ -29,10 +29,10 @@ struct pupil {
 	home_address home;
 
 	pupil (const string&, const string&, const string&, const string&, const string&);
-	pupil();
-
-	void print(); // ostream
+	pupil() {};
 };
+
+ostream& operator<<(ostream&, pupil&);
 
 struct school {
 	int count;
@@ -42,9 +42,9 @@ struct school {
 	~school();
 
 	void sort();
-	void print(); // ostream
 };
 
+ostream& operator<<(ostream&, school&);
 
 
 void swap(pupil& a, pupil& b);

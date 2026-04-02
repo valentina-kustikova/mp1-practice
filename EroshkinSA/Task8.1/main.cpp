@@ -4,8 +4,12 @@
 using namespace std;
 
 int main(int argc, char** argv) {
-	school sch(string(argv[1]));
-	//sch.sort();
-	//sch.print();
+	try {
+		const string s(argv[1]);
+		school sch(s);
+		sch.sort();
+		cout << sch << endl;
+	}
+	catch (...) {}
 	return 0;
 }
