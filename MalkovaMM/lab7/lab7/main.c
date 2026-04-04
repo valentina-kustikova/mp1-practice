@@ -39,7 +39,7 @@ int main(int argc, char** argv) {
 		scanf_s("%d", &x);
 		if (num==1) res = pznach(&p1, x);
 		else if (num==2) res = pznach(&p2, x);
-		printf("значение полинома в этой точке: %d", res);
+		printf("значение полинома в этой точке: %d\n", res);
 	}
 	if ((choice >= 1) && (choice <= 4)){
 		resdeg = pres.deg;

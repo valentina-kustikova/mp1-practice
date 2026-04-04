@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "pol.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -65,26 +66,26 @@ polinom pplus(polinom* p1, polinom* p2)
 	{
 		ps.coef[i] = p1->coef[i] + p2->coef[i];
 	}
-	if (p1->deg == mindeg)
-	{
-		for (i = mindeg + 1; i <= maxdeg; i++)
+	if (mindeg!=maxdeg)
+		if (p1->deg == mindeg)
 		{
-			ps.coef[i] = p2->coef[i];
+			for (i = mindeg + 1; i <= maxdeg; i++)
+			{
+				ps.coef[i] = p2->coef[i];
+			}
 		}
-	}
-	else
-	{
-		for (i = mindeg + 1; i <= maxdeg; i++)
+		else
 		{
-			ps.coef[i] = p1->coef[i];
+			for (i = mindeg + 1; i <= maxdeg; i++)
+			{
+				ps.coef[i] = p1->coef[i];
+			}
 		}
-	}
 	degnew = ps.deg;
 	for (i=ps.deg; i>=0; i--)
 	{
 		if (ps.coef[i] == 0) {
 			degnew = degnew - 1;
-			printf("%d", degnew);
 		}
 		else
 			break;
@@ -99,11 +100,12 @@ polinom pminus(polinom* p1, polinom* p2)
 	polinom pm;
 	polinom pp2;
 	pp2.deg = p2->deg;
+	pp2.coef = (int*)malloc((pp2.deg + 1) * sizeof(int));
 	for (; i <= p2->deg; i++)
 	{
 		pp2.coef[i] = -p2->coef[i];
 	}
-	pm = pplus(&p1, &pp2);
+	pm = pplus(p1, &pp2);
 	return pm;
 }
 polinom pumn(polinom* p1, polinom* p2)
