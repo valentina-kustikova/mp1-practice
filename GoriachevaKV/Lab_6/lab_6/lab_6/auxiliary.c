@@ -21,7 +21,13 @@ int books_r(int* lines) {
 	return 0;
 }
 
-int put_books_into_array(int* lines, BOOK* library) {
-
+int put_books_into_array(int* lines, BOOK* library, char *delimeter) {
+	char buff[BUFFER_SIZE];
+	FILE* fp = fopen("in.txt", "r");
+	char* a, b, c, d;
+	a = strtok(s, delimiter);
+	b = strtok(0, delimiter);
+	c = strtok(0, delimiter);
+	d = strtok(0, delimiter);
 	return 0;
 }
