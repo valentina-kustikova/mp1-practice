@@ -7,6 +7,8 @@
 phrase_library* file_to_struct(const char* file_name, int* count)
 {
 	char key_words_copy[512];
+	char temp[512];
+
 	int n = 0, i = 0;
 	FILE* file = fopen(file_name, "r");
 	char line[2048];
@@ -46,6 +48,7 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 	while (i < n && fgets(line, sizeof(line), file))
 	{
 		line[strcspn(line, "\n")] = 0;
+		//printf(%s\n", line);
 
 		char* the_line = strtok(line, ";");
 		char* author = strtok(NULL, ";");
@@ -53,38 +56,44 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 		char* topic = strtok(NULL, ";");
 		char* key_words = strtok(NULL, ";");
 
-		quotes[i].the_line = (quote*)malloc(strlen(the_line) + 1);
+		quotes[i].the_line = (char*)malloc(strlen(the_line) + 1);
 		strcpy_s(quotes[i].the_line, strlen(the_line) + 1, the_line);
 
-		quotes[i].author = (quote*)malloc(strlen(author) + 1);
+		quotes[i].author = (char*)malloc(strlen(author) + 1);
 		strcpy_s(quotes[i].author, strlen(author) + 1, author);
 
-		quotes[i].source = (quote*)malloc(strlen(source) + 1);
+		quotes[i].source = (char*)malloc(strlen(source) + 1);
 		strcpy_s(quotes[i].source, strlen(source) + 1, source);
 
-		quotes[i].topic = (quote*)malloc(strlen(topic) + 1);
+		quotes[i].topic = (char*)malloc(strlen(topic) + 1);
 		strcpy_s(quotes[i].topic, strlen(topic) + 1, topic);
 
-		strcpy(key_words_copy, key_words);
-
-		char* a_word = strtok(key_words_copy, ",");
+		
+		
+		strcpy_s(temp, sizeof(temp), key_words);
 		int key_words_count = 0;
+		char* a_word = strtok(temp, ",");
+
 		while (a_word != NULL)
 		{	
 			key_words_count += 1;
 			a_word = strtok(NULL, ",");
 		}
 
-		quotes[i].key_words = (char**)malloc(sizeof(char*) * key_words_count);
+		quotes[i].key_words = malloc(sizeof(char*) * key_words_count);
 		quotes[i].key_words_count = key_words_count;
+
+		char key_words_temp2[512];
+		strcpy_s(key_words_temp2, sizeof(key_words_temp2), key_words);
+
 		int j = 0;
-		a_word = strtok(key_words, ",");
+		a_word = strtok(key_words_temp2, ",");
 		while (a_word != NULL)
 		{
-			quotes[i].key_words[j] = (char*)malloc(sizeof(a_word) + 1);
+			quotes[i].key_words[j] = malloc(strlen(a_word) + 1);
 			strcpy_s(quotes[i].key_words[j], strlen(a_word) + 1, a_word);
 			j++;
-			printf_s("%s", &quotes[i].key_words[j]);
+			printf("%s", quotes[i].key_words[j]);
 			a_word = strtok(NULL, ",");
 		}
 		
