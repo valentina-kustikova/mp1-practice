@@ -7,10 +7,10 @@
 int main()
 {
 	phrase_library* quotes;
+	phrase_library* founded;
 	char file_name[] = "list.txt";
 	int count = 0;
 	quotes = file_to_struct(file_name, &count);
-
 
 	char request_word[512];
 	char exit[] = "exit";
@@ -34,11 +34,9 @@ int main()
 			return 0;
 		}
 
-		//find_quotes_by_key_words(quotes, request_word);
+		find_quotes_by_key_words(quotes, request_word, founded);
 
-		print_found_quotes(quotes);		
+		//print_found_quotes(quotes);		
 
 	} while (1);
-	free_memory(quotes);
-	return 0;
 }

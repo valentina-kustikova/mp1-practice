@@ -6,7 +6,6 @@
 
 phrase_library* file_to_struct(const char* file_name, int* count)
 {
-	char key_words_copy[512];
 	char temp[512];
 
 	int n = 0, i = 0;
@@ -48,7 +47,6 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 	while (i < n && fgets(line, sizeof(line), file))
 	{
 		line[strcspn(line, "\n")] = 0;
-		//printf(%s\n", line);
 
 		char* the_line = strtok(line, ";");
 		char* author = strtok(NULL, ";");
@@ -69,7 +67,6 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 		strcpy_s(quotes[i].topic, strlen(topic) + 1, topic);
 
 		
-		
 		strcpy_s(temp, sizeof(temp), key_words);
 		int key_words_count = 0;
 		char* a_word = strtok(temp, ",");
@@ -80,20 +77,19 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 			a_word = strtok(NULL, ",");
 		}
 
-		quotes[i].key_words = malloc(sizeof(char*) * key_words_count);
+		quotes[i].key_words = (char**)malloc(sizeof(char*) * key_words_count);
 		quotes[i].key_words_count = key_words_count;
 
-		char key_words_temp2[512];
-		strcpy_s(key_words_temp2, sizeof(key_words_temp2), key_words);
+		strcpy_s(temp, sizeof(temp), key_words);
 
 		int j = 0;
-		a_word = strtok(key_words_temp2, ",");
+		a_word = strtok(temp, ",");
 		while (a_word != NULL)
 		{
-			quotes[i].key_words[j] = malloc(strlen(a_word) + 1);
+			quotes[i].key_words[j] = (char*)malloc(strlen(a_word) + 1);
 			strcpy_s(quotes[i].key_words[j], strlen(a_word) + 1, a_word);
+			//printf_s("%s\n", quotes[i].key_words[j]);
 			j++;
-			printf("%s", quotes[i].key_words[j]);
 			a_word = strtok(NULL, ",");
 		}
 		
