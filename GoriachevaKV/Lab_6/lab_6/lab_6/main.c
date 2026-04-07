@@ -2,35 +2,44 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include "library.h"
 #include "auxiliary.h"
 
+#define SURNAME_MAX_LEN 21
+#define FILENAME_MAX_LEN 101
+
 int main() {
-	int lines = 0;
-	int err = 0;
+	int i, lines = 0, found_cnt = 0, error = 0;
+	char needed_author[SURNAME_MAX_LEN];
+	char filename[FILENAME_MAX_LEN];
+	BOOK* library = NULL;
+	BOOK* found_books = NULL;
 
-	char s[100] = "author1;name1;publishment1;2001";
-	char delimiter[1] = ";";
-	char* a, b, c, d;
-	a = strtok(s, delimiter);
-	b = strtok(0, delimiter);
-	c = strtok(0, delimiter);
-	d = strtok(0, delimiter);
+	printf("Input the filename >> ");
+	scanf_s("%100s", &filename, sizeof(filename));
 
-	BOOK book_1;
-	book_1.author = (char*)malloc((strlen(a) + 1) * sizeof(char));
-	strcpy(book_1.author, a);
-	printf("%s\n\n", book_1.author);
-	free(book_1.author);
+	error = books_r(&lines, filename);
+	if (error == 1) return 1;
 
-	err = books_r(&lines);
-	if (err == 1) return 1;
-	else {
-		printf("Lines count: %d\n\n", lines);
+	printf("Input the surname >> ");
+	scanf_s("%20s", &needed_author, sizeof(needed_author));
+
+	put_books_into_array(&lines, filename, &library);
+	find_authors_books(&found_cnt, lines, library, &found_books, needed_author);
+	print_books(found_cnt, found_books, needed_author);
+
+	for (i = 0; i < found_cnt; i++) {
+		free(found_books[i].authors);
+		free(found_books[i].name);
+		free(found_books[i].publishing);
 	}
 
-	//BOOK* library = NULL;
-
+	for (i = 0; i < lines; i++) {
+		free(library[i].authors);
+		free(library[i].name);
+		free(library[i].publishing);
+	}
+	free(found_books);
+	free(library);
 	return 0;
 }

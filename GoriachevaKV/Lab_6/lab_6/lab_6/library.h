@@ -1,23 +1,14 @@
 #ifndef __LIBRARY_H_
 #define __LIBRARY_H_
 
-#include <string.h>
-#include <stdlib.h>
-
 #define MAX_STRING_SIZE 100
 
 typedef struct {
-	char* author;
+	char* authors;
 	char* name;
 	char* publishing;
-	char* publishing_year;
+	int publishing_year;
 }BOOK;
 
-/*typedef struct {
-	char* author[MAX_STRING_SIZE];
-	char* name[MAX_STRING_SIZE];
-	char* publishing[MAX_STRING_SIZE];
-	char* publishing_year[MAX_STRING_SIZE];
-}BOOK;*/
-
+void find_authors_books(int* found_cnt, int lines, BOOK* library, BOOK** found_books, char* needed_author);
 #endif
