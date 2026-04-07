@@ -15,12 +15,6 @@ int main() {
 	}
 	biblen = getrange(file);
 	books = (book*)malloc(sizeof(book) * biblen);
-	for (int i = 0; i < biblen; i++)
-	{
-		books[i].authors = (char*)malloc(sizeof(char) * 100);
-		books[i].name = (char*)malloc(sizeof(char) * 100);
-		books[i].publisher = (char*)malloc(sizeof(char) * 100);
-	}
 	loadbooks(file, books, biblen);
 	if (fgets(aut, sizeof(aut), stdin) == NULL) {
 		printf("getting error");

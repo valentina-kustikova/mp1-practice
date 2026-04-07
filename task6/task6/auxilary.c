@@ -18,7 +18,6 @@ void loadbooks(FILE *file, book* books, int n) {
 	char tmp[1000];
 	rewind(file);
 	for (i = 0; i < n; i++) {
-		printf("ok");
 		fgets(tmp, 999, file);
 		strcpy(books[i].authors, strtok(tmp, ":"));
 		strcpy(books[i].name, strtok(NULL, ":"));
@@ -26,7 +25,6 @@ void loadbooks(FILE *file, book* books, int n) {
 		if (sscanf(strtok(NULL, ":"), "%d", &books[i].year) != 1) {
 			printf("error");
 		}
-		printf("neok");
 	}
 }
 
