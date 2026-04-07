@@ -1,0 +1,15 @@
+Magnit; 15 Lenin Street; +7(495)123-45-67; grocery; JSC; Mon 08:00-23:00, Tue 08:00-23:00, Wed 08:00-23:00, Thu 08:00-23:00, Fri 08:00-23:00, Sat 09:00-22:00, Sun 09:00-22:00
+Pyaterochka; 22 Mira Avenue; +7(495)234-56-78; grocery; LLC; 24/7
+Dixie; 8 Gagarin Street; +7(495)345-67-89; grocery; LLC; Mon 09:00-22:00, Tue 09:00-22:00, Wed 09:00-22:00, Thu 09:00-22:00, Fri 09:00-22:00, Sat 10:00-21:00, Sun 10:00-21:00
+Perekrestok; 45 Sovetskaya Street; +7(495)456-78-90; grocery; JSC; 24/7
+Auchan; 50 Leningradskoe Highway; +7(495)567-89-01; hypermarket; LLC; Mon 09:00-23:00, Tue 09:00-23:00, Wed 09:00-23:00, Thu 09:00-23:00, Fri 09:00-23:00, Sat 09:00-23:00, Sun 09:00-23:00
+Lenta; 100 Kirova Street; +7(495)678-90-12; hypermarket; LLC; 24/7
+Okey; 33 Pobedy Avenue; +7(495)789-01-23; grocery; JSC; Mon 09:00-22:00, Tue 09:00-22:00, Wed 09:00-22:00, Thu 09:00-22:00, Fri 09:00-22:00, Sat 10:00-22:00, Sun 10:00-22:00
+VkusVill; 12 Molodezhnaya Street; +7(495)890-12-34; grocery; LLC; 24/7
+KrasnoeBeloe; 5 Novaya Street; +7(495)901-23-45; grocery; LLC; Mon 10:00-21:00, Tue 10:00-21:00, Wed 10:00-21:00, Thu 10:00-21:00, Fri 10:00-21:00, Sat 10:00-21:00, Sun 10:00-21:00
+Maxidom; 20 Severnaya Street; +7(495)012-34-56; hardware; LLC; Mon 09:00-20:00, Tue 09:00-20:00, Wed 09:00-20:00, Thu 09:00-20:00, Fri 09:00-20:00, Sat 10:00-18:00, Sun 10:00-18:00
+IKEA; MKAD 65th km; +7(495)123-45-67; furniture; JSC; Mon 10:00-22:00, Tue 10:00-22:00, Wed 10:00-22:00, Thu 10:00-22:00, Fri 10:00-22:00, Sat 10:00-22:00, Sun 10:00-22:00
+Monetka; 25 Zarechnaya Street; +7(495)678-90-12; grocery; LLC; 24/7
+Bristol; 18 Vostochnaya Street; +7(495)789-01-23; grocery; LLC; Mon 08:00-23:00, Tue 08:00-23:00, Wed 08:00-23:00, Thu 08:00-23:00, Fri 08:00-23:00, Sat 09:00-23:00, Sun 09:00-23:00
+Magnit; 42 Tsentralnaya Street; +7(495)890-12-34; grocery; JSC; 24/7
+Pyaterochka; 9 Parkovaya Street; +7(495)901-23-45; grocery; LLC; Mon 08:00-23:00, Tue 08:00-23:00, Wed 08:00-23:00, Thu 08:00-23:00, Fri 08:00-23:00, Sat 09:00-23:00, Sun 09:00-23:00
