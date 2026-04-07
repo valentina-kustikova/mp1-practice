@@ -14,6 +14,7 @@ int main()
 
 	char request_word[512];
 	char exit[] = "exit";
+	founded = (phrase_library*)malloc(sizeof(phrase_library));
 
 	setlocale(LC_ALL, "Russian");
 
@@ -36,7 +37,7 @@ int main()
 
 		find_quotes_by_key_words(quotes, request_word, founded);
 
-		//print_found_quotes(quotes);		
+		print_found_quotes(founded);		
 
 	} while (1);
 }

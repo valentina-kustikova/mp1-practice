@@ -8,10 +8,13 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 {
 	char temp[512];
 
-	int n = 0, i = 0;
+	int n = 0, i = 0, j = 0;
 	FILE* file = fopen(file_name, "r");
 	char line[2048];
 	quote* quotes = NULL;
+	int key_words_count = 0;
+	char* a_word;
+	phrase_library* library;
 
 	if (file == NULL)
 	{
@@ -45,7 +48,10 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 	}
 
 	while (i < n && fgets(line, sizeof(line), file))
-	{
+	{	
+		key_words_count = 0;
+		j = 0;
+
 		line[strcspn(line, "\n")] = 0;
 
 		char* the_line = strtok(line, ";");
@@ -68,8 +74,8 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 
 		
 		strcpy_s(temp, sizeof(temp), key_words);
-		int key_words_count = 0;
-		char* a_word = strtok(temp, ",");
+		
+		a_word = strtok(temp, ",");
 
 		while (a_word != NULL)
 		{	
@@ -82,7 +88,6 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 
 		strcpy_s(temp, sizeof(temp), key_words);
 
-		int j = 0;
 		a_word = strtok(temp, ",");
 		while (a_word != NULL)
 		{
@@ -96,7 +101,7 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 		i++;
 	}
 
-	phrase_library* library = (phrase_library*)malloc(sizeof(phrase_library));
+	library = (phrase_library*)malloc(sizeof(phrase_library));
 	library->phrases = quotes;
 	library->count = n;
 

@@ -20,7 +20,7 @@ typedef struct
 	int count;
 } phrase_library;
 
-//void find_quotes_by_key_words(phrase_library* library, const char* keyword_request);
+void find_quotes_by_key_words(phrase_library* library, const char* keyword_request, phrase_library* founded);
 
 
 #endif
