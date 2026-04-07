@@ -1,10 +1,17 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
-struct Book {
-	char author[256];
-	char name[256];
-	char publisher[256];
+
+#define AUTHORS 5
+#define M 256
+
+typedef struct {
+	char (*authors)[M];
+	int authors_count;
+	char name[M];
+	char publisher[M];
 	int year;
-};
-int searching(struct Book* library, int count, const char* author[], struct Book* found_books);
+} Book;
+
+int searching(Book* library, int count, const char* author, Book* found_books);
+void free_library(Book* library, int count);
 #endif

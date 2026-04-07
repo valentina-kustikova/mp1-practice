@@ -16,3 +16,8 @@ Boris Pasternak; Doctor Zhivago; Feltrinelli; 1957
 Alexander Solzhenitsyn; The Gulag Archipelago; YMCA Press; 1973
 Alexander Solzhenitsyn; One Day in the Life of Ivan Denisovich; Novy Mir; 1962
 Maxim Gorky; Mother; Znanie; 1906
+Ilya Ilf, Evgeny Petrov; The Twelve Chairs; Khudozhestvennaya Literatura; 1928
+Arkady Strugatsky, Boris Strugatsky; Roadside Picnic; Molodaya Gvardiya; 1972
+Arkady Vainer, Georgy Vainer; The Era of Mercy; Moskovsky Rabochiy; 1975
+Ilya Ilf, Evgeny Petrov; The Little Golden Calf; Sovetsky Pisatel; 1931
+Arkady Strugatsky, Boris Strugatsky; Monday Begins on Saturday; Detskaya Literatura; 1965
