@@ -4,7 +4,7 @@
 #include "list.h"
 #include <ctype.h>
 
-phrase_library* file_to_struct(const char* file_name, int* count)
+phrase_library* file_to_struct(const char* file_name) // remove int* count
 {
 	char temp[512];
 
@@ -16,10 +16,15 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 	char* a_word;
 	phrase_library* library;
 
+	char* the_line;
+	char* author;
+	char* source;
+	char* topic;
+	char* key_words;
+
 	if (file == NULL)
 	{
 		printf("File reading error\n");
-		*count = -1;
 		return NULL;
 	}
 
@@ -30,7 +35,6 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 
 	if (n == 0)
 	{
-		*count = 0;
 		printf("No info found in the file");
 		fclose(file);
 		return NULL;
@@ -42,7 +46,6 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 	if (quotes == NULL)
 	{
 		printf("Memory allocation error\n");
-		*count = -1;
 		fclose(file);
 		return NULL;
 	}
@@ -54,11 +57,11 @@ phrase_library* file_to_struct(const char* file_name, int* count)
 
 		line[strcspn(line, "\n")] = 0;
 
-		char* the_line = strtok(line, ";");
-		char* author = strtok(NULL, ";");
-		char* source = strtok(NULL, ";");
-		char* topic = strtok(NULL, ";");
-		char* key_words = strtok(NULL, ";");
+		the_line = strtok(line, ";"); 
+		author = strtok(NULL, ";");
+		source = strtok(NULL, ";");
+		topic = strtok(NULL, ";");
+		key_words = strtok(NULL, ";");
 
 		quotes[i].the_line = (char*)malloc(strlen(the_line) + 1);
 		strcpy_s(quotes[i].the_line, strlen(the_line) + 1, the_line);

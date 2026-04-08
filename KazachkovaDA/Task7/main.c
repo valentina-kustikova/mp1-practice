@@ -9,8 +9,8 @@ int main()
 	phrase_library* quotes;
 	phrase_library* founded;
 	char file_name[] = "list.txt";
-	int count = 0;
-	quotes = file_to_struct(file_name, &count);
+
+	quotes = file_to_struct(file_name);
 
 	char request_word[512];
 	char exit[] = "exit";
