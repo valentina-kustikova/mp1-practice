@@ -1,0 +1,149 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "list.h"
+#include <ctype.h>
+
+phrase_library* file_to_struct(const char* file_name) // remove int* count
+{
+	char temp[512];
+
+	int n = 0, i = 0, j = 0;
+	FILE* file = fopen(file_name, "r");
+	char line[2048];
+	quote* quotes = NULL;
+	int key_words_count = 0;
+	char* a_word;
+	phrase_library* library;
+
+	char* the_line;
+	char* author;
+	char* source;
+	char* topic;
+	char* key_words;
+
+	if (file == NULL)
+	{
+		printf("File reading error\n");
+		return NULL;
+	}
+
+	while (fgets(line, sizeof(line), file))
+	{
+		n++;
+	}
+
+	if (n == 0)
+	{
+		printf("No info found in the file");
+		fclose(file);
+		return NULL;
+	}
+
+	rewind(file);
+
+	quotes  = (quote*)malloc(n * sizeof(quote));
+	if (quotes == NULL)
+	{
+		printf("Memory allocation error\n");
+		fclose(file);
+		return NULL;
+	}
+
+	while (i < n && fgets(line, sizeof(line), file))
+	{	
+		key_words_count = 0;
+		j = 0;
+
+		line[strcspn(line, "\n")] = 0;
+
+		the_line = strtok(line, ";"); 
+		author = strtok(NULL, ";");
+		source = strtok(NULL, ";");
+		topic = strtok(NULL, ";");
+		key_words = strtok(NULL, ";");
+
+		quotes[i].the_line = (char*)malloc(strlen(the_line) + 1);
+		strcpy_s(quotes[i].the_line, strlen(the_line) + 1, the_line);
+
+		quotes[i].author = (char*)malloc(strlen(author) + 1);
+		strcpy_s(quotes[i].author, strlen(author) + 1, author);
+
+		quotes[i].source = (char*)malloc(strlen(source) + 1);
+		strcpy_s(quotes[i].source, strlen(source) + 1, source);
+
+		quotes[i].topic = (char*)malloc(strlen(topic) + 1);
+		strcpy_s(quotes[i].topic, strlen(topic) + 1, topic);
+
+		
+		strcpy_s(temp, sizeof(temp), key_words);
+		
+		a_word = strtok(temp, ",");
+
+		while (a_word != NULL)
+		{	
+			key_words_count += 1;
+			a_word = strtok(NULL, ",");
+		}
+
+		quotes[i].key_words = (char**)malloc(sizeof(char*) * key_words_count);
+		quotes[i].key_words_count = key_words_count;
+
+		strcpy_s(temp, sizeof(temp), key_words);
+
+		a_word = strtok(temp, ",");
+		while (a_word != NULL)
+		{
+			quotes[i].key_words[j] = (char*)malloc(strlen(a_word) + 1);
+			strcpy_s(quotes[i].key_words[j], strlen(a_word) + 1, a_word);
+			//printf_s("%s\n", quotes[i].key_words[j]);
+			j++;
+			a_word = strtok(NULL, ",");
+		}
+		
+		i++;
+	}
+
+	library = (phrase_library*)malloc(sizeof(phrase_library));
+	library->phrases = quotes;
+	library->count = n;
+
+	fclose(file);
+	return library;
+}
+
+void to_lowercase(const char* before, char* after)
+{
+	for (; *before != '\0'; before++, after++)
+	{
+		*after = tolower((unsigned char)*before);
+	}
+	*after = '\0';
+}
+
+void print_found_quotes(phrase_library* library)
+{
+	int i;
+	for (i = 0; i < library->count; i++)
+	{
+		printf("The found quote: %s\n", library->phrases[i].the_line);
+	}
+}
+
+void free_memory(phrase_library* library)
+{
+	int i, j = 0;
+	for (i = 0; i < library->count; i++)
+	{
+		free(library->phrases[i].the_line);
+		free(library->phrases[i].author);
+		free(library->phrases[i].source);
+		free(library->phrases[i].topic);
+		for (j = 0; i < library->phrases[i].key_words_count; i++)
+		{
+			free(library->phrases[i].key_words[j]);
+		}
+		free(library->phrases[i].key_words);
+	}
+	free(library);
+}
