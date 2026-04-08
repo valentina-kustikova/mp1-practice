@@ -3,27 +3,29 @@
 #include "auxilary.h"
 #include "library.h"
 
-int main() {
-	FILE *file = fopen("biblio.txt", "r");
+int main(int argc, char *argv[]) {
+	FILE* file;
 	char aut[100];
-	int biblen;
-	book* books;
-	int* ans;
+	Fbooks tmp;
+	if (argc < 2) {
+		printf("no args");
+		return 1;
+	}
+	file = fopen(argv[1], "r");
 	if (file == NULL) {
 		printf("no file");
 		return 0;
 	}
-	biblen = getrange(file);
-	books = (book*)malloc(sizeof(book) * biblen);
-	loadbooks(file, books, biblen);
+	tmp.len = getrange(file);
+	tmp.books = (book*)malloc(sizeof(book) * tmp.len);
+	loadbooks(file, &tmp);
 	if (fgets(aut, sizeof(aut), stdin) == NULL) {
 		printf("getting error");
 		return 0;
 	}
-	ans = find(books, aut, biblen);
-	printer(books, ans);
-	
-	free(books);
-	free(ans);
+	tmp = find(tmp.books, aut, tmp.len);
+	printer(tmp);
+	free(tmp.books);
+	fclose(file);
 	return 0;
 }

@@ -10,7 +10,12 @@ typedef struct {
 	int year;
 } book;
 
-int* find(book* books, char* aut, int n);
-void printer(book* books, int* ans);
+typedef struct {
+	int len;
+	book* books;
+} Fbooks;
+
+Fbooks find(book* books, char* aut, int n); // book*, int
+void printer(Fbooks ans);
 
 #endif

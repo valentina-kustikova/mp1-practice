@@ -26,10 +26,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="auxilary.h">
+    <ClInclude Include="library.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="library.h">
+    <ClInclude Include="auxilary.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

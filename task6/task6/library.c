@@ -11,33 +11,33 @@ char* trim(char* s) {
 	return s;
 }
 //strstr(books[i].authors, aut)
-int* find(book *books, char* aut, int n) {
+Fbooks find(book *books, char* aut, int n) {
 	int i, k = 0;
-	int* ans;
+	Fbooks ans;
+	book* ansbook;
 	for (i = 0; i < n; i++) {
 		if (strstr(books[i].authors, trim(aut)) != NULL) {
 			k++;
 		}
 	}
-	ans = (int*)malloc(sizeof(int) * (k + 1));
-	if (ans == NULL) {
-		printf("memory error");
-	}
-	ans[0] = k;
-	k = 1;
+	ans.len = k;
+	ansbook = (book*)malloc(sizeof(book) * k);
+	k = 0;
 	for (i = 0; i < n; i++) {
 		if (strstr(books[i].authors, trim(aut)) != NULL) {
-			ans[k] = i;
+			ansbook[k] = books[i];
 			k++;
 		}
 	}
+	ans.books = ansbook;
+	free(books);
 	return ans;
 }
 
-void printer(book *books, int* ans) {
-	int n = ans[0], i;
+void printer(Fbooks ans) {
+	int n = ans.len, i;
 	printf("finded books: \n");
-	for (i = 1; i < n + 1; i++) {
-		printf("%s; %s; %s; %d\n", books[ans[i]].authors, books[ans[i]].name, books[ans[i]].publisher, books[ans[i]].year);
+	for (i = 0; i < n; i++) {
+		printf("%s; %s; %s; %d\n", ans.books[i].authors, ans.books[i].name, ans.books[i].publisher, ans.books[i].year);
 	}
 }
