@@ -5,8 +5,8 @@ using namespace std;
 
 int main(int argc, char** argv) {
 	try {
-		const string s(argv[1]);
-		school sch(s);
+		const string file(argv[1]);
+		school sch(file);
 		sch.sort();
 		cout << sch << endl;
 	}

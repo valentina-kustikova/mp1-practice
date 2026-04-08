@@ -9,14 +9,18 @@ struct home_address {
 
 	home_address(const string&);
 	home_address() {};
-};
+}; // <<
+
+ostream& operator<<(ostream&, home_address&);
 
 struct birth_date {
 	int day, month, year;
 
 	birth_date(const string&);
 	birth_date() {};
-};
+}; // <<
+
+ostream& operator<<(ostream&, birth_date&);
 
 enum class gender{
 	MAN = 1, WOMAN

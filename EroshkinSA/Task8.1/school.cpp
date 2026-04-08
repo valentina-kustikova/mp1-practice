@@ -46,18 +46,27 @@ ostream& operator<<(ostream& out, pupil& p) {
 	out << "CLASS: " << p.klass << "   GENDER: ";
 	if (p.gen == gender::MAN) out << "Male";
 	else out << "Female";
-	out << endl << "HOME ADDRESS: ";
-	for (int i = 0; i < 6; i++) out << p.home.index[i];
-	out << " - " << p.home.country << ", " << p.home.region << ", "
-		<< p.home.district << ", " << p.home.city << ", "
-		<< p.home.street << ", "
-		<< p.home.house << ", " << p.home.flat << endl;
+	out << endl << p.home << endl;
+	out << p.date << endl << "#___#" << endl;
+	return out;
+}
+
+ostream& operator<<(ostream& out, home_address& home) {
+	out << "HOME ADDRESS: ";
+	for (int i = 0; i < 6; i++) out << home.index[i];
+	out << " - " << home.country << ", " << home.region << ", "
+		<< home.district << ", " << home.city << ", "
+		<< home.street << ", "
+		<< home.house << ", " << home.flat;
+	return out;
+}
+
+ostream& operator<<(ostream& out, birth_date& date) {
 	out << "BIRTH DATE: ";
-	if (p.date.day < 10) out << '0';
-	out << p.date.day << ".";
-	if (p.date.month < 10) out << '0';
-	out << p.date.month << "." << p.date.year << endl
-		<< "#___#" << endl;
+	if (date.day < 10) out << '0';
+	out << date.day << ".";
+	if (date.month < 10) out << '0';
+	out << date.month << "." << date.year;
 	return out;
 }
 
@@ -69,10 +78,7 @@ ostream& operator<<(ostream& out, school& sch) {
 			<< sch.list[i].fathername << "\t";
 		if (sch.list[i].gen == gender::MAN) out << "Male\t";       
 		else out << "Female\t";
-		if (sch.list[i].date.day < 10) out << '0';
-		out << sch.list[i].date.day << ".";
-		if (sch.list[i].date.month < 10) out << '0';
-		out << sch.list[i].date.month << "." << sch.list[i].date.year << endl;
+		out << sch.list[i].date << endl;
 	}
 	out << "#_________________________#\n";
 	return out;
