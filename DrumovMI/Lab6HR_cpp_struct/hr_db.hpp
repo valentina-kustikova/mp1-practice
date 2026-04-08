@@ -21,11 +21,26 @@ struct Employee {
 	std::chrono::year_month_day entry_date;
 	std::chrono::year_month_day last_designation_date;
 
+	Employee() {};
+	Employee(const std::string& s);
+
 	int age_by_date(std::chrono::year_month_day date) const;
 
 	friend std::ostream& operator<<(std::ostream& out, Employee employee);
 };
 
-std::vector<int> search_pension(std::vector<Employee> employees, std::chrono::year_month_day date);
+struct Employees {
+	Employee* employees;
+	size_t n;
+
+	Employees(size_t _n) : n(_n), employees(new Employee[_n]) {}
+	Employees(const Employees& empl);
+	Employees(Employees&& empl);
+	~Employees() { delete[] employees; }
+
+	Employee& operator[](size_t ind);
+	Employees pension_employees(std::chrono::year_month_day date) const;
+	friend std::ostream& operator<<(std::ostream& out, Employees& empl);
+};
 
 #endif

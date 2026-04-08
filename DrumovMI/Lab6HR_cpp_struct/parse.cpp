@@ -7,7 +7,18 @@
 #include "hr_db.hpp"
 #include "parse.hpp"
 
-namespace {
+namespace parse {
+    int line_count(const char* fn) {
+        std::ifstream in(fn);
+        if (!in.is_open())
+            return 0;
+        int nlines = 0;
+        std::string line;
+        while (std::getline(in, line))
+            nlines++;
+        return nlines;
+    }
+
     std::vector<std::string> split(const std::string& str, char delim) {
         std::vector<std::string> tokens;
         std::istringstream iss(str);
@@ -18,7 +29,7 @@ namespace {
         return tokens;
     }
 
-    // Формат даты: %d/%m/%Y
+    // Формат: %d/%m/%Y
     std::chrono::year_month_day parse_date(const std::string& date_str) {
         std::istringstream iss(date_str);
         std::chrono::year_month_day ymd;
@@ -30,39 +41,18 @@ namespace {
     }
 }
 
-std::vector<Employee> read_employees(const char* fn) {
+Employees read_employees(const char* fn) {
     std::ifstream in(fn);
     if (!in.is_open()) {
         throw std::runtime_error(std::string("Error opening file: ") + fn);
     }
 
-    std::vector<Employee> employees;
+    int nlines = parse::line_count(fn);
+    Employees employees(nlines);
     std::string line;
-    while (std::getline(in, line)) {
-        std::vector<std::string> fields = split(line, ';');
-        try {
-            Employee emp;
-            emp.passport.series = std::stoi(fields[0]);
-            emp.passport.number = std::stoi(fields[1]);
-            emp.passport.issued_by = fields[2];
-            emp.passport.issue_date = parse_date(fields[3]);
-            emp.passport.birthday = parse_date(fields[4]);
-            emp.passport.place_of_residence = fields[5];
-
-            emp.education = fields[6];
-            emp.specialty = fields[7];
-            emp.department = fields[8];
-            emp.position = fields[9];
-            emp.salary = std::stoi(fields[10]);
-
-            emp.entry_date = parse_date(fields[11]);
-            emp.last_designation_date = parse_date(fields[12]);
-
-            employees.push_back(emp);
-        }
-        catch(std::exception e) {
-            std::cerr << e.what();
-        }
+    for (int i = 0; i < nlines; i++) {
+        std::getline(in, line);
+        employees[i] = Employee(line);
     }
     return employees;
 }
