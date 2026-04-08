@@ -28,6 +28,7 @@ struct bank{
 
 	bank();
 	void print();
+	std::ostream operator<<(std::ostream&);
 };
 //typedef struct
 //{
@@ -37,12 +38,11 @@ struct bank{
 struct banks_library{
 	bank* banks;
 	int cnt;
-
-	banks_library();
-	void read_lib(const char* fr);
-	void cnt_banks(const char* fr);
+	//banks_library();
+	void read_lib(const std::string fr);
+	void cnt_banks(const std::string fr);
 	void free_lib();
-	bank& find(const std::string str )
+	bank& find(const std::string str);
 };
 int find(banks_library* library, char* udep);
 #endif 

@@ -1,7 +1,8 @@
 #include"banks.h"
 #include"auxiliary.h"
-#include<stdio.h>
+#include<cstdio>
 #include<stdlib.h>
+#include<fstream>
 #include<string.h>
 #include<cctype>
 
@@ -19,12 +20,50 @@ int cnt_s(const char* fr)
 	fclose(fp);
 	return cnt;
 }
+void banks_library::cnt_banks(const std::string fr)
+{
+	std::ifstream file(fr);
+	if(!file.is_open()) { throw std::exception("File not found");}
+	this->cnt=0;
+	std::string str;
+	while (getline(file, str))
+	{
+		 this->cnt++;
+	}
+	file.close();
+}
+void banks_library::read_lib(const std::string fr)
+{
+	//FILE* fp = fopen(fr, "r");
+	std::ifstream file(fr);
+	for (int i = 0; i < this->cnt; i++)
+	{
+		std::string line, temp_line;
+		getline(file, line);
+		temp_line = line;
+		char del = ';';
+		size_t pos = line.find(del);
+		while (pos != std::string::npos)
+		{
+			line[pos] = ' '; //доделать, посчитать количество ';' и минус 2,
+		}
+		std::string temp_token = strtok(temp_line, ";");
+		temp_token = strtok(NULL, ";");
+		temp_token = strtok(NULL, ";");
+		while (temp_token != NULL)
+		{
+			if (strchr(temp_token, ',') != NULL) { dep_cnt++; }
+			temp_token = strtok(NULL, ";");
+		}
+	}
 
+}
 void read(const char* fr, banks_library* lib)
 {
 	int check = 0, i;
 	char line[MAX_LEN], temp_line[MAX_LEN], * token, * temp_token;
 	FILE* fp = fopen(fr, "r");
+	//std::ifstream file
 	for (i = 0; i < lib->cnt; i++)
 	{
 		int dep_cnt = 0, cur_dep = 0;
