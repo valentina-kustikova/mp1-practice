@@ -18,18 +18,18 @@
     <ClCompile Include="main.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="book_reader.c">
+    <ClCompile Include="reader.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="book_searcher.c">
+    <ClCompile Include="filter.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="book_reader.h">
+    <ClInclude Include="filter.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="book_searcher.h">
+    <ClInclude Include="reader.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

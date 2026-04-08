@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{40a41e5e-401a-4b96-a63f-71122b46b5ce}</ProjectGuid>
-    <RootNamespace>librarysearch</RootNamespace>
+    <ProjectGuid>{5c694ac0-9822-472d-854d-4f942dba1aaa}</ProjectGuid>
+    <RootNamespace>library</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,13 +123,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="book_reader.c" />
-    <ClCompile Include="book_searcher.c" />
+    <ClCompile Include="filter.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="reader.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="book_reader.h" />
-    <ClInclude Include="book_searcher.h" />
+    <ClInclude Include="filter.h" />
+    <ClInclude Include="reader.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
