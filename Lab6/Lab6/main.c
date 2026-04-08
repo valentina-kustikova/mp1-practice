@@ -5,16 +5,17 @@
 #include "auxiliary.h"
 
 int main() {
-    char filename[100];
     char author[100];
     Book* library;
     int count;
 
-    printf("Введите имя файла: ");
-    fgets(filename, 100, stdin);
-    filename[strcspn(filename, "\n")] = 0;
+    library = readBooks("library.txt", &count);
 
-    library = readBooks(filename, &count);
+    if (library == NULL) {
+        printf("Ошибка: не удалось открыть файл library.txt\n");
+        return 1;
+    }
+
     printf("Загружено книг: %d\n\n", count);
 
     while (1) {
@@ -27,6 +28,7 @@ int main() {
 
         printf("\nРезультаты поиска:\n");
         searchByAuthor(library, count, author);
+        printf("\n");
     }
 
     freeBooks(library, count);
