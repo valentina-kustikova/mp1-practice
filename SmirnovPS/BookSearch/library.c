@@ -4,7 +4,7 @@ int searching(Book* library, int count, const char* author, Book* found_books) {
 	int i, j, k = 0;
 	for (i = 0; i < count; i++) {
 		for (j = 0; j < library[i].authors_count; j++) {
-			if (_stricmp(author, library[i].authors[j]) == 0) {
+			if (strstr(library[i].authors[j], author) != NULL) {
 				found_books[k] = library[i];
 				k++;
 				break;
