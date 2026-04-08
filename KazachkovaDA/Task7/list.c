@@ -47,7 +47,6 @@ void find_quotes_by_key_words(phrase_library* library, const char* keyword_reque
 	{
 		for (j = 0; j < library->phrases[i].key_words_count; j++)
 		{
-			char lowercase_key_words[512];
 			to_lowercase(library->phrases[i].key_words[j], lowercase_key_words);
 			if (strstr(lowercase_key_words, lowercase_request))
 			{
