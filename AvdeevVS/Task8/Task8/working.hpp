@@ -15,7 +15,6 @@ struct date_of_birth{
 
   date_of_birth() {};
   date_of_birth(int, int, int);
-  const date_of_birth& operator= (const date_of_birth&);
   friend ostream& operator<< (ostream&, const date_of_birth&);
 };
 
@@ -27,7 +26,6 @@ struct last_job {
   last_job() {};
   last_job(const string&, const string&, const string&);
   friend ostream& operator<< (ostream&, const last_job&);
-  const last_job& operator= (const last_job&);
 };
 
 struct str_address{
@@ -39,7 +37,6 @@ struct str_address{
   str_address() {};
   str_address(const string&, const string&, int, int);
   friend ostream& operator<< (ostream&, const str_address&);
-  const str_address& operator= (const str_address&);
 };
 
 struct str_contact{
@@ -49,7 +46,6 @@ struct str_contact{
   str_contact() {};
   str_contact(const string&, const string&, const string&, int, int);
   friend ostream& operator<< (ostream&, const str_contact&);
-  const str_contact& operator= (const str_contact&);
 };
 
 struct str_full_name{
@@ -60,7 +56,6 @@ struct str_full_name{
   str_full_name() {};
   str_full_name(const string&, const string&, const string&);
   friend ostream& operator<< (ostream&, const str_full_name&);
-  const str_full_name& operator= (const str_full_name&);
 };
 
 struct  jobless_people{
@@ -73,7 +68,6 @@ struct  jobless_people{
   str_contact contact_information;
 
   jobless_people();
-  const jobless_people& operator= (const jobless_people&);
   friend ostream& operator<< (ostream&, const jobless_people&);
 };
 
