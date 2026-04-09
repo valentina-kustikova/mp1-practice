@@ -5,6 +5,13 @@ date_of_birth::date_of_birth(int day, int month, int year) {
   this->month = month;
   this->year = year;
 }
+const date_of_birth& date_of_birth::operator= (const date_of_birth& a) {
+  if (this == &a) return *this;
+  this->day = a.day;
+  this->month = a.month;
+  this->year = a.year;
+  return *this;
+}
 ostream& operator<< (ostream& out, const date_of_birth& a) {
   if (a.day < 10) out << "0" << a.day << ".";
   else out << a.day << ".";
@@ -19,6 +26,13 @@ last_job::last_job(const string& position, const string& place, const string& re
   this->place = place;
   this->reason_for_termination = reason_for_termination;
 }
+const last_job& last_job::operator= (const last_job& a) {
+  if (this == &a) return *this;
+  this->position = a.position;
+  this->place = a.place;
+  this->reason_for_termination = a.reason_for_termination;
+  return *this;
+}
 ostream& operator<< (ostream& out, const last_job& a) {
   out << a.position << ";" << a.place << ";" << a.reason_for_termination << ";";
   return out;
@@ -30,6 +44,14 @@ str_address::str_address(const string& town, const string& street, int home, int
   this->home = home;
   this->flat = flat;
 }
+const str_address& str_address::operator= (const str_address& a) {
+  if (this == &a) return *this;
+  this->town = a.town;
+  this->street = a.street;
+  this->home = a.home;
+  this->flat = a.flat;
+  return *this;
+}
 ostream& operator<< (ostream& out, const str_address& a) {
   out << a.town << "," << a.street << "," << a.home << "," << a.flat;
   return out;
@@ -38,6 +60,12 @@ ostream& operator<< (ostream& out, const str_address& a) {
 str_contact::str_contact(const string& phone_number, const string& town, const string& street, int home, int flat) {
   this->phone_number = phone_number;
   this->address = str_address(town, street, home, flat);
+}
+const str_contact& str_contact::operator= (const str_contact& a) {
+  if (this == &a) return *this;
+  this->phone_number = a.phone_number;
+  this->address = a.address;
+  return *this;
 }
 ostream& operator<< (ostream& out, const str_contact& a) {
   out << a.phone_number << ";" << a.address;
@@ -48,6 +76,13 @@ str_full_name::str_full_name(const string& first_name, const string& surname, co
   this->first_name = first_name;
   this->surname = surname;
   this->patronymic = patronymic;
+}
+const str_full_name& str_full_name::operator= (const str_full_name& a) {
+  if (this == &a) return *this;
+  this->surname = a.surname;
+  this->first_name = a.first_name;
+  this->patronymic = a.patronymic;
+  return *this;
 }
 ostream& operator<< (ostream& out, const str_full_name& a) {
   out << a.surname << " " << a.first_name << " " << a.patronymic << ";";
@@ -62,6 +97,17 @@ jobless_people::jobless_people() {
   this->previous_job = last_job(" ", " ", " ");
   this->marital_status = ' ';
   this->contact_information = str_contact("", "", "", 0, 0);
+}
+const jobless_people& jobless_people::operator= (const jobless_people& a) {
+  if (this == &a) return *this;
+  this->full_name = a.full_name;
+  this->birth_date = a.birth_date;
+  this->profession = a.profession;
+  this->education = a.education;
+  this->previous_job = a.previous_job;
+  this->marital_status = a.marital_status;
+  this->contact_information = a.contact_information;
+  return *this;
 }
 ostream& operator<< (ostream& out, const jobless_people& a) {
   out << a.full_name << a.birth_date << a.profession << ";"
@@ -130,7 +176,7 @@ void jobless_base::Finding_right_options(jobless_base& required) {
   string temp;
   int count = 0;
   for (int i = 0; i < this->njobless; i++) {
-    temp = this->persons[i].education;
+    temp = persons[i].education;
     for (int j = 0; j < temp.size(); j++) {
       temp[j] = tolower(temp[j]);
     }
