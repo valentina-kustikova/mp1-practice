@@ -1,31 +1,23 @@
-Vasiliev Artem Igorevich;M;1997-09-09;Russia;Samara;Athletics;CSKA;Long Jump;825
-Morozov Anton Vladimirovich;M;1994-04-04;Russia;Omsk;Athletics;Dynamo;Long Jump;803
-Volkov Nikita Sergeevich;M;1996-08-18;Russia;Ufa;Athletics;Yunost;High Jump;235
-Zaitsev Egor Denisovich;M;1998-01-22;Russia;Rostov;Athletics;Spartak;High Jump;230
-Lebedev Maxim Olegovich;M;1995-10-05;Russia;Krasnodar;Athletics;CSKA;Shot Put;20.45
-Popov Andrey Nikolaevich;M;1996-03-28;Russia;Volgograd;Athletics;Dynamo;Shot Put;19.87
-Novikov Roman Viktorovich;M;1997-07-14;Russia;Saratov;Athletics;Luch;Javelin Throw;85.40
-Fedorov Artur Ruslanovich;M;1994-12-01;Russia;Irkutsk;Athletics;Yunost;Javelin Throw;83.15
-Bondarenko Vladimir Petrovich;M;1996-11-05;Russia;Bryansk;Weightlifting;Dynamo;Snatch;165
-Tarasov Gleb Andreevich;M;1993-05-21;Russia;Lipetsk;Weightlifting;CSKA;Snatch;172
-Filippov Timofey Mikhailovich;M;1997-09-16;Russia;Pskov;Weightlifting;Spartak;Clean and Jerk;210
-Martynov Artur Dmitrievich;M;1995-12-09;Russia;Smolensk;Boxing;Dynamo;Fights;24
-Belyakov Ruslan Olegovich;M;1994-07-19;Russia;Tver;Boxing;CSKA;Fights;31
-Novikova Tatiana Viktorovna;F;1994-02-14;Russia;Samara;Athletics;Yunost;Long Jump;695
-Morozova Daria Alekseevna;F;1997-07-01;Russia;Novosibirsk;Athletics;CSKA;Long Jump;705
-Volkova Anastasia Sergeevna;F;1996-09-09;Russia;Ekaterinburg;Athletics;Dynamo;High Jump;198
-Zaitseva Ksenia Denisovna;F;1995-04-17;Russia;Chelyabinsk;Athletics;Spartak;High Jump;195
-Frolova Alisa Alekseevna;F;1997-08-04;Russia;Volgograd;Tennis;Spartak;WTA Matches;320
-Davydova Maria Konstantinovna;F;1996-11-19;Russia;Saratov;Tennis;Dynamo;WTA Matches;298
+Vasiliev Artem;M;1997-09-09;Russia;Samara;Athletics;CSKA;Long Jump;825
+Morozov Anton;M;1994-04-04;Russia;Omsk;Athletics;Dynamo;Long Jump;803
+Volkov Nikita;M;1996-08-18;Russia;Ufa;Athletics;Yunost;High Jump;235
+Zaitsev Egor;M;1998-01-22;Russia;Rostov;Athletics;Spartak;High Jump;230
+Lebedev Maxim;M;1995-10-05;Russia;Krasnodar;Athletics;CSKA;Shot Put;20.45
+Popov Andrey;M;1996-03-28;Russia;Volgograd;Athletics;Dynamo;Shot Put;19.87
+Novikov Roman;M;1997-07-14;Russia;Saratov;Athletics;Luch;Javelin Throw;85.40
+Fedorov Artur;M;1994-12-01;Russia;Irkutsk;Athletics;Yunost;Javelin Throw;83.15
+Bondarenko Vladimir;M;1996-11-05;Russia;Bryansk;Weightlifting;Dynamo;Snatch;165
+Tarasov Gleb;M;1993-05-21;Russia;Lipetsk;Weightlifting;CSKA;Snatch;172
+Filippov Timofey;M;1997-09-16;Russia;Pskov;Weightlifting;Spartak;Clean and Jerk;210
+Martynov Artur;M;1995-12-09;Russia;Smolensk;Boxing;Dynamo;Fights;24
+Belyakov Ruslan;M;1994-07-19;Russia;Tver;Boxing;CSKA;Fights;31
+Novikova Tatiana;F;1994-02-14;Russia;Samara;Athletics;Yunost;Long Jump;695
+Morozova Daria;F;1997-07-01;Russia;Novosibirsk;Athletics;CSKA;Long Jump;705
+Volkova Anastasia;F;1996-09-09;Russia;Ekaterinburg;Athletics;Dynamo;High Jump;198
+Zaitseva Ksenia;F;1995-04-17;Russia;Chelyabinsk;Athletics;Spartak;High Jump;195
+Frolova Alisa;F;1997-08-04;Russia;Volgograd;Tennis;Spartak;WTA Matches;320
+Davydova Maria;F;1996-11-19;Russia;Saratov;Tennis;Dynamo;WTA Matches;298
 Williams James;M;1994-12-02;USA;California;Athletics;Asics;Long Jump;845
 Garcia Carlos;M;1995-02-09;Spain;Madrid;Football;Real Madrid;Goals;145
 Martinez Luis;M;1997-06-18;Spain;Barcelona;Football;Barcelona;Goals;132
 Muller Thomas;M;1994-08-07;Germany;Munich;Athletics;Bayer;Javelin Throw;88.50
-Rossi Marco;M;1995-11-25;Italy;Rome;Cycling;Lampre;Tour Stages;12
-Ricci Andrea;M;1997-01-30;Italy;Milan;Fencing;Fiamme Oro;Wins;45
-Tanaka Yuki;M;1993-05-19;Japan;Tokyo;Judo;Kodokan;Ippon Wins;28
-Kim Minjun;M;1996-12-11;South Korea;Seoul;Archery;Hyundai;World Cup Wins;9
-Park Jaehyun;M;1994-07-07;South Korea;Busan;Taekwondo;Kukkiwon;Gold Medals;5
-Chen Wei;M;1995-04-25;China;Beijing;Diving;China Team;10m Platform;515.30
-Muller Anna;F;1997-03-28;Germany;Bavaria;Skiing;Atomic;World Cup Wins;12
-Silva Andre;M;1993-11-11;Brazil;Rio de Janeiro;Football;Flamengo;Goals;88
