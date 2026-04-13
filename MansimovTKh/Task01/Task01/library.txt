@@ -1,0 +1,77 @@
+J.R.R. Tolkien;The Hobbit;Allen & Unwin;1937
+George Orwell;1984;Secker & Warburg;1949
+Jane Austen;Pride and Prejudice;Penguin Classics;1813
+Gabriel Garcia Marquez;One Hundred Years of Solitude;Harper & Row;1967
+Charles Dickens;A Tale of Two Cities;Chapman & Hall;1859
+F. Scott Fitzgerald;The Great Gatsby;Scribner;1925
+Herman Melville;Moby Dick;Harper & Brothers;1851
+Leo Tolstoy;Anna Karenina;The Russian Messenger;1877
+Mark Twain;Adventures of Huckleberry Finn;Chatto & Windus;1884
+J.D. Salinger;The Catcher in the Rye;Little, Brown;1951
+Ernest Hemingway;The Old Man and the Sea;Charles Scribner's Sons;1952
+Mary Shelley;Frankenstein;Lackington, Hughes, Harding, Mavor & Jones;1818
+Bram Stoker;Dracula;Archibald Constable and Company;1897
+Oscar Wilde;The Picture of Dorian Gray;Lippincott's Monthly Magazine;1890
+Emily Bronte;Wuthering Heights;Thomas Cautley Newby;1847
+Charlotte Bronte;Jane Eyre;Smith, Elder & Co.;1847
+Ray Bradbury;Fahrenheit 451;Ballantine Books;1953
+Aldous Huxley;Brave New World;Chatto & Windus;1932
+Kurt Vonnegut;Slaughterhouse-Five;Delacorte Press;1969
+Mikhail Bulgakov;The Master and Margarita;YMCA Press;1967
+Stephen King;The Shining;Doubleday;1977
+Stephen King, Peter Straub;The Talisman;Viking;1984
+Terry Pratchett, Neil Gaiman;Good Omens;Gollancz;1990
+Douglas Adams;The Hitchhiker's Guide to the Galaxy;Pan Books;1979
+James S.A. Corey;Leviathan Wakes;Orbit;2011
+Ilf and Petrov;The Twelve Chairs;Foreign Languages Publishing House;1928
+George Orwell;Animal Farm;Secker & Warburg;1945
+J.R.R. Tolkien;The Fellowship of the Ring;Allen & Unwin;1954
+Jane Austen;Sense and Sensibility;Thomas Egerton;1811
+Charles Dickens;Oliver Twist;Richard Bentley;1838
+F. Scott Fitzgerald;Tender Is the Night;Scribner;1934
+Leo Tolstoy;War and Peace;The Russian Messenger;1869
+Mark Twain;The Adventures of Tom Sawyer;American Publishing Company;1876
+Ernest Hemingway;A Farewell to Arms;Charles Scribner's Sons;1929
+Mary Shelley;The Last Man;Henry Colburn;1826
+Bram Stoker;The Jewel of Seven Stars;William Heinemann;1903
+Emily Bronte;Poems;Thomas Cautley Newby;1846
+Charlotte Bronte;Shirley;Smith, Elder & Co.;1849
+Ray Bradbury;The Martian Chronicles;Doubleday;1950
+Aldous Huxley;Point Counter Point;Chatto & Windus;1928
+Kurt Vonnegut;Cat's Cradle;Holt, Rinehart and Winston;1963
+Mikhail Bulgakov;Heart of a Dog;YMCA Press;1968
+Stephen King;It;Viking;1986
+Stephen King, Peter Straub;Black House;Random House;2001
+Terry Pratchett;The Colour of Magic;Colin Smythe;1983
+Douglas Adams;The Restaurant at the End of the Universe;Pan Books;1980
+James S.A. Corey;Caliban's War;Orbit;2012
+Ilf and Petrov;The Little Golden Calf;Foreign Languages Publishing House;1931
+J.R.R. Tolkien;The Two Towers;Allen & Unwin;1954
+George Orwell;Down and Out in Paris and London;Victor Gollancz;1933
+Jane Austen;Emma;John Murray;1815
+Charles Dickens;Great Expectations;Chapman & Hall;1861
+F. Scott Fitzgerald;This Side of Paradise;Scribner;1920
+Leo Tolstoy;The Death of Ivan Ilyich;The Russian Messenger;1886
+Mark Twain;A Connecticut Yankee in King Arthur's Court;Charles L. Webster & Co.;1889
+Ernest Hemingway;For Whom the Bell Tolls;Charles Scribner's Sons;1940
+Mary Shelley;Mathilda;Lackington, Hughes, Harding, Mavor & Jones;1959
+Bram Stoker;The Lair of the White Worm;William Rider and Son;1911
+Oscar Wilde;Lady Windermere's Fan;Lippincott's Monthly Magazine;1892
+Charlotte Bronte;Villette;Smith, Elder & Co.;1853
+Ray Bradbury;Something Wicked This Way Comes;Simon & Schuster;1962
+Aldous Huxley;Island;Chatto & Windus;1962
+Kurt Vonnegut;Breakfast of Champions;Delacorte Press;1973
+Mikhail Bulgakov;The White Guard;YMCA Press;1925
+Terry Pratchett;Mort;Gollancz;1987
+Douglas Adams;Life, the Universe and Everything;Pan Books;1982
+James S.A. Corey;Abaddon's Gate;Orbit;2013
+J.R.R. Tolkien;The Return of the King;Allen & Unwin;1955
+Ernest Hemingway;The Sun Also Rises;Charles Scribner's Sons;1926
+Charles Dickens;David Copperfield;Bradbury & Evans;1850
+Terry Pratchett;Guards! Guards!;Gollancz;1989
+Neil Gaiman;American Gods;William Morrow;2001
+Neil Gaiman;Neverwhere;BBC Books;1996
+Neil Gaiman;Stardust;DC Comics;1999
+Gabriel Garcia Marquez;Love in the Time of Cholera;Harper & Row;1985
+Gabriel Garcia Marquez;Chronicle of a Death Foretold;Harper & Row;1981
+Stephen King;Carrie;Doubleday;1974
