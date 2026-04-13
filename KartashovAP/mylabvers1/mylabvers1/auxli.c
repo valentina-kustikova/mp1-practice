@@ -4,53 +4,132 @@
 #include "roster.h"
 #include "auxli.h"
 
+int compare_students(const Student* a, const Student* b) {
+    int cmp = strcmp(a->full_name.surname, b->full_name.surname);
+    if (cmp != 0) return cmp;
 
-int countingstudents(const char* filename) {
-	char buff[MAX_LEN];
-	int count_students = 0;
+    cmp = strcmp(a->full_name.name, b->full_name.name);
+    if (cmp != 0) return cmp;
 
-	FILE* file = fopen(filename, "r");
-	if (file == NULL) {
-		printf("it is global mistake");
-		return 0;
-	}
-	while (1) {
-		if (fgets(buff, sizeof(buff), file)) {
-			count_students++;
-		}
-		else break;
-	}
-	fclose(file);
-	return count_students;
+    return strcmp(a->full_name.patronymic, b->full_name.patronymic);
 }
 
+void sort_students_in_class(ClassGroup* class_group) {
+    if (class_group == NULL || class_group->students == NULL || class_group->count <= 1)
+        return;
 
-
-void readFile(int count, student* mas_student, const char* filename) {
-	char buff[2048];
-	FILE* file = fopen(filename, "r");
-	for (int i = 0; i < count; i++) {
-		fgets(buff, sizeof(buff), file);
-		buff[strcspn(buff, "\n")] = 0;
-		strcpy(mas_student[i].name, strtok(buff, ";"));
-		strcpy(mas_student[i].stclass, strtok(buff, ";"));
-		strcpy(mas_student[i].gender, strtok(buff, ";"));
-		strcpy(mas_student[i].birth, strtok(buff, ";"));
-		strcpy(mas_student[i].homeadress, strtok(buff, ";"));
-	}
-	fclose(file);
+    // Сортировка выбором
+    for (int i = 0; i < class_group->count - 1; i++) {
+        int min_idx = i;
+        for (int j = i + 1; j < class_group->count; j++) {
+            if (compare_students(&class_group->students[j], &class_group->students[min_idx]) < 0) {
+                min_idx = j;
+            }
+        }
+        if (min_idx != i) {
+            Student temp = class_group->students[i];
+            class_group->students[i] = class_group->students[min_idx];
+            class_group->students[min_idx] = temp;
+        }
+    }
 }
-void printRes(student* search, int kol_res) {
-	if (kol_res == 1) {
-		printf("%d student was found\n", kol_res);
-	}
-	else {
-		printf("%d students were found\n", kol_res);
-	}
-	if (kol_res) {
-		for (int i = 0; i < kol_res; i++) {
-			printf("%s; %s; %s; %s; %s\n", search[i].name, search[i].stclass, search[i].gender, search[i].birth, search[i].homeadress);
-		}
-	}
 
+void print_student(const Student* student) {
+    if (student == NULL) return;
+
+    printf("  %s %s %s | ",
+        student->full_name.surname,
+        student->full_name.name,
+        student->full_name.patronymic);
+
+    switch (student->gender) {
+    case male: printf("Male | "); break;
+    case female: printf("Female | "); break;
+    default: printf("Unknown | ");
+    }
+
+    printf("%02d.%02d.%04d | ",
+        student->birth_date.day,
+        student->birth_date.month,
+        student->birth_date.year);
+
+    printf("%s, %s, %s, %s, %s, %s, %s, %s\n",
+        student->address.postal_code,
+        student->address.country,
+        student->address.region,
+        student->address.district,
+        student->address.city,
+        student->address.street,
+        student->address.house,
+        student->address.apartment);
+}
+
+Student* create_student(const char* surname, const char* name, const char* patronymic,
+    const char* class_name, Gender gender, int year, int month, int day,
+    const char* postal_code, const char* country, const char* region,
+    const char* district, const char* city, const char* street,
+    const char* house, const char* apartment) {
+
+    Student* s = (Student*)malloc(sizeof(Student));
+    if (s == NULL) return NULL;
+
+    // Выделение памяти и копирование строк
+    s->full_name.surname = malloc(strlen(surname) + 1);
+    s->full_name.name = malloc(strlen(name) + 1);
+    s->full_name.patronymic = malloc(strlen(patronymic) + 1);
+    s->class = malloc(strlen(class_name) + 1);
+    s->address.postal_code = malloc(strlen(postal_code) + 1);
+    s->address.country = malloc(strlen(country) + 1);
+    s->address.region = malloc(strlen(region) + 1);
+    s->address.district = malloc(strlen(district) + 1);
+    s->address.city = malloc(strlen(city) + 1);
+    s->address.street = malloc(strlen(street) + 1);
+    s->address.house = malloc(strlen(house) + 1);
+    s->address.apartment = malloc(strlen(apartment) + 1);
+
+    if (!s->full_name.surname || !s->full_name.name || !s->full_name.patronymic ||
+        !s->class || !s->address.postal_code || !s->address.country ||
+        !s->address.region || !s->address.district || !s->address.city ||
+        !s->address.street || !s->address.house || !s->address.apartment) {
+        free_student(s);
+        free(s);
+        return NULL;
+    }
+
+    strcpy(s->full_name.surname, surname);
+    strcpy(s->full_name.name, name);
+    strcpy(s->full_name.patronymic, patronymic);
+    strcpy(s->class, class_name);
+    strcpy(s->address.postal_code, postal_code);
+    strcpy(s->address.country, country);
+    strcpy(s->address.region, region);
+    strcpy(s->address.district, district);
+    strcpy(s->address.city, city);
+    strcpy(s->address.street, street);
+    strcpy(s->address.house, house);
+    strcpy(s->address.apartment, apartment);
+
+    s->gender = gender;
+    s->birth_date.year = year;
+    s->birth_date.month = month;
+    s->birth_date.day = day;
+
+    return s;
+}
+
+void free_student(Student* student) {
+    if (student == NULL) return;
+
+    free(student->full_name.surname);
+    free(student->full_name.name);
+    free(student->full_name.patronymic);
+    free(student->class);
+    free(student->address.postal_code);
+    free(student->address.country);
+    free(student->address.region);
+    free(student->address.district);
+    free(student->address.city);
+    free(student->address.street);
+    free(student->address.house);
+    free(student->address.apartment);
 }

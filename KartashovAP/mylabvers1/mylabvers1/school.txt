@@ -1,22 +1,11 @@
-Ivanov,Ivan,Ivanovich;5A;M;2012,05,12;101000,Russia,Moscow,Central Moscow,Moscow,Tverskaya,10,25
-Ivanov,Kirill,Ivanovich;10P;M;2005,06,10;101000,Russia,Moscow,Central Moscow,Moscow,Tverskaya,10,25
-Petrova,Anna,Sergeevna;7B;F;2010,11,23;190000,St. Petersburg,Central St. Petersburg,St. Petersburg,Nevsky,15,7
-Petrova,Inna,Sergeevna;7B;F;2010,11,23;190000,St. Petersburg,Central St. Petersburg,St. Petersburg,Nevsky,15,7
-Sidorov,Maxim,Alekseevich;9V;M;2008,07,03;603000,Nizhny Novgorod,Nizhny Novgorod,Nizhny Novgorod,Nizhny Novgorod,Bolshaya Pokrovskaya,22,4
-Kuznetsova,Daria,Andreevna;4A;F;2013,09,18;420000,Tatarstan,Volga,Kazan,Kazan,Bauman,8,12
-Smirnov,Artyom,Pavlovich;8G;M;2009,01,30;344000,Rostov,Rostov,Rostov-on-Don,Rostov-on-Don,Budyonnovsky,45,8
-Vasilyeva,Polina,Denisovna;6B;F;2011,06,15;630000,Novosibirsk,Central,Novosibirsk,Novosibirsk,Krasny,101,56
-Morozov,Kirill,Evgenievich;10A;M;2007,03,22;620000,Sverdlovsk,Leninsky,Yekaterinburg,Yekaterinburg,Malysheva,17,3
-Fyodorova,Alisa,Romanovna;3V;F;2014,12,04;660000,Krasnoyarsk,Central,Krasnoyarsk,Krasnoyarsk,Mira,33,9
-Volkov,Nikita,Sergeevich;11B;M;2006,08,19;614000,Perm,Leninsky,Perm,Perm,Komsomolsky,12,14
-Alekseeva,Victoria,Mikhailovna;2A;F;2015,02,27;350000,Krasnodar,Central,Krasnodar,Krasnodar,Krasnaya,5,2
-Lebedev,Gleb,Igorevich;5V;M;2012,10,09;302000,Oryol,Zavodskoy,Oryol,Oryol,Moskovskaya,18,31
-Sokolova,Ekaterina,Dmitrievna;7A;F;2010,04,14;394000,Voronezh,Leninsky,Voronezh,Voronezh,Plekhanovskaya,24,6
-Kozlov,Timofey,Andreevich;9A;M;2008,09,02;443000,Samara,Oktyabrsky,Samara,Samara,Novo-Sadovaya,77,11
-Novikova,Arina,Pavlovna;6V;F;2011,12,20;680000,Khabarovsk,Central,Khabarovsk,Khabarovsk,Muravyov-Amursky,42,5
-Zaitsev,Daniil,Vladimirovich;8B;M;2009,03,11;454000,Chelyabinsk,Sovietsky,Chelyabinsk,Chelyabinsk,Lenina,56,23
-Belyaeva,Sofia,Konstantinovna;4B;F;2013,07,16;664000,Irkutsk,Oktyabrsky,Irkutsk,Irkutsk,Karla Marksa,9,17
-Pavlov,Matvey,Alekseevich;10B;M;2007,05,25;450000,Bashkortostan,Oktyabrsky,Ufa,Ufa,Lenina,88,4
-Romanova,Anastasia,Sergeevna;3A;F;2014,08,08;390000,Ryazan,Sovietsky,Ryazan,Ryazan,Pervomaisky,13,19
-Tikhonov,Dmitry,Olegovich;11A;M;2006,11,17;160000,Vologda,Industrial,Vologda,Vologda,Mira,29,10
-Orlova,Elizaveta,Maksimovna;1A;F;2016,01,21;150000,Yaroslavl,Kirovsky,Yaroslavl,Yaroslavl,Svobody,6,3
+Sidorov;Maxim;Alekseevich;2A;M;2015;07;03;603000;Russia;Nizhny Novgorod;Nizhegorodsky;Nizhny Novgorod;Bolshaya Pokrovskaya;22;4
+Lebedev;Gleb;Igorevich;3B;M;2014;10;09;302000;Russia;Oryol;Zavodskoy;Oryol;Moskovskaya;18;31
+Morozov;Kirill;Evgenievich;3A;M;2014;03;22;620000;Russia;Sverdlovsk;Leninsky;Yekaterinburg;Malysheva;17;3
+Ivanov;Ivan;Ivanovich;1A;M;2016;05;12;101000;Russia;Moscow;Central;Moscow;Tverskaya;10;25
+Petrova;Anna;Sergeevna;2A;F;2015;11;23;190000;Russia;St. Petersburg;Central;St. Petersburg;Nevsky;15;7
+Kuznetsova;Daria;Andreevna;2B;F;2015;09;18;420000;Russia;Tatarstan;Kazan;Kazan;Bauman;8;12
+Smirnov;Artyom;Pavlovich;2B;M;2015;01;30;344000;Russia;Rostov;Leninsky;Rostov-on-Don;Budyonnovsky;45;8
+Vasilyeva;Polina;Denisovna;3A;F;2014;06;15;630000;Russia;Novosibirsk;Central;Novosibirsk;Krasny;101;56
+Fyodorova;Alisa;Romanovna;3A;F;2014;12;04;660000;Russia;Krasnoyarsk;Central;Krasnoyarsk;Mira;33;9
+Volkov;Nikita;Sergeevich;3B;M;2014;08;19;614000;Russia;Perm;Leninsky;Perm;Komsomolsky;12;14
+Alekseeva;Victoria;Mikhailovna;3B;F;2014;02;27;350000;Russia;Krasnodar;Central;Krasnodar;Krasnaya;5;2
