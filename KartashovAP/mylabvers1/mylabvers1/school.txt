@@ -1,0 +1,11 @@
+Sidorov;Maxim;Alekseevich;2A;M;2015;07;03;603000;Russia;Nizhny Novgorod;Nizhegorodsky;Nizhny Novgorod;Bolshaya Pokrovskaya;22;4
+Lebedev;Gleb;Igorevich;3B;M;2014;10;09;302000;Russia;Oryol;Zavodskoy;Oryol;Moskovskaya;18;31
+Morozov;Kirill;Evgenievich;3A;M;2014;03;22;620000;Russia;Sverdlovsk;Leninsky;Yekaterinburg;Malysheva;17;3
+Ivanov;Ivan;Ivanovich;1A;M;2016;05;12;101000;Russia;Moscow;Central;Moscow;Tverskaya;10;25
+Petrova;Anna;Sergeevna;2A;F;2015;11;23;190000;Russia;St. Petersburg;Central;St. Petersburg;Nevsky;15;7
+Kuznetsova;Daria;Andreevna;2B;F;2015;09;18;420000;Russia;Tatarstan;Kazan;Kazan;Bauman;8;12
+Smirnov;Artyom;Pavlovich;2B;M;2015;01;30;344000;Russia;Rostov;Leninsky;Rostov-on-Don;Budyonnovsky;45;8
+Vasilyeva;Polina;Denisovna;3A;F;2014;06;15;630000;Russia;Novosibirsk;Central;Novosibirsk;Krasny;101;56
+Fyodorova;Alisa;Romanovna;3A;F;2014;12;04;660000;Russia;Krasnoyarsk;Central;Krasnoyarsk;Mira;33;9
+Volkov;Nikita;Sergeevich;3B;M;2014;08;19;614000;Russia;Perm;Leninsky;Perm;Komsomolsky;12;14
+Alekseeva;Victoria;Mikhailovna;3B;F;2014;02;27;350000;Russia;Krasnodar;Central;Krasnodar;Krasnaya;5;2
