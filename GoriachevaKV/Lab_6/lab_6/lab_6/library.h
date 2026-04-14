@@ -1,8 +1,6 @@
 #ifndef __LIBRARY_H_
 #define __LIBRARY_H_
 
-#define MAX_STRING_SIZE 100
-
 typedef struct {
 	char* authors;
 	char* name;

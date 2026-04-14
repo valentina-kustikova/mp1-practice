@@ -1,11 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "auxiliary.h"
-#include "library.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "auxiliary.h"
+#include "library.h"
 
 #define BUFFER_SIZE 1024
 

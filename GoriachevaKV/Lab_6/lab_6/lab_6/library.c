@@ -1,8 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "library.h"
 #include <string.h>
 #include <stdlib.h>
+#include "library.h"
 
 void find_authors_books(int* found_cnt, int lines, BOOK* library, BOOK** found_books, char* needed_author) {
 	int i, j = 0;
