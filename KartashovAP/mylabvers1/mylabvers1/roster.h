@@ -4,6 +4,7 @@
 #define MAX_LEN 256
 #define BUFFER_SIZE 1024
 
+
 typedef enum {
     male,
     female,
@@ -52,7 +53,6 @@ typedef struct {
     int class_count;
 } School;
 
-// Основные функции работы с картотекой
 void init_school(School* school);
 void load_students(School* school, const char* filename);
 void sort_school(School* school);

@@ -18,7 +18,6 @@ void sort_students_in_class(ClassGroup* class_group) {
     if (class_group == NULL || class_group->students == NULL || class_group->count <= 1)
         return;
 
-    // Сортировка выбором
     for (int i = 0; i < class_group->count - 1; i++) {
         int min_idx = i;
         for (int j = i + 1; j < class_group->count; j++) {
@@ -37,21 +36,15 @@ void sort_students_in_class(ClassGroup* class_group) {
 void print_student(const Student* student) {
     if (student == NULL) return;
 
-    printf("  %s %s %s | ",
-        student->full_name.surname,
-        student->full_name.name,
-        student->full_name.patronymic);
+    printf("  %s %s %s ", student->full_name.surname, student->full_name.name, student->full_name.patronymic);
 
     switch (student->gender) {
-    case male: printf("Male | "); break;
-    case female: printf("Female | "); break;
-    default: printf("Unknown | ");
+    case male: printf("Male  "); break;
+    case female: printf("Female  "); break;
+    default: printf("Unknown  ");
     }
 
-    printf("%02d.%02d.%04d | ",
-        student->birth_date.day,
-        student->birth_date.month,
-        student->birth_date.year);
+    printf("%02d.%02d.%04d  ",student->birth_date.day, student->birth_date.month,student->birth_date.year);
 
     printf("%s, %s, %s, %s, %s, %s, %s, %s\n",
         student->address.postal_code,
@@ -73,7 +66,6 @@ Student* create_student(const char* surname, const char* name, const char* patro
     Student* s = (Student*)malloc(sizeof(Student));
     if (s == NULL) return NULL;
 
-    // Выделение памяти и копирование строк
     s->full_name.surname = malloc(strlen(surname) + 1);
     s->full_name.name = malloc(strlen(name) + 1);
     s->full_name.patronymic = malloc(strlen(patronymic) + 1);

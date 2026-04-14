@@ -46,7 +46,6 @@ void load_students(School* school, const char* filename) {
         char line[BUFFER_SIZE];
         strcpy(line, buffer);
 
-        // Парсим 16 полей (разделитель ";")
         char* surname = strtok(line, ";");
         char* name = strtok(NULL, ";");
         char* patronymic = strtok(NULL, ";");
@@ -64,7 +63,6 @@ void load_students(School* school, const char* filename) {
         char* house = strtok(NULL, ";");
         char* apartment = strtok(NULL, ";");
 
-        // Проверяем, что все 16 полей получены
         if (surname && name && patronymic && class_name && gender_str &&
             year_str && month_str && day_str &&
             postal && country && region && district && city && street && house && apartment) {
@@ -91,7 +89,7 @@ void load_students(School* school, const char* filename) {
         }
         else {
             printf("Warning: Skipping malformed line: %s\n", buffer);
-            printf("  Expected 16 fields, got partial\n");
+            printf("  Expected 16 fields\n");
         }
     }
     fclose(fp);
@@ -103,7 +101,6 @@ void load_students(School* school, const char* filename) {
         return;
     }
 
-    // Группировка по классам
     school->class_count = 0;
     ClassGroup* temp_classes = NULL;
 
@@ -133,8 +130,7 @@ void load_students(School* school, const char* filename) {
             school->class_count++;
         }
 
-        temp_classes[found].students = (Student*)realloc(temp_classes[found].students,
-            (temp_classes[found].count + 1) * sizeof(Student));
+        temp_classes[found].students = (Student*)realloc(temp_classes[found].students,(temp_classes[found].count + 1) * sizeof(Student));
 
         if (temp_classes[found].students == NULL) {
             printf("Memory reallocation error for students\n");

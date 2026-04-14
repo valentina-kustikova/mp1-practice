@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
 
     School* school = (School*)malloc(sizeof(School));
     if (school == NULL) {
-        printf("Memory allocation failed\n");
+        printf("failed\n");
         return 1;
     }
 
