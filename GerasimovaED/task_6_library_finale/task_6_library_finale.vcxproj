@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{db039a51-8d7c-43e0-9919-b8e4e6a709de}</ProjectGuid>
+    <ProjectGuid>{288ae6be-78f8-401c-89bd-babbf43cc9b5}</ProjectGuid>
     <RootNamespace>task6libraryfinale</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>

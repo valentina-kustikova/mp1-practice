@@ -1,0 +1,105 @@
+George Orwell;1984;Secker & Warburg;1949
+George Orwell;Animal Farm;Secker & Warburg;1945
+George Orwell;Burmese Days;Harper & Brothers;1934
+George Orwell;Homage to Catalonia;Harvill Secker;1938
+George Orwell;Down and Out in Paris and London;Victor Gollancz;1933
+J.K. Rowling;Harry Potter and the Philosopher's Stone;Bloomsbury;1997
+J.K. Rowling;Harry Potter and the Chamber of Secrets;Bloomsbury;1998
+J.K. Rowling;Harry Potter and the Prisoner of Azkaban;Bloomsbury;1999
+J.K. Rowling;Harry Potter and the Goblet of Fire;Bloomsbury;2000
+J.K. Rowling;Harry Potter and the Order of the Phoenix;Bloomsbury;2003
+J.R.R. Tolkien;The Hobbit;Allen & Unwin;1937
+J.R.R. Tolkien;The Fellowship of the Ring;Allen & Unwin;1954
+J.R.R. Tolkien;The Two Towers;Allen & Unwin;1954
+J.R.R. Tolkien;The Return of the King;Allen & Unwin;1955
+J.R.R. Tolkien;The Silmarillion;Allen & Unwin;1977
+F. Scott Fitzgerald;The Great Gatsby;Scribner;1925
+F. Scott Fitzgerald;Tender Is the Night;Scribner;1934
+F. Scott Fitzgerald;This Side of Paradise;Scribner;1920
+F. Scott Fitzgerald;The Beautiful and Damned;Scribner;1922
+F. Scott Fitzgerald;The Last Tycoon;Scribner;1941
+Ernest Hemingway;The Old Man and the Sea;Scribner;1952
+Ernest Hemingway;A Farewell to Arms;Scribner;1929
+Ernest Hemingway;For Whom the Bell Tolls;Scribner;1940
+Ernest Hemingway;The Sun Also Rises;Scribner;1926
+Ernest Hemingway;To Have and Have Not;Scribner;1937
+Mark Twain;The Adventures of Tom Sawyer;American Publishing Company;1876
+Mark Twain;Adventures of Huckleberry Finn;Charles L. Webster And Company;1884
+Mark Twain;The Prince and the Pauper;James R. Osgood & Co.;1881
+Mark Twain;A Connecticut Yankee in King Arthur's Court;Charles L. Webster & Co.;1889
+Mark Twain;Life on the Mississippi;James R. Osgood & Co.;1883
+Jane Austen;Pride and Prejudice;T. Egerton;1813
+Jane Austen;Sense and Sensibility;Thomas Egerton;1811
+Jane Austen;Emma;John Murray;1815
+Jane Austen;Mansfield Park;Thomas Egerton;1814
+Jane Austen;Northanger Abbey;John Murray;1817
+Charles Dickens;A Tale of Two Cities;Chapman & Hall;1859
+Charles Dickens;Great Expectations;Chapman & Hall;1861
+Charles Dickens;Oliver Twist;Richard Bentley;1838
+Charles Dickens;David Copperfield;Bradbury & Evans;1850
+Charles Dickens;Bleak House;Bradbury & Evans;1853
+Leo Tolstoy;War and Peace;The Russian Messenger;1869
+Leo Tolstoy;Anna Karenina;The Russian Messenger;1877
+Leo Tolstoy;The Death of Ivan Ilyich;The Russian Messenger;1886
+Leo Tolstoy;Resurrection;Niva;1899
+Leo Tolstoy;The Kreutzer Sonata;The Russian Messenger;1889
+Fyodor Dostoevsky;Crime and Punishment;The Russian Messenger;1866
+Fyodor Dostoevsky;The Idiot;The Russian Messenger;1869
+Fyodor Dostoevsky;Demons;The Russian Messenger;1872
+Fyodor Dostoevsky;The Brothers Karamazov;The Russian Messenger;1880
+Fyodor Dostoevsky;Notes from Underground;Epoch;1864
+Gabriel Garcia Marquez;One Hundred Years of Solitude;Harper & Row;1967
+Gabriel Garcia Marquez;Love in the Time of Cholera;Penguin Books;1985
+Gabriel Garcia Marquez;Chronicle of a Death Foretold;Plaza & Janes;1981
+Gabriel Garcia Marquez;No One Writes to the Colonel;Mercure de France;1961
+Gabriel Garcia Marquez;The Autumn of the Patriarch;Plaza & Janes;1975
+Haruki Murakami;Norwegian Wood;Kodansha;1987
+Haruki Murakami;Kafka on the Shore;Shinchosha;2002
+Haruki Murakami;The Wind-Up Bird Chronicle;Shinchosha;1994
+Haruki Murakami;1Q84;Shinchosha;2009
+Haruki Murakami;South of the Border, West of the Sun;Kodansha;1992
+Stephen King;The Shining;Doubleday;1977
+Stephen King;It;Viking;1986
+Stephen King;The Stand;Doubleday;1978
+Stephen King;Carrie;Doubleday;1974
+Stephen King;Misery;Viking;1987
+Agatha Christie;Murder on the Orient Express;Collins Crime Club;1934
+Agatha Christie;The Murder of Roger Ackroyd;Collins;1926
+Agatha Christie;And Then There Were None;Collins Crime Club;1939
+Agatha Christie;Death on the Nile;Collins Crime Club;1937
+Agatha Christie;The ABC Murders;Collins Crime Club;1936
+Isaac Asimov;Foundation;Gnome Press;1951
+Isaac Asimov;I, Robot;Gnome Press;1950
+Isaac Asimov;The Caves of Steel;Doubleday;1954
+Isaac Asimov;The Naked Sun;Doubleday;1957
+Isaac Asimov;The End of Eternity;Doubleday;1955
+Ray Bradbury;Fahrenheit 451;Ballantine Books;1953
+Ray Bradbury;The Martian Chronicles;Doubleday;1950
+Ray Bradbury;Something Wicked This Way Comes;Simon & Schuster;1962
+Ray Bradbury;Dandelion Wine;Doubleday;1957
+Ray Bradbury;The Illustrated Man;Doubleday;1951
+Philip K. Dick;Do Androids Dream of Electric Sheep?;Doubleday;1968
+Philip K. Dick;The Man in the High Castle;Putnam;1962
+Philip K. Dick;Ubik;Doubleday;1969
+Philip K. Dick;A Scanner Darkly;Doubleday;1977
+Philip K. Dick;Flow My Tears, the Policeman Said;Doubleday;1974
+Margaret Atwood;The Handmaid's Tale;McClelland and Stewart;1985
+Margaret Atwood;Oryx and Crake;McClelland and Stewart;2003
+Margaret Atwood;The Blind Assassin;McClelland and Stewart;2000
+Margaret Atwood;Alias Grace;McClelland and Stewart;1996
+Margaret Atwood;The Testaments;Chatto & Windus;2019
+Kurt Vonnegut;Slaughterhouse-Five;Delacorte;1969
+Kurt Vonnegut;Cat's Cradle;Holt, Rinehart and Winston;1963
+Kurt Vonnegut;Breakfast of Champions;Delacorte;1973
+Kurt Vonnegut;Player Piano;Charles Scribner's Sons;1952
+Kurt Vonnegut;The Sirens of Titan;Delacorte;1959
+John Steinbeck;The Grapes of Wrath;Viking;1939
+John Steinbeck;Of Mice and Men;Covici Friede;1937
+John Steinbeck;East of Eden;Viking;1952
+John Steinbeck;Cannery Row;Viking;1945
+John Steinbeck;The Pearl;Viking;1947
+Herman Melville;Moby-Dick;Harper & Brothers;1851
+Herman Melville;Bartleby, the Scrivener;Putnam's Magazine;1853
+Herman Melville;Typee;John Murray;1846
+Herman Melville;Omoo;John Murray;1847
+Herman Melville;Pierre;Harper & Brothers;1852
