@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
 	char* filePaintings;
 	FILE* file;
 	int museum = 0, private = 0;
-	float percent;
+	float percent = 0;
 	ArtistLibrary libArtists;
 	Artist* foundArtist;
 	PaintingsLibrary libPaintings;
@@ -60,7 +60,13 @@ int main(int argc, char* argv[]) {
 	scanf("%[^\n]", name);
 	
 	foundArtist = findArtist(&libArtists, name);
-	foundPaintings = findPaintings(&libPaintings, name);
+	while (foundArtist == NULL) {
+		printf("Artist '%s' not found. Please try again: ", name);
+		scanf(" %[^\n]", name);
+		foundArtist = findArtist(&libArtists, name);
+	}
+
+	foundPaintings = findPaintings(&libPaintings, foundArtist->painter_id);
 
 	if (foundPaintings->cnt > 0) {
 		percent = calculateLocationStats(foundPaintings);

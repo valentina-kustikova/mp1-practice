@@ -10,14 +10,14 @@ typedef enum {
 	POST_IMPRESSIONISM = 3,
 	CUBISM = 4,
 	SURREALISM = 5,
-	POP_ART = 6,
+	POP_ART_STYLE = 6,
 } Style;
 
 typedef struct Artist {
-	// int painter_id;
+	int painter_id;
 	char name[MAX_LEN];
 	int birthYear; // Date
-	char style[MAX_LEN];
+	Style style;
 } Artist;
 
 typedef struct ArtistLibrary {
@@ -25,6 +25,8 @@ typedef struct ArtistLibrary {
 	int cnt;
 } ArtistLibrary;
 
+Style stringToStyle(char* str);
+char* styleToString(Style style);
 Artist* findArtist(ArtistLibrary* artists, char* name);
 
 #endif

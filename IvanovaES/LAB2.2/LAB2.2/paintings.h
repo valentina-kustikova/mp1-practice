@@ -17,21 +17,20 @@ typedef enum {
 	STILL_LIFE = 10,
 	INTERIOR = 11,
 	SURREAL = 12,
-	POP_ART = 13,
+	POP_ART_GENRE = 13,
 } Genre;
 
 typedef enum {
-	MUSEUM = 0,
-	PRIVATE = 1,
+	MUSEUM = 1,
+	PRIVATE = 2,
 } Location;
 
 typedef struct Painting {
-	// int painting_id;
-	char artistName[MAX_LEN]; // int artist_id;
+	int artist_id;
 	char title[MAX_LEN];
 	int year;
-	char genre[MAX_LEN]; // Genre genre;
-	char location[MAX_LEN]; // Location location
+	Genre genre;
+	Location location;
 } Painting;
 
 typedef struct PaintingsLibrary {
@@ -39,7 +38,12 @@ typedef struct PaintingsLibrary {
 	int cnt;
 } PaintingsLibrary;
 
-PaintingsLibrary* findPaintings(PaintingsLibrary* paintings, char* artistName);
+Genre stringToGenre(char* str);
+char* genreToString(Genre genre);
+Location stringToLocation(char* str);
+char* locationToString(Location location);
+
+PaintingsLibrary* findPaintings(PaintingsLibrary* paintings, int artistId);
 
 float calculateLocationStats(PaintingsLibrary* paintings);
 
