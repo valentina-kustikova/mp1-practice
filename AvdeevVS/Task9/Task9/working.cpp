@@ -98,6 +98,16 @@ jobless_people::jobless_people() {
   this->marital_status = ' ';
   this->contact_information = str_contact("", "", "", 0, 0);
 }
+jobless_people::jobless_people(const str_full_name& p1, const date_of_birth& p2, const string& p3,
+  const string& p4, const last_job& p5, const string& p6, const str_contact& p7) {
+  this->full_name = p1;
+  this->birth_date = p2;
+  this->profession = p3;
+  this->education = p4;
+  this->previous_job = p5;
+  this->marital_status = p6;
+  this->contact_information = p7;
+}
 const jobless_people& jobless_people::operator= (const jobless_people& a) {
   if (this == &a) return *this;
   this->full_name = a.full_name;
@@ -136,30 +146,34 @@ jobless_base::jobless_base(const string& filename) {
   this->persons = new jobless_people[this->njobless];
   f.clear();
   f.seekg(0, ios::beg);
-  int i = 0;
   for (int i = 0; i < this->njobless; i++) {
     string surname, first_name, patronymic;
     getline(f, s, ' '); surname = s;
     getline(f, s, ' '); first_name = s;
     getline(f, s, ';'); patronymic = s;
-    this->persons[i].full_name = str_full_name(first_name, surname, patronymic);
+    str_full_name fio;
+    fio = str_full_name(first_name, surname, patronymic);
 
     int day, month, year;
     getline(f, s, '.'); day = stoi(s);
     getline(f, s, '.'); month = stoi(s);
     getline(f, s, ';'); year = stoi(s);
-    this->persons[i].birth_date = date_of_birth(day, month, year);
+    date_of_birth date;
+    date = date_of_birth(day, month, year);
 
-    getline(f, s, ';'); persons[i].profession = s;
-    getline(f, s, ';'); persons[i].education = s;
+    string prof, educ;
+    getline(f, s, ';'); prof = s;
+    getline(f, s, ';'); educ = s;
 
     string position, place, reason_for_termination;
     getline(f, s, ';'); position = s;
     getline(f, s, ';'); place = s;
     getline(f, s, ';'); reason_for_termination = s;
-    this->persons[i].previous_job = last_job(position, place, reason_for_termination);
+    last_job job;
+    job = last_job(position, place, reason_for_termination);
 
-    getline(f, s, ';'); persons[i].marital_status = s;
+    string marital;
+    getline(f, s, ';'); marital = s;
 
     string phone_number, town, street; int home, flat;
     getline(f, s, ';'); phone_number = s;
@@ -167,7 +181,10 @@ jobless_base::jobless_base(const string& filename) {
     getline(f, s, ','); street = s;
     getline(f, s, ','); home = stoi(s);
     getline(f, s); flat = stoi(s);
-    this->persons[i].contact_information = str_contact(phone_number, town, street, home, flat);
+    str_contact contact;
+    contact = str_contact(phone_number, town, street, home, flat);
+    jobless_people add = jobless_people(fio, date, prof, educ, job, marital, contact);
+    this->persons[i] = add;
   }
   f.close();
 }
@@ -176,7 +193,7 @@ void jobless_base::Finding_right_options(jobless_base& required) {
   string temp;
   int count = 0;
   for (int i = 0; i < this->njobless; i++) {
-    temp = persons[i].education;
+    temp = persons[i].GetEducation();
     for (int j = 0; j < temp.size(); j++) {
       temp[j] = tolower(temp[j]);
     }
@@ -189,7 +206,7 @@ void jobless_base::Finding_right_options(jobless_base& required) {
   required.persons = new jobless_people[required.njobless];
   int k = 0;
   for (int i = 0; i < this->njobless; i++) {
-    temp = this->persons[i].education;
+    temp = persons[i].GetEducation();
     for (int j = 0; j < temp.size(); j++) {
       temp[j] = tolower(temp[j]);
     }

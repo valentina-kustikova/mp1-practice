@@ -79,7 +79,10 @@ class  jobless_people {
 
 public:
   jobless_people();
+  jobless_people(const str_full_name&, const date_of_birth&, const string&,
+    const string&, const last_job&, const string&, const str_contact&);
   const jobless_people& operator= (const jobless_people&);
+  string GetEducation() { return this->education; };
   friend ostream& operator<< (ostream&, const jobless_people&);
 };
 
@@ -90,7 +93,8 @@ class jobless_base {
 public:
   jobless_base();
   jobless_base(const string&);
-  ~jobless_base() { delete[] this->persons; }
+  int GetNjobless() { return this->njobless; };
+  ~jobless_base() { delete[] this->persons; };
   void Finding_right_options(jobless_base& required);
   friend ostream& operator<< (ostream&, const jobless_base&);
   float Required_percent(const jobless_base& required) const;
