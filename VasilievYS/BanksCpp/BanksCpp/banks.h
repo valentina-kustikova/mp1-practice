@@ -22,7 +22,7 @@ struct banks_library{
 	void read_lib(const std::string& fr);
 	void cnt_banks(const std::string& fr);
 	void make_list();
-	bank& find(const std::string& str);
+	bank find(const std::string& str);
 	~banks_library();
 };
 #endif 

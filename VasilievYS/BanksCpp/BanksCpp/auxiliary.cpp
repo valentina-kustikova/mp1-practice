@@ -5,7 +5,7 @@
 #include<fstream>
 #include<cstring>
 #include<cctype>
-
+#include<iostream>
 banks_library::banks_library()
 {
 	this->cnt = 0;
@@ -52,7 +52,7 @@ void banks_library::read_lib(const std::string& fr)
 		banks[i].depostes_cnt = 0;
 		while (del_pos != std::string::npos)
 		{
-			line[del_pos] = ' ';
+			temp_line[del_pos] = ' ';
 			banks[i].depostes_cnt++;
 			del_pos = temp_line.find(del);
 		}
@@ -64,21 +64,21 @@ void banks_library::read_lib(const std::string& fr)
 		line[del_pos] = ' ';
 		for (int j = 0; j < banks[i].depostes_cnt; j++)
 		{
-			size_t comma_pos = line.find(','); line[comma_pos] = ',';
-			to_low(line.substr(del_pos, comma_pos - del_pos + 1));
-			banks[i].deposites[j].name = line.substr(del_pos, comma_pos - del_pos + 1);
-			del_pos = line.find(del);
+			size_t comma_pos = line.find(','); line[comma_pos] = ' ';
+			std::string n_name = line.substr(del_pos, comma_pos - del_pos + 1);
+			to_low(n_name);
+			banks[i].deposites[j].name = n_name;
+			del_pos = line.find(del); line[del_pos] = ' ';
 			banks[i].deposites[j].percentage = stof(line.substr(comma_pos, del_pos - comma_pos + 1));
 		}
-
+		std::cout << 1234;
 	}
 	file.close();
 }
 
-void to_low(std::string str)
+void to_low(std::string& str)
 {
-	int i;
-	for (i = 0; str[i] != '\0'; i++)
+	for (int i = 0; str[i] != '\0'; i++)
 	{
 		str[i] = tolower(str[i]);
 	}
