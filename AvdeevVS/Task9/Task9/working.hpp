@@ -15,7 +15,6 @@ class date_of_birth {
   
 public:
   date_of_birth() {};
-  const date_of_birth& operator= (const date_of_birth&);
   date_of_birth(int, int, int);
   friend ostream& operator<< (ostream&, const date_of_birth&);
 };
@@ -27,7 +26,6 @@ class last_job {
 
 public:
   last_job() {};
-  const last_job& operator= (const last_job&);
   last_job(const string&, const string&, const string&);
   friend ostream& operator<< (ostream&, const last_job&);
 };
@@ -40,7 +38,6 @@ class str_address {
 
 public:
   str_address() {};
-  const str_address& operator= (const str_address&);
   str_address(const string&, const string&, int, int);
   friend ostream& operator<< (ostream&, const str_address&);
 };
@@ -51,7 +48,6 @@ class str_contact {
 
 public:
   str_contact() {};
-  const str_contact& operator= (const str_contact&);
   str_contact(const string&, const string&, const string&, int, int);
   friend ostream& operator<< (ostream&, const str_contact&);
 };
@@ -63,7 +59,6 @@ class str_full_name {
 
 public:
   str_full_name() {};
-  const str_full_name& operator= (const str_full_name&);
   str_full_name(const string&, const string&, const string&);
   friend ostream& operator<< (ostream&, const str_full_name&);
 };
@@ -81,8 +76,7 @@ public:
   jobless_people();
   jobless_people(const str_full_name&, const date_of_birth&, const string&,
     const string&, const last_job&, const string&, const str_contact&);
-  const jobless_people& operator= (const jobless_people&);
-  string GetEducation() { return this->education; };
+  string GetEducation() const { return this->education; };
   friend ostream& operator<< (ostream&, const jobless_people&);
 };
 
@@ -93,7 +87,7 @@ class jobless_base {
 public:
   jobless_base();
   jobless_base(const string&);
-  int GetNjobless() { return this->njobless; };
+  int GetNjobless() const { return this->njobless; };
   ~jobless_base() { delete[] this->persons; };
   void Finding_right_options(jobless_base& required);
   friend ostream& operator<< (ostream&, const jobless_base&);
