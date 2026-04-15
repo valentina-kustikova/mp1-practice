@@ -4,15 +4,11 @@ F. Scott Fitzgerald;The Great Gatsby;Scribner;2018
 J.D. Salinger;The Catcher in the Rye;Little, Brown and Company;2001
 Jane Austen;Pride and Prejudice;Penguin Classics;2014
 Jane Austen;Sense and Sensibility;Oxford University Press;2008
-Jane Austen;Emma;Vintage Classics;2015
 George Orwell;Animal Farm;Signet Classics;1996
-Ray Bradbury;Fahrenheit 451;Simon & Schuster;2013
 John Steinbeck;Of Mice and Men;Penguin Books;2002
-William Golding;Lord of the Flies;Faber & Faber;2016
+William Golding;Lord of the Flies;Faber and Faber;2016
 J.R.R. Tolkien;The Hobbit;Mariner Books;2012
 J.R.R. Tolkien;The Fellowship of the Ring;Mariner Books;2012
-J.R.R. Tolkien;The Two Towers;Mariner Books;2012
-J.R.R. Tolkien;The Return of the King;Mariner Books;2012
 J.K. Rowling;Harry Potter and the Sorcerer's Stone;Scholastic;1998
 Stephen King;The Shining;Anchor Books;2013
 Stephen King;It;Scribner;2016
@@ -41,6 +37,8 @@ Neil Gaiman;American Gods;William Morrow;2011
 Terry Pratchett;Mort;HarperTorch;2001
 Douglas Adams;The Hitchhiker's Guide to the Galaxy;Pan Books;2005
 John Green;The Fault in Our Stars;Dutton Books;2012
+J.R.R. Tolkien;The Hobbit;Mariner Books;2012
+J.R.R. Tolkien;The Fellowship of the Ring;Mariner Books;2012
 Suzanne Collins;The Hunger Games;Scholastic;2008
 Suzanne Collins;Catching Fire;Scholastic;2009
 Suzanne Collins;Mockingjay;Scholastic;2010
@@ -56,7 +54,7 @@ Anne McCaffrey;Dragonflight;Del Rey;1997
 Roger Zelazny;Nine Princes in Amber;Avon Books;1999
 E.L. James;Fifty Shades of Grey;Vintage;2012
 Dan Brown;The Da Vinci Code;Doubleday;2003
-Dan Brown;Angels & Demons;Pocket Books;2003
+Dan Brown;Angels and Demons;Pocket Books;2003
 Gillian Flynn;Gone Girl;Crown;2012
 Richard Adams;Watership Down;Scribner;2005
 Jack Kerouac;On the Road;Penguin Books;1999

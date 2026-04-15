@@ -25,16 +25,16 @@ int books_r(int* lines, char* filename) {
 	return 0;
 }
 
-void put_books_into_array(int* lines, char* filename, BOOK** library) {
+void put_books_into_array(int lines, char* filename, BOOK* library) {
 	int i;
 	char buff[BUFFER_SIZE];
 	FILE* fp = fopen(filename, "r");
-	(*library) = (BOOK*)malloc((*lines) * sizeof(BOOK));
+	
 	char* a, * n, * p;
 	int py = 0;
 	char delimiter[1] = ";";
 
-	for (i = 0; i < (*lines); i++) {
+	for (i = 0; i < lines; i++) {
 		fgets(buff, BUFFER_SIZE, fp);
 		if (buff[strlen(buff) - 1] == '\n') {
 			buff[strlen(buff) - 1] = '\0';
@@ -45,14 +45,14 @@ void put_books_into_array(int* lines, char* filename, BOOK** library) {
 		p = strtok(0, delimiter);
 		sscanf(strtok(0, delimiter), "%d", &py);
 
-		(*library)[i].authors = (char*)malloc((strlen(a) + 1) * sizeof(char));
-		(*library)[i].name = (char*)malloc((strlen(n) + 1) * sizeof(char));
-		(*library)[i].publishing = (char*)malloc((strlen(p) + 1) * sizeof(char));
+		library[i].authors = (char*)malloc((strlen(a) + 1) * sizeof(char));
+		library[i].name = (char*)malloc((strlen(n) + 1) * sizeof(char));
+		library[i].publishing = (char*)malloc((strlen(p) + 1) * sizeof(char));
 
-		strcpy((*library)[i].authors, a);
-		strcpy((*library)[i].name, n);
-		strcpy((*library)[i].publishing, p);
-		(*library)[i].publishing_year = py;
+		strcpy(library[i].authors, a);
+		strcpy(library[i].name, n);
+		strcpy(library[i].publishing, p);
+		library[i].publishing_year = py;
 	}
 	fclose(fp);
 }

@@ -7,7 +7,7 @@
 
 #define SURNAME_MAX_LEN 21
 #define FILENAME_MAX_LEN 101
-
+ 
 int main() {
 	int i, lines = 0, found_cnt = 0, error = 0;
 	char needed_author[SURNAME_MAX_LEN];
@@ -21,25 +21,16 @@ int main() {
 	error = books_r(&lines, filename);
 	if (error == 1) return 1;
 
+	library = (BOOK*)malloc(lines * sizeof(BOOK));
+
 	printf("Input the surname >> ");
 	scanf_s("%20s", &needed_author, sizeof(needed_author));
 
-	put_books_into_array(&lines, filename, &library);
-	find_authors_books(&found_cnt, lines, library, &found_books, needed_author);
+	put_books_into_array(lines, filename, library);
+	find_authors_books(needed_author, lines, library, &found_cnt, &found_books);
 	print_books(found_cnt, found_books, needed_author);
 
-	for (i = 0; i < found_cnt; i++) {
-		free(found_books[i].authors);
-		free(found_books[i].name);
-		free(found_books[i].publishing);
-	}
-
-	for (i = 0; i < lines; i++) {
-		free(library[i].authors);
-		free(library[i].name);
-		free(library[i].publishing);
-	}
-	free(found_books);
-	free(library);
+	free_lib(found_books, found_cnt);
+	free_lib(library, lines);
 	return 0;
 }

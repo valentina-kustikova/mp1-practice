@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include "library.h"
 
-void find_authors_books(int* found_cnt, int lines, BOOK* library, BOOK** found_books, char* needed_author) {
+
+void find_authors_books(char* needed_author, int lines, BOOK* library, int* found_cnt, BOOK** found_books) {
 	int i, j = 0;
 	for (i = 0; i < lines; i++) {
 		if (strstr(library[i].authors, needed_author) != NULL) {
@@ -26,4 +27,14 @@ void find_authors_books(int* found_cnt, int lines, BOOK* library, BOOK** found_b
 			j++;
 		}
 	}
+}
+
+void free_lib(BOOK* lib, int cnt) {
+	int i;
+	for (i = 0; i < cnt; i++) {
+		free(lib[i].authors);
+		free(lib[i].name);
+		free(lib[i].publishing);
+	}
+	free(lib);
 }
