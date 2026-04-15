@@ -2,9 +2,9 @@
 #include "base.h"
 
 int main() {
-	int len;
-	int* ans;
-	magaz** base = getbase(&len);
+	int len = 0;
+	Fmagaz ans;
+	Fmagaz base = getbase(&len);
 	if (base == NULL) {
 		printf("BASE LOAD ERROR");
 		return 1;

@@ -70,7 +70,7 @@ magaz** getbase(int *len) {
 				tcloses[u] = -1;
 			}
 			else {
-				mpt = strtok_r(tmp, ",", &token);
+				mpt = strtok_s(tmp, ",", &token);
 				sscanf(mpt, "%d.%d-%d.%d", &oh, &om, &kh, &km);
 				topens[u] = oh * 60 + om;
 				tcloses[u] = kh * 60 + km;
