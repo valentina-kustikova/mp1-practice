@@ -1,17 +1,28 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "library.h"
 
+void searchByAuthor(Book* books, int totalCount, char* author,
+    Book** authorBooks, int* resultCount) {
 
-void searchByAuthor(Book* books, int count, char* author) {
-    for (int i = 0; i < count; i++) {
-
+    int foundCount = 0;
+    for (int i = 0; i < totalCount; i++) {  
         if (strstr(books[i].authors, author) != NULL) {
-            printf("Авторы: %s\n", books[i].authors);
-            printf("Название: %s\n", books[i].title);
-            printf("Издательство: %s\n", books[i].publisher);
-            printf("Год: %d\n", books[i].year);
-            printf("-------------------\n");
+            foundCount++;
         }
     }
+
+    *authorBooks = (Book*)malloc(foundCount * sizeof(Book));
+
+   
+    int index = 0;
+    for (int i = 0; i < totalCount; i++) {
+        if (strstr(books[i].authors, author) != NULL) {
+            (*authorBooks)[index] = books[i];
+            index++;
+        }
+    }
+
+    *resultCount = foundCount;
 }

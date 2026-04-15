@@ -6,27 +6,26 @@
 
 Book* readBooks(char* filename, int* count) {
     FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        *count = 0;
+        return NULL;
+    }
+
     Book* books = NULL;
     char line[1000];
     int size = 0;
-
 
     while (fgets(line, sizeof(line), file) != NULL) {
         size++;
     }
 
-
     books = (Book*)malloc(sizeof(Book) * size);
-
-
     rewind(file);
-
 
     *count = 0;
     while (fgets(line, sizeof(line), file) != NULL) {
-
         line[strcspn(line, "\n")] = 0;
-
+        line[strcspn(line, "\r")] = 0;  
 
         char* token;
 
@@ -34,17 +33,14 @@ Book* readBooks(char* filename, int* count) {
         books[*count].authors = (char*)malloc(strlen(token) + 1);
         strcpy(books[*count].authors, token);
 
-
         token = strtok(NULL, ";");
         books[*count].title = (char*)malloc(strlen(token) + 1);
         strcpy(books[*count].title, token);
-
 
         token = strtok(NULL, ";");
         books[*count].publisher = (char*)malloc(strlen(token) + 1);
         strcpy(books[*count].publisher, token);
 
-        // Р“РѕРґ
         token = strtok(NULL, ";");
         books[*count].year = atoi(token);
 
@@ -62,4 +58,19 @@ void freeBooks(Book* books, int count) {
         free(books[i].publisher);
     }
     free(books);
+}
+
+void printBooks(Book* books, int count) {
+    if (count == 0) {
+        printf("Книги не найдены\n");
+        return;
+    }
+
+    for (int i = 0; i < count; i++) {
+        printf("Авторы: %s\n", books[i].authors);
+        printf("Название: %s\n", books[i].title);
+        printf("Издательство: %s\n", books[i].publisher);
+        printf("Год: %d\n", books[i].year);
+        printf("------------------\n");
+    }
 }

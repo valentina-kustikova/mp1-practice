@@ -4,30 +4,46 @@
 #include "library.h"
 #include "auxiliary.h"
 
-int main() {
+int main(int argc, char** argv) {
+    SetConsoleOutputCP(1251);
+    SetConsoleCP(1251);
     char author[100];
     Book* library;
     int count;
+    Book* foundBooks;
+    int foundCount;
 
-    library = readBooks("library.txt", &count);
+    library = readBooks(argv[1], &count);
 
-    if (library == NULL) {
-        printf("–û—à–∏–±–∫–∞: –Ω–µ —É–¥–∞–ª–æ—Å—å –æ—Ç–∫—Ä—ã—Ç—å —Ñ–∞–π–ª library.txt\n");
+    if (argc < 2) {
         return 1;
     }
 
-    printf("–ó–∞–≥—Ä—É–∂–µ–Ω–æ –∫–Ω–∏–≥: %d\n\n", count);
+    if (library == NULL) {
+        printf("Œ¯Ë·Í‡: ÌÂ Û‰‡ÎÓÒ¸ ÓÚÍ˚Ú¸ Ù‡ÈÎ library.txt\n");
+        return 1;
+    }
+
+    printf("«‡„ÛÊÂÌÓ ÍÌË„: %d\n\n", count);
 
     while (1) {
-        printf("–í–≤–µ–¥–∏—Ç–µ –∞–≤—Ç–æ—Ä–∞ (–∏–ª–∏ 'exit'): ");
+        printf("¬‚Â‰ËÚÂ ‡‚ÚÓ‡ (ËÎË 'exit'): ");
         fgets(author, 100, stdin);
         author[strcspn(author, "\n")] = 0;
 
         if (strcmp(author, "exit") == 0)
             break;
 
-        printf("\n–†–µ–∑—É–ª—å—Ç–∞—Ç—ã –ø–æ–∏—Å–∫–∞:\n");
-        searchByAuthor(library, count, author);
+        printf("\n–ÂÁÛÎ¸Ú‡Ú˚ ÔÓËÒÍ‡:\n");
+
+        foundBooks = NULL;
+        foundCount = 0;
+
+        searchByAuthor(library, count, author, &foundBooks, &foundCount);
+
+        printBooks(foundBooks, foundCount);
+        free(foundBooks);
+
         printf("\n");
     }
 
