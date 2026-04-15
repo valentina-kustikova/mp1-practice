@@ -1,0 +1,12 @@
+"L. N. Tolstoy";"War and Peace";"Alphabet";2025
+"Arthur Conan Doyle";"The Adventures of Sherlock Holmes";"The Strand";1927
+"L. N. Tolstoy";"Anna Karenina";"Russian Messenger";1877
+"F. M. Dostoevsky";"Crime and Punishment";"Russian Messenger";1866
+"Jack London";"White Fang";"Macmillan";1906
+"George Orwell";"1984";"Secker & Warburg";1949
+"George Orwell";"Animal Farm";"Secker & Warburg";1945
+"Ernest Hemingway";"The Old Man and the Sea";"Charles Scribner's Sons";1952
+"Ernest Hemingway";"A Farewell to Arms";"Charles Scribner's Sons";1929
+"Mark Twain";"The Adventures of Tom Sawyer";"American Publishing Company";1876
+"Mark Twain";"Adventures of Huckleberry Finn";"Chatto & Windus";1884
+"Charles Dickens";"A Tale of Two Cities";"Chapman & Hall";1859
