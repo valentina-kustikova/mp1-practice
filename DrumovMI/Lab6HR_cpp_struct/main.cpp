@@ -14,14 +14,16 @@ int main(int argc, char** argv) {
 	auto now = std::chrono::system_clock::now();
 	auto today = std::chrono::floor<std::chrono::days>(now);
 	std::chrono::year_month_day ymd{ today };
-	try {
-		Employees employees{ read_employees(argv[1]) };
-		Employees pension = employees.pension_employees(ymd);
-		std::cout << "Pension employees:\n";
-		std::cout << pension;
+	std::vector<Employee> employees = read_employees(argv[1]);
+	std::vector<Employee> pension_employees;
+	for (auto employee : employees) {
+		if (employee.age_by_date(ymd) >= 60) {
+			pension_employees.push_back(employee);
+		}
 	}
-	catch (const std::exception& e) {
-		std::cerr << e.what();
+	std::cout << "Pension employees:\n"; 
+	for (auto employee : pension_employees) {
+		std::cout << employee << "\n";
 	}
 	return 0;
 }
