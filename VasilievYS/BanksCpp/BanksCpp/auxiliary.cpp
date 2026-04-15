@@ -1,26 +1,32 @@
 #include"banks.h"
 #include"auxiliary.h"
 #include<cstdio>
-#include<stdlib.h>
+#include<cstdlib>
 #include<fstream>
-#include<string.h>
+#include<cstring>
 #include<cctype>
 
-int cnt_s(const char* fr)
+banks_library::banks_library()
 {
-	FILE* fp = fopen(fr, "r");
-	if (fp == NULL) { printf("File not found"); return NULL; }
-	int cnt = 0;
-	char ch = fgetc(fp);
-	while (ch != EOF)
-	{
-		if (ch == '\n') { cnt++; }
-		ch = fgetc(fp);
-	}
-	fclose(fp);
-	return cnt;
+	this->cnt = 0;
+	this->banks = nullptr;
 }
-void banks_library::cnt_banks(const std::string fr)
+
+void banks_library::make_list()
+{
+	this->banks = new bank[this->cnt];
+}
+
+banks_library::~banks_library()
+{
+	for (int i = 0; i < cnt; i++)
+	{
+		delete[]banks->deposites;
+	}
+	delete[]banks;
+}
+
+void banks_library::cnt_banks(const std::string& fr)
 {
 	std::ifstream file(fr);
 	if(!file.is_open()) { throw std::exception("File not found");}
@@ -32,9 +38,9 @@ void banks_library::cnt_banks(const std::string fr)
 	}
 	file.close();
 }
-void banks_library::read_lib(const std::string fr)
+
+void banks_library::read_lib(const std::string& fr)
 {
-	//FILE* fp = fopen(fr, "r");
 	std::ifstream file(fr);
 	for (int i = 0; i < this->cnt; i++)
 	{
@@ -42,69 +48,34 @@ void banks_library::read_lib(const std::string fr)
 		getline(file, line);
 		temp_line = line;
 		char del = ';';
-		size_t pos = line.find(del);
-		while (pos != std::string::npos)
+		size_t del_pos = temp_line.find(del);
+		banks[i].depostes_cnt = 0;
+		while (del_pos != std::string::npos)
 		{
-			line[pos] = ' '; //доделать, посчитать количество ';' и минус 2,
+			line[del_pos] = ' ';
+			banks[i].depostes_cnt++;
+			del_pos = temp_line.find(del);
 		}
-		std::string temp_token = strtok(temp_line, ";");
-		temp_token = strtok(NULL, ";");
-		temp_token = strtok(NULL, ";");
-		while (temp_token != NULL)
+		banks[i].depostes_cnt -= 2;
+		banks[i].deposites = new deposit[banks[i].depostes_cnt];
+		del_pos = line.find(del);
+		line[del_pos] = ' ';
+		del_pos = line.find(del);
+		line[del_pos] = ' ';
+		for (int j = 0; j < banks[i].depostes_cnt; j++)
 		{
-			if (strchr(temp_token, ',') != NULL) { dep_cnt++; }
-			temp_token = strtok(NULL, ";");
+			size_t comma_pos = line.find(','); line[comma_pos] = ',';
+			to_low(line.substr(del_pos, comma_pos - del_pos + 1));
+			banks[i].deposites[j].name = line.substr(del_pos, comma_pos - del_pos + 1);
+			del_pos = line.find(del);
+			banks[i].deposites[j].percentage = stof(line.substr(comma_pos, del_pos - comma_pos + 1));
 		}
-	}
 
-}
-void read(const char* fr, banks_library* lib)
-{
-	int check = 0, i;
-	char line[MAX_LEN], temp_line[MAX_LEN], * token, * temp_token;
-	FILE* fp = fopen(fr, "r");
-	//std::ifstream file
-	for (i = 0; i < lib->cnt; i++)
-	{
-		int dep_cnt = 0, cur_dep = 0;
-		fgets(line, sizeof(line), fp);
-		//кол-во депозитов
-		strcpy(temp_line, line);
-		temp_token = strtok(temp_line, ";");
-		temp_token = strtok(NULL, ";");
-		temp_token = strtok(NULL, ";");
-		while (temp_token != NULL)
-		{
-			if (strchr(temp_token, ',') != NULL) { dep_cnt++; }
-			temp_token = strtok(NULL, ";");
-		}
-		lib->banks[i].deposits_count = dep_cnt;
-		lib->banks[i].deposites = (deposit*)malloc(sizeof(deposit) * dep_cnt);
-		token = strtok(line, ";");
-		strcpy(lib->banks[i].name, token);
-		token = strtok(NULL, ";");
-		strcpy(lib->banks[i].owner, token);
-		token = strtok(NULL, ";");
-		while (token != NULL)
-		{
-			char* comma = strchr(token, ',');
-			if (comma == NULL)
-			{
-				token = strtok(NULL, ";");
-				continue;
-			}
-			*comma = '\0';
-			to_low(token);
-			strcpy(lib->banks[i].deposites[cur_dep].name, token);
-			lib->banks[i].deposites[cur_dep].percentage = atof(comma + 2);
-			cur_dep++;
-			token = strtok(NULL, ";");
-		}
 	}
-	fclose(fp);
+	file.close();
 }
 
-void to_low(char* str)
+void to_low(std::string str)
 {
 	int i;
 	for (i = 0; str[i] != '\0'; i++)
@@ -113,19 +84,7 @@ void to_low(char* str)
 	}
 }
 
-void print(bank* ans)
+std::ostream& operator<<(std::ostream& os, const bank& b)
 {
-	int i;
-	printf("%s; Ownership form:%s\n",
-		ans->name, ans->owner);
-}
-
-void free_b(banks_library* lib)
-{
-	int i;
-	for (i = 0; i < lib->cnt; i++)
-	{
-		free(lib->banks[i].deposites);
-	}
-	free(lib->banks);
+	return os << b.name << std::endl;
 }

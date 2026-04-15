@@ -1,23 +1,23 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include<cstdio>
+#include<cstdlib>
 #include<iostream>
 #include"banks.h"
 #include"auxiliary.h"
+#include<cstring>
 
 int main(int argc, char** argv)
 {
-	int j = 0, ch, i = 0, idx_ans;
-	char udep[MAX_LEN];
+	std::string udep;
 	banks_library lib;
 	if (argc < 2) { return 1; }
-	lib.cnt = cnt_s(argv[1]);
-	lib.banks = (bank*)malloc(sizeof(bank) * lib.cnt);
-	read(argv[1], &lib);
-	scanf("%[^\n]", udep);
+	lib.cnt_banks(argv[1]);
+	lib.make_list();
+	getline(std::cin, udep);
 	to_low(udep);
-	idx_ans = find(&lib, udep);
-	if (idx_ans == -1) { printf("NO"); free_b(&lib); return 1; }
-	print(&lib.banks[idx_ans]);
-	free_b(&lib);
+	try
+	{
+
+	}//todo: try/catch, operator > (deps cmpr)
+
 	return 0;
 }
