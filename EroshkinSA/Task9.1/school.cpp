@@ -3,6 +3,7 @@
 #include "school.h"
 #include <sstream>
 #include <fstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -40,8 +41,8 @@ pupil::pupil(const string& FIO, const string& klass, const string& gen, const st
 	else this->gen = gender::WOMAN;
 }
 
-ostream& operator<<(ostream& out, pupil& p) {
-	out << p.klass << '\t' << p.surname << " "
+ostream& operator<<(ostream& out, const pupil& p) {
+	out << setw(3) << p.klass << '\t' << p.surname << " "
 		<< p.name << " " << p.fathername << '\t';
 	if (p.gen == gender::MAN) out << "Male\t";
 	else out << "Female\t";
@@ -49,7 +50,7 @@ ostream& operator<<(ostream& out, pupil& p) {
 	return out;
 }
 
-ostream& operator<<(ostream& out, home_address& home) {
+ostream& operator<<(ostream& out, const home_address& home) {
 	out << "HOME ADDRESS: ";
 	for (int i = 0; i < 6; i++) out << home.index[i];
 	out << " - " << home.country << ", " << home.region << ", "
@@ -59,7 +60,7 @@ ostream& operator<<(ostream& out, home_address& home) {
 	return out;
 }
 
-ostream& operator<<(ostream& out, birth_date& date) {
+ostream& operator<<(ostream& out, const birth_date& date) {
 	out << "BIRTH DATE: ";
 	if (date.day < 10) out << '0';
 	out << date.day << ".";
@@ -68,10 +69,10 @@ ostream& operator<<(ostream& out, birth_date& date) {
 	return out;
 }
 
-ostream& operator<<(ostream& out, school& sch) {
+ostream& operator<<(ostream& out, const school& sch) {
 	out << "#_________________________#\n";
 	for (int i = 0; i < sch.count; i++) {
-		out << i + 1 << ") " << sch.list[i] << endl;
+		out << setw(2) << i + 1 << ") " << sch.list[i] << endl;
 	}
 	out << "#_________________________#\n";
 	return out;
@@ -101,14 +102,14 @@ school::school(const string& fn) {
 	file.close();
 }
 
-bool compare(pupil& a, pupil& b) {
-	if (a.klass == b.klass) {
-		if (a.surname != b.surname) return a.surname < b.surname;
-		else if (a.name != b.name) return a.name < b.name;
-		else return a.fathername < b.fathername;
+bool school::compare(const pupil& a, const pupil& b) {
+	if (a.get_class() == b.get_class()) {
+		if (a.get_surname() != b.get_surname()) return a.get_surname() < b.get_surname();
+		else if (a.get_name() != b.get_name()) return a.get_name() < b.get_name();
+		else return a.get_fathername() < b.get_fathername();
 	}
 	else {
-		string sa = a.klass, sb = b.klass;
+		string sa = a.get_class(), sb = b.get_class();
 		int codeA = stoi(sa.substr(0, sa.size() - 1)) * 100 + (sa.back() - 'A'),
 			codeB = stoi(sb.substr(0, sb.size() - 1)) * 100 + (sb.back() - 'A');
 		return codeA < codeB;
@@ -127,7 +128,7 @@ school::~school() {
 	delete[]this->list;
 }
 
-void swap(pupil& a, pupil& b) {
+void school::swap(pupil& a, pupil& b) {
 	pupil temp = a;
 	a = b;
 	b = temp;
