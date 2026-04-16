@@ -3,8 +3,8 @@
 
 #include "library.h"
 
-int cab_counter(int* cnt, char* pathway);
-void cab_reader(int* cnt, char* pathway, BOOK** _lib);
-void cab_printer(int au_cnt, BOOK* au_lib);
+int cab_counter(char pathway[], int* cnt);
+void cab_reader(int cnt, char pathway[], BOOK _lib[]);
+void cab_printer(int au_cnt, BOOK au_lib[]);
 
 #endif
