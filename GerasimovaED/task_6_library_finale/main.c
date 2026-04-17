@@ -20,7 +20,7 @@ int main() {
 		scanf_s("%256s", pathway, sizeof(pathway));
 		printf("\n");
 		is_exist = cab_counter(pathway, &cnt);
-		if (is_exist == 404) {
+		if (is_exist == 1) {
 			system("pause");
 			system("cls");
 		}

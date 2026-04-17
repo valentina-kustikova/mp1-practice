@@ -13,11 +13,14 @@ int cab_counter(char pathway[], int* cnt) {
 
 	if (file_cab == NULL) {
 		printf("FILE NOT FOUND\n");
-		return 404;
+		return 1;
 	}
 	while (fgets(temp, MAX_SIZE, file_cab) != NULL) (*cnt)++;
 	fclose(file_cab);
-
+	if (cnt == 0) {
+		printf("NO BOOKS IN CABINET\n");
+		return 1;
+	}
 	return 0;
 }
 
@@ -49,10 +52,6 @@ void cab_reader(int cnt, char pathway[], BOOK _lib[]) {
 
 void cab_printer(int au_cnt, BOOK au_lib[]) {
 	int i;
-	if (au_cnt == 0) {
-		printf("BOOKS NOT FOUND\n");
-		return;
-	}
 	printf("BOOK LIST\n\n");
 	for (i = 0; i < au_cnt; i++) {
 		printf("|-------------------------------------------------------------------------------------------|\n");
