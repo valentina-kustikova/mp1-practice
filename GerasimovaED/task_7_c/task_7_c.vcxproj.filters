@@ -18,7 +18,7 @@
     <ClCompile Include="main.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="library.c">
+    <ClCompile Include="repertoir.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="auxiliary.c">
@@ -26,14 +26,14 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="library.h">
+    <ClInclude Include="auxiliary.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="auxiliary.h">
+    <ClInclude Include="repertoir.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="file_cabinet.txt" />
+    <None Include="file_repertoir.csv" />
   </ItemGroup>
 </Project>
