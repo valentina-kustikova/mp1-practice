@@ -23,6 +23,7 @@ struct banks_library{
 	void cnt_banks(const std::string& fr);
 	void make_list();
 	bank find(const std::string& str);
+	void show_data();
 	~banks_library();
 };
 #endif 

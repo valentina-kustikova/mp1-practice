@@ -18,13 +18,13 @@ int main(int argc, char** argv)
 	try
 	{
 		lib.read_lib(argv[1]);
+		lib.show_data();
 		bank ans = lib.find(udep);
-		std::cout << ans;
+		std::cout << ans<<std::endl;
 	}
-	catch (...)
+	catch (const std::string ex)
 	{
-		std::cout << 121 << std::endl;
-		std::cout << std::exception().what()<<222<<std::endl;
+		std::cout << ex <<std::endl;
 	}
 	return 0;
 }

@@ -21,7 +21,7 @@ banks_library::~banks_library()
 {
 	for (int i = 0; i < cnt; i++)
 	{
-		delete[]banks->deposites;
+		delete[]banks[i].deposites;
 	}
 	delete[]banks;
 }
@@ -29,7 +29,7 @@ banks_library::~banks_library()
 void banks_library::cnt_banks(const std::string& fr)
 {
 	std::ifstream file(fr);
-	if(!file.is_open()) { throw std::exception("File not found");}
+	if(!file.is_open()) { throw std::string("File not found");}
 	this->cnt=0;
 	std::string str;
 	while (getline(file, str))
@@ -60,7 +60,10 @@ void banks_library::read_lib(const std::string& fr)
 		banks[i].deposites = new deposit[banks[i].depostes_cnt];
 		del_pos = line.find(del);
 		line[del_pos] = ' ';
+		banks[i].name = line.substr(0, del_pos);
+		size_t temp_del = del_pos;
 		del_pos = line.find(del);
+		banks[i].owner = line.substr(temp_del, del_pos - temp_del);
 		line[del_pos] = ' ';
 		for (int j = 0; j < banks[i].depostes_cnt; j++)
 		{
@@ -71,9 +74,20 @@ void banks_library::read_lib(const std::string& fr)
 			del_pos = line.find(del); line[del_pos] = ' ';
 			banks[i].deposites[j].percentage = stof(line.substr(comma_pos, del_pos - comma_pos + 1));
 		}
-		std::cout << 1234;
 	}
 	file.close();
+}
+
+void banks_library::show_data()
+{
+	for (int i = 0; i < cnt; i++)
+	{
+		std::cout << banks[i].name << ';' << banks[i].owner << std::endl; ;
+		for (int j = 0; j < banks[i].depostes_cnt; j++)
+		{
+			std::cout << banks[i].deposites[j].name << " " << banks[i].deposites[j].percentage << std::endl;
+		}
+	}
 }
 
 void to_low(std::string& str)
