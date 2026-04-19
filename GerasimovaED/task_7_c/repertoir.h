@@ -12,7 +12,7 @@ typedef struct {
 	unsigned int fees;
 }FILM;
 
-int director_counter(char director_name[], int cnt, FILM _rep[], int* dir_cnt);
+void director_counter(char director_name[], int cnt, FILM _rep[], int* dir_cnt);
 void director_finder(char director_name[], int cnt, FILM _rep[], int dir_cnt, FILM dir_rep[]);
 void free_arrays(int cnt, int dir_cnt, FILM _rep[], FILM dir_rep[]);
 

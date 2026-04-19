@@ -6,12 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-int director_counter(char director_name[], int cnt, FILM _rep[], int* dir_cnt) {
+void director_counter(char director_name[], int cnt, FILM _rep[], int* dir_cnt) {
 	int i;
 	for (i = 0; i < cnt; i++) if (strstr(_rep[i].director, director_name) != NULL) (*dir_cnt)++;
 	if (dir_cnt == 0) {
 		printf("FILMS NOT FOUND\n");
 	}
+	return;
 }
 
 void director_finder(char director_name[], int cnt, FILM _rep[], int dir_cnt, FILM dir_rep[]) {

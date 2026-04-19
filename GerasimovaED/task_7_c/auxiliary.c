@@ -7,22 +7,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-int rep_counter(char pathway[], int* cnt) {
+void rep_counter(char pathway[], int* cnt) {
 	char temp[MAX_SIZE];
 	FILE* file_rep = fopen(pathway, "r");
-
 	if (file_rep == NULL) {
 		printf("FILE NOT FOUND\n");
-		return 1;
+		return;
 	}
 	while (fgets(temp, MAX_SIZE, file_rep) != NULL) (*cnt)++;
 	fclose(file_rep);
 	if (cnt == 0) {
 		printf("NO FILMS IN REPERTOIR\n");
-		return 1;
 	}
-
-	return 0;
+	return;
 }
 
 void rep_reader(int cnt, char pathway[], FILM _rep[]) {
@@ -60,7 +57,7 @@ void rep_printer(int dir_cnt, FILM dir_rep[]) {
 	int i;
 	printf("FILM LIST\n\n");
 	for (i = 0; i < dir_cnt; i++) {
-		printf("|----------------------------------------------------------------------------------------------------------------------|\n");
+		printf("|---------------------------------------------------------------------------------------------------------------------|\n");
 		printf("| ");
 		printf("%-38s", dir_rep[i].name);
 		printf(" | ");
@@ -75,6 +72,6 @@ void rep_printer(int dir_cnt, FILM dir_rep[]) {
 		printf("%-10u", dir_rep[i].fees);
 		printf(" |\n");
 	}
-	printf("|----------------------------------------------------------------------------------------------------------------------|\n");
+	printf("|---------------------------------------------------------------------------------------------------------------------|\n");
 	return;
 }
