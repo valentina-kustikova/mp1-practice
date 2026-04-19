@@ -6,7 +6,8 @@
 int main(int argc, char *argv[]) {
 	FILE* file;
 	char aut[100];
-	Fbooks tmp;
+	Fbooks libr;
+	Fbooks finded;
 	if (argc < 2) {
 		printf("no args");
 		return 1;
@@ -16,16 +17,17 @@ int main(int argc, char *argv[]) {
 		printf("no file");
 		return 0;
 	}
-	tmp.len = getrange(file);
-	tmp.books = (book*)malloc(sizeof(book) * tmp.len);
-	loadbooks(file, &tmp);
+	libr.len = getrange(file);
+	libr.books = (book*)malloc(sizeof(book) * libr.len);
+	loadbooks(file, &libr);
 	if (fgets(aut, sizeof(aut), stdin) == NULL) {
 		printf("getting error");
 		return 0;
 	}
-	tmp = find(tmp.books, aut, tmp.len);
-	printer(tmp);
-	free(tmp.books);
+	finded = find(libr, aut);
+	printer(finded);
+	free(libr.books);
+	free(finded.books);
 	fclose(file);
 	return 0;
 }

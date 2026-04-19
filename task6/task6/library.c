@@ -11,26 +11,23 @@ char* trim(char* s) {
 	return s;
 }
 //strstr(books[i].authors, aut)
-Fbooks find(book *books, char* aut, int n) {
+Fbooks find(Fbooks *books, char* aut) {
 	int i, k = 0;
 	Fbooks ans;
-	book* ansbook;
-	for (i = 0; i < n; i++) {
-		if (strstr(books[i].authors, trim(aut)) != NULL) {
+	for (i = 0; i < books->len; i++) {
+		if (strstr(books->books[i].authors, trim(aut)) != NULL) {
 			k++;
 		}
 	}
 	ans.len = k;
-	ansbook = (book*)malloc(sizeof(book) * k);
+	ans.books = (book*)malloc(sizeof(book) * k);
 	k = 0;
-	for (i = 0; i < n; i++) {
-		if (strstr(books[i].authors, trim(aut)) != NULL) {
-			ansbook[k] = books[i];
+	for (i = 0; i < books->len; i++) {
+		if (strstr(books->books[i].authors, trim(aut)) != NULL) {
+			ans.books[k] = books->books[i];
 			k++;
 		}
-	}
-	ans.books = ansbook;
-	free(books);
+	};
 	return ans;
 }
 
