@@ -6,12 +6,13 @@
 #include <stdlib.h>
 #include <string.h>
 
-int author_counter(char author_name[], int cnt, BOOK _lib[], int* au_cnt) {
+void author_counter(char author_name[], int cnt, BOOK _lib[], int* au_cnt) {
 	int i;
 	for (i = 0; i < cnt; i++) if (strstr(_lib[i].author, author_name) != NULL) (*au_cnt)++;
 	if (au_cnt == 0) {
 		printf("BOOKS NOT FOUND\n");
 	}
+	return;
 }
 
 void author_finder(char author_name[], int cnt, BOOK _lib[], int au_cnt, BOOK au_lib[]) {

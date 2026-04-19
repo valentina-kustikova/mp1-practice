@@ -7,21 +7,19 @@
 #include <stdlib.h>
 #include <string.h>
 
-int cab_counter(char pathway[], int* cnt) {
+void cab_counter(char pathway[], int* cnt) {
 	char temp[MAX_SIZE];
 	FILE* file_cab = fopen(pathway, "r");
-
 	if (file_cab == NULL) {
 		printf("FILE NOT FOUND\n");
-		return 1;
+		return;
 	}
 	while (fgets(temp, MAX_SIZE, file_cab) != NULL) (*cnt)++;
 	fclose(file_cab);
 	if (cnt == 0) {
 		printf("NO BOOKS IN CABINET\n");
-		return 1;
 	}
-	return 0;
+	return;
 }
 
 void cab_reader(int cnt, char pathway[], BOOK _lib[]) {

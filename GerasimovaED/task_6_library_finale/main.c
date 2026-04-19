@@ -11,7 +11,7 @@
 int main() {
 	BOOK* _lib = NULL;
 	BOOK* au_lib = NULL;
-	int cnt = 0, is_exist = 0, au_cnt = 0;
+	int cnt = 0, au_cnt = 0;
 	char author_name[MAX_SIZE+1];
 	char pathway[MAX_SIZE+1];
 
@@ -19,8 +19,8 @@ int main() {
 		printf("INPUT PATHWAY: ");
 		scanf_s("%256s", pathway, sizeof(pathway));
 		printf("\n");
-		is_exist = cab_counter(pathway, &cnt);
-		if (is_exist == 1) {
+		cab_counter(pathway, &cnt);
+		if (cnt == 0) {
 			system("pause");
 			system("cls");
 		}

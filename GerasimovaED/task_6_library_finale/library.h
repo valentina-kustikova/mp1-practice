@@ -10,7 +10,7 @@ typedef struct {
 	int year;
 }BOOK;
 
-int author_counter(char author_name[], int cnt, BOOK _lib[], int* au_cnt);
+void author_counter(char author_name[], int cnt, BOOK _lib[], int* au_cnt);
 void author_finder(char author_name[], int cnt, BOOK _lib[], int au_cnt, BOOK au_lib[]);
 void free_arrays(int cnt, int au_cnt, BOOK _lib[], BOOK au_lib[]);
 
