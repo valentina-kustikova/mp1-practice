@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include "department.h"
 
-void find_owners(int* found_cnt, int rows, OWNER* database, OWNER** found_owners, char* requested_department) {
+
+void find_owners(char* requested_department, int rows, OWNER* database, int* found_cnt, OWNER** found_owners) {
 	int i, j = 0;
 	for (i = 0; i < rows; i++) {
 		if (strstr(database[i].department, requested_department) != NULL) {
@@ -31,4 +32,17 @@ void find_owners(int* found_cnt, int rows, OWNER* database, OWNER** found_owners
 			j++;
 		}
 	}
+}
+
+void free_data(OWNER* data, int cnt) {
+	int i;
+	for (i = 0; i < cnt; i++) {
+		free(data[i].full_name);
+		free(data[i].birth_date);
+		free(data[i].auto_number);
+		free(data[i].pass_number);
+		free(data[i].phone_number);
+		free(data[i].department);
+	}
+	free(data);
 }

@@ -36,4 +36,7 @@
   <ItemGroup>
     <Text Include="in.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\..\..\..\Users\troto\Downloads\in.csv" />
+  </ItemGroup>
 </Project>

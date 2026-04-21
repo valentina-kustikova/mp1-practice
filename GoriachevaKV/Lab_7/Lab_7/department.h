@@ -10,5 +10,6 @@ typedef struct {
 	char* department;
 }OWNER;
 
-void find_owners(int* found_cnt, int rows, OWNER* database, OWNER** found_owners, char* requested_department);
+void find_owners(char* requested_department, int rows, OWNER* database, int* found_cnt, OWNER** found_owners);
+void free_data(OWNER* data, int cnt);
 #endif
