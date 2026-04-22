@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
+#include <windows.h>
 
 void rep_counter(char pathway[], int* cnt) {
 	char temp[MAX_SIZE];
@@ -54,6 +56,7 @@ void rep_reader(int cnt, char pathway[], FILM _rep[]) {
 }
 
 void rep_printer(int dir_cnt, FILM dir_rep[]) {
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	int i;
 	printf("FILM LIST\n\n");
 	for (i = 0; i < dir_cnt; i++) {
@@ -61,11 +64,17 @@ void rep_printer(int dir_cnt, FILM dir_rep[]) {
 		printf("| ");
 		printf("%-38s", dir_rep[i].name);
 		printf(" | ");
+		SetConsoleTextAttribute(console, 0 * 16 + 2);
 		printf("%-15s", dir_rep[i].director);
+		SetConsoleTextAttribute(console, 0 * 16 + 15);
 		printf(" | ");
+		SetConsoleTextAttribute(console, 0 * 16 + 4);
 		printf("%-23s", dir_rep[i].country);
+		SetConsoleTextAttribute(console, 0 * 16 + 15);
 		printf(" | ");
+		SetConsoleTextAttribute(console, 0 * 16 + 3);
 		printf("%d", dir_rep[i].year);
+		SetConsoleTextAttribute(console, 0 * 16 + 15);
 		printf(" | ");
 		printf("%-10u", dir_rep[i].budget);
 		printf(" | ");

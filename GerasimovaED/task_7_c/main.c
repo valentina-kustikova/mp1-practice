@@ -41,7 +41,8 @@ int main() {
 	dir_rep = (FILM*)malloc(dir_cnt * sizeof(FILM));
 	director_finder(director_name, cnt, _rep, dir_cnt, dir_rep);
 	rep_printer(dir_cnt, dir_rep);
-	free_arrays(cnt, dir_cnt, _rep, dir_rep);
+	free_array(cnt, _rep);
+	free_array(dir_cnt, dir_rep);
 
 	return 0;
 }

@@ -34,19 +34,13 @@ void director_finder(char director_name[], int cnt, FILM _rep[], int dir_cnt, FI
 	return;
 }
 
-void free_arrays(int cnt, int dir_cnt, FILM _rep[], FILM dir_rep[]) {
+void free_array(int cnt, FILM arr[]) {
 	int i;
 	for (i = 0; i < cnt; i++) {
-		free(_rep[i].name);
-		free(_rep[i].director);
-		free(_rep[i].country);
+		free(arr[i].name);
+		free(arr[i].director);
+		free(arr[i].country);
 	}
-	for (i = 0; i < dir_cnt; i++) {
-		free(dir_rep[i].name);
-		free(dir_rep[i].director);
-		free(dir_rep[i].country);
-	}
-	free(_rep);
-	free(dir_rep);
+	free(arr);
 	return;
 }
