@@ -10,8 +10,8 @@ typedef struct {
 	int year;
 }BOOK;
 
-void author_counter(char author_name[], int cnt, BOOK _lib[], int* au_cnt);
-void author_finder(char author_name[], int cnt, BOOK _lib[], int au_cnt, BOOK au_lib[]);
-void free_array(int cnt, BOOK arr[]);
+void author_counter(char* author_name, int cnt, BOOK* _lib, int* au_cnt);
+void author_finder(char* author_name, int cnt, BOOK* _lib, int au_cnt, BOOK* au_lib);
+void free_array(int cnt, BOOK* arr);
 
 #endif

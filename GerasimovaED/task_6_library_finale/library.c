@@ -1,12 +1,10 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include "library.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-void author_counter(char author_name[], int cnt, BOOK _lib[], int* au_cnt) {
+void author_counter(char* author_name, int cnt, BOOK* _lib, int* au_cnt) {
 	int i;
 	for (i = 0; i < cnt; i++) if (strstr(_lib[i].author, author_name) != NULL) (*au_cnt)++;
 	if (au_cnt == 0) {
@@ -15,7 +13,7 @@ void author_counter(char author_name[], int cnt, BOOK _lib[], int* au_cnt) {
 	return;
 }
 
-void author_finder(char author_name[], int cnt, BOOK _lib[], int au_cnt, BOOK au_lib[]) {
+void author_finder(char* author_name, int cnt, BOOK* _lib, int au_cnt, BOOK* au_lib) {
 	int i, j = 0;
 	for (i = 0; i < cnt; i++) {
 		if ((strstr(_lib[i].author, author_name) != NULL)) {
@@ -32,7 +30,7 @@ void author_finder(char author_name[], int cnt, BOOK _lib[], int au_cnt, BOOK au
 	return;
 }
 
-void free_array(int cnt, BOOK arr[]) {
+void free_array(int cnt, BOOK* arr) {
 	int i;
 	for (i = 0; i < cnt; i++) {
 		free(arr[i].author);

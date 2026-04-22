@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include "auxiliary.h"
 #include "library.h"
 
@@ -9,7 +7,7 @@
 #include <conio.h>
 #include <windows.h>
 
-void cab_counter(char pathway[], int* cnt) {
+void cab_counter(char* pathway, int* cnt) {
 	char temp[MAX_SIZE];
 	FILE* file_cab = fopen(pathway, "r");
 	if (file_cab == NULL) {
@@ -24,7 +22,7 @@ void cab_counter(char pathway[], int* cnt) {
 	return;
 }
 
-void cab_reader(int cnt, char pathway[], BOOK _lib[]) {
+void cab_reader(int cnt, char* pathway, BOOK* _lib) {
 	int temp_year, i;
 	FILE* file_cab = fopen(pathway, "r");
 	char temp[MAX_SIZE];
@@ -50,7 +48,7 @@ void cab_reader(int cnt, char pathway[], BOOK _lib[]) {
 	return;
 }
 
-void cab_printer(int au_cnt, BOOK au_lib[]) {
+void cab_printer(int au_cnt, BOOK* au_lib) {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	int i;
 	printf("BOOK LIST\n\n");
