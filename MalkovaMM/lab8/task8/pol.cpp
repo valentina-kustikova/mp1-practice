@@ -4,6 +4,49 @@
 #include <cstdio>
 #include <cmath>
 #include <cstring>
+#include <iostream>
+#define MAX_LEN 1000
+using namespace std;
+
+polinom::polinom(const string fname, int num)//посмотреть как со стринг файл читать
+{
+	int dg = 1;
+	int i = 0;
+	string t;
+	char line[MAX_LEN];
+	string context = NULL;
+	FILE* f = fopen(fname, "r");
+	if (f == NULL)
+	{
+		throw "Файл по заданному пути не существует";
+	}
+
+	fgets(line, sizeof(line), f);
+	if (num == 2)
+		fgets(line, sizeof(line), f);
+	for (; line[i] != '\0'; i++)
+	{
+		if (line[i] == ';')
+			dg++;
+	}
+	dg--;
+	polinom p(dg);
+	fclose(f);
+	f = fopen(fname, "r");
+	fgets(line, sizeof(line), f);
+	if (num == 2)
+		fgets(line, sizeof(line), f);
+	t = strtok_s(line, ";", &context);
+	p.coef[dg] = atoi(t);
+	i = dg - 1;
+	for (; i >= 0; i--)
+	{
+		t = strtok_s(NULL, ";", &context);
+		p.coef[i] = atoi(t);
+	}
+	fclose(f);
+	return p;
+}
 
 polinom::polinom(int deg)
 {
@@ -26,84 +69,30 @@ polinom::~polinom()
 	delete[] this->coef;
 }
 
-polinom polinom::operator+(const polinom p1)
+polinom polinom::operator +(const polinom& p)
 {
-
-}
-/*int degpol(const char* fname, int num)
-{
-	int dg = 1;
-	int i = 0;
-	FILE* f = fopen(fname, "r");
-	char line[MAX_LEN];
-	if (f == NULL)
-	{
-		printf("Файл по заданному пути не существует");
-		return -1;
-	}
-
-	fgets(line, sizeof(line), f);
-	if (num == 2)
-		fgets(line, sizeof(line), f);
-	for (; line[i] != '\0'; i++)
-	{
-		if (line[i] == ';')
-			dg++;
-	}
-	dg--;
-	fclose(f);
-	return dg;
-}
-polinom pcreate(const char* fname, int deg, int num)
-{
-	polinom p;
-	int i = 0;
-	char* t;
-	char line[MAX_LEN];
-	char* context = NULL;
-	FILE* f;
-	p.deg = deg;
-	p.coef = (int*)malloc((deg + 1) * sizeof(int));
-	f = fopen(fname, "r");
-	fgets(line, sizeof(line), f);
-	if (num == 2)
-		fgets(line, sizeof(line), f);
-	t = strtok_s(line, ";", &context);
-	p.coef[deg] = atoi(t);
-	i = deg - 1;
-	for (; i >= 0; i--)
-	{
-		t = strtok_s(NULL, ";", &context);
-		p.coef[i] = atoi(t);
-	}
-	return p;
-}*/
-polinom pplus(polinom* p1, polinom* p2)
-{
-	int mindeg = min(p1->deg, p2->deg);
-	int maxdeg = max(p1->deg, p2->deg);
+	int mindeg = min(this->deg, p.deg);
+	int maxdeg = max(this->deg, p.deg);
 	int i = 0;
 	int degnew;
-	polinom ps, psnew;
-	ps.deg = maxdeg;
-	ps.coef = (int*)malloc((ps.deg + 1) * sizeof(int));
+	polinom ps(maxdeg);
 	for (; i <= mindeg; i++)
 	{
-		ps.coef[i] = p1->coef[i] + p2->coef[i];
+		ps.coef[i] = this->coef[i] + p.coef[i];
 	}
 	if (mindeg != maxdeg)
-		if (p1->deg == mindeg)
+		if (this->deg == mindeg)
 		{
 			for (i = mindeg + 1; i <= maxdeg; i++)
 			{
-				ps.coef[i] = p2->coef[i];
+				ps.coef[i] = p.coef[i];
 			}
 		}
 		else
 		{
 			for (i = mindeg + 1; i <= maxdeg; i++)
 			{
-				ps.coef[i] = p1->coef[i];
+				ps.coef[i] = this->coef[i];
 			}
 		}
 	degnew = ps.deg;
@@ -115,77 +104,107 @@ polinom pplus(polinom* p1, polinom* p2)
 		else
 			break;
 	}
-	psnew.deg = degnew;
-	psnew.coef = (int*)realloc(ps.coef, (psnew.deg + 1) * sizeof(int));
+	polinom psnew(degnew);
+	for (i = 0; i <= degnew; i++)
+	{
+		psnew.coef[i] = ps.coef[i];
+	}
 	return psnew;
 }
-polinom pminus(polinom* p1, polinom* p2)
+polinom polinom::operator -(const polinom& p)
 {
 	int i = 0;
-	polinom pm;
-	polinom pp2;
-	pp2.deg = p2->deg;
-	pp2.coef = (int*)malloc((pp2.deg + 1) * sizeof(int));
-	for (; i <= p2->deg; i++)
+	polinom p2(p.deg);
+	for (; i <= p2.deg; i++)
 	{
-		pp2.coef[i] = -p2->coef[i];
+		p2.coef[i] = -p.coef[i];
 	}
-	pm = pplus(p1, &pp2);
+	polinom pm = *this + p2;
 	return pm;
 }
-polinom pumn(polinom* p1, polinom* p2)
+polinom polinom::operator -()
 {
-	polinom pu;
-	pu.deg = p1->deg + p2->deg;
-	pu.coef = (int*)malloc((pu.deg + 1) * sizeof(int));
+	int i = 0;
+	polinom p(this->deg);
+	for (; i <= p.deg; i++)
+	{
+		p.coef[i] = -p.coef[i];
+	}
+	return p;
+}
+polinom polinom::operator *(const polinom&p)
+{
+	polinom pu(this->deg + p.deg);
 	int k = 0;
 	for (; k <= pu.deg; k++)
 	{
 		pu.coef[k] = 0;
 	}
 	int i = 0;
-	for (; i <= p1->deg; i++)
+	for (; i <= this->deg; i++)
 	{
 		int j;
-		for (j = 0; j <= p2->deg; j++)
+		for (j = 0; j <= p.deg; j++)
 		{
-			pu.coef[i + j] += p1->coef[i] * p2->coef[j];
+			pu.coef[i + j] += this->coef[i] * p.coef[j];
 		}
 	}
 	return pu;
 }
-int pznach(polinom* p, double x)
+int polinom::pznach(double  x)
 {
 	int zn = 0;
 	int i = 0;
 	double xvalue = 1.0;
-	for (; i <= p->deg; i++)
+	for (; i <= this->deg; i++)
 	{
-		zn += p->coef[i] * xvalue;
+		zn += this->coef[i] * xvalue;
 		xvalue *= x;
 	}
 	return zn;
 }
-polinom pdif(polinom* p)
+polinom polinom::pdif()
 {
 	int i = 1;
-	polinom pd;
-	pd.deg = p->deg - 1;
-	pd.coef = (int*)malloc((pd.deg + 1) * sizeof(int));
-
-	for (; i <= p->deg; i++)
+	polinom pd(this->deg - 1);
+	for (; i <= this->deg; i++)
 	{
-		pd.coef[i - 1] = p->coef[i] * i;
+		pd.coef[i - 1] = this->coef[i] * i;
 	}
 	return pd;
 }
-void pprint(polinom* p)
+const polinom& polinom::operator =(const polinom& p)
 {
-	int i;
-	int deg = p->deg;
-	printf("Степень: %d\nКоэффициенты: ", deg);
-	for (i = deg; i >= 0; i--)
+	this->deg = p.deg;
+	this->coef = new int[p.deg];
+	for (int i = 0; i <= p.deg; i++)
 	{
-		printf("%d ", p->coef[i]);
+		this->coef[i] = p.coef[i];
 	}
 }
+std::ostream& operator << (std::ostream& out, const polinom& p)
+{
+	for (int i = 0; i < p.deg; i++)
+		out << p.coef[i] << " ";
+	return out;
+}
+std::istream& operator >> (std::istream& in, const polinom& p)
+{
+	for (int i = 0; i < p.deg; i++)
+		in >> p.coef[i];//проверить как работает
+	return in;
+}
+
+/*
+void pprint(polinom* p)
+{
+      int i;
+	  int deg = p->deg;
+	  printf("Степень: %d\nКоэффициенты: ", deg);
+	  for (i = deg; i >= 0; i--)
+	  {
+		printf("%d ", p->coef[i]);
+	  }
+}	
+*/
+
