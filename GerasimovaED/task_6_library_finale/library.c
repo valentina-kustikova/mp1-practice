@@ -32,19 +32,13 @@ void author_finder(char author_name[], int cnt, BOOK _lib[], int au_cnt, BOOK au
 	return;
 }
 
-void free_arrays(int cnt, int au_cnt, BOOK _lib[], BOOK au_lib[]) {
+void free_array(int cnt, BOOK arr[]) {
 	int i;
 	for (i = 0; i < cnt; i++) {
-		free(_lib[i].author);
-		free(_lib[i].name);
-		free(_lib[i].publishing);
+		free(arr[i].author);
+		free(arr[i].name);
+		free(arr[i].publishing);
 	}
-	for (i = 0; i < au_cnt; i++) {
-		free(au_lib[i].author);
-		free(au_lib[i].name);
-		free(au_lib[i].publishing);
-	}
-	free(_lib);
-	free(au_lib);
+	free(arr);
 	return;
 }

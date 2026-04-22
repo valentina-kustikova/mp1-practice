@@ -41,7 +41,8 @@ int main() {
 	au_lib = (BOOK*)malloc(au_cnt * sizeof(BOOK));
 	author_finder(author_name, cnt, _lib, au_cnt, au_lib);
 	cab_printer(au_cnt, au_lib);
-	free_arrays(cnt, au_cnt, _lib, au_lib);
+	free_array(cnt, _lib);
+	free_array(au_cnt, au_lib);
 
 	return 0;
 }

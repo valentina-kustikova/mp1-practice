@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <conio.h>
+#include <windows.h>
 
 void cab_counter(char pathway[], int* cnt) {
 	char temp[MAX_SIZE];
@@ -49,18 +51,25 @@ void cab_reader(int cnt, char pathway[], BOOK _lib[]) {
 }
 
 void cab_printer(int au_cnt, BOOK au_lib[]) {
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	int i;
 	printf("BOOK LIST\n\n");
 	for (i = 0; i < au_cnt; i++) {
 		printf("|-------------------------------------------------------------------------------------------|\n");
 		printf("| ");
+		SetConsoleTextAttribute(console, 0 * 16 + 2);
 		printf("%-15s", au_lib[i].author);
+		SetConsoleTextAttribute(console, 0 * 16 + 15);
 		printf(" | ");
 		printf("%-38s", au_lib[i].name);
 		printf(" | ");
+		SetConsoleTextAttribute(console, 0 * 16 + 4);
 		printf("%-23s", au_lib[i].publishing);
+		SetConsoleTextAttribute(console, 0 * 16 + 15);
 		printf(" | ");
+		SetConsoleTextAttribute(console, 0 * 16 + 3);
 		printf("%d", au_lib[i].year);
+		SetConsoleTextAttribute(console, 0 * 16 + 15);
 		printf(" |\n");
 	}
 	printf("|-------------------------------------------------------------------------------------------|\n");
