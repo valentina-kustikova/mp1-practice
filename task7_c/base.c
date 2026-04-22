@@ -119,3 +119,11 @@ void printer(magaz** base, int* ans) {
 		printf("	form:   %s \n", base[k]->form);
 	}
 }
+
+void delit(magaz** base, int len) {
+	int i = 0;
+	for (i = 0; i < len; i++) {
+		free(base[i]);
+	}
+	free(base);
+}

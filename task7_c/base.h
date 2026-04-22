@@ -16,3 +16,5 @@ magaz** getbase(int *len);
 int* findstores(magaz **base,int len);
 
 void printer(magaz** base, int* ans);
+
+void delit(magaz** base, int len);

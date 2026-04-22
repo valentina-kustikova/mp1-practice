@@ -12,5 +12,6 @@ int main() {
 	printf("finding 24h food stores\n");
 	ans = findstores(base, len);
 	printer(base, ans);
+	delit(base, len);
 	return 0;
 }
