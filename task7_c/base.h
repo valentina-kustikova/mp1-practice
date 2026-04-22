@@ -10,13 +10,9 @@ typedef struct {
 	int closes[7];
 } magaz;
 
-typedef struct {
-	int len;
-	magaz** ans;
-} Fmagaz;
 
 magaz** getbase(int *len);
 
-Fmagaz findstores(magaz **base,int len);
+int* findstores(magaz **base,int len);
 
 void printer(magaz** base, int* ans);

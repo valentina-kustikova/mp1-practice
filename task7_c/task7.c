@@ -3,13 +3,13 @@
 
 int main() {
 	int len = 0;
-	Fmagaz ans;
-	Fmagaz base = getbase(&len);
+	int* ans;
+	magaz** base = getbase(&len);
 	if (base == NULL) {
 		printf("BASE LOAD ERROR");
 		return 1;
 	}
-	printf("finding 24h food stores");
+	printf("finding 24h food stores\n");
 	ans = findstores(base, len);
 	printer(base, ans);
 	return 0;

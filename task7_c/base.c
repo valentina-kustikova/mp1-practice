@@ -20,14 +20,14 @@ magaz** getbase(int *len) {
 	}
 	rewind(file);
 
-	mag = (magaz**)malloc(*len * sizeof(magaz*));
+	mag = (magaz**)malloc((*len) * sizeof(magaz*));
 	if (mag == NULL) {
 		printf("MEMORY ERROR 1");
 		fclose(file);
 		return NULL;
 	}
 
-	for (i = 0; i < *len; i++) {
+	for (i = 0; i < (*len); i++) {
 		mag[i] = (magaz*)malloc(sizeof(magaz));
 		if (mag[i] == NULL) {
 			printf("MEMORY ERROR 2 [%d]", i);
@@ -88,7 +88,7 @@ int* findstores(magaz** base, int len) {
 	int* ans2;
 	int* ans = (int*)malloc(sizeof(int) * len);
 	for (i = 0; i < len; i++) {
-		if (strcmp(*base[i]->special, "food") == 0 && timesum(*base[i]->opens, *base[i]->closes) == 10080) {
+		if (strcmp(base[i]->special, "food") == 0 && timesum(base[i]->opens, base[i]->closes) == 10080) {
 			ans[new+1] = i;
 			new++;
 		}
@@ -113,9 +113,9 @@ void printer(magaz** base, int* ans) {
 	}
 	for (i = 1; i < n; i++) {
 		int k = ans[i];
-		printf("%s \n", *base[k]->name);
-		printf("	adres: %s \n", *base[k]->adres);
-		printf("	phones: %s \n", *base[k]->phones);
-		printf("	form: %s \n", *base[k]->form);
+		printf("%s \n", base[k]->name);
+		printf("	adress: %s \n", base[k]->adres);
+		printf("	phones: %s \n", base[k]->phones);
+		printf("	form:   %s \n", base[k]->form);
 	}
 }
