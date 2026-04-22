@@ -3,31 +3,33 @@
 #include <string.h>
 #include <stdlib.h>
 
-magaz** getbase(int *len) {
+box getbase() {
+	box ans;
 	FILE* file = fopen("base.txt", "r");
 	//обьявления
 	int i;
 	char c[1000];
 	magaz **mag;
+	ans.len = 0;
 	//код
 
 	if (file == NULL) {
 		printf("FILE ERROR");
-		return NULL;
+		return ans;
 	}
 	while (fgets(c, 1000, file) != NULL) {
-		(*len)++;
+		ans.len++;
 	}
 	rewind(file);
 
-	mag = (magaz**)malloc((*len) * sizeof(magaz*));
+	mag = (magaz**)malloc(ans.len * sizeof(magaz*));
 	if (mag == NULL) {
 		printf("MEMORY ERROR 1");
 		fclose(file);
-		return NULL;
+		return ans;
 	}
 
-	for (i = 0; i < (*len); i++) {
+	for (i = 0; i < ans.len; i++) {
 		mag[i] = (magaz*)malloc(sizeof(magaz));
 		if (mag[i] == NULL) {
 			printf("MEMORY ERROR 2 [%d]", i);
@@ -36,18 +38,20 @@ magaz** getbase(int *len) {
 			}
 			free(mag);
 			fclose(file);
-			return NULL;
+			ans.len = 0;
+			return ans;
 		}
 	}
 
-	for (i = 0; i < *len; i++) {
+	for (i = 0; i < ans.len; i++) {
 		char *tmp, *mpt;
 		char* token;
 		int u;
 		int topens[7], tcloses[7];
 		if (fgets(c, 1000, file) == NULL) {
 			printf("READ ERROR [%d]", i);
-			return NULL;
+			ans.len = 0;
+			return ans;
 		}
 		tmp = strtok(c, ":");
 		strcpy(mag[i]->name, tmp);
@@ -80,22 +84,24 @@ magaz** getbase(int *len) {
 		memcpy(mag[i]->closes, tcloses, sizeof(tcloses));
 	}
 	fclose(file);
-	return mag;
+	ans.base = mag;
+	return ans;
 }
 
-int* findstores(magaz** base, int len) {
-	int i, new = 0;
-	int* ans2;
-	int* ans = (int*)malloc(sizeof(int) * len);
-	for (i = 0; i < len; i++) {
-		if (strcmp(base[i]->special, "food") == 0 && timesum(base[i]->opens, base[i]->closes) == 10080) {
-			ans[new+1] = i;
-			new++;
+box findstores(box base) {
+	int i;
+	box ans;
+	int* tmp = (int*)malloc(sizeof(int) * base.len);
+	for (i = 0; i < base.len; i++) {
+		if (strcmp(base.base[i]->special, "food") == 0 && timesum(base.base[i]->opens, base.base[i]->closes) == 10080) {
+			ans.len++;
 		}
 	}
-	ans2 = (int*)realloc(ans, sizeof(int) * (new+1));
-	ans2[0] = new;
-	return ans2;
+	ans.base = (magaz**)malloc(ans.len * sizeof(magaz*));
+	for (i = 0; i < ans.len; i++) {
+		ans.base[i] = (magaz*)malloc(sizeof(magaz));
+	}
+	return ans;
 }
 
 int timesum(int* opens, int* closes) {

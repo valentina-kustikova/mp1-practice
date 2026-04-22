@@ -2,10 +2,9 @@
 #include "base.h"
 
 int main() {
-	int len = 0;
-	int* ans;
-	magaz** base = getbase(&len);
-	if (base == NULL) {
+	box ans;
+	box list = getbase();
+	if (list.len == 0) {
 		printf("BASE LOAD ERROR");
 		return 1;
 	}
