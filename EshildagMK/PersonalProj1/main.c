@@ -86,5 +86,7 @@ int main(int argc, char* argv[]) {
 		}
 	
 	} while (flag);
-	
+	free_polynomial(&first_pnom);
+	free_polynomial(&second_pnom);
+	return 0;
 }

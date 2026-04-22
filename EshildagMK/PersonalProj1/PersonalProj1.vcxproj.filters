@@ -19,10 +19,10 @@
       <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="operations.c">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
     <ClCompile Include="iof.c">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

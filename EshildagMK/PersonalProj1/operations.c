@@ -1,7 +1,7 @@
 #include "operations.h"
 #include <stdlib.h> 
 
-pnom_info sum(pnom_info* fpnom, pnom_info* spnom, pnom_info* res_pnom) {
+void sum(pnom_info* fpnom, pnom_info* spnom, pnom_info* res_pnom) {
 	int i;
 	res_pnom->power = max(fpnom->power, spnom->power);
 	res_pnom->coefs = (int*)calloc((res_pnom->power + 1), sizeof(int));
@@ -13,10 +13,9 @@ pnom_info sum(pnom_info* fpnom, pnom_info* spnom, pnom_info* res_pnom) {
 	while (res_pnom->power > 0 && res_pnom->coefs[res_pnom->power] == 0) {
 		res_pnom->power--;
 	}
-	return *res_pnom;
 }
 
-pnom_info multiply(pnom_info* fpnom, pnom_info* spnom, pnom_info* res_pnom) {
+void multiply(pnom_info* fpnom, pnom_info* spnom, pnom_info* res_pnom) {
 	int i, j;
 	res_pnom->power = fpnom->power + spnom->power;
 	res_pnom->coefs = (int*)calloc((res_pnom->power + 1), sizeof(int));
@@ -25,10 +24,9 @@ pnom_info multiply(pnom_info* fpnom, pnom_info* spnom, pnom_info* res_pnom) {
 			res_pnom->coefs[i + j] += fpnom->coefs[i] * spnom->coefs[j];
 		}
 	}
-	return *res_pnom;
 }
 
-pnom_info subtract(pnom_info* fpnom, pnom_info* spnom, pnom_info* res_pnom) { // p1 + (-p2)
+void subtract(pnom_info* fpnom, pnom_info* spnom, pnom_info* res_pnom) { // p1 + (-p2)
 	int i;
 
 	res_pnom->power = max(fpnom->power, spnom->power);
@@ -44,10 +42,9 @@ pnom_info subtract(pnom_info* fpnom, pnom_info* spnom, pnom_info* res_pnom) { //
 
 	sum(fpnom, &copied_pnom, res_pnom);
 	free_polynomial(&copied_pnom);
-	return *res_pnom;
 }
 
-pnom_info diff_pnom(pnom_info* pnom, pnom_info* res_pnom) {
+void diff_pnom(pnom_info* pnom, pnom_info* res_pnom) {
 	int i;
 
 	if (pnom->power == 0) {
@@ -64,8 +61,6 @@ pnom_info diff_pnom(pnom_info* pnom, pnom_info* res_pnom) {
 		if (!pnom->coefs[i + 1]) continue;
 		res_pnom->coefs[i] = pnom->coefs[i + 1] * (i + 1);
 	}
-
-	return *res_pnom;
 }
 
 double calculate(pnom_info* pnom, double x) {
