@@ -1,0 +1,60 @@
+George Orwell;Nineteen Eighty-Four;Penguin Books;2004
+Harper Lee;To Kill a Mockingbird;Harper Perennial;2010
+F. Scott Fitzgerald;The Great Gatsby;Scribner;2018
+J.D. Salinger;The Catcher in the Rye;Little, Brown and Company;2001
+Jane Austen;Pride and Prejudice;Penguin Classics;2014
+Jane Austen;Sense and Sensibility;Oxford University Press;2008
+George Orwell;Animal Farm;Signet Classics;1996
+John Steinbeck;Of Mice and Men;Penguin Books;2002
+William Golding;Lord of the Flies;Faber and Faber;2016
+J.R.R. Tolkien;The Hobbit;Mariner Books;2012
+J.R.R. Tolkien;The Fellowship of the Ring;Mariner Books;2012
+J.K. Rowling;Harry Potter and the Sorcerer's Stone;Scholastic;1998
+Stephen King;The Shining;Anchor Books;2013
+Stephen King;It;Scribner;2016
+Stephen King;Misery;Pocket Books;2016
+Stephen King;Carrie;Anchor Books;2013
+Agatha Christie;Murder on the Orient Express;HarperCollins;2011
+Agatha Christie;And Then There Were None;HarperCollins;2004
+Arthur Conan Doyle;A Study in Scarlet;Penguin Classics;2001
+Ernest Hemingway;The Old Man and the Sea;Scribner;1995
+Ernest Hemingway;A Farewell to Arms;Scribner;2014
+Mark Twain;The Adventures of Tom Sawyer;Penguin Classics;2006
+Herman Melville;Moby-Dick;Penguin Classics;2003
+Leo Tolstoy;Anna Karenina;Penguin Classics;2004
+Fyodor Dostoevsky;Crime and Punishment;Vintage Classics;1993
+Virginia Woolf;Mrs Dalloway;Harcourt;1990
+Toni Morrison;Beloved;Vintage;2004
+Margaret Atwood;The Handmaid's Tale;Anchor Books;1998
+Kurt Vonnegut;Slaughterhouse-Five;Dial Press;2009
+Kurt Vonnegut;Cat's Cradle;Dial Press;2010
+Isaac Asimov;Foundation;Bantam Books;2004
+Isaac Asimov;I, Robot;Bantam Books;2008
+Frank Herbert;Dune;Ace Books;2010
+Philip K. Dick;Do Androids Dream of Electric Sheep?;Del Rey;1996
+William Gibson;Neuromancer;Ace Books;2004
+Neil Gaiman;American Gods;William Morrow;2011
+Terry Pratchett;Mort;HarperTorch;2001
+Douglas Adams;The Hitchhiker's Guide to the Galaxy;Pan Books;2005
+John Green;The Fault in Our Stars;Dutton Books;2012
+J.R.R. Tolkien;The Hobbit;Mariner Books;2012
+J.R.R. Tolkien;The Fellowship of the Ring;Mariner Books;2012
+Suzanne Collins;The Hunger Games;Scholastic;2008
+Suzanne Collins;Catching Fire;Scholastic;2009
+Suzanne Collins;Mockingjay;Scholastic;2010
+Veronica Roth;Divergent;Katherine Tegen Books;2011
+Andy Weir;The Martian;Crown;2014
+Donna Tartt;The Goldfinch;Little, Brown and Company;2013
+Yann Martel;Life of Pi;Mariner Books;2003
+Markus Zusak;The Book Thief;Alfred A. Knopf;2006
+Jose Saramago;Blindness;Mariner Books;1999
+Alan Moore and Dave Gibbons;Watchmen;DC Comics;2008
+Art Spiegelman;Maus;Pantheon Books;1993
+Anne McCaffrey;Dragonflight;Del Rey;1997
+Roger Zelazny;Nine Princes in Amber;Avon Books;1999
+E.L. James;Fifty Shades of Grey;Vintage;2012
+Dan Brown;The Da Vinci Code;Doubleday;2003
+Dan Brown;Angels and Demons;Pocket Books;2003
+Gillian Flynn;Gone Girl;Crown;2012
+Richard Adams;Watership Down;Scribner;2005
+Jack Kerouac;On the Road;Penguin Books;1999
