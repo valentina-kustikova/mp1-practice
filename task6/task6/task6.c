@@ -24,8 +24,8 @@ int main(int argc, char *argv[]) {
 		printf("getting error");
 		return 0;
 	}
-	finded = find(libr, aut);
-	printer(finded);
+	finded = find(&libr, aut);
+	printer(&finded);
 	free(libr.books);
 	free(finded.books);
 	fclose(file);

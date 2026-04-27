@@ -15,7 +15,7 @@ typedef struct {
 	book* books;
 } Fbooks;
 
-Fbooks find(Fbooks books, char* aut); // book*, int
-void printer(Fbooks ans);
+Fbooks find(Fbooks *books, char* aut); // book*, int
+void printer(Fbooks *ans);
 
 #endif

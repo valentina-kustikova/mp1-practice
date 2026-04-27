@@ -31,10 +31,10 @@ Fbooks find(Fbooks *books, char* aut) {
 	return ans;
 }
 
-void printer(Fbooks ans) {
-	int n = ans.len, i;
+void printer(Fbooks *ans) {
+	int n = ans->len, i;
 	printf("finded books: \n");
 	for (i = 0; i < n; i++) {
-		printf("%s; %s; %s; %d\n", ans.books[i].authors, ans.books[i].name, ans.books[i].publisher, ans.books[i].year);
+		printf("%s; %s; %s; %d\n", ans->books[i].authors, ans->books[i].name, ans->books[i].publisher, ans->books[i].year);
 	}
 }
