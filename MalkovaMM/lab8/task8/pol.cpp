@@ -5,47 +5,53 @@
 #include <cmath>
 #include <cstring>
 #include <iostream>
-#define MAX_LEN 1000
+#include <fstream>
+#include <sstream>
 using namespace std;
 
-polinom::polinom(const string fname, int num)//посмотреть как со стринг файл читать
+polinom::polinom(const string fname, int num)
 {
 	int dg = 1;
 	int i = 0;
 	string t;
-	char line[MAX_LEN];
-	string context = NULL;
-	FILE* f = fopen(fname, "r");
-	if (f == NULL)
+	string line;
+	ifstream f(fname);
+	int numline = 0;
+	if (!f.is_open())
 	{
 		throw "Файл по заданному пути не существует";
 	}
-
-	fgets(line, sizeof(line), f);
-	if (num == 2)
-		fgets(line, sizeof(line), f);
-	for (; line[i] != '\0'; i++)
+	while (getline(f, line))
 	{
-		if (line[i] == ';')
+		numline++;
+		if (num == numline)
+			break;
+	}
+	for (char c : line)
+	{
+		if (c == ';')
 			dg++;
 	}
 	dg--;
-	polinom p(dg);
-	fclose(f);
-	f = fopen(fname, "r");
-	fgets(line, sizeof(line), f);
-	if (num == 2)
-		fgets(line, sizeof(line), f);
-	t = strtok_s(line, ";", &context);
-	p.coef[dg] = atoi(t);
+	this->deg = dg;
+	this->coef = new int[dg + 1];
+	ifstream f1(fname);
+	while (getline(f1, line))
+	{
+		numline++;
+		if (num == numline)
+			break;
+	}
+	stringstream ssline(line);
+	string t1;
+	getline(ssline, t1, ';');
+	this->coef[dg] = stoi(t1);
 	i = dg - 1;
 	for (; i >= 0; i--)
 	{
-		t = strtok_s(NULL, ";", &context);
-		p.coef[i] = atoi(t);
+		getline(ssline, t1, ';');
+		this->coef[i] = stoi(t1);
 	}
-	fclose(f);
-	return p;
 }
 
 polinom::polinom(int deg)
@@ -151,9 +157,9 @@ polinom polinom::operator *(const polinom&p)
 	}
 	return pu;
 }
-int polinom::pznach(double  x)
+double polinom::pznach(double  x)
 {
-	int zn = 0;
+	double zn = 0;
 	int i = 0;
 	double xvalue = 1.0;
 	for (; i <= this->deg; i++)
@@ -191,20 +197,8 @@ std::ostream& operator << (std::ostream& out, const polinom& p)
 std::istream& operator >> (std::istream& in, const polinom& p)
 {
 	for (int i = 0; i < p.deg; i++)
-		in >> p.coef[i];//проверить как работает
+		in >> p.coef[i];
 	return in;
 }
 
-/*
-void pprint(polinom* p)
-{
-      int i;
-	  int deg = p->deg;
-	  printf("Степень: %d\nКоэффициенты: ", deg);
-	  for (i = deg; i >= 0; i--)
-	  {
-		printf("%d ", p->coef[i]);
-	  }
-}	
-*/
 
