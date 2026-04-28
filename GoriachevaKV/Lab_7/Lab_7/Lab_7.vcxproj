@@ -135,7 +135,7 @@
     <Text Include="in.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\..\..\..\Users\troto\Downloads\in.csv" />
+    <None Include="in.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

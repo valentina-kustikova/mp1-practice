@@ -8,14 +8,14 @@
 void find_owners(char* requested_department, int rows, OWNER* database, int* found_cnt, OWNER** found_owners) {
 	int i, j = 0;
 	for (i = 0; i < rows; i++) {
-		if (strstr(database[i].department, requested_department) != NULL) {
+		if (strcmp(database[i].department, requested_department) == NULL) {
 			(*found_cnt)++;
 		}
 	}
 
 	(*found_owners) = (OWNER*)malloc((*found_cnt) * sizeof(OWNER));
 	for (i = 0; i < rows; i++) {
-		if ((strstr(database[i].department, requested_department) != NULL)) {
+		if ((strcmp(database[i].department, requested_department) == NULL)) {
 			(*found_owners)[j].full_name = (char*)malloc((strlen(database[i].full_name) + 1) * sizeof(char));
 			(*found_owners)[j].birth_date = (char*)malloc((strlen(database[i].birth_date) + 1) * sizeof(char));
 			(*found_owners)[j].auto_number = (char*)malloc((strlen(database[i].auto_number) + 1) * sizeof(char));

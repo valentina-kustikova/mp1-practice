@@ -13,11 +13,13 @@ int main() {
 	int i, rows = 0, found_cnt = 0, error = 0;
 	char filename[FILENAME_MAX_LEN];
 	char requested_department[MAX_DEP_LEN];
+	char c;
 	OWNER* database = NULL;
 	OWNER* found_owners = NULL;
 
 	printf("Input the filename >> ");
 	scanf_s("%100s", &filename, sizeof(filename));
+	while ((c = getchar()) != '\n' && c != EOF) {}
 
 	error = database_r(&rows, filename);
 	if (error == 1) return 1;
@@ -25,7 +27,10 @@ int main() {
 	database = (OWNER*)malloc(rows * sizeof(OWNER));
 
 	printf("Input the department >> ");
-	scanf_s("%100s", &requested_department, sizeof(requested_department));
+	fgets(requested_department, sizeof(requested_department), stdin);
+	if (requested_department[strlen(requested_department) - 1] == '\n') {
+		requested_department[strlen(requested_department) - 1] = '\0';
+	}
 
 	put_owners_into_array(rows, filename, database);
 	find_owners(requested_department, rows, database, &found_cnt, &found_owners);
