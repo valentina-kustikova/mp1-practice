@@ -67,6 +67,52 @@ void show_dots(Triangle* triangles, int n) {
     printf("\n");
 }
 
+double dist(Point p1, Point p2) {
+    return sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
+}
+
+double perimetr(Triangle t) { 
+
+    a = dist(t.A, t.B);
+    b = dist(t.B, t.C);
+    c = dist(t.A, t.C);
+
+    return a + b + c;
+}
+
+double area(Triangle T) { //формула Герона
+
+    a = dist(t.A, t.B);
+    b = dist(t.B, t.C);
+    c = dist(t.A, t.C);
+
+    double p = (a + b + c) / 2.0;
+
+    return sqrt(p * (p - a) * (p - b) * (p - c));
+}
+
+//h=2S/a a-сторона к которой проведена высота 
+void hights(Triangle t, double* ha, double* hb, double* hc) {
+
+    a = dist(t.A, t.B);
+    b = dist(t.B, t.C);
+    c = dist(t.A, t.C);
+
+    double S = area(t);
+    *ha = 2 * S / a;
+    *hb = 2 * S / b;
+    *hc = 2 * S / c;
+}
+
+void triangle_type(Triangle t) {
+
+    a = dist(t.A, t.B);
+    b = dist(t.B, t.C);
+    c = dist(t.A, t.C);
+
+}
+
+
 int main() {
 	char* filename = "triangle.txt";
 
