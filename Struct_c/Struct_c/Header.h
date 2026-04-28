@@ -39,11 +39,25 @@ typedef struct {
 	Sport sport;
 	char club[MAX_LEN];
 	char discipline[MAX_LEN];
-	float record;
+	double record;
 } Person;
 
 
+typedef struct {
+	int count;
+	Person* array;
+} PersonsLibrary;
+
+typedef struct {
+	char discipline[MAX_LEN];
+	int best_index;
+	double best_record;
+} BestEntry;
+
 int numberLines(const char* filename);
-void readFile(int count, Person* array, const char* filename);
-void findRecord(Person* array, int count, char* input);
+void readFile(PersonsLibrary info, const char* filename);
+Sport convertSport(char* input_sport);
+void findRecord(PersonsLibrary info, char* input);
+void findRecord(PersonsLibrary info, char* input_sport, BestEntry** result, int* countResult);
+void printResult(PersonsLibrary info, BestEntry* result, int countResult);
 #endif 

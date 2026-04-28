@@ -4,10 +4,8 @@
 #include "Header.h"
 
 
-
-
-int main(int argc, char **argv) {
-	char input[1024];
+int main(int argc, char** argv) {
+	char input[MAX_BUFF];
 	char* filename;
 	int count;
 	if (argc < 2) {
@@ -17,7 +15,6 @@ int main(int argc, char **argv) {
 	filename = argv[1];
 
 	count = numberLines(filename);
-
 	if (count <= 0) {
 		printf("Mistake with counting");
 		return 1;
@@ -28,15 +25,22 @@ int main(int argc, char **argv) {
 		printf("Memory allocation failed.\n");
 		return 1;
 	}
+	PersonsLibrary info;
+	info.array = array;
+	info.count = count;
 
-	readFile(count, array, filename);
+	readFile(info, filename);
 
 	printf("Enter name of sport\n");
 	fgets(input, sizeof(input), stdin);
 	input[strcspn(input, "\n")] = 0;
 
-	findRecord(array, count, input);
+	BestEntry* result;
+	int countResult;
 
+	findRecord(info, input, &result, &countResult);
+	printResult(info, result, countResult);
 	free(array);
+	free(result);
 	return 0;
 }

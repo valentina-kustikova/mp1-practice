@@ -24,17 +24,17 @@ int numberLines(const char* filename) {
 
 
 
-void readFile(int count, Person* array, const char* filename) {
+void readFile(PersonsLibrary info, const char* filename) {
 	char buff[MAX_BUFF], temp2[MAX_BUFF], temp3[MAX_BUFF];
 	char* temp;
 	FILE* file = fopen(filename, "r");
-	
+
 	if (file == NULL) {
 		printf("Error opening file\n");
 		return;
 	}
-	
-	for (int i = 0; i < count; i++) {
+
+	for (int i = 0; i < info.count; i++) {
 		if (fgets(buff, sizeof(buff), file) == NULL) break;
 		buff[strcspn(buff, "\n")] = 0;
 
@@ -44,10 +44,10 @@ void readFile(int count, Person* array, const char* filename) {
 		temp = strtok(NULL, ";");
 		if (temp) {
 			if (strcmp(temp, "M") == 0) {
-				array[i].gender = M;
+				info.array[i].gender = M;
 			}
 			else if (strcmp(temp, "F") == 0) {
-				array[i].gender = F;
+				info.array[i].gender = F;
 			}
 		}
 
@@ -55,44 +55,44 @@ void readFile(int count, Person* array, const char* filename) {
 		strcpy(temp3, temp);
 
 		temp = strtok(NULL, ";");
-		strcpy(array[i].country, temp);
+		strcpy(info.array[i].country, temp);
 
 		temp = strtok(NULL, ";");
-		strcpy(array[i].city, temp);
+		strcpy(info.array[i].city, temp);
 
 		temp = strtok(NULL, ";");
 		if (temp) {
-			if (strcmp(temp, "Athletics") == 0) array[i].sport = Athletics;
-			else if (strcmp(temp, "Weightlifting") == 0) array[i].sport = Weightlifting;
-			else if (strcmp(temp, "Boxing") == 0) array[i].sport = Boxing;
-			else if (strcmp(temp, "Tennis") == 0) array[i].sport = Tennis;
-			else if (strcmp(temp, "Football") == 0) array[i].sport = Football;
-			else array[i].sport = Unknown;
+			if (strcmp(temp, "Athletics") == 0) info.array[i].sport = Athletics;
+			else if (strcmp(temp, "Weightlifting") == 0) info.array[i].sport = Weightlifting;
+			else if (strcmp(temp, "Boxing") == 0) info.array[i].sport = Boxing;
+			else if (strcmp(temp, "Tennis") == 0) info.array[i].sport = Tennis;
+			else if (strcmp(temp, "Football") == 0) info.array[i].sport = Football;
+			else info.array[i].sport = Unknown;
 		}
 
 		temp = strtok(NULL, ";");
-		strcpy(array[i].club, temp);
+		strcpy(info.array[i].club, temp);
 
 		temp = strtok(NULL, ";");
-		strcpy(array[i].discipline, temp);
+		strcpy(info.array[i].discipline, temp);
 
 		temp = strtok(NULL, ";");
-		array[i].record = atof(temp);
+		info.array[i].record = atof(temp);
 
 
 		if (temp2) {
 			printf("1 %s\n", temp2);
-			strcpy(array[i].name.last_name, strtok(temp2, " "));
-			strcpy(array[i].name.first_name, strtok(NULL, " "));
+			strcpy(info.array[i].name.last_name, strtok(temp2, " "));
+			strcpy(info.array[i].name.first_name, strtok(NULL, " "));
 
 		}
 
 
 		if (temp3) {
 			sscanf(temp3, "%d-%d-%d",
-				&array[i].date_of_birth.year,
-				&array[i].date_of_birth.month,
-				&array[i].date_of_birth.day);
+				&info.array[i].date_of_birth.year,
+				&info.array[i].date_of_birth.month,
+				&info.array[i].date_of_birth.day);
 		}
 	}
 
@@ -103,64 +103,69 @@ void readFile(int count, Person* array, const char* filename) {
 
 
 
-
-
-
-
-void findRecord(Person* array, int count, char* input_sport) {
-
-	typedef struct {
-		char discipline[MAX_LEN];
-		int best_index;
-		float best_record;
-	} BestEntry;
-	int entry_count = 0;
-
-	BestEntry* entries = malloc(count * sizeof(BestEntry));
+Sport convertSport(char* input_sport) {
 	Sport target_sport;
 	if (strcmp(input_sport, "Athletics") == 0) target_sport = Athletics;
 	else if (strcmp(input_sport, "Weightlifting") == 0) target_sport = Weightlifting;
 	else if (strcmp(input_sport, "Boxing") == 0) target_sport = Boxing;
 	else if (strcmp(input_sport, "Tennis") == 0) target_sport = Tennis;
 	else if (strcmp(input_sport, "Football") == 0) target_sport = Football;
-	else {
-		printf("Uncorrect sport \n");
-		return;
-	}
+	else return target_sport = Unknown;
+	return target_sport;
+}
 
-	for (int i = 0; i < count; i++) {
-		if (array[i].sport == target_sport) {
+
+
+void findRecord(PersonsLibrary info, char* input_sport, BestEntry** result, int* countResult) {
+
+	int entry_count = 0;
+	Sport target_sport = convertSport(input_sport);
+	BestEntry* entries = malloc(info.count * sizeof(BestEntry));
+
+
+	for (int i = 0; i < info.count; i++) {
+		if (info.array[i].sport == target_sport) {
 			int found_idx = -1;
 			for (int j = 0; j < entry_count; j++) {
-				if (strcmp(entries[j].discipline, array[i].discipline) == 0) {
+				if (strcmp(entries[j].discipline, info.array[i].discipline) == 0) {
 					found_idx = j;
 					break;
 				}
 			}
+			if (found_idx == -1) strcpy(entries[entry_count++].discipline, info.array[i].discipline);
+		}
+	}
+	printf("%d\n", entry_count);
 
-			if (found_idx == -1) {
-				strcpy(entries[entry_count].discipline, array[i].discipline);
-				entries[entry_count].best_index = i;
-				entries[entry_count].best_record = array[i].record;
-				entry_count++;
-			}
-			else {
-				if (array[i].record > entries[found_idx].best_record) {
-					entries[found_idx].best_record = array[i].record;
-					entries[found_idx].best_index = i;
+
+	*countResult = entry_count;
+	*result = (BestEntry*)malloc(*countResult * sizeof(BestEntry));;
+
+	for (int i = 0; i < entry_count; i++) {
+		(*result)[i].best_record = 0;
+		for (int j = 0; j < info.count; j++) {
+			if (strcmp(entries[i].discipline, info.array[j].discipline) == 0) {
+				strcpy((*result)[i].discipline, info.array[j].discipline);
+				if (info.array[j].record > (*result)[i].best_record) {
+					(*result)[i].best_record = info.array[j].record;
+					(*result)[i].best_index = j;
 				}
 			}
 		}
 	}
+	free(entries);
+}
 
 
-	if (entry_count == 0) {
+void printResult(PersonsLibrary info, BestEntry* result, int countResult) {
+
+
+	if (countResult == 0) {
 		printf("Uncorrect sport \n");
 	}
 	else {
-		printf("\nBest records in sport: %s\n", input_sport);
-		for (int i = 0; i < entry_count; i++) {
-			Person* p = &array[entries[i].best_index];
+		for (int i = 0; i < countResult; i++) {
+			Person* p = &info.array[result[i].best_index];
 			printf("\nDiscipline: %s\n", p->discipline);
 			printf("Name: %s %s\n", p->name.first_name, p->name.last_name);
 			printf("Record: %.2f\n", p->record);
@@ -169,5 +174,5 @@ void findRecord(Person* array, int count, char* input_sport) {
 		}
 	}
 
-	free(entries);
+
 }
