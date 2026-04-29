@@ -1,6 +1,9 @@
-#include <stdio.h>
-
+#define _CRT_SECURE_NO_WARNINGS
 #define MAX_LINE_LEN 100
+#include <stdio.h>
+#include <locale.h> 
+#include <math.h> 
+#include <stdlib.h> 
 
 typedef struct{
 
@@ -73,18 +76,18 @@ double dist(Point p1, Point p2) {
 
 double perimetr(Triangle t) { 
 
-    a = dist(t.A, t.B);
-    b = dist(t.B, t.C);
-    c = dist(t.A, t.C);
+    double a = dist(t.A, t.B);
+    double b = dist(t.B, t.C);
+    double c = dist(t.A, t.C);
 
     return a + b + c;
 }
 
-double area(Triangle T) { //формула Герона
+double area(Triangle t) { //формула Герона
 
-    a = dist(t.A, t.B);
-    b = dist(t.B, t.C);
-    c = dist(t.A, t.C);
+    double a = dist(t.A, t.B);
+    double b = dist(t.B, t.C);
+    double c = dist(t.A, t.C);
 
     double p = (a + b + c) / 2.0;
 
@@ -94,9 +97,9 @@ double area(Triangle T) { //формула Герона
 //h=2S/a a-сторона к которой проведена высота 
 void hights(Triangle t, double* ha, double* hb, double* hc) {
 
-    a = dist(t.A, t.B);
-    b = dist(t.B, t.C);
-    c = dist(t.A, t.C);
+    double a = dist(t.A, t.B);
+    double b = dist(t.B, t.C);
+    double c = dist(t.A, t.C);
 
     double S = area(t);
     *ha = 2 * S / a;
@@ -106,14 +109,51 @@ void hights(Triangle t, double* ha, double* hb, double* hc) {
 
 void triangle_type(Triangle t) {
 
-    a = dist(t.A, t.B);
-    b = dist(t.B, t.C);
-    c = dist(t.A, t.C);
+    double a = dist(t.A, t.B);
+    double b = dist(t.B, t.C);
+    double c = dist(t.A, t.C);
+
+    if (fabs(a - b) < 1e-6 && fabs(b - c) < 1e-6)  //a=b=c
+        printf("равносторонний треугольник, ");
+
+    else if (fabs(a - b) < 1e-6 || fabs(a - c) < 1e-6 || fabs(b - c) < 1e-6)  //a=b или a=c или b=c
+        printf("равнобедренный треугольник, ");
+    
+    else 
+        printf("разносторонний треугоник, ");
+
+    double a2 = a * a;
+    double b2 = b * b;
+    double c2 = c * c;
+
+    if (c2 < a2 + b2)
+        printf("остроугольный");
+
+    else if (c2 > a2 + b2)
+        printf("тупоугольный");
+
+    else
+        printf("прямоугольный");
+}
+
+void print(Triangle triangles) {
+    double ha, hb, hc;
+
+    printf("периметр= %lf\n", perimetr(triangles));
+    printf("площадь= %lf\n", area(triangles));
+
 
 }
 
-
 int main() {
+
+    int n;
 	char* filename = "triangle.txt";
 
+    setlocale(LC_ALL, "Russian");
+    Triangle* triangles = file_open(filename, &n);
+
+    show_dots(triangles, n);
+    free(triangles);
+    return 0;
 }
