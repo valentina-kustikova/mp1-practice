@@ -1,11 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <string.h>
 #include <stdlib.h>
 #include "department.h"
 
 
-void find_owners(char* requested_department, int rows, OWNER* database, int* found_cnt, OWNER** found_owners) {
+void find_owners(char* requested_department, int rows, Owner* database, int* found_cnt, Owner** found_owners) {
 	int i, j = 0;
 	for (i = 0; i < rows; i++) {
 		if (strcmp(database[i].department, requested_department) == NULL) {
@@ -13,18 +11,30 @@ void find_owners(char* requested_department, int rows, OWNER* database, int* fou
 		}
 	}
 
-	(*found_owners) = (OWNER*)malloc((*found_cnt) * sizeof(OWNER));
+	(*found_owners) = (Owner*)malloc((*found_cnt) * sizeof(Owner));
 	for (i = 0; i < rows; i++) {
 		if ((strcmp(database[i].department, requested_department) == NULL)) {
-			(*found_owners)[j].full_name = (char*)malloc((strlen(database[i].full_name) + 1) * sizeof(char));
-			(*found_owners)[j].birth_date = (char*)malloc((strlen(database[i].birth_date) + 1) * sizeof(char));
+			(*found_owners)[j].full_name.surname = (char*)malloc((strlen(database[i].full_name.surname) + 1) * sizeof(char));
+			(*found_owners)[j].full_name.name = (char*)malloc((strlen(database[i].full_name.name) + 1) * sizeof(char));
+			(*found_owners)[j].full_name.patronymic = (char*)malloc((strlen(database[i].full_name.patronymic) + 1) * sizeof(char));
+
+			(*found_owners)[j].birth_date.day = (char*)malloc((strlen(database[i].birth_date.day) + 1) * sizeof(char));
+			(*found_owners)[j].birth_date.month = (char*)malloc((strlen(database[i].birth_date.month) + 1) * sizeof(char));
+			(*found_owners)[j].birth_date.year = (char*)malloc((strlen(database[i].birth_date.year) + 1) * sizeof(char));
+
 			(*found_owners)[j].auto_number = (char*)malloc((strlen(database[i].auto_number) + 1) * sizeof(char));
 			(*found_owners)[j].pass_number = (char*)malloc((strlen(database[i].pass_number) + 1) * sizeof(char));
 			(*found_owners)[j].phone_number = (char*)malloc((strlen(database[i].phone_number) + 1) * sizeof(char));
 			(*found_owners)[j].department = (char*)malloc((strlen(database[i].department) + 1) * sizeof(char));
 
-			strcpy((*found_owners)[j].full_name, database[i].full_name);
-			strcpy((*found_owners)[j].birth_date, database[i].birth_date);
+			strcpy((*found_owners)[j].full_name.surname, database[i].full_name.surname);
+			strcpy((*found_owners)[j].full_name.name, database[i].full_name.name);
+			strcpy((*found_owners)[j].full_name.patronymic, database[i].full_name.patronymic);
+
+			strcpy((*found_owners)[j].birth_date.day, database[i].birth_date.day);
+			strcpy((*found_owners)[j].birth_date.month, database[i].birth_date.month);
+			strcpy((*found_owners)[j].birth_date.year, database[i].birth_date.year);
+
 			strcpy((*found_owners)[j].auto_number, database[i].auto_number);
 			strcpy((*found_owners)[j].pass_number, database[i].pass_number);
 			strcpy((*found_owners)[j].phone_number, database[i].phone_number);
@@ -34,11 +44,17 @@ void find_owners(char* requested_department, int rows, OWNER* database, int* fou
 	}
 }
 
-void free_data(OWNER* data, int cnt) {
+void free_data(Owner* data, int cnt) {
 	int i;
 	for (i = 0; i < cnt; i++) {
-		free(data[i].full_name);
-		free(data[i].birth_date);
+		free(data[i].full_name.surname);
+		free(data[i].full_name.name);
+		free(data[i].full_name.patronymic);
+
+		free(data[i].birth_date.day);
+		free(data[i].birth_date.month);
+		free(data[i].birth_date.year);
+
 		free(data[i].auto_number);
 		free(data[i].pass_number);
 		free(data[i].phone_number);

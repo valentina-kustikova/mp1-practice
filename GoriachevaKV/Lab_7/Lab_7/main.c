@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <stdio.h>
 #include <stdlib.h>
 #include "department.h"
@@ -14,17 +12,17 @@ int main() {
 	char filename[FILENAME_MAX_LEN];
 	char requested_department[MAX_DEP_LEN];
 	char c;
-	OWNER* database = NULL;
-	OWNER* found_owners = NULL;
+	Owner* database = NULL;
+	Owner* found_owners = NULL;
 
-	printf("Input the filename >> ");
+	printf("Input the filename >> "); // int argc, char** argv
 	scanf_s("%100s", &filename, sizeof(filename));
 	while ((c = getchar()) != '\n' && c != EOF) {}
 
 	error = database_r(&rows, filename);
 	if (error == 1) return 1;
 
-	database = (OWNER*)malloc(rows * sizeof(OWNER));
+	database = (Owner*)malloc(rows * sizeof(Owner));
 
 	printf("Input the department >> ");
 	fgets(requested_department, sizeof(requested_department), stdin);

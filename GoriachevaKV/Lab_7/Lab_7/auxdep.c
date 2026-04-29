@@ -1,5 +1,3 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -23,12 +21,12 @@ int database_r(int* rows, char* filename) {
 	return 0;
 }
 
-void put_owners_into_array(int rows, char* filename, OWNER* database) {
+void put_owners_into_array(int rows, char* filename, Owner* database) {
 	int i;
 	char buff[BUFFER_SIZE];
 	FILE* fp = fopen(filename, "r");
-	char* fn, * bd, * auto_n, * pass_n, * phone_n, * dep;
-	char delimiter[1] = ";";
+	char* sn, *nm, *pn, * d, *m, *y, * auto_n, * pass_n, * phone_n, * dep;
+	//char delimiter[1] = ";";
 
 	for (i = 0; i < rows; i++) {
 		fgets(buff, BUFFER_SIZE, fp);
@@ -36,22 +34,40 @@ void put_owners_into_array(int rows, char* filename, OWNER* database) {
 			buff[strlen(buff) - 1] = '\0';
 		}
 
-		fn = strtok(buff, delimiter);
-		bd = strtok(0, delimiter);
-		auto_n = strtok(0, delimiter);
-		pass_n = strtok(0, delimiter);
-		phone_n = strtok(0, delimiter);
-		dep = strtok(0, delimiter);
+		sn = strtok(buff, " ");
+		nm = strtok(0, " ");
+		pn = strtok(0, ";");
 
-		database[i].full_name = (char*)malloc((strlen(fn) + 1) * sizeof(char));
-		database[i].birth_date = (char*)malloc((strlen(bd) + 1) * sizeof(char));
+		y = strtok(0, "-");
+		m = strtok(0, "-");
+		d = strtok(0, ";");
+
+		auto_n = strtok(0, ";");
+		pass_n = strtok(0, ";");
+		phone_n = strtok(0, ";");
+		dep = strtok(0, ";");
+
+		database[i].full_name.surname = (char*)malloc((strlen(sn) + 1) * sizeof(char));
+		database[i].full_name.name = (char*)malloc((strlen(nm) + 1) * sizeof(char));
+		database[i].full_name.patronymic = (char*)malloc((strlen(pn) + 1) * sizeof(char));
+
+		database[i].birth_date.day = (char*)malloc((strlen(d) + 1) * sizeof(char));
+		database[i].birth_date.month = (char*)malloc((strlen(m) + 1) * sizeof(char));
+		database[i].birth_date.year = (char*)malloc((strlen(y) + 1) * sizeof(char));
+
 		database[i].auto_number = (char*)malloc((strlen(auto_n) + 1) * sizeof(char));
 		database[i].pass_number = (char*)malloc((strlen(pass_n) + 1) * sizeof(char));
 		database[i].phone_number = (char*)malloc((strlen(phone_n) + 1) * sizeof(char));
 		database[i].department = (char*)malloc((strlen(dep) + 1) * sizeof(char));
 
-		strcpy(database[i].full_name, fn);
-		strcpy(database[i].birth_date, bd);
+		strcpy(database[i].full_name.surname, sn);
+		strcpy(database[i].full_name.name, nm);
+		strcpy(database[i].full_name.patronymic, pn);
+
+		strcpy(database[i].birth_date.day, d);
+		strcpy(database[i].birth_date.month, m);
+		strcpy(database[i].birth_date.year, y);
+
 		strcpy(database[i].auto_number, auto_n);
 		strcpy(database[i].pass_number, pass_n);
 		strcpy(database[i].phone_number, phone_n);
@@ -60,7 +76,7 @@ void put_owners_into_array(int rows, char* filename, OWNER* database) {
 	fclose(fp);
 }
 
-void print_list(int found_cnt, OWNER* found_owners, char* requested_department) {
+void print_list(int found_cnt, Owner* found_owners, char* requested_department) {
 	int i;
 	if (found_cnt == 0) {
 		printf("There is no owners in %s.\n\n", requested_department);
@@ -71,7 +87,9 @@ void print_list(int found_cnt, OWNER* found_owners, char* requested_department) 
 		printf("FULL NAME, BIRTH DATE, AUTO NUMBER, PASS NUMBER, PHONE NUMBER, DEPARTMENT\n");
 		printf("-------------------------------------------------------------------------\n");
 		for (i = 0; i < found_cnt; i++) {
-			printf("%s, %s, %s, %s, %s, %s\n", found_owners[i].full_name, found_owners[i].birth_date, found_owners[i].auto_number,
+			printf("%s %s %s, %s.%s.%s, %s, %s, %s, %s\n", found_owners[i].full_name.surname,
+				found_owners[i].full_name.name, found_owners[i].full_name.patronymic, found_owners[i].birth_date.day,
+				found_owners[i].birth_date.month, found_owners[i].birth_date.year, found_owners[i].auto_number,
 				found_owners[i].pass_number, found_owners[i].phone_number, found_owners[i].department);
 		}
 	}
