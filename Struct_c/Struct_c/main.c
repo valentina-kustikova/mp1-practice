@@ -7,27 +7,28 @@
 int main(int argc, char** argv) {
 	char input[MAX_BUFF];
 	char* filename;
-	int count;
+  PersonsLibrary info;
+
+  BestEntry* result;
+  int countResult;
+
 	if (argc < 2) {
 		printf("incorrect number of argc");
 		return 1;
 	}
 	filename = argv[1];
 
-	count = numberLines(filename);
-	if (count <= 0) {
+  info.count = numberLines(filename);
+	if (info.count <= 0) {
 		printf("Mistake with counting");
 		return 1;
 	}
 
-	Person* array = (Person*)malloc(count * sizeof(Person));
-	if (!array) {
+  info.array = (Person*)malloc(info.count * sizeof(Person));
+	if (!info.array) {
 		printf("Memory allocation failed.\n");
 		return 1;
 	}
-	PersonsLibrary info;
-	info.array = array;
-	info.count = count;
 
 	readFile(info, filename);
 
@@ -35,12 +36,10 @@ int main(int argc, char** argv) {
 	fgets(input, sizeof(input), stdin);
 	input[strcspn(input, "\n")] = 0;
 
-	BestEntry* result;
-	int countResult;
 
 	findRecord(info, input, &result, &countResult);
 	printResult(info, result, countResult);
-	free(array);
+	free(info.array);
 	free(result);
 	return 0;
 }

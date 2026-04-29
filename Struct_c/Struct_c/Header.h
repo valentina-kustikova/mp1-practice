@@ -29,7 +29,6 @@ typedef enum {
 } Sport;
 
 
-
 typedef struct {
 	Person_data name;
 	Gender gender;
@@ -42,7 +41,6 @@ typedef struct {
 	double record;
 } Person;
 
-
 typedef struct {
 	int count;
 	Person* array;
@@ -54,10 +52,11 @@ typedef struct {
 	double best_record;
 } BestEntry;
 
+
+
 int numberLines(const char* filename);
 void readFile(PersonsLibrary info, const char* filename);
 Sport convertSport(char* input_sport);
-void findRecord(PersonsLibrary info, char* input);
 void findRecord(PersonsLibrary info, char* input_sport, BestEntry** result, int* countResult);
 void printResult(PersonsLibrary info, BestEntry* result, int countResult);
 #endif 

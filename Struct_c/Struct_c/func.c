@@ -135,7 +135,7 @@ void findRecord(PersonsLibrary info, char* input_sport, BestEntry** result, int*
 			if (found_idx == -1) strcpy(entries[entry_count++].discipline, info.array[i].discipline);
 		}
 	}
-	printf("%d\n", entry_count);
+	printf("total disciplines - %d\n", entry_count);
 
 
 	*countResult = entry_count;
@@ -158,8 +158,6 @@ void findRecord(PersonsLibrary info, char* input_sport, BestEntry** result, int*
 
 
 void printResult(PersonsLibrary info, BestEntry* result, int countResult) {
-
-
 	if (countResult == 0) {
 		printf("Uncorrect sport \n");
 	}
@@ -173,6 +171,4 @@ void printResult(PersonsLibrary info, BestEntry* result, int countResult) {
 			printf("Club: %s\n", p->club);
 		}
 	}
-
-
 }
