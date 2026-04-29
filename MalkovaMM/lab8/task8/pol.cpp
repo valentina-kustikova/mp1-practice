@@ -1,15 +1,12 @@
-#define _CRT_SECURE_NO_WARNINGS
-#include "pol.h"
-#include <cstdlib>
-#include <cstdio>
-#include <cmath>
-#include <cstring>
 #include <iostream>
 #include <fstream>
 #include <sstream>
+
+#include "pol.h"
+
 using namespace std;
 
-polinom::polinom(const string fname, int num)
+polinom::polinom(const string& fname, int num)
 {
 	int dg = 1;
 	int i = 0;
@@ -21,12 +18,15 @@ polinom::polinom(const string fname, int num)
 	{
 		throw "Файл по заданному пути не существует";
 	}
-	while (getline(f, line))
+	getline(f, line);
+	if (num == 2)
+		getline(f, line);
+	/*while (getline(f, line))
 	{
 		numline++;
 		if (num == numline)
 			break;
-	}
+	}*/
 	for (char c : line)
 	{
 		if (c == ';')
@@ -36,12 +36,15 @@ polinom::polinom(const string fname, int num)
 	this->deg = dg;
 	this->coef = new int[dg + 1];
 	ifstream f1(fname);
-	while (getline(f1, line))
+	getline(f1, line);
+	if (num == 2)
+		getline(f1, line);
+	/*while (getline(f1, line))
 	{
 		numline++;
 		if (num == numline)
 			break;
-	}
+	}*/
 	stringstream ssline(line);
 	string t1;
 	getline(ssline, t1, ';');
@@ -117,6 +120,7 @@ polinom polinom::operator +(const polinom& p)
 	}
 	return psnew;
 }
+
 polinom polinom::operator -(const polinom& p)
 {
 	int i = 0;
@@ -128,6 +132,7 @@ polinom polinom::operator -(const polinom& p)
 	polinom pm = *this + p2;
 	return pm;
 }
+
 polinom polinom::operator -()
 {
 	int i = 0;
@@ -138,6 +143,7 @@ polinom polinom::operator -()
 	}
 	return p;
 }
+
 polinom polinom::operator *(const polinom&p)
 {
 	polinom pu(this->deg + p.deg);
@@ -157,6 +163,7 @@ polinom polinom::operator *(const polinom&p)
 	}
 	return pu;
 }
+
 double polinom::pznach(double  x)
 {
 	double zn = 0;
@@ -169,6 +176,7 @@ double polinom::pznach(double  x)
 	}
 	return zn;
 }
+
 polinom polinom::pdif()
 {
 	int i = 1;
@@ -179,6 +187,7 @@ polinom polinom::pdif()
 	}
 	return pd;
 }
+
 const polinom& polinom::operator =(const polinom& p)
 {
 	this->deg = p.deg;
@@ -187,18 +196,7 @@ const polinom& polinom::operator =(const polinom& p)
 	{
 		this->coef[i] = p.coef[i];
 	}
-}
-std::ostream& operator << (std::ostream& out, const polinom& p)
-{
-	for (int i = 0; i < p.deg; i++)
-		out << p.coef[i] << " ";
-	return out;
-}
-std::istream& operator >> (std::istream& in, const polinom& p)
-{
-	for (int i = 0; i < p.deg; i++)
-		in >> p.coef[i];
-	return in;
+	return *this;
 }
 
 
