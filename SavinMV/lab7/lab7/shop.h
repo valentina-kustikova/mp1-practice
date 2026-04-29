@@ -1,15 +1,53 @@
 #ifndef SHOP_H
 #define SHOP_H
-#define MAX 256
+
+typedef enum {
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY
+} WeekDay;
+
+
+typedef enum {
+    ALLDAY,
+    CLOSED,
+    HOURS
+} WorkMode;
+
+
+typedef struct {
+    int hours;
+    int minutes;
+} Time;
+
+
+typedef struct {
+    WeekDay day;           
+    WorkMode mode;         
+    Time openTime;         
+    Time closeTime;        
+} DailySchedule;
+
+
+typedef struct {
+    char street[100];      
+    char building[20];     
+} Address;
+
+
 typedef struct Shop {
-    char name[MAX];
-    char address[MAX];
-    char phones[MAX];
-    char special[MAX];
-    char forma[MAX];
-    char reshim[MAX];
+    char name[100];              
+    Address address;             
+    char phones[100];            
+    char specialization[50];     
+    char ownership[50];          
+    DailySchedule schedule[7];   
 } Shop;
 
-void poisk24(Shop* array, int count, Shop** search, int* foundCount);
+void search24hGroceries(Shop* array, int count, Shop** search, int* foundCount);
 
 #endif

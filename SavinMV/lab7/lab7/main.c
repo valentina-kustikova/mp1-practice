@@ -10,20 +10,24 @@ int main(int argc, char** argv) {
     int count, foundCount;
     Shop* array;
     Shop* search;
+
     if (argc < 2) {
-        printf("Îøèáêà");
+        printf("Err");
         return 1;
     }
     filename = argv[1];
+
     count = countShops(filename);
 
     array = (Shop*)malloc(count * sizeof(Shop));
+
     readFile(count, array, filename);
 
-    poisk24(array, count, &search, &foundCount);
+    search24hGroceries(array, count, &search, &foundCount);
     printResults(search, foundCount);
 
-    free(array); 
+    free(array);
     free(search);
+   
     return 0;
 }
