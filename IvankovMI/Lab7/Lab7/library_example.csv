@@ -1,5 +1,5 @@
 "L. N. Tolstoy";"War and Peace";"Alphabet";2025
-"L. N. Tolstoy";TEST_BOOK1;"Alphabet";2025
+L. N. Tolstoy;TEST_BOOK1;"Alphabet";2025
 "Arthur Conan Doyle";"The Adventures of Sherlock Holmes";"The Strand";1927
 "George Orwell";1984;Secker & Warburg;1949
 "F. Scott Fitzgerald";The Great Gatsby;Scribner;1925
@@ -50,3 +50,6 @@
 "Chinua Achebe";"Things Fall Apart";Heinemann;1958
 "Salman Rushdie";"Midnight's Children";Jonathan Cape;1981
 "Umberto Eco";"The Name of the Rose";Bompiani;1980
+Ilya Ilf, Evgeny Petrov;"12 Chairs";Alphabet;2001
+Ilya Ilf;"First 6 Chairs";Alphabet;2002
+Evgeny Petrov;"Last 6 Chairs";Alphabet;2003
