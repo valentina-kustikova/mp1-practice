@@ -39,12 +39,12 @@ void create_library(book** lib, size_t* lib_s, size_t start_size) {
 
 
 // Удаление библиотеки - освобождение памяти всех книг и установка указателя в NULL (на всякий случай)
-void delete_library(book** lib, size_t* lib_s) {
-	for (int i = 0; i < *lib_s; i++)
-		free((*lib)[i].str);
-	free(*lib);
-	*lib = NULL;
-	*lib_s = 0;
+void delete_library(lib_t* lib) {
+	for (int i = 0; i < lib->lib_size; i++)
+		free((lib->library)[i].str);
+	free(lib->library);
+	lib->library = NULL;
+	lib->lib_size = 0;
 }
 
 

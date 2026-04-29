@@ -54,7 +54,7 @@ int fill_library(FILE* src_file, book** lib, size_t* lib_s);
 book fill_book(char* src);
 
 // Удаление библиотеки - освобождение памяти всех книг и установка указателя в NULL (на всякий случай)
-void delete_library(book** lib, size_t* lib_s);
+void delete_library(lib_t* lib);
 
 
 ////////////////////////////////////////////////////////////////////////////

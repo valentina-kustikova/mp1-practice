@@ -21,20 +21,23 @@ struct book_ {
 typedef struct book_ book; // структура представлени€ книги
 
 
-
-extern book* library;
-extern size_t lib_size;
+// структура представлени€ бибилиотеки
+struct lib_t_ {
+	book* library; // ƒинамический массив структур book
+	size_t lib_size;  // –азмер данного массива
+};
+typedef struct lib_t_ lib_t; // структура представлени€ книги
 
 
 
 
 // ‘ункции:
 
-// создание библиотеки из информации из файла, работает с глобалами library
-void init_library(char* path);
+// создание библиотеки из информации из файла
+void init_library(lib_t* library, char* path);
 
-// ”даление библиотеки - освобождение пам€ти всех книг, работает с глобалами library
-void del_library_glob();
+// ”даление библиотеки - освобождение пам€ти всех книг и установка указател€ в NULL (на вс€кий случай)
+void delete_library(book** lib, size_t* lib_s);
 
 // ќсновна€ функци€ поиска, возвращает указатель на массив указателей на книги в куче, измен€ет f_cnt на кол-во найденных книг, завершает массив NULL
 book** find_books(book* lib, size_t size, const char* substr, size_t* f_cnt);
@@ -43,10 +46,10 @@ book** find_books(book* lib, size_t size, const char* substr, size_t* f_cnt);
 void print_books(book** bks, size_t cnt);
 
 // ¬опрос в stdin о пути файла базы данных и заполнение библиотеки
-void start_ask();
+void start_ask(lib_t* library);
 
-// ќбработка запроса из stdin, возвращает false, если требуетс€ выйти, работает с глобалами library
-bool process_query();
+// ќбработка запроса из stdin, возвращает false, если требуетс€ выйти
+bool process_query(lib_t library);
 
 // тестова€ функци€ дл€ вывода книги по номеру
 void test(book* lib, int n);

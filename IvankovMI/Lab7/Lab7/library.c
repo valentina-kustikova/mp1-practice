@@ -15,19 +15,19 @@
 
 // ќсновные ресурсы: библиотека и ее длина
 
-book* library;
-size_t lib_size;
+//book* library;
+//size_t lib_size;
 
 
 
 
 
 
-// создание библиотеки из информации из файла, работает с глобалами library
-void init_library(char* path) {
+// создание библиотеки из информации из файла
+void init_library(lib_t* library, char* path) {
 	FILE* source = save_fopen(path, "r");
-	create_library(&library, &lib_size, K);
-	int sz = fill_library(source, &library, &lib_size);
+	create_library(&(library->library), &(library->lib_size), K);
+	int sz = fill_library(source, &library, &(library->lib_size));
 	printf("»з текстовой базы получено %d книг\n", sz);
 	soft_fclose(source);
 	if (sz <= 0) {
@@ -36,11 +36,6 @@ void init_library(char* path) {
 	}
 }
 
-
-// ”даление библиотеки - освобождение пам€ти всех книг, работает с глобалами library
-void del_library_glob() {
-	delete_library(&library, &lib_size);
-}
 
 
 // ќсновна€ функци€ поиска, возвращает указатель на массив указателей на книги в куче, измен€ет f_cnt на кол-во найденных книг, завершает массив NULL
@@ -143,7 +138,7 @@ void test_all(book* lib, size_t n) {
 
 
 // ¬опрос в stdin о пути файла базы данных и заполнение библиотеки
-void start_ask() {
+void start_ask(lib_t *library) {
 	printf("¬ведите путь к файлу библиотеки:\n");
 	bool valid = true;
 	char* input = read_line(stdin, M, &valid);
@@ -156,12 +151,12 @@ void start_ask() {
 		soft_exit();
 		return; // чтобы статический не ругалс€
 	}
-	init_library(input);
+	init_library(library, input);
 }
 
 
 // ќбработка запроса из stdin, возвращает false, если требуетс€ выйти, работает с глобалами library
-bool process_query() {
+bool process_query(lib_t library) {
 	printf("¬ведите подстроку дл€ поиска книги по автору\n(можно несколько слов, например 'ѕушкин ј. —.' найдет книги с автором 'ѕушкин јлександр —ергеевич'):\n");
 	bool valid = true;
 	char* input = read_line(stdin, M, &valid);
@@ -180,13 +175,13 @@ bool process_query() {
 	}
 	int test_n;
 	if (sscanf_s(input, "test %d", &test_n)) {  // по кодовому слову выводим книгу по номеру
-		test(library, test_n);
+		test(library.library, test_n);
 		return true;
 	}
 	if (strcmp(input, "test all") == 0)
-		test_all(library, lib_size);  // по другому кодовому слову выводим все книги
+		test_all(library.library, library.lib_size);  // по другому кодовому слову выводим все книги
 	size_t res_l;
-	book** result = find_books(library, lib_size, input, &res_l);
+	book** result = find_books(library.library, library.lib_size, input, &res_l);
 	if (res_l) {
 		printf("ѕо вашему запросу найдено %zu книг:\n\n", res_l);
 		print_books(result, res_l);
