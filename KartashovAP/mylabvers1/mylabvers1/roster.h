@@ -43,7 +43,7 @@ typedef struct {
 } Student;
 
 typedef struct {
-    char class_name[20];
+    char class_name[20]; // char* class;
     Student* students;
     int count;
 } ClassGroup;

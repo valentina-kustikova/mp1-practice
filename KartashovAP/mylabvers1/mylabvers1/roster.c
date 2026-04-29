@@ -11,6 +11,10 @@ void init_school(School* school) {
 }
 
 void load_students(School* school, const char* filename) {
+    char buffer[BUFFER_SIZE];
+    int total_lines = 0;
+    int student_count = 0;
+    Student* all_students;
     if (school == NULL) return;
 
     FILE* fp = fopen(filename, "r");
@@ -20,33 +24,27 @@ void load_students(School* school, const char* filename) {
         return;
     }
 
-    char buffer[BUFFER_SIZE];
-    int total_lines = 0;
-
     while (fgets(buffer, BUFFER_SIZE, fp) != NULL) {
         total_lines++;
     }
     rewind(fp);
 
-    Student* all_students = (Student*)malloc(total_lines * sizeof(Student));
+    all_students = (Student*)malloc(total_lines * sizeof(Student));
     if (all_students == NULL) {
         printf("Memory allocation error\n");
         fclose(fp);
         init_school(school);
         return;
-    }
-
-    int student_count = 0;
+    } 
 
     while (fgets(buffer, BUFFER_SIZE, fp) != NULL) {
+        char line[BUFFER_SIZE];
         if (strlen(buffer) > 0 && buffer[strlen(buffer) - 1] == '\n') {
             buffer[strlen(buffer) - 1] = '\0';
-        }
-
-        char line[BUFFER_SIZE];
+        }       
         strcpy(line, buffer);
 
-        char* surname = strtok(line, ";");
+        char* surname = strtok(line, ";"); // begin {
         char* name = strtok(NULL, ";");
         char* patronymic = strtok(NULL, ";");
         char* class_name = strtok(NULL, ";");
@@ -68,21 +66,22 @@ void load_students(School* school, const char* filename) {
             postal && country && region && district && city && street && house && apartment) {
 
             Gender gender;
-            if (strcmp(gender_str, "M") == 0) gender = male;
-            else if (strcmp(gender_str, "F") == 0) gender = female;
-            else gender = unknown;
-
+            Student* s;
             int year = atoi(year_str);
             int month = atoi(month_str);
             int day = atoi(day_str);
 
-            Student* s = create_student(surname, name, patronymic, class_name,
+            if (strcmp(gender_str, "M") == 0) gender = male;
+            else if (strcmp(gender_str, "F") == 0) gender = female;
+            else gender = unknown;            
+
+            s = create_student(surname, name, patronymic, class_name,
                 gender, year, month, day,
                 postal, country, region, district,
                 city, street, house, apartment);
 
             if (s != NULL) {
-                all_students[student_count] = *s;
+                all_students[student_count] = *s; // C++ bug if =
                 free(s);
                 student_count++;
             }
@@ -102,8 +101,7 @@ void load_students(School* school, const char* filename) {
     }
 
     school->class_count = 0;
-    ClassGroup* temp_classes = NULL;
-
+    ClassGroup* temp_classes = NULL; // считать количество учеников в каждом классе, выделять память, заполнять
     for (int i = 0; i < student_count; i++) {
         int found = -1;
         for (int j = 0; j < school->class_count; j++) {

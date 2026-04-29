@@ -3,12 +3,13 @@
 #include "roster.h"
 
 int main(int argc, char** argv) {
+    School* school;
     if (argc < 2) {
         printf("Usage: %s <filename>\n", argv[0]);
         return 1;
     }
 
-    School* school = (School*)malloc(sizeof(School));
+    school = (School*)malloc(sizeof(School));
     if (school == NULL) {
         printf("failed\n");
         return 1;
