@@ -18,26 +18,26 @@ int main(int argc, char** argv) {
 	polinom p2(fname, 2);
 	cout << "Полиномы:\n1)" << p1 << "\n2)" << p2 << "\nвыберите какую операцию вы хотите проделать с ними:\nсложить: 1\nвычесть: 2\nумножить: 3\nдифференцировать: 4\nвычислить значение в точке: 5\n";
 	cin >> choice;
-	int presdeg;
-	if (choice == 1) presdeg = (p1 + p2).deg;
-	if (choice == 2) presdeg = (p1 - p2).deg;
-	if (choice == 3) presdeg = (p1 * p2).deg;
-	if (choice == 4) {
-		cout << "введите 1 или 2 - номер полинома: ";
-		cin >> num;
-		if (num == 1) presdeg = (p1.pdif()).deg;
-		else if (num == 2) presdeg = (p2.pdif()).deg;
-	}
-	polinom pres(presdeg);
-	int presdeg;
-	if (choice == 1) pres = p1 + p2;
-	if (choice == 2) pres = p1 - p2;
-	if (choice == 3) pres = p1 * p2;
-	if (choice == 4) {
-		cout << "введите 1 или 2 - номер полинома: ";
-		cin >> num;
-		if (num == 1) pres = p1.pdif();
-		else if (num == 2) pres = p2.pdif();
+	if ((choice >= 1) && (choice <= 4)) {
+		int presdeg;
+		if (choice == 1) presdeg = (p1 + p2).deg;
+		if (choice == 2) presdeg = (p1 - p2).deg;
+		if (choice == 3) presdeg = (p1 * p2).deg;
+		if (choice == 4) {
+			cout << "введите 1 или 2 - номер полинома: ";
+			cin >> num;
+			if (num == 1) presdeg = (p1.pdif()).deg;
+			else if (num == 2) presdeg = (p2.pdif()).deg;
+		}
+		polinom pres(presdeg);
+		if (choice == 1) pres = p1 + p2;
+		if (choice == 2) pres = p1 - p2;
+		if (choice == 3) pres = p1 * p2;
+		if (choice == 4) {
+			if (num == 1) pres = p1.pdif();
+			else if (num == 2) pres = p2.pdif();
+		}
+		cout << "Получившийся полином: \n" << pres;
 	}
 	if (choice == 5) {
 		cout << "введите 1 или 2 - номер полинома: ";
@@ -48,8 +48,6 @@ int main(int argc, char** argv) {
 		else if (num == 2) res = p2.pznach(x);
 		cout << "значение полинома в этой точке: " << res << endl;
 	}
-	if ((choice >= 1) && (choice <= 4)) {
-		cout << "Получившийся полином: \n" << pres;
-	}
+	
 	return 0;
 }

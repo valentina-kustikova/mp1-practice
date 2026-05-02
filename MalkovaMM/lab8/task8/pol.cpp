@@ -21,12 +21,6 @@ polinom::polinom(const string& fname, int num)
 	getline(f, line);
 	if (num == 2)
 		getline(f, line);
-	/*while (getline(f, line))
-	{
-		numline++;
-		if (num == numline)
-			break;
-	}*/
 	for (char c : line)
 	{
 		if (c == ';')
@@ -39,12 +33,6 @@ polinom::polinom(const string& fname, int num)
 	getline(f1, line);
 	if (num == 2)
 		getline(f1, line);
-	/*while (getline(f1, line))
-	{
-		numline++;
-		if (num == numline)
-			break;
-	}*/
 	stringstream ssline(line);
 	string t1;
 	getline(ssline, t1, ';');
@@ -60,13 +48,13 @@ polinom::polinom(const string& fname, int num)
 polinom::polinom(int deg)
 {
 	this->deg = deg;
-	this->coef = new int[deg];
+	this->coef = new int[deg+1];
 }
 
 polinom::polinom(const polinom &p)
 {
 	this->deg = p.deg;
-	this->coef = new int[p.deg];
+	this->coef = new int[p.deg+1];
 	for (int i = 0; i <= p.deg; i++)
 	{
 		this->coef[i] = p.coef[i];
@@ -76,6 +64,7 @@ polinom::polinom(const polinom &p)
 polinom::~polinom()
 {
 	delete[] this->coef;
+	this->coef = nullptr;
 }
 
 polinom polinom::operator +(const polinom& p)
@@ -191,7 +180,7 @@ polinom polinom::pdif()
 const polinom& polinom::operator =(const polinom& p)
 {
 	this->deg = p.deg;
-	this->coef = new int[p.deg];
+	this->coef = new int[p.deg+1];
 	for (int i = 0; i <= p.deg; i++)
 	{
 		this->coef[i] = p.coef[i];
