@@ -1,7 +1,0 @@
-<Solution>
-  <Configurations>
-    <Platform Name="x64" />
-    <Platform Name="x86" />
-  </Configurations>
-  <Project Path="BanksCpp/BanksCpp.vcxproj" Id="9c459678-90c3-435a-8467-887301b5779b" />
-</Solution>
