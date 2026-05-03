@@ -18,10 +18,6 @@ void find_owners(char* requested_department, int rows, Owner* database, int* fou
 			(*found_owners)[j].full_name.name = (char*)malloc((strlen(database[i].full_name.name) + 1) * sizeof(char));
 			(*found_owners)[j].full_name.patronymic = (char*)malloc((strlen(database[i].full_name.patronymic) + 1) * sizeof(char));
 
-			(*found_owners)[j].birth_date.day = (char*)malloc((strlen(database[i].birth_date.day) + 1) * sizeof(char));
-			(*found_owners)[j].birth_date.month = (char*)malloc((strlen(database[i].birth_date.month) + 1) * sizeof(char));
-			(*found_owners)[j].birth_date.year = (char*)malloc((strlen(database[i].birth_date.year) + 1) * sizeof(char));
-
 			(*found_owners)[j].auto_number = (char*)malloc((strlen(database[i].auto_number) + 1) * sizeof(char));
 			(*found_owners)[j].pass_number = (char*)malloc((strlen(database[i].pass_number) + 1) * sizeof(char));
 			(*found_owners)[j].phone_number = (char*)malloc((strlen(database[i].phone_number) + 1) * sizeof(char));
@@ -31,9 +27,9 @@ void find_owners(char* requested_department, int rows, Owner* database, int* fou
 			strcpy((*found_owners)[j].full_name.name, database[i].full_name.name);
 			strcpy((*found_owners)[j].full_name.patronymic, database[i].full_name.patronymic);
 
-			strcpy((*found_owners)[j].birth_date.day, database[i].birth_date.day);
-			strcpy((*found_owners)[j].birth_date.month, database[i].birth_date.month);
-			strcpy((*found_owners)[j].birth_date.year, database[i].birth_date.year);
+			(*found_owners)[j].birth_date.day = database[i].birth_date.day;
+			(*found_owners)[j].birth_date.month = database[i].birth_date.month;
+			(*found_owners)[j].birth_date.year = database[i].birth_date.year;
 
 			strcpy((*found_owners)[j].auto_number, database[i].auto_number);
 			strcpy((*found_owners)[j].pass_number, database[i].pass_number);
@@ -50,10 +46,6 @@ void free_data(Owner* data, int cnt) {
 		free(data[i].full_name.surname);
 		free(data[i].full_name.name);
 		free(data[i].full_name.patronymic);
-
-		free(data[i].birth_date.day);
-		free(data[i].birth_date.month);
-		free(data[i].birth_date.year);
 
 		free(data[i].auto_number);
 		free(data[i].pass_number);

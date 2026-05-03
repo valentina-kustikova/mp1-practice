@@ -8,9 +8,9 @@ typedef struct {
 }FullName;
 
 typedef struct {
-	char* day;
-	char* month;
-	char* year;
+	unsigned int day;
+	unsigned int month;
+	unsigned int year;
 }Date;
 
 typedef struct {
