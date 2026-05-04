@@ -43,7 +43,7 @@ phrase_library::phrase_library(const std::string& file_name)
 	file.seekg(0, std::ios::beg);
 
 	for (int i = 0; i < n; i++) {
-		std::string the_line, author, source, theme, key_words, a_word, temp;
+		std::string key_words, a_word;
 
 		getline(file, phrases[i].the_line, ';');
 
@@ -87,7 +87,7 @@ void phrase_library::find_quotes_by_key_words(const std::string keyword_request,
 		for (j = 0; j < this->phrases[i].key_words_count; j++)
 		{
 			lowercase_key_words = to_lowercase(this->phrases[i].key_words[j]);
-			if (this->phrases[i].key_words[j] == lowercase_request)
+			if (lowercase_key_words == lowercase_request)
 			{
 				found_count++;
 				break;
@@ -97,7 +97,8 @@ void phrase_library::find_quotes_by_key_words(const std::string keyword_request,
 
 	if (found_count == 0)
 	{
-		throw "No keywords found";
+		std::cout<< "No keywords found\n";
+
 	}
 
 	founded.count = found_count;
@@ -134,7 +135,7 @@ void phrase_library::find_quotes_by_key_words(const std::string keyword_request,
 std::ostream& operator <<(std::ostream& out, const phrase_library& founded) {
 	for (int i = 0; i < founded.count; i++)
 	{
-		out << founded.phrases[i].the_line;
+		out << founded.phrases[i].the_line<<"\n";
 	}
 	return out;
 }

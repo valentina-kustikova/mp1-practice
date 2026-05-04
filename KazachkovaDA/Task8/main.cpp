@@ -11,7 +11,7 @@ int main() {
 	const std::string exit = "exit";
 
 	do {
-		std::cout<< "Enter the key word: ";
+		std::cout<< "\nEnter the key word: ";
 		std::cin >> request_word;
 		
 		if (request_word == exit)
