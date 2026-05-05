@@ -3,13 +3,34 @@
 #include <string.h>
 #include <stdlib.h>
 
+void generate(box* base) {
+	int i = 0;
+	base->base = (magaz**)malloc(base->len * sizeof(magaz*));
+	if (base->base == NULL) {
+		printf("MEMORY ERROR 1");
+		base->len = 0;
+		free(base->base);
+	}
+
+	for (i = 0; i < base->len; i++) {
+		base->base[i] = (magaz*)malloc(sizeof(magaz));
+		if (base->base[i] == NULL) {
+			printf("MEMORY ERROR 2 [%d]", i);
+			for (int j = 0; j < i; j++) {
+				free(base->base[j]);
+			}
+			free(base->base);
+			base->len = 0;
+		}
+	}
+}
+
 box getbase() {
+	//обьявления
 	box ans;
 	FILE* file = fopen("base.txt", "r");
-	//обьявления
 	int i;
 	char c[1000];
-	magaz **mag;
 	ans.len = 0;
 	//код
 
@@ -22,26 +43,8 @@ box getbase() {
 	}
 	rewind(file);
 
-	mag = (magaz**)malloc(ans.len * sizeof(magaz*));
-	if (mag == NULL) {
-		printf("MEMORY ERROR 1");
-		fclose(file);
-		return ans;
-	}
-
-	for (i = 0; i < ans.len; i++) {
-		mag[i] = (magaz*)malloc(sizeof(magaz));
-		if (mag[i] == NULL) {
-			printf("MEMORY ERROR 2 [%d]", i);
-			for (int j = 0; j < i; j++) {
-				free(mag[j]);
-			}
-			free(mag);
-			fclose(file);
-			ans.len = 0;
-			return ans;
-		}
-	}
+	generate(&ans);
+	if (ans.len == 0)return ans;
 
 	for (i = 0; i < ans.len; i++) {
 		char *tmp, *mpt;
@@ -54,15 +57,15 @@ box getbase() {
 			return ans;
 		}
 		tmp = strtok(c, ":");
-		strcpy(mag[i]->name, tmp);
+		strcpy(ans.base[i]->name, tmp);
 		tmp = strtok(NULL, ":");
-		strcpy(mag[i]->adres, tmp);
+		strcpy(ans.base[i]->adres, tmp);
 		tmp = strtok(NULL, ":");
-		strcpy(mag[i]->phones, tmp);
+		strcpy(ans.base[i]->phones, tmp);
 		tmp = strtok(NULL, ":");
-		strcpy(mag[i]->special, tmp);
+		strcpy(ans.base[i]->special, tmp);
 		tmp = strtok(NULL, ":");
-		strcpy(mag[i]->form, tmp);
+		strcpy(ans.base[i]->form, tmp);
 
 		tmp = strtok(NULL, ":");
 
@@ -80,27 +83,29 @@ box getbase() {
 				tcloses[u] = kh * 60 + km;
 			}
 		}
-		memcpy(mag[i]->opens, topens, sizeof(topens));
-		memcpy(mag[i]->closes, tcloses, sizeof(tcloses));
+		memcpy(ans.base[i]->opens, topens, sizeof(topens));
+		memcpy(ans.base[i]->closes, tcloses, sizeof(tcloses));
 	}
 	fclose(file);
-	ans.base = mag;
 	return ans;
 }
 
-box findstores(box base) {
+box findstores(box *base) {
 	int i;
 	box ans;
-	int* tmp = (int*)malloc(sizeof(int) * base.len);
-	for (i = 0; i < base.len; i++) {
-		if (strcmp(base.base[i]->special, "food") == 0 && timesum(base.base[i]->opens, base.base[i]->closes) == 10080) {
+	ans.len = 0;
+	int* tmp = (int*)malloc(sizeof(int) * base->len);
+	for (i = 0; i < base->len; i++) {
+		if (strcmp(base->base[i]->special, "food") == 0 && timesum(base->base[i]->opens, base->base[i]->closes) == 10080) {
+			tmp[ans.len] = i;
 			ans.len++;
 		}
 	}
-	ans.base = (magaz**)malloc(ans.len * sizeof(magaz*));
+	generate(&ans);
 	for (i = 0; i < ans.len; i++) {
-		ans.base[i] = (magaz*)malloc(sizeof(magaz));
+		*(ans.base[i]) = *(base->base[tmp[i]]);
 	}
+	free(tmp);
 	return ans;
 }
 
@@ -112,24 +117,26 @@ int timesum(int* opens, int* closes) {
 	return sum;
 }
 
-void printer(magaz** base, int* ans) {
-	int n = ans[0] + 1, i;
-	if (n == 0) {
+void printer(box *base) {
+	int i;
+	if (base->len == 0) {
 		printf("no stores found");
 	}
-	for (i = 1; i < n; i++) {
-		int k = ans[i];
-		printf("%s \n", base[k]->name);
-		printf("	adress: %s \n", base[k]->adres);
-		printf("	phones: %s \n", base[k]->phones);
-		printf("	form:   %s \n", base[k]->form);
+	else {
+		for (i = 0; i < base->len; i++) {
+			printf("%s \n", base->base[i]->name);
+			printf("	adress: %s \n", base->base[i]->adres);
+			printf("	phones: %s \n", base->base[i]->phones);
+			printf("	form:   %s \n", base->base[i]->form);
+		}
+		printf(" \ntotal stores founded: %d", base->len);
 	}
 }
 
-void delit(magaz** base, int len) {
-	int i = 0;
-	for (i = 0; i < len; i++) {
-		free(base[i]);
+void delit(box* base) {
+	int i;
+	for (i = 0; i < base->len; i++) {
+		free(base->base[i]);
 	}
-	free(base);
+	free(base->base);
 }

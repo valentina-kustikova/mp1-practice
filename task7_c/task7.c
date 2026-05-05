@@ -8,9 +8,10 @@ int main() {
 		printf("BASE LOAD ERROR");
 		return 1;
 	}
-	printf("finding 24h food stores\n");
-	ans = findstores(base, len);
-	printer(base, ans);
-	delit(base, len);
+	printf("finding 24h food stores:\n");
+	ans = findstores(&list);
+	printer(&ans);
+	delit(&list);
+	delit(&ans);
 	return 0;
 }

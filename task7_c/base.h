@@ -18,8 +18,8 @@ typedef struct {
 
 box getbase();
 
-box findstores(box base);
+box findstores(box *base);
 
-void printer(magaz** base, int* ans);
+void printer(box *base);
 
-void delit(magaz** base, int len);
+void delit(box *base);
