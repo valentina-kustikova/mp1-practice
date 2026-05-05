@@ -11,29 +11,33 @@ void init_school(School* school) {
 }
 
 void load_students(School* school, const char* filename) {
-    char buffer[BUFFER_SIZE] = { 0 };
+    char buffer[BUFFER_SIZE];
+    char line[BUFFER_SIZE];
     int total_lines = 0;
     int student_count = 0;
     int class_index = 0;
-    Student* all_students = NULL;
-    char* surname = NULL;
-    char* name = NULL;
-    char* patronymic = NULL;
-    char* class_name = NULL;
-    char* gender_str = NULL;
-    char* year_str = NULL;
-    char* month_str = NULL;
-    char* day_str = NULL;
-    char* postal = NULL;
-    char* country = NULL;
-    char* region = NULL;
-    char* district = NULL;
-    char* city = NULL;
-    char* street = NULL;
-    char* house = NULL;
-    char* apartment = NULL;
+    int class_count = 0;
+    Student* all_students;
+    char* surname;
+    char* name;
+    char* patronymic;
+    char* class_name;
+    char* gender_str;
+    char* year_str;
+    char* month_str;
+    char* day_str;
+    char* postal;
+    char* country;
+    char* region;
+    char* district;
+    char* city;
+    char* street;
+    char* house;
+    char* apartment;
     char** unique_class_names;
     int unique_count = 0;
+    ClassGroup* temp_classes;
+    int pos;
 
     if (school == NULL) return;
 
@@ -65,7 +69,6 @@ void load_students(School* school, const char* filename) {
     while (fgets(buffer, BUFFER_SIZE, fp) != NULL) {
         buffer[strcspn(buffer, "\n")] = '\0';
 
-        char line[BUFFER_SIZE];
         strcpy(line, buffer);
 
         surname = strtok(line, ";");
@@ -121,6 +124,7 @@ void load_students(School* school, const char* filename) {
         return;
     }
 
+    //поиск уникальный классов 
     for (int i = 0; i < student_count; i++) {
         int found = 0;
         for (int j = 0; j < i; j++) {
@@ -141,8 +145,7 @@ void load_students(School* school, const char* filename) {
         free(all_students);
         return;
     }
-
-    
+    //заполняем названия
     for (int i = 0; i < student_count; i++) {
         int found = 0;
         for (int j = 0; j < class_index; j++) {
@@ -152,14 +155,25 @@ void load_students(School* school, const char* filename) {
             }
         }
         if (!found) {
-            unique_class_names[class_index] = _strdup(all_students[i].class);
+            unique_class_names[class_index] = (char*)malloc(strlen(all_students[i].class) + 1);
+            if (unique_class_names[class_index] != NULL) {
+                strcpy(unique_class_names[class_index], all_students[i].class);
+            }
+            else {
+                printf("Memory allocation error for class name\n");
+                for (int k = 0; k < student_count; k++) free_student(&all_students[k]);
+                free(all_students);
+                for (int k = 0; k < class_index; k++) free(unique_class_names[k]);
+                free(unique_class_names);
+                return;
+            }
             class_index++;
         }
     }
 
-    int class_count = unique_count;
-
-    ClassGroup* temp_classes = (ClassGroup*)malloc(class_count * sizeof(ClassGroup));
+    class_count = unique_count;
+    
+    temp_classes = (ClassGroup*)malloc(class_count * sizeof(ClassGroup));
     if (temp_classes == NULL) {
         printf("Memory allocation error for classes\n");
         for (int k = 0; k < student_count; k++) free_student(&all_students[k]);
@@ -176,6 +190,7 @@ void load_students(School* school, const char* filename) {
     }
     free(unique_class_names);
 
+    //подсчёт студентов в каждом классе
     for (int i = 0; i < student_count; i++) {
         for (int j = 0; j < class_count; j++) {
             if (strcmp(temp_classes[j].class_name, all_students[i].class) == 0) {
@@ -185,6 +200,7 @@ void load_students(School* school, const char* filename) {
         }
     }
 
+    //выделение памяти для студентов под каждый класс
     for (int i = 0; i < class_count; i++) {
         if (temp_classes[i].count > 0) {
             temp_classes[i].students = (Student*)malloc(temp_classes[i].count * sizeof(Student));
@@ -203,10 +219,11 @@ void load_students(School* school, const char* filename) {
         }
     }
 
+    //распределение студентов
     for (int i = 0; i < student_count; i++) {
         for (int j = 0; j < class_count; j++) {
             if (strcmp(temp_classes[j].class_name, all_students[i].class) == 0) {
-                int pos = temp_classes[j].count;
+                pos = temp_classes[j].count;
                 temp_classes[j].students[pos] = all_students[i];
                 temp_classes[j].count++;
                 break;
