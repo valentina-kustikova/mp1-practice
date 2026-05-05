@@ -27,7 +27,7 @@
 void init_library(lib_t* library, char* path) {
 	FILE* source = save_fopen(path, "r");
 	create_library(&(library->library), &(library->lib_size), K);
-	int sz = fill_library(source, &library, &(library->lib_size));
+	int sz = fill_library(source, &(library->library), &(library->lib_size));
 	printf("Из текстовой базы получено %d книг\n", sz);
 	soft_fclose(source);
 	if (sz <= 0) {
