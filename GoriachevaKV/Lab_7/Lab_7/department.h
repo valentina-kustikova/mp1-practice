@@ -27,8 +27,7 @@ typedef struct {
 	int count;
 } OwnerLib;
 
-// int rows, Owner* database -> OwnerLib*
-// int* found_cnt, Owner** found_owners -> OwnerLib* 
-void find_owners(char* requested_department, int rows, Owner* database, int* found_cnt, Owner** found_owners);
-void free_data(Owner* data, int cnt); // Owner* data, int cnt -> OwnerLib*
+
+void find_owners(char* requested_department, OwnerLib db, OwnerLib* found);
+void free_data(OwnerLib data);
 #endif

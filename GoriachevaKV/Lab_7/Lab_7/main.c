@@ -7,22 +7,29 @@
 #define MAX_DEP_LEN 101
 
 
-int main() {
-	int i, rows = 0, found_cnt = 0, error = 0;
-	char filename[FILENAME_MAX_LEN];
+int main(int argc, char** argv) {
+	int i, rows = 0, error = 0;
+	char* filename = NULL;
 	char requested_department[MAX_DEP_LEN];
-	char c;
-	Owner* database = NULL;
-	Owner* found_owners = NULL;
+	OwnerLib db_lib;
+	OwnerLib found_lib;
 
-	printf("Input the filename >> "); // int argc, char** argv
-	scanf_s("%100s", &filename, sizeof(filename));
-	while ((c = getchar()) != '\n' && c != EOF) {}
+	if (argc < 2) {
+		printf("Input error.\n\n");
+		return 1;
+	}
+	
+	filename = argv[1];
 
-	error = database_r(&rows, filename);
+	printf("/%s/\n", filename);
+	
+	error = database_r(filename, &rows);
 	if (error == 1) return 1;
 
-	database = (Owner*)malloc(rows * sizeof(Owner));
+	db_lib.owners = (Owner*)malloc(rows * sizeof(Owner));
+	db_lib.count = rows;
+	found_lib.owners = NULL;
+	found_lib.count = 0;
 
 	printf("Input the department >> ");
 	fgets(requested_department, sizeof(requested_department), stdin);
@@ -30,11 +37,11 @@ int main() {
 		requested_department[strlen(requested_department) - 1] = '\0';
 	}
 
-	put_owners_into_array(rows, filename, database);
-	find_owners(requested_department, rows, database, &found_cnt, &found_owners);
-	print_list(found_cnt, found_owners, requested_department);
+	put_owners_into_array(filename, db_lib);
+	find_owners(requested_department, db_lib, &found_lib);
+	print_list(requested_department, found_lib);
 
-	free_data(found_owners, found_cnt);
-	free_data(database, rows);
+	free_data(found_lib);
+	free_data(db_lib);
 	return 0;
 }

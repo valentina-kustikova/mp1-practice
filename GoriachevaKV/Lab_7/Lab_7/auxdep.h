@@ -3,7 +3,7 @@
 #include "department.h"
 
 
-int database_r(int* rows, char* filename);
-void put_owners_into_array(int rows, char* filename, Owner* database); // int rows, Owner* database -> OwnerLib*
-void print_list(int found_cnt, Owner* found_owners, char* requested_department); // int found_cnt, Owner* found_owners -> OwnerLib*
+int database_r(char* filename, int* rows);
+void put_owners_into_array(char* filename, OwnerLib db);
+void print_list(char* requested_department, OwnerLib found);
 #endif
