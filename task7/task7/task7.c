@@ -60,14 +60,14 @@ void show_dots(Triangle* triangles, int n) {
     for (int i = 0; i < n; i++)
     {
         printf("%lf %lf; %lf %lf; %lf %lf",
-            &triangles[i].A.x,
-            &triangles[i].A.y,
-            &triangles[i].B.x,
-            &triangles[i].B.y,
-            &triangles[i].C.x,
-            &triangles[i].C.y);
+            triangles[i].A.x,
+            triangles[i].A.y,
+            triangles[i].B.x,
+            triangles[i].B.y,
+            triangles[i].C.x,
+            triangles[i].C.y);
+        printf("\n");
     }
-    printf("\n");
 }
 
 double dist(Point p1, Point p2) {
@@ -120,30 +120,46 @@ void triangle_type(Triangle t) {
         printf("равнобедренный треугольник, ");
     
     else 
-        printf("разносторонний треугоник, ");
+        printf("разносторонний треугольник, ");
 
     double a2 = a * a;
     double b2 = b * b;
     double c2 = c * c;
 
-    if (c2 < a2 + b2)
-        printf("остроугольный");
+    double max = a;
+    if (b > max)
+        max = b;
+    if (c > max)
+        max = c;
 
-    else if (c2 > a2 + b2)
-        printf("тупоугольный");
+    if (fabs(max - a) < 1e-6) {
+        if (a2 < b2 + c2)
+            printf("остроугольный");
+        else if (a2 > b2 + c2)
+            printf("тупоугольный");
+        else
+            printf("прямоугольный");
+    }
 
-    else
-        printf("прямоугольный");
+    else if (fabs(max - b) < 1e-6) {
+        if (b2 < a2 + c2)
+            printf("остроугольный");
+        else if (b2 > a2 + c2)
+            printf("тупоугольный");
+        else
+            printf("прямоугольный");
+    }
+    else {
+        if (c2 < b2 + a2)
+            printf("остроугольный");
+        else if (c2 > b2 + a2)
+            printf("тупоугольный");
+        else
+            printf("прямоугольный");
+    }
+    printf("\n");
 }
 
-void print(Triangle triangles) {
-    double ha, hb, hc;
-
-    printf("периметр= %lf\n", perimetr(triangles));
-    printf("площадь= %lf\n", area(triangles));
-
-
-}
 
 int main() {
 
@@ -154,6 +170,16 @@ int main() {
     Triangle* triangles = file_open(filename, &n);
 
     show_dots(triangles, n);
+
+    for (int i = 0; i < n; i++) {
+        double ha, hb, hc;
+        printf("периметр= %lf\n", perimetr(triangles[i]));
+        printf("площадь= %lf\n", area(triangles[i]));
+        hights(triangles[i], &ha, &hb, &hc);
+        printf("высота: ha=%lf hb=%lf hc=%lf\n", ha, hb, hc);
+        printf("тип: ");
+        triangle_type(triangles[i]);
+    }
     free(triangles);
     return 0;
 }
