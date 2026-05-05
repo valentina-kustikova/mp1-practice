@@ -13,7 +13,6 @@ int main(int argc, char** argv) {
     if (argv < 2) {
         return 1;
     }
-    if (argv == NULL) return 1;
     filename = argv[1];
 
 

@@ -1,7 +1,7 @@
 #pragma once
 #include <stdio.h>
 
-#define MAX_PATH 260
+#define MAX_PATH 27
 
 
 typedef struct {

@@ -1,4 +1,3 @@
-#pragma once
 #include "auxiliary.h"
 
 
@@ -22,7 +21,7 @@ Book* CreatMassive(int countBooks) {
         printf("Memory allocation failed!\n");
         return NULL;
     }
-    printf("Locatioon massive of books = %p\n\n", books);
+    printf("Location massive of books = %p\n\n", books);
 
     for (int i = 0; i < countBooks; i++) {
         books[i].author = NULL;
