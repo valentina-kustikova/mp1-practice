@@ -1,5 +1,14 @@
 #pragma once
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "library.h"
+#define MAX_LEN 256
 
-#include "library.h"  // Подключаем, чтобы получить объявления типов и extern-переменных
+int FileRead(FILE* f);
 
-void freeLibrary();
+Book* CreatMassive(int countBooks);
+
+void EnterBook(FILE* f, Book* books, int countBooks, char buffer[]);
+
+void CleanMemories(int countBooks, Book* books);

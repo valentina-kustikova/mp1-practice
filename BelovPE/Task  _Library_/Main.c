@@ -1,26 +1,53 @@
+#include <stdio.h>
+#include <stdlib.h>
 #include "library.h"
 #include "auxiliary.h"
-#include <locale.h>
 
-int main() {
-    setlocale(LC_ALL, "Russian");
+#define MAX_LEN 256
 
-    printf("Библиотека запущена\n");
+int main(int argc, char** argv) {
+    char buffer[MAX_LEN];
+    int countBooks = 0;
+    char* filename;
 
-    FILE* f = fopen("C:\\Users\\peter\\OneDrive\\Desktop\\books.txt", "r");
+    if (argv < 2) {
+        return 1;
+    }
+    if (argv == NULL) return 1;
+    filename = argv[1];
 
-    if (f == NULL) {
-        printf("Файл не найден!\n");
+
+    FILE* f = fopen(filename, "r");
+    if (!f) {
+        printf("File not found!\n");
         return 1;
     }
 
-    readFile(f);
 
-    if (lib != NULL) {
-        search();
-        freeLibrary();
+    countBooks = FileRead(f);
+    if (countBooks == 0) {
+        printf("No books found in file!\n");
+        fclose(f);
+        return 1;
     }
 
-    printf("Конец выполнения\n");
+
+    Book* books = CreatMassive(countBooks);
+    if (!books) {
+        fclose(f);
+        return 1;
+    }
+
+
+    EnterBook(f, books, countBooks, buffer);
+    fclose(f);
+
+    
+    SearchByAuthor(countBooks, books);
+
+
+    CleanMemories(countBooks, books);
+    
+
     return 0;
 }
