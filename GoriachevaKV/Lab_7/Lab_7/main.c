@@ -8,7 +8,7 @@
 
 
 int main(int argc, char** argv) {
-	int i, rows = 0, error = 0;
+	int rows = 0, error = 0;
 	char* filename = NULL;
 	char requested_department[MAX_DEP_LEN];
 	OwnerLib db_lib;
@@ -20,8 +20,6 @@ int main(int argc, char** argv) {
 	}
 	
 	filename = argv[1];
-
-	printf("/%s/\n", filename);
 	
 	error = database_r(filename, &rows);
 	if (error == 1) return 1;
