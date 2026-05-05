@@ -23,7 +23,7 @@ int main(int argc, char** argv) {
 
     readFile(count, array, filename);
 
-    search24hGroceries(array, count, &search, &foundCount);
+    poisk24(array, count, &search, &foundCount);
     printResults(search, foundCount);
 
     free(array);

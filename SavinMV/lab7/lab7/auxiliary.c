@@ -5,25 +5,16 @@
 #include "auxiliary.h"
 
 
-Time parseTime(const char* timeStr) {
+/*Time parseTime(const char* timeStr) {
     Time t;
     t.hours = 0;
     t.minutes = 0;
     sscanf(timeStr, "%d:%d", &t.hours, &t.minutes);
     return t;
 }
-
+*/
 
 void parseScheduleString(const char* scheduleStr, DailySchedule* schedule) {
-
-    for (int i = 0; i < 7; i++) {
-        schedule[i].day = (WeekDay)i;
-        schedule[i].mode = CLOSED;
-        schedule[i].openTime.hours = 0;
-        schedule[i].openTime.minutes = 0;
-        schedule[i].closeTime.hours = 0;
-        schedule[i].closeTime.minutes = 0;
-    }
 
     char temp[1024];
     strcpy(temp, scheduleStr);
@@ -33,9 +24,9 @@ void parseScheduleString(const char* scheduleStr, DailySchedule* schedule) {
         while (*token == ' ') token++;
 
         char dayAbbr[4];
-        char modeOrHours[20];
+        char mode[20];
 
-        if (sscanf(token, "%3s %s", dayAbbr, modeOrHours) == 2) {
+        if (sscanf(token, "%3s %s", dayAbbr, mode) == 2) {
             int dayIndex = -1;
 
             if (strcmp(dayAbbr, "Mon") == 0) dayIndex = MONDAY;
@@ -47,20 +38,20 @@ void parseScheduleString(const char* scheduleStr, DailySchedule* schedule) {
             else if (strcmp(dayAbbr, "Sun") == 0) dayIndex = SUNDAY;
 
             if (dayIndex != -1) {
-                if (strcmp(modeOrHours, "allday") == 0) {
+                if (strcmp(mode, "allday") == 0) {
                     schedule[dayIndex].mode = ALLDAY;
                 }
-                else if (strcmp(modeOrHours, "closed") == 0) {
+                /*else if (strcmp(mode, "closed") == 0) {
                     schedule[dayIndex].mode = CLOSED;
                 }
                 else {
                     char openTimeStr[6], closeTimeStr[6];
-                    if (sscanf(modeOrHours, "%5s", openTimeStr, closeTimeStr) == 2) {
+                    if (sscanf(mode, "%5s", openTimeStr, closeTimeStr) == 2) {
                         schedule[dayIndex].mode = HOURS;
                         schedule[dayIndex].openTime = parseTime(openTimeStr);
                         schedule[dayIndex].closeTime = parseTime(closeTimeStr);
                     }
-                }
+                }*/
             }
         }
         token = strtok(NULL, ",");
@@ -95,30 +86,25 @@ void readFile(int count, Shop* array, const char* filename) {
     }
 
     for (int i = 0; i < count; i++) {
-        if (fgets(buff, sizeof(buff), file) == NULL) {
-            break;
-        }
-
+        fgets(buff, sizeof(buff), file);
         buff[strcspn(buff, "\n")] = 0;
 
         char* token = strtok(buff, ";");
-        if (token) strcpy(array[i].name, token);
-
-        token = strtok(NULL, ";");
-        if (token) {
-            char* space = strchr(token, ' ');
-            strcpy(array[i].address.building, token);
-            strcpy(array[i].address.street, space + 1);
-        }
+        strcpy(array[i].name, token);
+               
+        strcpy(array[i].address.build, strtok(NULL, ","));
+        strcpy(array[i].address.street, strtok(NULL, ";"));
+        
+        
 
         strcpy(array[i].phones, strtok(NULL, ";"));
         strcpy(array[i].specialization, strtok(NULL, ";"));
-        strcpy(array[i].ownership, strtok(NULL, ";"));
+        strcpy(array[i].forma, strtok(NULL, ";"));
 
         token = strtok(NULL, ";");
-        if (token) {
-            parseScheduleString(token, array[i].schedule);
-        }
+        
+        parseScheduleString(token, array[i].schedule);
+        
     }
 
     fclose(file);
@@ -141,14 +127,14 @@ void printResults(Shop* search, int count) {
 
     for (int i = 0; i < count; i++) {
         printf("\nSTORE #%d\n", i + 1);
-        printf("Name:           %s\n", search[i].name);
-        printf("Address:        %s\n", search[i].address.street);
-        printf("Phone(s):       %s\n", search[i].phones);
+        printf("Name:            %s\n", search[i].name);
+        printf("Address: \n");
+        printf("-House number    %s\n", search[i].address.build);
+        printf("-Street          %s\n", search[i].address.street);
+        printf("Phone:          %s\n", search[i].phones);
         printf("Specialization: %s\n", search[i].specialization);
-        printf("Ownership:      %s\n", search[i].ownership);
-        printf("Hours:          OPEN 24/7\n\n");
-        
-        
+        printf("Forma:          %s\n", search[i].forma);
+        printf("Hours:           OPEN 24/7\n\n");    
     }
     
 }

@@ -5,7 +5,7 @@
 
 
 
-void search24hGroceries(Shop* array, int count, Shop** search, int* foundCount) {
+void poisk24(Shop* array, int count, Shop** search, int* foundCount) {
     int k = 0;
     *foundCount = 0;
 

@@ -34,8 +34,8 @@ typedef struct {
 
 
 typedef struct {
-    char street[100];      
-    char building[20];     
+    char build[20];
+    char street[100];           
 } Address;
 
 
@@ -44,10 +44,10 @@ typedef struct Shop {
     Address address;             
     char phones[100];            
     char specialization[50];     
-    char ownership[50];          
+    char forma[50];          
     DailySchedule schedule[7];   
 } Shop;
 
-void search24hGroceries(Shop* array, int count, Shop** search, int* foundCount);
+void poisk24(Shop* array, int count, Shop** search, int* foundCount);
 
 #endif
