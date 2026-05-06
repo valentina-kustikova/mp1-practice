@@ -135,7 +135,6 @@
   <ItemGroup>
     <ClInclude Include="auxiliary.h" />
     <ClInclude Include="auxiliary_soft_exit.h" />
-    <ClInclude Include="costil.h" />
     <ClInclude Include="library.h" />
     <ClInclude Include="platform_compability.h" />
   </ItemGroup>

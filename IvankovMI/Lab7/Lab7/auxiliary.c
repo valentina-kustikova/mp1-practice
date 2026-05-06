@@ -14,11 +14,11 @@
 
 
 // ‘ункции, опредленные здесь (в т. ч. статические, дл€ устраени€ ошибок компил€ци):
-
-void create_library(book** lib, size_t* lib_s, size_t start_size);
-int fill_library(FILE* src_file, book** lib, size_t* lib_s);
-book fill_book(char* src);
-char* read_line(FILE* f, size_t start_size, bool* valid);
+//
+//void create_library(book** lib, size_t* lib_s, size_t start_size);
+//int fill_library(FILE* src_file, book** lib, size_t* lib_s);
+//book fill_book(char* src);
+//char* read_line(FILE* f, size_t start_size, bool* valid);
 
 static char* pretty_format(char* str);
 static bool check_valid_symb(char symb, const char* forbidden, size_t n);
