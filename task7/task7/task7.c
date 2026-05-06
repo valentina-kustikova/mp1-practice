@@ -1,9 +1,9 @@
-#define _CRT_SECURE_NO_WARNINGS
-#define MAX_LINE_LEN 100
 #include <stdio.h>
 #include <locale.h> 
 #include <math.h> 
 #include <stdlib.h> 
+
+#define MAX_LINE_LEN 100
 
 typedef struct{
 
@@ -19,9 +19,14 @@ typedef struct {
 
 }Triangle;
 
+typedef struct {
+    Triangle* triangles;
+    int count;
+} TriangleLib;
+
 //х1 y1; x2 y2; x3 y3
 
-Triangle* file_open(const char* filename, int* n) {
+Triangle* file_open(const char* filename, int* n) { // TriangleLib*
 
     Triangle* triangles;
     char line[MAX_LINE_LEN];
@@ -94,7 +99,7 @@ double area(Triangle t) { //формула Герона
     return sqrt(p * (p - a) * (p - b) * (p - c));
 }
 
-//h=2S/a a-сторона к которой проведена высота 
+//h=2S/a 
 void hights(Triangle t, double* ha, double* hb, double* hc) {
 
     double a = dist(t.A, t.B);
@@ -132,7 +137,7 @@ void triangle_type(Triangle t) {
     if (c > max)
         max = c;
 
-    if (fabs(max - a) < 1e-6) {
+    if (fabs(max - a) < 1e-6) { //a=max
         if (a2 < b2 + c2)
             printf("остроугольный");
         else if (a2 > b2 + c2)
@@ -159,7 +164,18 @@ void triangle_type(Triangle t) {
     }
     printf("\n");
 }
+void print_file(Triangle t) {
+    double ha, hb, hc;
+    printf("периметр= %lf\n", perimetr(t));
+    printf("площадь= %lf\n", area(t));
 
+    hights(t, &ha, &hb, &hc);
+    printf("высота: ha=%lf hb=%lf hc=%lf\n", ha, hb, hc);
+
+    printf("тип: ");
+    triangle_type(t);
+    printf("\n");
+}
 
 int main() {
 
@@ -172,14 +188,10 @@ int main() {
     show_dots(triangles, n);
 
     for (int i = 0; i < n; i++) {
-        double ha, hb, hc;
-        printf("периметр= %lf\n", perimetr(triangles[i]));
-        printf("площадь= %lf\n", area(triangles[i]));
-        hights(triangles[i], &ha, &hb, &hc);
-        printf("высота: ha=%lf hb=%lf hc=%lf\n", ha, hb, hc);
-        printf("тип: ");
-        triangle_type(triangles[i]);
+      
+        print_file(triangles[i]);
     }
+   
     free(triangles);
     return 0;
 }
