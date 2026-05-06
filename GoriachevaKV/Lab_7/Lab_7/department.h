@@ -28,6 +28,6 @@ typedef struct {
 } OwnerLib;
 
 
-void find_owners(char* requested_department, OwnerLib db, OwnerLib* found);
-void free_data(OwnerLib data);
+void find_owners(char* requested_department, OwnerLib* db, OwnerLib* found);
+void free_data(OwnerLib* data);
 #endif

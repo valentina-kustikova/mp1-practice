@@ -35,11 +35,11 @@ int main(int argc, char** argv) {
 		requested_department[strlen(requested_department) - 1] = '\0';
 	}
 
-	put_owners_into_array(filename, db_lib);
-	find_owners(requested_department, db_lib, &found_lib);
-	print_list(requested_department, found_lib);
+	put_owners_into_array(filename, &db_lib);
+	find_owners(requested_department, &db_lib, &found_lib);
+	print_list(requested_department, &found_lib);
 
-	free_data(found_lib);
-	free_data(db_lib);
+	free_data(&found_lib);
+	free_data(&db_lib);
 	return 0;
 }
