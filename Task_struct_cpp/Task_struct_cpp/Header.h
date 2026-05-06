@@ -46,8 +46,9 @@ struct PersonsLibrary {
     int count;
     Person* array;
 
-    PersonsLibrary();
     PersonsLibrary(string filename);
+    ~PersonsLibrary();
+    void findRecord(const string input);
 };
 
 struct BestEntry {
@@ -62,9 +63,7 @@ struct BestEntry {
 Sport convertSport(const std::string& input_sport);
 Sport convertSport(const char* input_sport);  // для совместимости
 
-// Основные функции
-int numberLines(const std::string& filename);
-void readFile(std::vector<Person>& athletes, const std::string& filename);
+
 void findRecord(const std::vector<Person>& athletes, const std::string& input_sport,
     std::vector<BestEntry>& result);
 void printResult(const std::vector<Person>& athletes, const std::vector<BestEntry>& result);
