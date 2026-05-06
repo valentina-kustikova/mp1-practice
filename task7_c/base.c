@@ -25,10 +25,10 @@ void generate(box* base) {
 	}
 }
 
-box getbase() {
+box getbase(char *filename) {
 	//обьявления
 	box ans;
-	FILE* file = fopen("base.txt", "r");
+	FILE* file = fopen(filename, "r");
 	int i;
 	char c[1000];
 	ans.len = 0;

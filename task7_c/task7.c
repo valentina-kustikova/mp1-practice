@@ -1,9 +1,14 @@
 #include <stdio.h>
 #include "base.h"
 
-int main() {
+int main(int argc, char*argv[]) {
 	box ans;
-	box list = getbase();
+	box list;
+	if (argc < 2) {
+		printf("no args");
+		return 0;
+	}
+	list = getbase(argv[1]);
 	if (list.len == 0) {
 		printf("BASE LOAD ERROR");
 		return 1;
