@@ -18,8 +18,12 @@ int main() {
 		{
 			return 0;
 		}
-
-		quotes.find_quotes_by_key_words(request_word, founded);
+		try {
+			quotes.find_quotes_by_key_words(request_word, founded);
+		}
+		catch (const std::exception& ex) {
+			std::cout << ex.what() << std::endl;
+		}
 		std::cout << founded;
 
 	} while (1);

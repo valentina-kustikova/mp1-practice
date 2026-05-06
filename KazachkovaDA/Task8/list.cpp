@@ -7,7 +7,24 @@ quote::quote()
 	key_words = nullptr;
 	key_words_count = 0;
 }
+quote& quote::operator=(const quote& q) {
+	if (this == &q) {
+		return *this;
+	this->the_line = q.the_line;
+	this->author = q.author;
+	this->source = q.source;
+	this->theme = q.theme;
+	this->key_words_count = q.key_words_count;
 
+	this->key_words = new std::string[q.key_words_count];
+
+	for (int k = 0; k < q.key_words_count; k++)
+		{
+			founded.phrases[l].key_words_count = this->phrases[i].key_words_count;
+			founded.phrases[l].key_words[k] = this->phrases[i].key_words[k];
+		}
+	}
+}
 phrase_library::phrase_library()
 {
 	phrases = nullptr;
@@ -43,7 +60,6 @@ phrase_library::phrase_library(const std::string& file_name)
 	file.seekg(0, std::ios::beg);
 
 	for (int i = 0; i < n; i++) {
-		std::string key_words, a_word;
 
 		getline(file, phrases[i].the_line, ';');
 
@@ -53,11 +69,13 @@ phrase_library::phrase_library(const std::string& file_name)
 
 		getline(file, phrases[i].theme, ';');
 
+		std::string key_words;
 		getline(file, key_words, ';');
 
 		std::stringstream key_words_stream(key_words);
 		int key_words_count = 0;
 
+		std::string a_word;
 		while (std::getline(key_words_stream, a_word, ',')) {
 			key_words_count++;
 		}
@@ -77,14 +95,12 @@ phrase_library::phrase_library(const std::string& file_name)
 
 void phrase_library::find_quotes_by_key_words(const std::string keyword_request, phrase_library & founded) 
 {
-	int i, j, k, l;
-	std::string lowercase_request;
+	std::string lowercase_request = to_lowercase(keyword_request);
 	std::string lowercase_key_words;
 	int found_count = 0;
-	lowercase_request = to_lowercase(keyword_request);
-	for (i = 0; i < this->count; i++)
+	for (int i = 0; i < this->count; i++)
 	{
-		for (j = 0; j < this->phrases[i].key_words_count; j++)
+		for (int j = 0; j < this->phrases[i].key_words_count; j++)
 		{
 			lowercase_key_words = to_lowercase(this->phrases[i].key_words[j]);
 			if (lowercase_key_words == lowercase_request)
@@ -96,36 +112,23 @@ void phrase_library::find_quotes_by_key_words(const std::string keyword_request,
 	}
 
 	if (found_count == 0)
-	{
-		std::cout<< "No keywords found\n";
+	{	
+		throw std::exception("No keywords found");
 
 	}
 
 	founded.count = found_count;
 	founded.phrases = new quote[found_count];
 
-	l = 0;
-	for (i = 0; i < this->count; i++)
+	int l = 0;
+	for (int i = 0; i < this->count; i++)
 	{
-		for (j = 0; j < this->phrases[i].key_words_count; j++)
+		for (int j = 0; j < this->phrases[i].key_words_count; j++)
 		{
 			lowercase_key_words = to_lowercase(this->phrases[i].key_words[j]);
 			if (lowercase_key_words == lowercase_request)
 			{
-				founded.phrases[l].the_line = this->phrases[i].the_line;
-				founded.phrases[l].author = this->phrases[i].author;
-				founded.phrases[l].source = this->phrases[i].source;
-				founded.phrases[l].theme = this->phrases[i].theme;
-				founded.phrases[l].key_words_count = this->phrases[i].key_words_count;
-
-				founded.phrases[l].key_words = new std::string[this->phrases[i].key_words_count];
-
-				for (k = 0; k < this->phrases[i].key_words_count; k++)
-				{
-					founded.phrases[l].key_words_count = this->phrases[i].key_words_count;
-					founded.phrases[l].key_words[k] = this->phrases[i].key_words[k];
-				}
-
+				// founded.phrases[l] = this->phrases[i]
 				l++;
 			}
 		}

@@ -13,6 +13,7 @@ struct quote{
 	int key_words_count;
 
 	quote();
+	quote& operator=(const quote&);
 }; 
 
 struct phrase_library {
