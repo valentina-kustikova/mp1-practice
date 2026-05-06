@@ -59,4 +59,15 @@ void sort_school(School* school);
 void print_school(const School* school);
 void free_school(School* school);
 
+int open_students_file(FILE** fp, const char* filename);
+int count_lines_in_file(FILE* fp);
+Student* parse_student_line_to_struct(char* line);
+Student* read_all_students_from_file(FILE* fp, int* student_count);
+char** poisk_unique_class_names(Student* students, int student_count, int* unique_count);
+ClassGroup* create_class_groups(char** class_names, int class_count);
+void count_students_in_classes(ClassGroup* classes, int class_count, Student* students, int student_count);
+void allocate_memory_for_class_students(ClassGroup* classes, int class_count);
+void distribute_students_to_classes(ClassGroup* classes, int class_count, Student* students, int student_count);
+void cleanup_resources(Student* students, ClassGroup* classes, int class_count);
+
 #endif

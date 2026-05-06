@@ -11,5 +11,4 @@ Student* create_student(const char* surname, const char* name, const char* patro
     const char* district, const char* city, const char* street,
     const char* house, const char* apartment);
 void free_student(Student* student);
-
 #endif

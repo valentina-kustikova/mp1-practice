@@ -10,125 +10,125 @@ void init_school(School* school) {
     school->class_count = 0;
 }
 
-void load_students(School* school, const char* filename) {
-    char buffer[BUFFER_SIZE];
-    char line[BUFFER_SIZE];
-    int total_lines = 0;
-    int student_count = 0;
-    int class_index = 0;
-    int class_count = 0;
-    Student* all_students;
-    char* surname;
-    char* name;
-    char* patronymic;
-    char* class_name;
-    char* gender_str;
-    char* year_str;
-    char* month_str;
-    char* day_str;
-    char* postal;
-    char* country;
-    char* region;
-    char* district;
-    char* city;
-    char* street;
-    char* house;
-    char* apartment;
-    char** unique_class_names;
-    int unique_count = 0;
-    ClassGroup* temp_classes;
-    int pos;
-
-    if (school == NULL) return;
-
-    FILE* fp = fopen(filename, "r");
-    if (fp == NULL) {
+int open_students_file(FILE** fp, const char* filename) {
+    *fp = fopen(filename, "r");
+    if (*fp == NULL) {
         printf("Error opening file '%s'\n", filename);
-        init_school(school);
-        return;
+        return -1;
+    }
+    return 0;
+}
+
+int count_lines_in_file(FILE* fp) {
+    char buffer[BUFFER_SIZE];
+    int lines = 0;
+    long pos = ftell(fp);
+
+    if (pos == -1) return 0;
+
+    while (fgets(buffer, BUFFER_SIZE, fp) != NULL) {
+        lines++;
     }
 
-    while (fgets(buffer, BUFFER_SIZE, fp) != NULL) total_lines++;
+    fseek(fp, pos, SEEK_SET);
+    return lines;
+}
+
+Student* parse_student_line_to_struct(char* line) {
+    char buffer[BUFFER_SIZE];
+    char* surname, *name, *patronymic, *class_name, *gender_str;
+    char* year_str, *month_str, *day_str;
+    char* postal, *country, *region, *district, *city, *street, *house, *apartment;
+    int year, month, day;
+    Gender gender;
+
+    strcpy(buffer, line);
+
+    surname = strtok(buffer, ";");
+    name = strtok(NULL, ";");
+    patronymic = strtok(NULL, ";");
+    class_name = strtok(NULL, ";");
+    gender_str = strtok(NULL, ";");
+    year_str = strtok(NULL, ";");
+    month_str = strtok(NULL, ";");
+    day_str = strtok(NULL, ";");
+    postal = strtok(NULL, ";");
+    country = strtok(NULL, ";");
+    region = strtok(NULL, ";");
+    district = strtok(NULL, ";");
+    city = strtok(NULL, ";");
+    street = strtok(NULL, ";");
+    house = strtok(NULL, ";");
+    apartment = strtok(NULL, ";");
+
+    if (!(surname && name && patronymic && class_name && gender_str &&
+        year_str && month_str && day_str && postal && country &&
+        region && district && city && street && house && apartment)) {
+        printf("Warning: Skipping malformed line: %s\n", line);
+        return NULL;
+    }
+
+    if (strcmp(gender_str, "M") == 0) gender = male;
+    else if (strcmp(gender_str, "F") == 0) gender = female;
+    else gender = unknown;
+
+    year = atoi(year_str);
+    month = atoi(month_str);
+    day = atoi(day_str);
+
+    return create_student(surname, name, patronymic, class_name,
+        gender, year, month, day,
+        postal, country, region, district,
+        city, street, house, apartment);
+}
+
+Student* read_all_students_from_file(FILE* fp, int* student_count) {
+    char buffer[BUFFER_SIZE];
+    int total_lines = count_lines_in_file(fp);
+    Student* all_students;
+    int count = 0;
 
     if (total_lines == 0) {
         printf("File is empty\n");
-        fclose(fp);
-        init_school(school);
-        return;
+        return NULL;
     }
+
     rewind(fp);
 
     all_students = (Student*)malloc((total_lines + 1) * sizeof(Student));
     if (all_students == NULL) {
-        printf("Memory allocation error\n");
-        fclose(fp);
-        init_school(school);
-        return;
+        printf("Memory allocation error for students array\n");
+        return NULL;
     }
 
     while (fgets(buffer, BUFFER_SIZE, fp) != NULL) {
         buffer[strcspn(buffer, "\n")] = '\0';
+        Student* s = parse_student_line_to_struct(buffer);
 
-        strcpy(line, buffer);
-
-        surname = strtok(line, ";");
-        name = strtok(NULL, ";");
-        patronymic = strtok(NULL, ";");
-        class_name = strtok(NULL, ";");
-        gender_str = strtok(NULL, ";");
-        year_str = strtok(NULL, ";");
-        month_str = strtok(NULL, ";");
-        day_str = strtok(NULL, ";");
-        postal = strtok(NULL, ";");
-        country = strtok(NULL, ";");
-        region = strtok(NULL, ";");
-        district = strtok(NULL, ";");
-        city = strtok(NULL, ";");
-        street = strtok(NULL, ";");
-        house = strtok(NULL, ";");
-        apartment = strtok(NULL, ";");
-
-        if (surname && name && patronymic && class_name && gender_str &&
-            year_str && month_str && day_str &&
-            postal && country && region && district && city && street && house && apartment) {
-
-            Gender gender;
-            if (strcmp(gender_str, "M") == 0) gender = male;
-            else if (strcmp(gender_str, "F") == 0) gender = female;
-            else gender = unknown;
-
-            int year = atoi(year_str);
-            int month = atoi(month_str);
-            int day = atoi(day_str);
-
-            Student* s = create_student(surname, name, patronymic, class_name,
-                gender, year, month, day,
-                postal, country, region, district,
-                city, street, house, apartment);
-            if (s != NULL) {
-                all_students[student_count] = *s; //здесь будет bag на С++ 
-                free(s);
-                student_count++;
-            }
-        }
-        else {
-            printf("Warning: Skipping malformed line: %s\n", buffer);
+        if (s != NULL) {
+            all_students[count] = *s; 
+            free(s);
+            count++;
         }
     }
-    fclose(fp);
 
-    if (student_count == 0) {
-        printf("No valid student data found\n");
+    *student_count = count;
+    
+    if (count == 0) {
         free(all_students);
-        init_school(school);
-        return;
+        return NULL;
     }
 
-    //поиск уникальный классов 
+    return all_students;
+}
+
+int count_unique_classes(Student* students, int student_count) {
+    int unique_count = 0;
+
     for (int i = 0; i < student_count; i++) {
         int found = 0;
         for (int j = 0; j < i; j++) {
-            if (strcmp(all_students[i].class, all_students[j].class) == 0) {
+            if (strcmp(students[i].class, students[j].class) == 0) {
                 found = 1;
                 break;
             }
@@ -138,104 +138,183 @@ void load_students(School* school, const char* filename) {
         }
     }
 
-    unique_class_names = (char**)malloc(unique_count * sizeof(char*));
-    if (unique_class_names == NULL) {
-        printf("Memory allocation error for class names\n");
-        for (int k = 0; k < student_count; k++) free_student(&all_students[k]);
-        free(all_students);
-        return;
+    return unique_count;
+}
+
+char** get_unique_class_names(Student* students, int student_count, int* unique_count) {
+    char** unique_names;
+    int count = count_unique_classes(students, student_count);
+    int index = 0;
+
+    if (count == 0) {
+        *unique_count = 0;
+        return NULL;
     }
-    //заполняем названия
+
+    unique_names = (char**)malloc(count * sizeof(char*));
+    if (unique_names == NULL) {
+        printf("Memory allocation error\n");
+        *unique_count = 0;
+        return NULL;
+    }
+
     for (int i = 0; i < student_count; i++) {
         int found = 0;
-        for (int j = 0; j < class_index; j++) {
-            if (strcmp(all_students[i].class, unique_class_names[j]) == 0) {
+        for (int j = 0; j < index; j++) {
+            if (strcmp(students[i].class, unique_names[j]) == 0) {
                 found = 1;
                 break;
             }
         }
         if (!found) {
-            unique_class_names[class_index] = (char*)malloc(strlen(all_students[i].class) + 1);
-            if (unique_class_names[class_index] != NULL) {
-                strcpy(unique_class_names[class_index], all_students[i].class);
+            unique_names[index] = (char*)malloc(strlen(students[i].class) + 1);
+            if (unique_names[index] == NULL) {
+                for (int k = 0; k < index; k++) free(unique_names[k]);
+                free(unique_names);
+                *unique_count = 0;
+                return NULL;
             }
-            else {
-                printf("Memory allocation error for class name\n");
-                for (int k = 0; k < student_count; k++) free_student(&all_students[k]);
-                free(all_students);
-                for (int k = 0; k < class_index; k++) free(unique_class_names[k]);
-                free(unique_class_names);
-                return;
-            }
-            class_index++;
+            strcpy(unique_names[index], students[i].class);
+            index++;
         }
     }
 
-    class_count = unique_count;
-    
-    temp_classes = (ClassGroup*)malloc(class_count * sizeof(ClassGroup));
-    if (temp_classes == NULL) {
-        printf("Memory allocation error for classes\n");
-        for (int k = 0; k < student_count; k++) free_student(&all_students[k]);
-        free(all_students);
-        for (int k = 0; k < class_count; k++) free(unique_class_names[k]);
-        free(unique_class_names);
+    *unique_count = count;
+    return unique_names;
+}
+
+
+ClassGroup* create_class_groups(char** class_names, int class_count) {
+    ClassGroup* classes = (ClassGroup*)malloc(class_count * sizeof(ClassGroup));
+    if (classes == NULL) {
+        printf("Memory allocation error for class groups\n");
+        return NULL;
+    }
+
+    for (int i = 0; i < class_count; i++) {
+        classes[i].class_name = class_names[i];
+        classes[i].students = NULL;
+        classes[i].count = 0;
+    }
+
+    return classes;
+}
+
+void count_students_in_classes(ClassGroup* classes, int class_count,
+    Student* students, int student_count) {
+    for (int i = 0; i < student_count; i++) {
+        for (int j = 0; j < class_count; j++) {
+            if (strcmp(classes[j].class_name, students[i].class) == 0) {
+                classes[j].count++;
+                break;
+            }
+        }
+    }
+}
+
+void allocate_memory_for_class_students(ClassGroup* classes, int class_count) {
+    for (int i = 0; i < class_count; i++) {
+        if (classes[i].count > 0) {
+            classes[i].students = (Student*)malloc(classes[i].count * sizeof(Student));
+            if (classes[i].students == NULL) {
+                printf("Memory allocation error for students in class %s\n",
+                    classes[i].class_name);
+                return;
+            }
+            classes[i].count = 0; 
+        }
+    }
+}
+
+void distribute_students_to_classes(ClassGroup* classes, int class_count,
+    Student* students, int student_count) {
+    for (int i = 0; i < student_count; i++) {
+        for (int j = 0; j < class_count; j++) {
+            if (strcmp(classes[j].class_name, students[i].class) == 0) {
+                int pos = classes[j].count;
+                classes[j].students[pos] = students[i];
+                classes[j].count++;
+                break;
+            }
+        }
+    }
+}
+
+void cleanup_resources(Student* students, ClassGroup* classes, int class_count) {
+    if (students != NULL) {
+        free(students);
+    }
+
+    if (classes != NULL) {
+        for (int i = 0; i < class_count; i++) {
+            if (classes[i].students != NULL) {
+                free(classes[i].students);
+            }
+            if (classes[i].class_name != NULL) {
+                free(classes[i].class_name);
+            }
+        }
+        free(classes);
+    }
+}
+
+void load_students(School* school, const char* filename) {
+    FILE* fp = NULL;
+    Student* all_students = NULL;
+    ClassGroup* classes = NULL;
+    char** unique_class_names = NULL;
+    int student_count = 0;
+    int unique_count = 0;
+
+    if (school == NULL) {
+        return;
+    }
+  
+    if (open_students_file(&fp, filename) != 0) {
+        init_school(school);
         return;
     }
 
-    for (int i = 0; i < class_count; i++) {
-        temp_classes[i].class_name = unique_class_names[i];
-        temp_classes[i].students = NULL;
-        temp_classes[i].count = 0;
-    }
-    free(unique_class_names);
+    all_students = read_all_students_from_file(fp, &student_count);
+    fclose(fp);
 
-    //подсчёт студентов в каждом классе
-    for (int i = 0; i < student_count; i++) {
-        for (int j = 0; j < class_count; j++) {
-            if (strcmp(temp_classes[j].class_name, all_students[i].class) == 0) {
-                temp_classes[j].count++;
-                break;
-            }
-        }
+    if (all_students == NULL || student_count == 0) {
+        printf("No valid student data found\n");
+        if (all_students) free(all_students);
+        init_school(school);
+        return;
     }
 
-    //выделение памяти для студентов под каждый класс
-    for (int i = 0; i < class_count; i++) {
-        if (temp_classes[i].count > 0) {
-            temp_classes[i].students = (Student*)malloc(temp_classes[i].count * sizeof(Student));
-            if (temp_classes[i].students == NULL) {
-                printf("Memory allocation error for students in class %s\n", temp_classes[i].class_name);
-                for (int k = 0; k < class_count; k++) {
-                    if (temp_classes[k].students) free(temp_classes[k].students);
-                    free(temp_classes[k].class_name);
-                }
-                free(temp_classes);
-                for (int k = 0; k < student_count; k++) free_student(&all_students[k]);
-                free(all_students);
-                return;
-            }
-            temp_classes[i].count = 0;
-        }
+    unique_count = count_unique_classes(all_students, student_count);
+    unique_class_names = get_unique_class_names(all_students, student_count, &unique_count);
+
+
+    if (unique_class_names == NULL || unique_count == 0) {
+        printf("No classes found\n");
+        free(all_students);
+        init_school(school);
+        return;
     }
 
-    //распределение студентов
-    for (int i = 0; i < student_count; i++) {
-        for (int j = 0; j < class_count; j++) {
-            if (strcmp(temp_classes[j].class_name, all_students[i].class) == 0) {
-                pos = temp_classes[j].count;
-                temp_classes[j].students[pos] = all_students[i];
-                temp_classes[j].count++;
-                break;
-            }
-        }
+    classes = create_class_groups(unique_class_names, unique_count);
+    if (classes == NULL) {
+        for (int i = 0; i < unique_count; i++) free(unique_class_names[i]);
+        free(unique_class_names);
+        free(all_students);
+        init_school(school);
+        return;
     }
 
-    school->classes = temp_classes;
-    school->class_count = class_count;
+    count_students_in_classes(classes, unique_count, all_students, student_count);
+    allocate_memory_for_class_students(classes, unique_count);
+    distribute_students_to_classes(classes, unique_count, all_students, student_count);
+ 
+    school->classes = classes;
+    school->class_count = unique_count;
     free(all_students);
 
-    printf("Successfully loaded %d students into %d classes\n", student_count, class_count);
+    printf("Successfully loaded %d students into %d classes\n",
+        student_count, school->class_count);
 }
 
 void sort_school(School* school) {
