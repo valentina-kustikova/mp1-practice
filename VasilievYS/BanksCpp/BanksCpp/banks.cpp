@@ -52,11 +52,14 @@ banks_library::banks_library(const std::string& fr)
 
 banks_library::~banks_library()
 {
-	for (int i = 0; i < cnt; i++)
-	{
-		delete[]banks[i].deposites;
-	}
-	delete[]banks;
+	delete[] banks;
+	banks = nullptr;
+}
+
+bank::~bank()
+{
+	delete[] deposites;
+	deposites = nullptr;
 }
 
 const bank& banks_library::find(const std::string& udep) const

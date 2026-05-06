@@ -14,6 +14,7 @@ struct bank{
 	int depostes_cnt;
 	
 	friend std::ostream& operator<<(std::ostream& os, const bank& b);
+	~bank();
 };
 
 struct banks_library{
