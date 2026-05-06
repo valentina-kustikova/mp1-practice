@@ -20,6 +20,7 @@
 //book fill_book(char* src);
 //char* read_line(FILE* f, size_t start_size, bool* valid);
 
+static int count_lines(FILE* file);
 static char* pretty_format(char* str);
 static bool check_valid_symb(char symb, const char* forbidden, size_t n);
 static void trim_spaces(char* str);
@@ -27,10 +28,11 @@ static int s_to_year(char* s);
 
 
 
-// Создание бибилиотеки, выделение памяти начального размера, изменение lib_s
-void create_library(book** lib, size_t* lib_s, size_t start_size) {
-	*lib_s = start_size;          // начальнаый размер
-	*lib = (book*)malloc(start_size * sizeof(book));
+// Создание бибилиотеки, подсчет строк в файле и выделение памяти требуемого размера, изменение lib_s
+void create_library(book** lib, size_t* lib_s, FILE* file) {
+	size_t size = count_lines(file);
+	*lib_s = size;
+	*lib = (book*)malloc(size * sizeof(book));
 	if (!*lib) {
 		perror("Не удалось выделить память при созданиии бибилиотеки (malloc)");
 		soft_exit();
@@ -48,50 +50,47 @@ void delete_library(lib_t* lib) {
 }
 
 
+static int count_lines(FILE* file) {
+	if (file == NULL) return -1;
+	int lines = 0;
+	char buffer[1];
+	while (fgets(buffer, sizeof(buffer), file) != NULL) {
+		lines++;
+	}
+	rewind(file);  // возвращаем указатель в начало файла для дальнейшего чтения
+	return lines;
+}
+
+
 // считывает информацию о книгах из файла и заполняет "библиотеку" структурами book
-// релоцирует library, если колл-во книг больше, чем ожидаемое
+// заполняет пока в файле есть строчки или пока колл-во не дотигнет lib_s
 // возвращает колличество добавленных книг
 int fill_library(FILE* src_file, book** lib, size_t* lib_s) {
 	char* str = NULL;
 	bool valid = true;
-	int i = 0;
+	int i = 0;  // счетчик прочитанных строк
+	int j = 0;  // счетчик добавленных книг
 	str = read_line(src_file, sizeof(char) * (N + 1), &valid);
-	while (str != NULL) {
+	while (str != NULL && i < *lib_s) {
 		if (valid) {  // если прочитанная строка пустая, пропускаем
-			if (i >= *lib_s) {  // релоцируем библиотеку в случае переполнения
-				book* new_lib = (book*)realloc(*lib, *lib_s * sizeof(book) * 2);
-				if (!new_lib) {
-					perror("Не удалось релоцировать библиотеку при чтении файла (realloc)");
-					soft_exit();
-					return -1; // чтоб статический не ругался
-				}
-				*lib = new_lib;
-				*lib_s *= 2;
-			}
 			book bk = fill_book(str);
 			if (bk.name == NULL || bk.authors == NULL || bk.publ == NULL) {
 				printf("ПРЕДУПРЕЖДЕНИЕ: Не удалось записать в библиотеку книгу с %d строчки в базе\n", i + 1);
-				i++;
+				free(str);
 			}
 			else if (bk.year == 0) {
 				printf("ПРЕДУПРЕЖДЕНИЕ: Не удалось прочитать год издания книги в %d строчки в базе, книга пропущена\n", i + 1);
-				i++;
+				free(str);
 			}
 			else
-				(*lib)[i++] = bk;
+				(*lib)[j++] = bk;
 		}
-		// free(str); - критическая ошибка, книга "забирает" себе выделенную строку и ее нельзя чистить
+		else
+			free(str); // очищаем память, выделенную для пустой строки
+		i++;
 		str = read_line(src_file, sizeof(char) * (N + 1), &valid);
 	}
-	book* new_lib = (book*)realloc(*lib, i * sizeof(book));  // уменьшаем выделенную память обратно под колличество книг
-	if (!new_lib) {                                          // да, не оптимально, но что поделать, зато кондово
-		perror("Не удалось релоцировать библиотеку при освобождении лишнего (realloc)");
-		soft_exit();
-		return -1;
-	}
-	*lib = new_lib;
-	*lib_s = i;
-	return i;
+	return j;
 }
 
 
