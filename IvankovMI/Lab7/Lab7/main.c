@@ -6,8 +6,8 @@
 
 
 int main(int argc, char* argv[]) {
-	//system("chcp 1251");
-	//system("cls");
+	system("chcp 1251");
+	system("cls");
 	lib_t library;
 	setlocale(LC_ALL, "rus");
 	if (argc == 2) {
