@@ -1,11 +1,11 @@
 #ifndef _ARG_H
 #define _ARG_H
-#define BUFFER_SIZE 1024
 
 #include <iostream>
 #include <string>
 
 using namespace std;
+
 
  enum Gender {
 	male,
@@ -56,7 +56,7 @@ struct PersonsLibrary {
 	int count;
 
 	PersonsLibrary() : persons(nullptr), count(0) { };
-	PersonsLibrary(const string& filename); 
+	PersonsLibrary(const std::string& filename); 
 	PersonsLibrary(const PersonsLibrary&);
 	~PersonsLibrary();
 

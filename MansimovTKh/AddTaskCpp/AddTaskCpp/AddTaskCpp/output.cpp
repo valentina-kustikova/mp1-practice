@@ -1,7 +1,4 @@
 #include <iostream>
-#include <stdlib.h>
-#include <fstream>
-#include <string>
 #include "arg.h"
 
 using namespace std;
