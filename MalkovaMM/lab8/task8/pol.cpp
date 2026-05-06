@@ -28,7 +28,7 @@ polinom::polinom(const string& fname, int num)
 	}
 	dg--;
 	this->deg = dg;
-	this->coef = new int[dg + 1];
+	this->coef = new double[dg + 1];
 	ifstream f1(fname);
 	getline(f1, line);
 	if (num == 2)
@@ -41,20 +41,20 @@ polinom::polinom(const string& fname, int num)
 	for (; i >= 0; i--)
 	{
 		getline(ssline, t1, ';');
-		this->coef[i] = stoi(t1);
+		this->coef[i] = stof(t1); 
 	}
 }
 
 polinom::polinom(int deg)
 {
 	this->deg = deg;
-	this->coef = new int[deg+1];
+	this->coef = new double[deg+1]; 
 }
 
 polinom::polinom(const polinom &p)
 {
 	this->deg = p.deg;
-	this->coef = new int[p.deg+1];
+	this->coef = new double[p.deg+1]; 
 	for (int i = 0; i <= p.deg; i++)
 	{
 		this->coef[i] = p.coef[i];
@@ -110,18 +110,6 @@ polinom polinom::operator +(const polinom& p)
 	return psnew;
 }
 
-polinom polinom::operator -(const polinom& p)
-{
-	int i = 0;
-	polinom p2(p.deg);
-	for (; i <= p2.deg; i++)
-	{
-		p2.coef[i] = -p.coef[i];
-	}
-	polinom pm = *this + p2;
-	return pm;
-}
-
 polinom polinom::operator -()
 {
 	int i = 0;
@@ -133,19 +121,21 @@ polinom polinom::operator -()
 	return p;
 }
 
+polinom polinom::operator -(const polinom& p) 
+{
+	return (*this) + (-p);//??
+}
+
 polinom polinom::operator *(const polinom&p)
 {
 	polinom pu(this->deg + p.deg);
-	int k = 0;
-	for (; k <= pu.deg; k++)
+	for (int k = 0; k <= pu.deg; k++)
 	{
 		pu.coef[k] = 0;
 	}
-	int i = 0;
-	for (; i <= this->deg; i++)
+	for (int i = 0; i <= this->deg; i++)
 	{
-		int j;
-		for (j = 0; j <= p.deg; j++)
+		for (int j = 0; j <= p.deg; j++)
 		{
 			pu.coef[i + j] += this->coef[i] * p.coef[j];
 		}
@@ -153,12 +143,11 @@ polinom polinom::operator *(const polinom&p)
 	return pu;
 }
 
-double polinom::pznach(double  x)
+double polinom::operator()(double  x)const
 {
 	double zn = 0;
-	int i = 0;
 	double xvalue = 1.0;
-	for (; i <= this->deg; i++)
+	for (int i=0; i <= this->deg; i++)
 	{
 		zn += this->coef[i] * xvalue;
 		xvalue *= x;
@@ -166,7 +155,7 @@ double polinom::pznach(double  x)
 	return zn;
 }
 
-polinom polinom::pdif()
+polinom polinom::pdif() const
 {
 	int i = 1;
 	polinom pd(this->deg - 1);
@@ -179,8 +168,12 @@ polinom polinom::pdif()
 
 const polinom& polinom::operator =(const polinom& p)
 {
+	if (this == &p)
+		return *this;
+	if (this->deg != p.deg)
+		this->coef = nullptr;
 	this->deg = p.deg;
-	this->coef = new int[p.deg+1];
+	this->coef = new double[p.deg+1];
 	for (int i = 0; i <= p.deg; i++)
 	{
 		this->coef[i] = p.coef[i];
