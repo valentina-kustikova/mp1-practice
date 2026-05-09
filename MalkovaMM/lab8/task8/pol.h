@@ -14,21 +14,33 @@ struct polinom {
 	~polinom();
 	polinom operator +(const polinom&);
 	polinom operator -(const polinom&);
-	polinom operator -();
+	polinom operator -() const;
 	polinom operator *(const polinom&);
 	double operator()(double)const; 
 	polinom pdif() const;
 	const polinom& operator =(const polinom&);
 	friend std::ostream& operator << (std::ostream& out, const polinom& p)
 	{
-		for (int i = p.deg; i >= 2; i--)
+		out << p.coef[p.deg] << "x^" << p.deg;
+		for (int i = p.deg-1; i >= 2; i--)
 		{
-			if (p.coef[i] == 1)
-				out << "x^" << i << " + ";
+			if (p.coef[i + 1] < 0)
+				out << " - ";
 			else
-				out << p.coef[i] << "x^" << i << " + ";
+				out << " + ";
+			if (abs(p.coef[i]) == 1)
+				out << "x^" << i;
+			else
+				out << abs(p.coef[i]) << "x^" << i;
 		}
-		out << p.coef[1] << "x + " << p.coef[0];
+		if (p.coef[1] < 0)
+			out << " - " << -p.coef[1] << "x ";
+		else
+			out << " + " << p.coef[1] << "x ";
+		if (p.coef[0]<0)
+			out << "- " << -p.coef[0];
+		else
+			out << "+ " << p.coef[0];;
 		return out;
 	};
 };

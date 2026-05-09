@@ -25,6 +25,8 @@ int main(int argc, char** argv) {
 		if (choice == 2) pres = p1 - p2;
 		if (choice == 3) pres = p1 * p2;
 		if (choice == 4) {
+			cout << "введите 1 или 2 - номер полинома: ";
+			cin >> num;
 			if (num == 1) pres = p1.pdif();
 			else if (num == 2) pres = p2.pdif();
 		}

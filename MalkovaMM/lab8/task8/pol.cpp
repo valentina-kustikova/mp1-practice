@@ -110,20 +110,20 @@ polinom polinom::operator +(const polinom& p)
 	return psnew;
 }
 
-polinom polinom::operator -()
+polinom polinom::operator -() const
 {
 	int i = 0;
 	polinom p(this->deg);
 	for (; i <= p.deg; i++)
 	{
-		p.coef[i] = -p.coef[i];
+		p.coef[i] = -(this->coef[i]);
 	}
 	return p;
 }
 
 polinom polinom::operator -(const polinom& p) 
 {
-	return (*this) + (-p);//??
+	return (*this) + (-p);
 }
 
 polinom polinom::operator *(const polinom&p)
