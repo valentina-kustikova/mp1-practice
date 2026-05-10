@@ -12,53 +12,51 @@ banks_library::banks_library(const std::string& fr)
 	{
 		this->cnt++;
 	}
-	this->banks = new bank[cnt];
+	this->banks = new bank[this->cnt];
 	file.clear(); file.seekg(0);
 	for (int i = 0; i < this->cnt; i++)
 	{
 		std::string line, temp_line;
+		int deps_cnt = 0;
 		getline(file, line);
 		temp_line = line;
 		char del = ';';
 		size_t del_pos = temp_line.find(del);
-		banks[i].set_dep_cnt(0);
 		while (del_pos != std::string::npos)
 		{
 			temp_line[del_pos] = ' ';
-			banks[i]++;
+			deps_cnt++;
 			del_pos = temp_line.find(del);
 		}
-		banks[i] -= 2;
-		banks[i].alloc_deps();
+		deps_cnt -= 2;
+		deposit* deps_list = new deposit[deps_cnt];
 		del_pos = line.find(del);
 		line[del_pos] = ' ';
-		banks[i].set_name(line.substr(0, del_pos));
+		std::string name_bank = line.substr(0, del_pos);
 		size_t temp_del = del_pos;
 		del_pos = line.find(del);
-		banks[i].set_owner(line.substr(temp_del + 2, del_pos - 2 - temp_del));
+		std::string owner_bank = line.substr(temp_del + 2, del_pos - 2 - temp_del);
 		line[del_pos] = ' ';
-		for (int j = 0; j < banks[i].get_deps_cnt(); j++)
+		for (int j = 0; j < deps_cnt; j++)
 		{
 			size_t comma_pos = line.find(','); line[comma_pos] = ' ';
-			std::string n_name = line.substr(del_pos + 2, comma_pos - 2 - del_pos);
-			to_low(n_name);
-			banks[i].set_dep_name(n_name, j);
+			std::string dep_name = line.substr(del_pos + 2, comma_pos - 2 - del_pos);
+			to_low(dep_name);
 			del_pos = line.find(del); line[del_pos] = ' ';
-			banks[i].set_dep_perc(stof(line.substr(comma_pos, del_pos - comma_pos)), j);
+			float dep_per = stof(line.substr(comma_pos, del_pos - comma_pos));
+			deps_list[j] = deposit(dep_name, dep_per);
 		}
+		banks[i] = bank(name_bank, owner_bank, deps_list, deps_cnt);
 	}
 	file.close();
 }
-
-banks_library::~banks_library()
+bank::bank(const std::string _n, const std::string _o,
+deposit* _d, const int d_cnt)
 {
-	delete[] banks;
-	banks = nullptr;
-}
-bank::~bank()
-{
-	delete[] deposites;
-	deposites = nullptr;
+	name = _n;
+	owner = _o;
+	deposites = _d;
+	depostes_cnt = d_cnt;
 }
 
 bank::bank(const bank& b)
@@ -67,46 +65,71 @@ bank::bank(const bank& b)
 	owner = b.owner;
 	depostes_cnt = b.depostes_cnt;
 	deposites = new deposit[depostes_cnt];
+	for (int i = 0; i < depostes_cnt; i++)
+	{
+		deposites[i] = b.deposites[i];
+	}
 }
 
-const bank& banks_library::find(const std::string& udep) const
+banks_library::~banks_library()
 {
-	int check = 0;
-	int* idx_list = new int[cnt];
-	float* percent_list = new float[cnt];
+	delete[] banks;
+	banks = nullptr;
+}
+
+bank::~bank()
+{
+	delete[] deposites;
+	deposites = nullptr;
+}
+
+bank& bank::operator=(const bank& b)
+{
+	if (this != &b) {
+		name = b.name;
+		owner = b.owner;
+		depostes_cnt = b.depostes_cnt;
+		delete[]deposites;
+		deposites = new deposit[depostes_cnt];
+		for (int i = 0; i < depostes_cnt; i++)
+		{
+			deposites[i] = b.deposites[i];
+		}
+	}
+	return *this;
+}
+deposit& deposit::operator=(const deposit& d)
+{
+	name = d.name;
+	percentage = d.percentage;
+	return *this;
+}
+
+const bank banks_library::find(const std::string& udep) const
+{
+	int check = 0, max_idx = 0;
+	float max_p = -1;
 	for (int i = 0; i < cnt; i++)
 	{
 		for (int j = 0; j < banks[i].get_deps_cnt(); j++)
 		{
 			if (banks[i].get_dep_name(j).find(udep) != std::string::npos)
 			{
-				idx_list[check] = i;
-				percent_list[check] = banks[i].get_dep_perc(j);
+				float cur_p = banks[i].get_dep_perc(j);
+				if (cur_p > max_p)
+				{
+					max_p = cur_p;
+					max_idx = i;
+				}
 				check++;
 				break;
 			}
 		}
 	}
 	if (check == 0) {
-		delete[]idx_list;
-		delete[]percent_list;
 		throw std::string("No matches");
 	}
-	float max_p = percent_list[0];
-	int idx = 0;
-	for (int i = 1; i < check; i++)
-	{
-		if (percent_list[i] > max_p) { max_p = percent_list[i]; idx = i; }
-	}
-	int ans_idx = idx_list[idx];
-	delete[]idx_list;
-	delete[]percent_list;
-	return banks[ans_idx];
-}
-
-void banks_library::set_banks_cnt(const int& n)
-{
-	cnt = n;
+	return banks[max_idx];
 }
 
 std::ostream& operator<<(std::ostream& os, const banks_library& lib)
@@ -128,92 +151,37 @@ std::ostream& operator<<(std::ostream& os, const bank& b)
 	return os << b.name << std::endl;
 }
 
-bank bank::operator++(int)
-{
-	bank old = *this;
-	this->depostes_cnt++;
-	return old;
-}
-
-bank& bank::operator-=(int n)
-{
-	
-	this->depostes_cnt -= n;
-	return *this;
-}
-
-void bank::set_dep_cnt(int n)
-{
-	depostes_cnt = n;
-}
-
-void bank::set_name(const std::string& n)
-{
-	name = n;
-}
-
-void bank::set_owner(const std::string& own)
-{
-	owner = own;
-}
-
-void bank::set_dep_name(const std::string& n, int idx)
-{
-	if (idx >= depostes_cnt) { throw std::string("Out of range"); }
-	deposites[idx].set_name(n);
-}
-
-void bank::set_dep_perc(const float& perc, int idx)
-{
-	if (idx >= depostes_cnt) { throw std::string("Out of range"); }
-	deposites[idx].set_perc(perc);
-}
-
-void bank::alloc_deps()
-{
-	deposites = new deposit[depostes_cnt];
-}
-
-const int& bank::get_deps_cnt() const
+const int bank::get_deps_cnt() const
 {
 	return depostes_cnt;
 }
 
-const float& bank::get_dep_perc(int j) const
+const float bank::get_dep_perc(int j) const
 {
 	return deposites[j].get_perc();
 }
 
-const std::string& bank::get_dep_name(int j) const
+const std::string bank::get_dep_name(int j) const
 {
 	return deposites[j].get_name();
 }
 
-const std::string& bank::get_name() const
+const std::string bank::get_name() const
 {
 	return name;
 }
 
-const std::string& bank::get_owner() const
+const std::string bank::get_owner() const
 {
 	return owner;
 }
 
-void deposit::set_name(const std::string& n)
-{
-	name = n;
-}
-void deposit::set_perc(const float& p)
-{
-	percentage = p;
-}
-
-const std::string& deposit::get_name() const
+const std::string deposit::get_name() const
 {
 	return name;
 }
 
-const float& deposit::get_perc() const
+const float deposit::get_perc() const
 {
 	return percentage;
 }

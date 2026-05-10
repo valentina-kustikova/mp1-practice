@@ -2,7 +2,7 @@
 #include"banks.h"
 #include"auxiliary.h"
 int main(int argc, char** argv)
-{
+ {
 	if (argc < 2) { return 1; }
 	try
 	{
@@ -11,10 +11,10 @@ int main(int argc, char** argv)
 		std::cout << lib;
 		getline(std::cin, udep);
 		to_low(udep);
-		const bank& ans = lib.find(udep);
+		const bank ans = lib.find(udep);
 		std::cout << ans << std::endl;
 	}
-	catch (const std::string ex)
+	catch (const std::string& ex)
 	{
 		std::cout << ex << std::endl;
 	}
