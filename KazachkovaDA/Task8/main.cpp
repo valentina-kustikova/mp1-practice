@@ -23,6 +23,7 @@ int main() {
 		}
 		catch (const std::exception& ex) {
 			std::cout << ex.what() << std::endl;
+			continue;
 		}
 		std::cout << founded;
 

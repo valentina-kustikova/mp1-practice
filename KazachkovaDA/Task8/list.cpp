@@ -7,9 +7,32 @@ quote::quote()
 	key_words = nullptr;
 	key_words_count = 0;
 }
+
+quote::quote(const quote& q) 
+{
+
+	this->the_line = q.the_line;
+	this->author = q.author;
+	this->source = q.source;
+	this->theme = q.theme;
+	this->key_words_count = q.key_words_count;
+
+	this->key_words = new std::string[q.key_words_count];
+
+	for (int k = 0; k < q.key_words_count; k++)
+	{
+		this->key_words[k] = q.key_words[k];
+	}
+}
+
 quote& quote::operator=(const quote& q) {
+
 	if (this == &q) {
 		return *this;
+	}
+
+	delete[]key_words;
+
 	this->the_line = q.the_line;
 	this->author = q.author;
 	this->source = q.source;
@@ -20,10 +43,9 @@ quote& quote::operator=(const quote& q) {
 
 	for (int k = 0; k < q.key_words_count; k++)
 		{
-			founded.phrases[l].key_words_count = this->phrases[i].key_words_count;
-			founded.phrases[l].key_words[k] = this->phrases[i].key_words[k];
+			this->key_words[k] = q.key_words[k];
 		}
-	}
+	return *this;
 }
 phrase_library::phrase_library()
 {
@@ -128,7 +150,7 @@ void phrase_library::find_quotes_by_key_words(const std::string keyword_request,
 			lowercase_key_words = to_lowercase(this->phrases[i].key_words[j]);
 			if (lowercase_key_words == lowercase_request)
 			{
-				// founded.phrases[l] = this->phrases[i]
+				founded.phrases[l] = this->phrases[i];
 				l++;
 			}
 		}
@@ -140,5 +162,5 @@ std::ostream& operator <<(std::ostream& out, const phrase_library& founded) {
 	{
 		out << founded.phrases[i].the_line<<"\n";
 	}
-	return out;
+	return out; 
 }
