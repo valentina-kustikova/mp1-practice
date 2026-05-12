@@ -10,7 +10,7 @@
 using namespace std;
 
 PersonsLibrary::PersonsLibrary(string filename) {
-    ifstream file(filename); 
+    ifstream file(filename);  
     if (!file.is_open()) {
       throw "error with opening file";
     }
@@ -75,44 +75,52 @@ void PersonsLibrary::findRecord(const string input) {
     return;
   }
 
-  
+  BestEntries result;
+  result.entryCount = 0;
   BestEntry* unique_disciplines = new BestEntry[this->count];
 
-  for (int i = 0; i < this->count, i++) {
-    if (athlete.sport == target_sport) {
+  for (int i = 0; i < this->count; i++) {
+    if (this->array[i].sport == target_sport) {
       bool found = false;
-      for (const auto& disc : unique_disciplines) {
-        if (disc == athlete.discipline) {
+      for (int j = 0; j < result.entryCount; j++) {
+        if (unique_disciplines[j].discipline == this->array[i].discipline) {
           found = true;
           break;
         }
       }
-      if (!found) {
-        unique_disciplines.push_back(athlete.discipline);
-      }
+      if (!found) unique_disciplines[result.entryCount++].discipline == this->array[i].discipline;
     }
   }
 
-  // Второй проход: ищем лучшего по каждой дисциплине
-  result.clear();
-  for (const auto& discipline : unique_disciplines) {
-    BestEntry entry;
-    entry.discipline = discipline;
-    entry.best_record = -1.0;
+  result.unique_disciplines = new BestEntry[result.entryCount];
 
-    for (size_t i = 0; i < athletes.size(); i++) {
-      if (athletes[i].sport == target_sport &&
-        athletes[i].discipline == discipline) {
-        if (athletes[i].record > entry.best_record) {
-          entry.best_record = athletes[i].record;
-          entry.best_index = static_cast<int>(i);
-        }
+
+  for (int i = 0; i < result.entryCount; i++) {
+      result.unique_disciplines[i].best_record = 0;
+      for (int j = 0; j < this->count; j++) {
+          if (unique_disciplines[i].discipline == this->array[j].discipline) {
+              result.unique_disciplines[i].discipline = this->array[j].discipline;
+              if (this->array[j].record > result.unique_disciplines[i].best_record) {
+                  result.unique_disciplines[i].best_record = this->array[j].record;
+                  result.unique_disciplines[i].best_index = j;
+              }
+          }
       }
-    }
-    result.push_back(entry);
   }
+  free(unique_disciplines);
 }
 
+friend std::ostream& operator <<(std::ostream& out, const BestEntries& result) {
+    for (int i = 0; i < result.entryCount; i++) {
+        const Person& p = this->array[result.unique_disciplines[i].best_index];
+        out << "\nDiscipline: " << p.discipline << endl;
+        out << "Name: " << p.name.first_name << " " << p.name.last_name << endl;
+        out << "Record: " << p.record << endl;
+        out << "Country: " << p.country << endl;
+        out << "Club: " << p.club << endl;
+    }
+    return out;
+}
 
 Sport convertSport(const string& input_sport) {
     if (input_sport == "Athletics") return Athletics;
@@ -185,66 +193,68 @@ Sport convertSport(const char* input_sport) {
 //    file.close();
 //}
 
-void findRecord(const vector<Person>& athletes, const string& input_sport,
-    vector<BestEntry>& result) {
-    Sport target_sport = convertSport(input_sport);
+//void findRecord(const vector<Person>& athletes, const string& input_sport,
+//    vector<BestEntry>& result) {
+//    Sport target_sport = convertSport(input_sport);
+//
+//    if (target_sport == Unknown) {
+//        cerr << "Unknown sport: " << input_sport << endl;
+//        return;
+//    }
+//
+//    // Первый проход: собираем уникальные дисциплины
+//    vector<string> unique_disciplines;
+//
+//    for (const auto& athlete : athletes) {
+//        if (athlete.sport == target_sport) {
+//            bool found = false;
+//            for (const auto& disc : unique_disciplines) {
+//                if (disc == athlete.discipline) {
+//                    found = true;
+//                    break;
+//                }
+//            }
+//            if (!found) {
+//                unique_disciplines.push_back(athlete.discipline);
+//            }
+//        }
+//    }
+//
+//    // Второй проход: ищем лучшего по каждой дисциплине
+//    result.clear();
+//    for (const auto& discipline : unique_disciplines) {
+//        BestEntry entry;
+//        entry.discipline = discipline;
+//        entry.best_record = -1.0;
+//
+//        for (size_t i = 0; i < athletes.size(); i++) {
+//            if (athletes[i].sport == target_sport &&
+//                athletes[i].discipline == discipline) {
+//                if (athletes[i].record > entry.best_record) {
+//                    entry.best_record = athletes[i].record;
+//                    entry.best_index = static_cast<int>(i);
+//                }
+//            }
+//        }
+//        result.push_back(entry);
+//    }
+//}
 
-    if (target_sport == Unknown) {
-        cerr << "Unknown sport: " << input_sport << endl;
-        return;
-    }
 
-    // Первый проход: собираем уникальные дисциплины
-    vector<string> unique_disciplines;
 
-    for (const auto& athlete : athletes) {
-        if (athlete.sport == target_sport) {
-            bool found = false;
-            for (const auto& disc : unique_disciplines) {
-                if (disc == athlete.discipline) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                unique_disciplines.push_back(athlete.discipline);
-            }
-        }
-    }
-
-    // Второй проход: ищем лучшего по каждой дисциплине
-    result.clear();
-    for (const auto& discipline : unique_disciplines) {
-        BestEntry entry;
-        entry.discipline = discipline;
-        entry.best_record = -1.0;
-
-        for (size_t i = 0; i < athletes.size(); i++) {
-            if (athletes[i].sport == target_sport &&
-                athletes[i].discipline == discipline) {
-                if (athletes[i].record > entry.best_record) {
-                    entry.best_record = athletes[i].record;
-                    entry.best_index = static_cast<int>(i);
-                }
-            }
-        }
-        result.push_back(entry);
-    }
-}
-
-void printResult(const vector<Person>& athletes, const vector<BestEntry>& result) {
-    if (result.empty()) {
-        cout << "No athletes found for this sport" << endl;
-        return;
-    }
-
-    for (const auto& entry : result) {
-        const Person& p = athletes[entry.best_index];
-        cout << "\nDiscipline: " << p.discipline << endl;
-        cout << "Name: " << p.name.first_name << " " << p.name.last_name << endl;
-        cout << "Record: " << p.record << endl;
-        cout << "Country: " << p.country << endl;
-        cout << "Club: " << p.club << endl;
-        cout << "----------------------------------------" << endl;
-    }
-}
+//void printResult(const vector<Person>& athletes, const vector<BestEntry>& result) {
+//    if (result.empty()) {
+//        cout << "No athletes found for this sport" << endl;
+//        return;
+//    }
+//
+//    for (const auto& entry : result) {
+//        const Person& p = athletes[entry.best_index];
+//        cout << "\nDiscipline: " << p.discipline << endl;
+//        cout << "Name: " << p.name.first_name << " " << p.name.last_name << endl;
+//        cout << "Record: " << p.record << endl;
+//        cout << "Country: " << p.country << endl;
+//        cout << "Club: " << p.club << endl;
+//        cout << "----------------------------------------" << endl;
+//    }
+//}

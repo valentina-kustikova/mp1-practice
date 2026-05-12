@@ -16,7 +16,7 @@ struct Person_data {
 
     Person_data();
     Person_data(const string& ln, const string& fn);
-};
+}; 
 
 struct Birsday {
     int day = 0;
@@ -48,7 +48,19 @@ struct PersonsLibrary {
 
     PersonsLibrary(string filename);
     ~PersonsLibrary();
+
     void findRecord(const string input);
+    friend std::ostream& operator <<(std::ostream& out, const BestEntries& result) {
+        for (int i = 0; i < result.entryCount; i++) {
+            const Person& p = this->array[result.unique_disciplines[i].best_index];
+            out << "\nDiscipline: " << p.discipline << endl;
+            out << "Name: " << p.name.first_name << " " << p.name.last_name << endl;
+            out << "Record: " << p.record << endl;
+            out << "Country: " << p.country << endl;
+            out << "Club: " << p.club << endl;
+        }
+        return out;
+    }
 };
 
 struct BestEntry {
@@ -57,6 +69,10 @@ struct BestEntry {
     double best_record;
 };
 
+struct BestEntries {
+    int entryCount;
+    BestEntry* unique_disciplines;
+};
 
 
 // Перегрузка функции convertSport
