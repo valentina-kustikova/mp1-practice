@@ -4,60 +4,59 @@
 #include "shop.h"
 
 
-
-void poisk24(Shop* array, int count, Shop** search, int* foundCount) {
+void poisk24(ShopLib* shops, ShopLib* result) {
     int k = 0;
-    *foundCount = 0;
+    result->count = 0;
 
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < shops->count; i++) {
         int isGrocery = 0;
         int is24h = 1;
 
-        if (strstr(array[i].specialization, "grocery") != NULL) {
+        if (strstr(shops->arr[i].specialization, "grocery") != NULL) {
             isGrocery = 1;
         }
 
         for (int d = 0; d < 7; d++) {
-            if (array[i].schedule[d].mode != ALLDAY) {
+            if (shops->arr[i].schedule[d].mode != ALLDAY) {
                 is24h = 0;
                 break;
             }
         }
 
         if (isGrocery && is24h) {
-            (*foundCount)++;
+            result->count++;
         }
     }
 
-    if (*foundCount == 0) {
-        *search = NULL;
+    if (result->count == 0) {
+        result->arr = NULL;
         return;
     }
 
-    *search = (Shop*)malloc((*foundCount) * sizeof(Shop));
-    if (*search == NULL) {
+    result->arr = (Shop*)malloc(result->count * sizeof(Shop));
+    if (result->arr == NULL) {
         printf("err\n");
-        *foundCount = 0;
+        result->count = 0;
         return;
     }
 
-    for (int j = 0; j < count; j++) {
+    for (int j = 0; j < shops->count; j++) {
         int isGrocery = 0;
         int is24h = 1;
 
-        if (strstr(array[j].specialization, "grocery") != NULL) {
+        if (strstr(shops->arr[j].specialization, "grocery") != NULL) {
             isGrocery = 1;
         }
 
         for (int d = 0; d < 7; d++) {
-            if (array[j].schedule[d].mode != ALLDAY) {
+            if (shops->arr[j].schedule[d].mode != ALLDAY) {
                 is24h = 0;
                 break;
             }
         }
 
         if (isGrocery && is24h) {
-            (*search)[k++] = array[j];
+            result->arr[k++] = shops->arr[j];
         }
     }
 }

@@ -48,6 +48,12 @@ typedef struct Shop {
     DailySchedule schedule[7];   
 } Shop;
 
-void poisk24(Shop* array, int count, Shop** search, int* foundCount);
+typedef struct {
+    Shop* arr;
+    int count;
+} ShopLib;
+
+
+void poisk24(Shop* shops, ShopLib* result);
 
 #endif

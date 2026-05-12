@@ -7,9 +7,8 @@
 int main(int argc, char** argv) {
     setlocale(LC_ALL, "RUS");
     char* filename;
-    int count, foundCount;
-    Shop* array;
-    Shop* search;
+    ShopLib shops;      
+    ShopLib result;     
 
     if (argc < 2) {
         printf("Err");
@@ -17,17 +16,35 @@ int main(int argc, char** argv) {
     }
     filename = argv[1];
 
-    count = countShops(filename);
+    shops.count = countShops(filename);
+    if (shops.count <= 0) {
+        printf("No shops found or error reading file.\n");
+        return 1;
+    }
 
-    array = (Shop*)malloc(count * sizeof(Shop));
 
-    readFile(count, array, filename);
+    shops.arr = (Shop*)malloc(shops.count * sizeof(Shop));
+    if (shops.arr == NULL) {
+        printf("err\n");
+        return 1;
+    }
+    readFile(shops.count, shops.arr, filename);
 
-    poisk24(array, count, &search, &foundCount);
-    printResults(search, foundCount);
 
-    free(array);
-    free(search);
-   
+    result.arr = NULL;
+    result.count = 0;
+
+
+    poisk24(&shops, &result);
+
+
+    printResults(&result);
+
+    free(shops.arr);
+
+    free(result.arr);
+    
+
     return 0;
 }
+

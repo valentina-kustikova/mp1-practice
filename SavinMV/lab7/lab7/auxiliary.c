@@ -1,3 +1,4 @@
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -111,30 +112,31 @@ void readFile(int count, Shop* array, const char* filename) {
 }
 
 
-void printResults(Shop* search, int count) {
-    if (count == 0) {
+void printResults(ShopLib* result) {
+    if (result->count == 0) {
         printf("\nNo 24/7 grocery stores found\n");
         return;
     }
 
-    if (count == 1) {
-        printf("\nFound %d 24/7 grocery store:\n", count);
+    if (result->count == 1) {
+        printf("\nFound %d 24/7 grocery store:\n", result->count);
     }
     else {
-        printf("\nFound %d 24/7 grocery stores:\n\n", count);
+        printf("\nFound %d 24/7 grocery stores:\n\n", result->count);
     }
 
 
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; i < result->count; i++) {
         printf("\nSTORE #%d\n", i + 1);
-        printf("Name:            %s\n", search[i].name);
+        printf("Name:            %s\n", result->arr[i].name);
         printf("Address: \n");
-        printf("-House number    %s\n", search[i].address.build);
-        printf("-Street          %s\n", search[i].address.street);
-        printf("Phone:          %s\n", search[i].phones);
-        printf("Specialization: %s\n", search[i].specialization);
-        printf("Forma:          %s\n", search[i].forma);
+        printf("-House number    %s\n", result->arr[i].address.build);
+        printf("-Street          %s\n", result->arr[i].address.street);
+        printf("Phone:          %s\n", result->arr[i].phones);
+        printf("Specialization: %s\n", result->arr[i].specialization);
+        printf("Forma:          %s\n", result->arr[i].forma);
         printf("Hours:           OPEN 24/7\n\n");    
     }
     
 }
+

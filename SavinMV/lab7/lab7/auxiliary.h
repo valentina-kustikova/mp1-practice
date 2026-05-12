@@ -5,7 +5,7 @@
 
 int countShops(const char* filename);
 void readFile(int count, Shop* array, const char* filename);
-void printResults(Shop* search, int count);
+void printResults(ShopLib* result);
 void parseScheduleString(const char* scheduleStr, DailySchedule* schedule);
 
 #endif
