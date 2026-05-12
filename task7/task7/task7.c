@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <locale.h> 
 #include <math.h> 
@@ -26,12 +27,12 @@ typedef struct {
 
 //х1 y1; x2 y2; x3 y3
 
-Triangle* file_open(const char* filename, int* n) { // TriangleLib*
+TriangleLib* file_open(const char* filename) { // TriangleLib*
 
-    Triangle* triangles;
     char line[MAX_LINE_LEN];
-    int i = 0;
     int triangle_count;
+    int i = 0;
+   
 
     FILE* file = fopen(filename, "r");
     if (file == NULL) {
@@ -41,28 +42,31 @@ Triangle* file_open(const char* filename, int* n) { // TriangleLib*
 
     fscanf(file, "%d\n", &triangle_count);
 
-    triangles = (Triangle*)malloc(sizeof(Triangle) * triangle_count);
+    TriangleLib* arr= malloc(sizeof(TriangleLib));
 
+    arr->triangles = NULL;
+    arr->count = 0;
+
+    arr->triangles = malloc(sizeof(Triangle) * triangle_count);
     while (i < triangle_count && fgets(line, MAX_LINE_LEN, file) != NULL) {
         sscanf(line,
             "%lf %lf; %lf %lf; %lf %lf",
-            &triangles[i].A.x,
-            &triangles[i].A.y,
-            &triangles[i].B.x,
-            &triangles[i].B.y,
-            &triangles[i].C.x,
-            &triangles[i].C.y);
+            &arr->triangles[i].A.x,
+            &arr->triangles[i].A.y,
+            &arr->triangles[i].B.x,
+            &arr->triangles[i].B.y,
+            &arr->triangles[i].C.x,
+            &arr->triangles[i].C.y);
         i++;
     }
 
     fclose(file);
-
-    *n = i;
-    return triangles;
+    arr->count = i;
+    return arr;
 }
 
-void show_dots(Triangle* triangles, int n) {
-    for (int i = 0; i < n; i++)
+void show_dots(Triangle* triangles, Triangle* count) {
+    for (int i = 0; i < count; i++)
     {
         printf("%lf %lf; %lf %lf; %lf %lf",
             triangles[i].A.x,
@@ -75,24 +79,24 @@ void show_dots(Triangle* triangles, int n) {
     }
 }
 
-double dist(Point p1, Point p2) {
-    return sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
+double dist(Point *p1, Point *p2) {
+    return sqrt((p1->x - p2->x) * (p1->x - p2->x) + (p1->y - p2->y) * (p1->y - p2->y));
 }
 
-double perimetr(Triangle t) { 
+double perimetr(Triangle *t) { 
 
-    double a = dist(t.A, t.B);
-    double b = dist(t.B, t.C);
-    double c = dist(t.A, t.C);
+    double a = dist(&t->A, &t->B);
+    double b = dist(&t->B, &t->C);
+    double c = dist(&t->A, &t->C);
 
     return a + b + c;
 }
 
-double area(Triangle t) { //формула Герона
+double area(Triangle *t) { //формула Герона
 
-    double a = dist(t.A, t.B);
-    double b = dist(t.B, t.C);
-    double c = dist(t.A, t.C);
+    double a = dist(&t->A, &t->B);
+    double b = dist(&t->B, &t->C);
+    double c = dist(&t->A, &t->C);
 
     double p = (a + b + c) / 2.0;
 
@@ -100,11 +104,11 @@ double area(Triangle t) { //формула Герона
 }
 
 //h=2S/a 
-void hights(Triangle t, double* ha, double* hb, double* hc) {
+void hights(Triangle *t, double* ha, double* hb, double* hc) {
 
-    double a = dist(t.A, t.B);
-    double b = dist(t.B, t.C);
-    double c = dist(t.A, t.C);
+    double a = dist(&t->A, &t->B);
+    double b = dist(&t->B, &t->C);
+    double c = dist(&t->A, &t->C);
 
     double S = area(t);
     *ha = 2 * S / a;
@@ -112,11 +116,12 @@ void hights(Triangle t, double* ha, double* hb, double* hc) {
     *hc = 2 * S / c;
 }
 
-void triangle_type(Triangle t) {
+void triangle_type(Triangle *t) {
 
-    double a = dist(t.A, t.B);
-    double b = dist(t.B, t.C);
-    double c = dist(t.A, t.C);
+    double a = dist(&t->A, &t->B);
+    double b = dist(&t->B, &t->C);
+    double c = dist(&t->A, &t->C);
+    
 
     if (fabs(a - b) < 1e-6 && fabs(b - c) < 1e-6)  //a=b=c
         printf("равносторонний треугольник, ");
@@ -164,7 +169,7 @@ void triangle_type(Triangle t) {
     }
     printf("\n");
 }
-void print_file(Triangle t) {
+void print_file(Triangle *t) {
     double ha, hb, hc;
     printf("периметр= %lf\n", perimetr(t));
     printf("площадь= %lf\n", area(t));
@@ -179,19 +184,19 @@ void print_file(Triangle t) {
 
 int main() {
 
-    int n;
 	char* filename = "triangle.txt";
 
     setlocale(LC_ALL, "Russian");
-    Triangle* triangles = file_open(filename, &n);
+    TriangleLib* lib = file_open(filename);
 
-    show_dots(triangles, n);
+    show_dots(lib->triangles, lib->count);
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < lib->count; i++) {
       
-        print_file(triangles[i]);
+        print_file(&lib->triangles[i]);
     }
    
-    free(triangles);
+    free(lib->triangles);
+    free(lib);
     return 0;
 }
