@@ -14,8 +14,8 @@ int main(int argc, char*argv[]) {
 		return 1;
 	}
 	printf("finding 24h food stores:\n");
-	ans = findstores(&list);
-	printer(&ans);
+	//ans = findstores(&list);
+	//printer(&ans);
 	delit(&list);
 	delit(&ans);
 	return 0;

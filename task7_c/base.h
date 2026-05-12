@@ -1,4 +1,5 @@
 #pragma once
+#define dayscount 7
 
 typedef struct {
 	char* street;
@@ -12,41 +13,40 @@ typedef struct {
 
 typedef enum {
 	MONDAY = 0,
-	//...
+	TUESDAY = 1,
+	WEDNSDAY = 2,
+	THURSDAY = 3,
+	FRIDAY = 4,
+	SATURDAY = 5,
+	SUNDAY = 6,
 } Day;
+
+typedef enum {
+	open = 2,
+	close = 1,
+	alldayopen = 0
+} daystatus;
 
 typedef struct {
 	Time start;
 	Time finish;
 	Day day;
-	// DayStatus ?
-} OpenCloseDay; // rename
-
-#define DAYS_NUMBER 7
+	daystatus status;
+} timing;
 
 typedef struct {
 	char* name;
 	Address address;
-	OpenCloseDay modes[DAYS_NUMBER];
 	char* phones;
 	char* special;
 	char* form;
+	timing timings[dayscount];
 } Shop;
 
 typedef struct {
-	char name[30];
-	char adres[70];
-	char phones[50];
-	char special[50];
-	char form[30];
-	int opens[7];
-	int closes[7];
-} magaz;
-
-typedef struct {
 	int len;
-	magaz** base;
-}box;
+	Shop** base;
+} box;
 
 
 box getbase();
