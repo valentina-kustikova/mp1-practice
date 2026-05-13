@@ -15,6 +15,7 @@ public:
 	const Box& operator=(const Box&);
 	int find(T&);
 	void push(T&);
+	void push(T&&);
 	void remove(T&);
 	void remove(T&&);
 	friend std::ostream& operator<< <T>(std::ostream&, const Box<T>&);
@@ -22,8 +23,11 @@ public:
 
 template<typename T>
 std::ostream& operator<<(std::ostream& out, const Box<T>& b) {
-	out << b.size << " " << b.step << "\n(";
-	for (int i = 0; i < b.size; i++) out << b.elem[i] << " ";
+	out << "size = " << b.size << " | capacity = " << b.capacity << " | step = " << b.step << "\n(";
+	for (int i = 0; i < b.size; i++) {
+		out << b.elem[i];
+		if (i + 1 != b.size) out << " ";
+	}
 	out << ")";
 	return out;
 }
@@ -96,6 +100,30 @@ void Box<T>::remove(T&& el) {
 	int pos = this->find(el);
 	if (pos == -1) throw std::exception("Not found");
 	this->elem[pos] = this->elem[--size];
+}
+
+template<typename T>
+void Box<T>::push(T& el) {
+	if (this->size == this->capacity) {
+		this->capacity += this->step;
+		T* buff = new T[this->capacity];
+		for (int i = 0; i < size; i++) buff[i] = elem[i];
+		delete[]elem;
+		elem = buff;
+	}
+	elem[size++] = el;
+}
+
+template<typename T>
+void Box<T>::push(T&& el) {
+	if (this->size == this->capacity) {
+		this->capacity += this->step;
+		T* buff = new T[this->capacity];
+		for (int i = 0; i < size; i++) buff[i] = elem[i];
+		delete[]elem;
+		elem = buff;
+	}
+	elem[size++] = el;
 }
 
 #endif
