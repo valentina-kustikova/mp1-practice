@@ -1,14 +1,16 @@
-#include "list.hpp"
-#include "additional.hpp"
 #include <fstream>
 #include <sstream>
+
+#include "list.hpp"
+#include "additional.hpp"
+
 quote::quote()
 {
 	key_words = nullptr;
 	key_words_count = 0;
 }
 
-quote& quote::operator=(const quote& q) {
+const quote& quote::operator=(const quote& q) {
 
 	if (this == &q) {
 		return *this;
@@ -98,7 +100,7 @@ phrase_library::phrase_library(const std::string& file_name)
 	}
 }
 
-void phrase_library::find_quotes_by_key_words(const std::string keyword_request, phrase_library & founded) 
+void phrase_library::find_quotes_by_key_words(const std::string& keyword_request, phrase_library & founded) 
 {
 	std::string lowercase_request = to_lowercase(keyword_request);
 	std::string lowercase_key_words;

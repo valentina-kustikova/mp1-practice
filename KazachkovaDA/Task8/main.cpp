@@ -3,7 +3,7 @@
 
 int main() {
 
-	const std::string file_name = "list.txt";
+	const std::string file_name = "list.txt"; // argc argv
 	phrase_library quotes(file_name);
 	phrase_library founded;
 

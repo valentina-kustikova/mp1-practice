@@ -13,7 +13,7 @@ struct quote{
 	int key_words_count;
 
 	quote();
-	quote& operator=(const quote&);
+	const quote& operator=(const quote&);
 }; 
 
 struct phrase_library {
@@ -22,8 +22,8 @@ struct phrase_library {
 
 	phrase_library();
 	phrase_library(const std::string&);
-	~phrase_library() {delete[] this->phrases; }
-	void find_quotes_by_key_words(const std::string, phrase_library&);
+	~phrase_library() {delete[] this->phrases; } // loop to remove keywords
+	void find_quotes_by_key_words(const std::string&, phrase_library&);
 	friend std::ostream& operator<< (std::ostream&, const phrase_library&);
 };
 
