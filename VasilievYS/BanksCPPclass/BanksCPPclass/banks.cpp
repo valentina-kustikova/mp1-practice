@@ -50,8 +50,8 @@ banks_library::banks_library(const std::string& fr)
 	}
 	file.close();
 }
-bank::bank(const std::string _n, const std::string _o,
-deposit* _d, const int d_cnt)
+bank::bank(const std::string& _n, const std::string& _o,
+	deposit* _d, const int d_cnt)
 {
 	name = _n;
 	owner = _o;
@@ -83,7 +83,7 @@ bank::~bank()
 	deposites = nullptr;
 }
 
-bank& bank::operator=(const bank& b)
+const bank& bank::operator=(const bank& b)
 {
 	if (this != &b) {
 		name = b.name;
@@ -98,10 +98,13 @@ bank& bank::operator=(const bank& b)
 	}
 	return *this;
 }
-deposit& deposit::operator=(const deposit& d)
+const deposit& deposit::operator=(const deposit& d)
 {
-	name = d.name;
-	percentage = d.percentage;
+	if (this != &d)
+	{
+		name = d.name;
+		percentage = d.percentage;
+	}
 	return *this;
 }
 
@@ -113,9 +116,9 @@ const bank banks_library::find(const std::string& udep) const
 	{
 		for (int j = 0; j < banks[i].get_deps_cnt(); j++)
 		{
-			if (banks[i].get_dep_name(j).find(udep) != std::string::npos)
+			if (banks[i][j].get_name().find(udep) != std::string::npos)
 			{
-				float cur_p = banks[i].get_dep_perc(j);
+				float cur_p = banks[i][j].get_perc();
 				if (cur_p > max_p)
 				{
 					max_p = cur_p;
@@ -139,7 +142,7 @@ std::ostream& operator<<(std::ostream& os, const banks_library& lib)
 		os << lib.banks[i].get_name() << "; " << lib.banks[i].get_owner() << '\n';
 		for (int j = 0; j < lib.banks[i].get_deps_cnt(); j++)
 		{
-			os << lib.banks[i].get_dep_name(j) << "; " << lib.banks[i].get_dep_perc(j) << '\n';
+			os << lib.banks[i][j].get_name() << "; " << lib.banks[i][j].get_perc() << '\n';
 		}
 		os << '\n';
 	}
@@ -151,19 +154,15 @@ std::ostream& operator<<(std::ostream& os, const bank& b)
 	return os << b.name << std::endl;
 }
 
+deposit& bank::operator[](int j)
+{
+	if (j >= depostes_cnt) { throw std::string("Out of range"); }
+	return deposites[j];
+}
+
 const int bank::get_deps_cnt() const
 {
 	return depostes_cnt;
-}
-
-const float bank::get_dep_perc(int j) const
-{
-	return deposites[j].get_perc();
-}
-
-const std::string bank::get_dep_name(int j) const
-{
-	return deposites[j].get_name();
 }
 
 const std::string bank::get_name() const

@@ -6,12 +6,12 @@ class deposit {
 	std::string name;
 	float percentage;
 public:
-	deposit(const std::string _n, const float _p) :
+	deposit(const std::string& _n, const float _p) :
 		name(_n), percentage(_p) {};
 	deposit() :percentage(0) {};
 	const std::string get_name() const;
 	const float get_perc() const;
-	deposit& operator =(const deposit&);
+	const deposit& operator = (const deposit&);
 };
 
 class bank {
@@ -21,15 +21,14 @@ class bank {
 	int depostes_cnt;
 public:
 	bank() : deposites(nullptr), depostes_cnt(0) {};
-	bank(const std::string _n, const std::string _o,
+	bank(const std::string& _n, const std::string& _o,
 		deposit* _d, const int d_cnt);
 	bank(const bank& b);
 	const int get_deps_cnt() const;
 	const std::string get_name() const;
 	const std::string get_owner() const;
-	const std::string get_dep_name(int j) const;
-	const float get_dep_perc(int j) const;
-	bank& operator=(const bank& b);
+	const bank& operator=(const bank& b);
+	deposit& operator[](int j);
 	friend std::ostream& operator<<(std::ostream& os, const bank& b);
 	~bank();
 };
