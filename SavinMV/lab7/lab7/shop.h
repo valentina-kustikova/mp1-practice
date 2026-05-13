@@ -54,6 +54,6 @@ typedef struct {
 } ShopLib;
 
 
-void poisk24(Shop* shops, ShopLib* result);
+void poisk24(ShopLib* shops, ShopLib* result);
 
 #endif

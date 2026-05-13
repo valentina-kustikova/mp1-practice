@@ -14,11 +14,12 @@ int main(int argc, char** argv) {
         printf("Err");
         return 1;
     }
+
     filename = argv[1];
 
     shops.count = countShops(filename);
     if (shops.count <= 0) {
-        printf("No shops found or error reading file.\n");
+        printf("err\n");
         return 1;
     }
 
@@ -29,11 +30,6 @@ int main(int argc, char** argv) {
         return 1;
     }
     readFile(shops.count, shops.arr, filename);
-
-
-    result.arr = NULL;
-    result.count = 0;
-
 
     poisk24(&shops, &result);
 

@@ -6,15 +6,6 @@
 #include "auxiliary.h"
 
 
-/*Time parseTime(const char* timeStr) {
-    Time t;
-    t.hours = 0;
-    t.minutes = 0;
-    sscanf(timeStr, "%d:%d", &t.hours, &t.minutes);
-    return t;
-}
-*/
-
 void parseScheduleString(const char* scheduleStr, DailySchedule* schedule) {
 
     char temp[1024];
@@ -27,7 +18,7 @@ void parseScheduleString(const char* scheduleStr, DailySchedule* schedule) {
         char dayAbbr[4];
         char mode[20];
 
-        if (sscanf(token, "%3s %s", dayAbbr, mode) == 2) {
+        if (sscanf(token, "%3s %6s", dayAbbr, mode) == 2) {
             int dayIndex = -1;
 
             if (strcmp(dayAbbr, "Mon") == 0) dayIndex = MONDAY;
@@ -42,17 +33,6 @@ void parseScheduleString(const char* scheduleStr, DailySchedule* schedule) {
                 if (strcmp(mode, "allday") == 0) {
                     schedule[dayIndex].mode = ALLDAY;
                 }
-                /*else if (strcmp(mode, "closed") == 0) {
-                    schedule[dayIndex].mode = CLOSED;
-                }
-                else {
-                    char openTimeStr[6], closeTimeStr[6];
-                    if (sscanf(mode, "%5s", openTimeStr, closeTimeStr) == 2) {
-                        schedule[dayIndex].mode = HOURS;
-                        schedule[dayIndex].openTime = parseTime(openTimeStr);
-                        schedule[dayIndex].closeTime = parseTime(closeTimeStr);
-                    }
-                }*/
             }
         }
         token = strtok(NULL, ",");
