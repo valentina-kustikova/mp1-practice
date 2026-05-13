@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
     if (argc < 2) {
         throw "Error with argc";
         return 1;
-    }
+    } 
      
     PersonsLibrary personsLibrary(argv[1]);
 
@@ -20,7 +20,6 @@ int main(int argc, char** argv) {
     getline(cin, input);
 
     personsLibrary.findRecord(input);
-    cout << personsLibrary;
 
     return 0;
 }

@@ -12,7 +12,7 @@ using namespace std;
 
 struct Person_data {
     string first_name;
-    string last_name;
+    string last_name; 
 
     Person_data();
     Person_data(const string& ln, const string& fn);
@@ -50,17 +50,17 @@ struct PersonsLibrary {
     ~PersonsLibrary();
 
     void findRecord(const string input);
-    friend std::ostream& operator <<(std::ostream& out, const BestEntries& result) {
-        for (int i = 0; i < result.entryCount; i++) {
-            const Person& p = this->array[result.unique_disciplines[i].best_index];
-            out << "\nDiscipline: " << p.discipline << endl;
-            out << "Name: " << p.name.first_name << " " << p.name.last_name << endl;
-            out << "Record: " << p.record << endl;
-            out << "Country: " << p.country << endl;
-            out << "Club: " << p.club << endl;
-        }
-        return out;
-    }
+    //friend ostream& operator <<(ostream& out, const BestEntries& result) {
+    //  for (int i = 0; i < result.entryCount; i++) {
+    //    const Person p = this->array[result.unique_disciplines[i].best_index];
+    //    out << "\nDiscipline: " << p.discipline << endl;
+    //    out << "Name: " << p.name.first_name << " " << p.name.last_name << endl;
+    //    out << "Record: " << p.record << endl;
+    //    out << "Country: " << p.country << endl;
+    //    out << "Club: " << p.club << endl;
+    //  }
+    //  return out;
+    //}
 };
 
 struct BestEntry {
@@ -72,16 +72,21 @@ struct BestEntry {
 struct BestEntries {
     int entryCount;
     BestEntry* unique_disciplines;
+
+    friend ostream& operator << (ostream& out, const BestEntries& entries) {
+      for (int i = 0; i < entries.entryCount; i++) {
+        out << "\nDiscipline: " << entries.unique_disciplines[i].discipline << endl;
+        out << "Record: " << entries.unique_disciplines[i].best_record << endl;
+      }
+      return out;
+    }
 };
 
 
-// Перегрузка функции convertSport
+
 Sport convertSport(const std::string& input_sport);
-Sport convertSport(const char* input_sport);  // для совместимости
+Sport convertSport(const char* input_sport); 
 
 
-void findRecord(const std::vector<Person>& athletes, const std::string& input_sport,
-    std::vector<BestEntry>& result);
-void printResult(const std::vector<Person>& athletes, const std::vector<BestEntry>& result);
 
 #endif

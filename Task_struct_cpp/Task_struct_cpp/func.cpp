@@ -20,10 +20,9 @@ PersonsLibrary::PersonsLibrary(string filename) {
     this->count = count;
     cout << this->count << endl;
     this->array = new Person[this->count];
-    file.close();
+    file.seekg(0);
 
-
-    ifstream file(filename);
+    
     if (!file.is_open()) {
       throw "error with opening file";
     }
@@ -88,7 +87,7 @@ void PersonsLibrary::findRecord(const string input) {
           break;
         }
       }
-      if (!found) unique_disciplines[result.entryCount++].discipline == this->array[i].discipline;
+      if (!found) unique_disciplines[result.entryCount++].discipline = this->array[i].discipline;
     }
   }
 
@@ -107,20 +106,11 @@ void PersonsLibrary::findRecord(const string input) {
           }
       }
   }
-  free(unique_disciplines);
+  delete[]unique_disciplines;
+  cout << result;
 }
 
-friend std::ostream& operator <<(std::ostream& out, const BestEntries& result) {
-    for (int i = 0; i < result.entryCount; i++) {
-        const Person& p = this->array[result.unique_disciplines[i].best_index];
-        out << "\nDiscipline: " << p.discipline << endl;
-        out << "Name: " << p.name.first_name << " " << p.name.last_name << endl;
-        out << "Record: " << p.record << endl;
-        out << "Country: " << p.country << endl;
-        out << "Club: " << p.club << endl;
-    }
-    return out;
-}
+
 
 Sport convertSport(const string& input_sport) {
     if (input_sport == "Athletics") return Athletics;
