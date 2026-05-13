@@ -6,11 +6,15 @@
 #define MAX_LEN 256
 
 int main(int argc, char** argv) {
+    char string[MAX_PATH];
     char buffer[MAX_LEN];
     int countBooks = 0;
+    int found = 0;
     char* filename;
+    Book* books_of_struct = NULL;
 
-    if (argv < 2) {
+
+    if (argc < 2) {
         return 1;
     }
     filename = argv[1];
@@ -33,6 +37,7 @@ int main(int argc, char** argv) {
 
     Book* books = CreatMassive(countBooks);
     if (!books) {
+        printf("Error of func. CreatMassive\n");
         fclose(f);
         return 1;
     }
@@ -42,11 +47,22 @@ int main(int argc, char** argv) {
     fclose(f);
 
     
-    SearchByAuthor(countBooks, books);
+    printf("Enter the author to search: ");
+    scanf_s("%s", string, (unsigned)sizeof(string));
+
+    
+    books_of_struct = SearchByAuthor(&found, countBooks, books, string);
+    if (!books_of_struct) {
+        printf("Error of func. SearchByAuthor\n");
+    }
+
+    
+    EnterBook_of_struct(books_of_struct, found);
 
 
     CleanMemories(countBooks, books);
-    
+    CleanMemories(found, books_of_struct);
+
 
     return 0;
 }

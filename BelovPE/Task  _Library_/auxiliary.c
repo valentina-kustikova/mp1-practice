@@ -18,7 +18,7 @@ int FileRead(FILE* f) {
 Book* CreatMassive(int countBooks) {
     Book* books = malloc(countBooks * sizeof(Book));
     if (!books) {
-        printf("Memory allocation failed!\n");
+        printf("Memory allocation failed! Number 1\n");
         return NULL;
     }
     printf("Location massive of books = %p\n\n", books);
@@ -78,6 +78,21 @@ void EnterBook(FILE* f, Book* books, int countBooks, char buffer[]) {
         i++;
     }
 }
+
+
+void EnterBook_of_struct(Book* books_of_struct, int found) {
+    if (found) printf("Books:\n");
+    for (int j = 0; j < found; j++) {
+        if (books_of_struct[j].author != NULL) {
+            printf("Author: %s\n", books_of_struct[j].author);
+            printf("Name: %s\n", books_of_struct[j].name);
+            /*printf("Publisher: %s\n", books_of_struct[j].publisher);
+            printf("Year: %d\n", books_of_struct[j].year);*/
+            printf("\n");
+        }
+    }
+}
+
 
 
 void CleanMemories(int countBooks, Book* books) {

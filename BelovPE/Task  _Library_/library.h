@@ -1,6 +1,7 @@
 #pragma once
 #include <stdio.h>
-
+#include <stdlib.h>
+#include <string.h>
 #define MAX_PATH 27
 
 
@@ -11,4 +12,4 @@ typedef struct {
     int year;
 } Book;
 
-void SearchByAuthor(int countBooks, Book* books);
+Book* SearchByAuthor(int* found, int countBooks, Book* books, char* string);
