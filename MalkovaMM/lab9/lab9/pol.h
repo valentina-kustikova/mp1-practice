@@ -25,17 +25,11 @@ public:
 		out << p.coef[p.deg] << "x^" << p.deg << " ";
 		for (int i = p.deg - 1; i >= 2; i--)
 		{
-			if (p.coef[i] != 0)
-			{
-				if (p.coef[i + 1] < 0)
-					out << "- ";
-				else
-					out << "+ ";
-				if (abs(p.coef[i]) == 1)
-					out << "x^" << i << " ";
-				else
-					out << abs(p.coef[i]) << "x^" << i << " ";
-			}
+			if (p.coef[i] == 0) continue;
+			if (p.coef[i] > 0) out << "+ ";
+			else out << "- ";
+			if (abs(p.coef[i]) != 1) out << abs(p.coef[i]);
+			out << "x^" << i << " ";
 		}
 		if (p.coef[1] < 0)
 			out << "- " << -p.coef[1] << "x ";
