@@ -53,9 +53,9 @@ void delete_library(lib_t* lib) {
 static int count_lines(FILE* file) {
 	if (file == NULL) return -1;
 	int lines = 0;
-	char buffer[1];
-	while (fgets(buffer, sizeof(buffer), file) != NULL) {
-		lines++;
+	int ch;
+	while ((ch = fgetc(file)) != EOF) {
+		if (ch == '\n') lines++;
 	}
 	rewind(file);  // возвращаем указатель в начало файла для дальнейшего чтения
 	return lines;
