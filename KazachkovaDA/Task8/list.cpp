@@ -8,23 +8,6 @@ quote::quote()
 	key_words_count = 0;
 }
 
-quote::quote(const quote& q) 
-{
-
-	this->the_line = q.the_line;
-	this->author = q.author;
-	this->source = q.source;
-	this->theme = q.theme;
-	this->key_words_count = q.key_words_count;
-
-	this->key_words = new std::string[q.key_words_count];
-
-	for (int k = 0; k < q.key_words_count; k++)
-	{
-		this->key_words[k] = q.key_words[k];
-	}
-}
-
 quote& quote::operator=(const quote& q) {
 
 	if (this == &q) {
