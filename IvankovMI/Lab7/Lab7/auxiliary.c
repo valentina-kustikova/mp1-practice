@@ -58,7 +58,7 @@ static int count_lines(FILE* file) {
 		if (ch == '\n') lines++;
 	}
 	rewind(file);  // возвращаем указатель в начало файла для дальнейшего чтения
-	return lines;
+	return ++lines;
 }
 
 
