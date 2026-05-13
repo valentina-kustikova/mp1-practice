@@ -14,8 +14,9 @@ int main(int argc, char*argv[]) {
 		return 1;
 	}
 	printf("finding 24h food stores:\n");
-	//ans = findstores(&list);
-	//printer(&ans);
+	ans = findstores(&list);
+	printer(&ans);
+	printf(" \ntotal stores founded: %d", ans.len);
 	delit(&list);
 	delit(&ans);
 	return 0;

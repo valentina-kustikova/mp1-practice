@@ -49,7 +49,7 @@ typedef struct {
 } box;
 
 
-box getbase();
+box getbase(char *argv);
 
 box findstores(box *base);
 

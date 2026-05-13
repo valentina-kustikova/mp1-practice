@@ -25,8 +25,8 @@ void generate(box* base) {
 	}
 }
 
-void setstring(char *string, char *data ) {
-	int len = strlen(*data);
+void setstring(char *string, char *data) {
+	int len = strlen(data);
 	string = (char*)malloc(sizeof(char) * len);
 	if (string == NULL) {
 		printf("string copy error");
@@ -39,7 +39,7 @@ void setstring(char *string, char *data ) {
 void setadres(Shop* base, char* data) {
 	char* token = NULL;
 	setstring(base->address.street, strtok_s(data, ",", &token));
-	setstring(base->address.hnum, strtok_s(data, ",", &token));
+	setstring(base->address.hnum, strtok_s(NULL, ",", &token));
 
 }
 
@@ -60,7 +60,8 @@ void timegetter(timing* timings, char* data) {
 		int i = 0;
 		for (i = 0; i < dayscount; i++) {
 			timings[i].day = i;
-			daytimes = strtok_r(data, ",", token);
+			daytimes = strtok_s(data, ",", &token);
+			data = token;
 			if (*daytimes == "c") {
 				timings[i].status = close;
 			}
@@ -75,7 +76,7 @@ void timegetter(timing* timings, char* data) {
 void getter(box* ans, FILE* file) {
 	int i = 0;
 	for (i = 0; i < ans->len; i++) {
-		char* c;
+		char c[1000];
 		char *token = NULL;
 		int u;
 		if (fgets(c, 1000, file) == NULL) {
@@ -84,12 +85,12 @@ void getter(box* ans, FILE* file) {
 			return ans;
 		}
 		setstring(((ans->base[i])->name), strtok_s(c, ":", &token));
-		setadres(ans->base[i], strtok_r(NULL, ":", &token));
-		setstring(((ans->base[i])->phones, strtok_s(c, ":", &token)));
-		setstring(((ans->base[i])->special, strtok_s(c, ":", &token)));
-		setstring(((ans->base[i])->form, strtok_s(c, ":", &token)));
+		setadres(ans->base[i], strtok_s(NULL, ":", &token));
+		setstring(((ans->base[i])->phones), strtok_s(NULL, ":", &token));
+		setstring(((ans->base[i])->special), strtok_s(NULL, ":", &token));
+		setstring(((ans->base[i])->form), strtok_s(NULL, ":", &token));
 
-		timegetter((ans->base[i])->timings, strtok_s(c, ":", &token));
+		timegetter((ans->base[i])->timings, strtok_s(NULL, ":", &token));
 	}
 }
 
@@ -117,6 +118,16 @@ box getbase(char *filename) {
 	fclose(file);
 	return ans;
 }
+int canallday(timing* timings) {
+	int i, flag = 0;
+	for (i = 0; i < dayscount; i++) {
+		if(timings[i].status != 0){
+			flag = 1;
+			break;
+		}
+	}
+	return flag;
+}
 
 box findstores(box *base) {
 	int i;
@@ -124,25 +135,26 @@ box findstores(box *base) {
 	ans.len = 0;
 	int* tmp = (int*)malloc(sizeof(int) * base->len);
 	for (i = 0; i < base->len; i++) {
-		if (strcmp(base->base[i]->special, "food") == 0 && timesum(base->base[i]->opens, base->base[i]->closes) == 10080) {
+		if (strcmp(base->base[i]->special, "food") == 0 && canallday(base->base[i]->timings) == 0) {
 			tmp[ans.len] = i;
 			ans.len++;
 		}
 	}
 	generate(&ans);
 	for (i = 0; i < ans.len; i++) {
-		*(ans.base[i]) = *(base->base[tmp[i]]);
+		int u;
+		setstring(ans.base[i]->name, base->base[tmp[i]]->name);
+		setstring(ans.base[i]->phones, base->base[tmp[i]]->phones);
+		setstring(ans.base[i]->special, base->base[tmp[i]]->special);
+		setstring(ans.base[i]->form, base->base[tmp[i]]->form);
+		setstring(ans.base[i]->address.street, base->base[tmp[i]]->address.street);
+		setstring(ans.base[i]->address.hnum, base->base[tmp[i]]->address.hnum);
+		for (u = 0; u < dayscount; u++) {
+			ans.base[i]->timings[u] = base->base[tmp[i]]->timings[u];
+		}
 	}
 	free(tmp);
 	return ans;
-}
-
-int timesum(int* opens, int* closes) {
-	int i, sum = 0;
-	for (i = 0; i < 7; i++) {
-		sum += closes[i] - opens[i];
-	}
-	return sum;
 }
 
 void printer(box *base) {
@@ -153,17 +165,23 @@ void printer(box *base) {
 	else {
 		for (i = 0; i < base->len; i++) {
 			printf("%s \n", base->base[i]->name);
-			printf("	adress: %s \n", base->base[i]->adres);
+			printf("	adress: %s, %s\n", base->base[i]->address.street, base->base[i]->address.hnum);
 			printf("	phones: %s \n", base->base[i]->phones);
 			printf("	form:   %s \n", base->base[i]->form);
 		}
-		printf(" \ntotal stores founded: %d", base->len);
 	}
 }
 
 void delit(box* base) {
 	int i;
 	for (i = 0; i < base->len; i++) {
+		free((base->base[i])->name);
+		free((base->base[i])->phones);
+		free((base->base[i])->special);
+		free((base->base[i])->form);
+		free((base->base[i])->timings);
+		free((base->base[i])->address.street);
+		free((base->base[i])->address.hnum);
 		free(base->base[i]);
 	}
 	free(base->base);
