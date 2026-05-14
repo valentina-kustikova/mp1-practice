@@ -18,6 +18,7 @@ struct FullName {
     string name;
     string patronymic;
 
+    friend istream& operator>>(istream& in, FullName& a);
     friend ostream& operator<<(ostream& out, const FullName& a);
 };
 
@@ -26,6 +27,9 @@ struct Date {
     int month;
     int year;
 
+    Date() : day(1), month(1), year(2000) {}
+
+    friend istream& operator>>(istream& in, Date& a);
     friend ostream& operator<<(ostream& out, const Date& a);
 };
 
@@ -39,6 +43,7 @@ struct Address {
     string house;
     string apartment;
 
+    friend istream& operator>>(istream& in, Address& a);
     friend ostream& operator<<(ostream& out, const Address& a);
 };
 
@@ -49,6 +54,9 @@ struct Student {
     Date birth_date;
     Address address;
 
+    Student() : gender(unknown) {}
+
+    friend istream& operator>>(istream& in, Student& a);
     friend ostream& operator<<(ostream& out, const Student& a);
     bool operator<(const Student& other) const;
 };
@@ -63,10 +71,8 @@ struct ClassGroup {
     ClassGroup(const ClassGroup& other);
     ~ClassGroup();
 
-    void addStudent(const Student& student);
-    void sortStudents();
-
     ClassGroup& operator=(const ClassGroup& other);
+    friend istream& operator>>(istream& in, ClassGroup& a);
     friend ostream& operator<<(ostream& out, const ClassGroup& a);
 };
 
@@ -75,14 +81,12 @@ struct School {
     int class_count;
 
     School();
-    School(const string& filename);
     School(const School& other);
     ~School();
 
-    void loadFromFile(const string& filename);
     void sortSchool();
-
     School& operator=(const School& other);
+    friend istream& operator>>(istream& in, School& a);
     friend ostream& operator<<(ostream& out, const School& a);
 };
 
