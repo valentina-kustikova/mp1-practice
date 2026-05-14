@@ -1,46 +1,44 @@
-#define _CRT_SECURE_NO_WARNINGS
-
 #include "repertoir.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-void director_counter(char director_name[], int cnt, FILM _rep[], int* dir_cnt) {
+void director_counter(char* director_name, FilmLibrary* _rep, FilmLibrary* dir_rep) {
 	int i;
-	for (i = 0; i < cnt; i++) if (strstr(_rep[i].director, director_name) != NULL) (*dir_cnt)++;
-	if (dir_cnt == 0) {
+	for (i = 0; i < _rep->cnt; i++) if (strstr(_rep->info[i].director, director_name) != NULL) (dir_rep->cnt)++;
+	if (dir_rep->cnt == 0) {
 		printf("FILMS NOT FOUND\n");
 	}
 	return;
 }
 
-void director_finder(char director_name[], int cnt, FILM _rep[], int dir_cnt, FILM dir_rep[]) {
+void director_finder(char* director_name, FilmLibrary* _rep, FilmLibrary* dir_rep) {
 	int i, j = 0;
-	for (i = 0; i < cnt; i++) {
-		if ((strstr(_rep[i].director, director_name) != NULL)) {
-			dir_rep[j].name = (char*)malloc((strlen(_rep[i].name) + 1) * sizeof(char));
-			dir_rep[j].director = (char*)malloc((strlen(_rep[i].director) + 1) * sizeof(char));
-			dir_rep[j].country = (char*)malloc((strlen(_rep[i].country) + 1) * sizeof(char));
-			strcpy(dir_rep[j].name, _rep[i].name);
-			strcpy(dir_rep[j].director, _rep[i].director);
-			strcpy(dir_rep[j].country, _rep[i].country);
-			dir_rep[j].year = _rep[i].year;
-			dir_rep[j].budget = _rep[i].budget;
-			dir_rep[j].fees = _rep[i].fees;
+	for (i = 0; i < _rep->cnt; i++) {
+		if ((strstr(_rep->info[i].director, director_name) != NULL)) {
+			dir_rep->info[j].name = (char*)malloc((strlen(_rep->info[i].name) + 1) * sizeof(char));
+			dir_rep->info[j].director = (char*)malloc((strlen(_rep->info[i].director) + 1) * sizeof(char));
+			dir_rep->info[j].country = (char*)malloc((strlen(_rep->info[i].country) + 1) * sizeof(char));
+			strcpy(dir_rep->info[j].name, _rep->info[i].name);
+			strcpy(dir_rep->info[j].director, _rep->info[i].director);
+			strcpy(dir_rep->info[j].country, _rep->info[i].country);
+			dir_rep->info[j].year = _rep->info[i].year;
+			dir_rep->info[j].budget = _rep->info[i].budget;
+			dir_rep->info[j].fees = _rep->info[i].fees;
 			j++;
 		}
 	}
 	return;
 }
 
-void free_array(int cnt, FILM arr[]) {
+void free_array(FilmLibrary* arr) {
 	int i;
-	for (i = 0; i < cnt; i++) {
-		free(arr[i].name);
-		free(arr[i].director);
-		free(arr[i].country);
+	for (i = 0; i < arr->cnt; i++) {
+		free(arr->info[i].name);
+		free(arr->info[i].director);
+		free(arr->info[i].country);
 	}
-	free(arr);
+	free(arr->info);
 	return;
 }

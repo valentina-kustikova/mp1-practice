@@ -10,10 +10,15 @@ typedef struct {
 	int year;
 	unsigned int budget;
 	unsigned int fees;
-}FILM;
+}Film;
 
-void director_counter(char director_name[], int cnt, FILM _rep[], int* dir_cnt);
-void director_finder(char director_name[], int cnt, FILM _rep[], int dir_cnt, FILM dir_rep[]);
-void free_array(int cnt, FILM arr[]);
+typedef struct {
+	Film* info;
+	int cnt;
+}FilmLibrary;
+
+void director_counter(char* director_name, FilmLibrary* _rep, FilmLibrary* dir_rep);
+void director_finder(char* director_name, FilmLibrary* _rep, FilmLibrary* dir_rep);
+void free_array(FilmLibrary* arr);
 
 #endif

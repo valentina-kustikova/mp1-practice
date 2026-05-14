@@ -3,8 +3,8 @@
 
 #include "repertoir.h"
 
-void rep_counter(char pathway[], int* cnt);
-void rep_reader(int cnt, char pathway[], FILM _rep[]);
-void rep_printer(int dir_cnt, FILM dir_rep[]);
+void rep_counter(char* pathway, FilmLibrary* _rep);
+void rep_reader(char* pathway, FilmLibrary* _rep);
+void rep_printer(FilmLibrary* dir_rep);
 
 #endif
