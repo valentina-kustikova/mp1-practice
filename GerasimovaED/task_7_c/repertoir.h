@@ -17,8 +17,8 @@ typedef struct {
 	int cnt;
 }FilmLibrary;
 
-void director_counter(char* director_name, FilmLibrary* _rep, FilmLibrary* dir_rep);
-void director_finder(char* director_name, FilmLibrary* _rep, FilmLibrary* dir_rep);
+int director_counter(char* director_name, FilmLibrary* _rep);
+FilmLibrary director_finder(char* director_name, FilmLibrary* _rep, int cnt);
 void free_array(FilmLibrary* arr);
 
 #endif
