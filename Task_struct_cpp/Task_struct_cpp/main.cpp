@@ -6,6 +6,7 @@
 using namespace std;
 
 int main(int argc, char** argv) {
+
     string filename;
     string input;
 
@@ -13,8 +14,8 @@ int main(int argc, char** argv) {
         throw "Error with argc";
         return 1;
     } 
-     
-    PersonsLibrary personsLibrary(argv[1]);
+
+    PersonsLibrary personsLibrary(argv[1]); 
 
     cout << "\nEnter name of sport: ";
     getline(cin, input);
