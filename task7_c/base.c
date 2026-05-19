@@ -25,49 +25,53 @@ void generate(box* base) {
 	}
 }
 
-void setstring(char *string, char *data) {
+void setstring(char **string, char *data) {
 	int len = strlen(data);
-	string = (char*)malloc(sizeof(char) * len);
-	if (string == NULL) {
+	*string = (char*)malloc(sizeof(char) * len+1);
+	if (*string == NULL) {
 		printf("string copy error");
 	}
 	else {
-		strcpy(string, data);
+		strcpy(*string, data);
 	}
 }
 
 void setadres(Shop* base, char* data) {
 	char* token = NULL;
-	setstring(base->address.street, strtok_s(data, ",", &token));
-	setstring(base->address.hnum, strtok_s(NULL, ",", &token));
+	setstring(&base->address.street, strtok_s(data, ",", &token));
+	setstring(&base->address.hnum, strtok_s(NULL, ",", &token));
 
 }
 
 void getdaystatus(timing* day) {
-	if (day->start.hours == 0 && day->start.hours == 0 && day->finish.hours == 24 && day->finish.minutes == 00) {
+	if (day->start.hours == 0 && day->start.minutes == 0 && day->finish.hours == 24 && day->finish.minutes == 00) {
 		day->status = alldayopen;
 	}
 	else {
 		day->status = open;
 	}
 }
-void timegetter(timing* timings, char* data) {
+void timegetter(timing** timings, char* data) {
 	char* token = NULL, *daytimes;
-	timings = (timing*)malloc(sizeof(timing) * dayscount);
-	if (timings == NULL) {
+	*timings = (timing*)malloc(sizeof(timing) * dayscount);
+	if (*timings == NULL) {
 		printf("time memory error");
 	} else {
 		int i = 0;
 		for (i = 0; i < dayscount; i++) {
-			timings[i].day = i;
+			(*timings)[i].day = i;
 			daytimes = strtok_s(data, ",", &token);
 			data = token;
-			if (*daytimes == "c") {
-				timings[i].status = close;
+			if (*daytimes == 'c') {
+				timings[i]->status = close;
 			}
 			else {
-				sscanf(daytimes, "%d.%d-%d.%d", timings[i].start.hours, timings[i].start.minutes, timings[i].finish.hours, timings[i].finish.minutes);
-				getdaystatus(&timings[i]);
+				sscanf(daytimes, "%d.%d-%d.%d",
+					&(*timings)[i].start.hours,
+					&(*timings)[i].start.minutes,
+					&(*timings)[i].finish.hours,
+					&(*timings)[i].finish.minutes);
+				getdaystatus(&(*timings[i]));
 			}
 		}
 	}
@@ -84,13 +88,13 @@ void getter(box* ans, FILE* file) {
 			ans->len = 0;
 			return ans;
 		}
-		setstring(((ans->base[i])->name), strtok_s(c, ":", &token));
+		setstring(&(((ans->base)[i])->name), strtok_s(c, ":", &token));
 		setadres(ans->base[i], strtok_s(NULL, ":", &token));
-		setstring(((ans->base[i])->phones), strtok_s(NULL, ":", &token));
-		setstring(((ans->base[i])->special), strtok_s(NULL, ":", &token));
-		setstring(((ans->base[i])->form), strtok_s(NULL, ":", &token));
+		setstring(&(((ans->base)[i])->phones), strtok_s(NULL, ":", &token));
+		setstring(&(((ans->base)[i])->special), strtok_s(NULL, ":", &token));
+		setstring(&(((ans->base)[i])->form), strtok_s(NULL, ":", &token));
 
-		timegetter((ans->base[i])->timings, strtok_s(NULL, ":", &token));
+		timegetter(&(((ans->base)[i])->timings), strtok_s(NULL, ":", &token));
 	}
 }
 
@@ -118,6 +122,7 @@ box getbase(char *filename) {
 	fclose(file);
 	return ans;
 }
+
 int canallday(timing* timings) {
 	int i, flag = 0;
 	for (i = 0; i < dayscount; i++) {
