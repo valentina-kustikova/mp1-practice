@@ -9,6 +9,7 @@ typedef struct Product {
     char* date;
 } Product;
 
-void SearchMissingProducts(Product* products, int totalCount);
+
+void SearchMissingProducts(Product* products, int totalCount, Product** missingProducts, int* resultCount);
 
 #endif

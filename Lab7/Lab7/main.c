@@ -9,10 +9,11 @@ int main(int argc, char** argv) {
     int choice;
 
     if (argc < 2) {
-        return 1;  
+        printf("Ошибка: не указан файл для загрузки!\n");
+        printf("Использование: %s <имя_файла>\n", argv[0]);
+        return 1;
     }
 
-    
     FILE* f = fopen(argv[1], "r");
     if (f) {
         fscanf(f, "%d\n", &count);
@@ -28,34 +29,55 @@ int main(int argc, char** argv) {
             fscanf(f, "%s\n", products[i].date);
         }
         fclose(f);
+        printf("Загружено %d товаров из %s\n", count, argv[1]);
+    }
+    else {
+        printf("Файл %s не найден. Склад пуст.\n", argv[1]);
     }
 
-    
     do {
-        printf("\n1. Добавить товар\n");
-        printf("2. Показать все\n");
-        printf("3. Найти отсутствующие\n");
-        printf("4. Сохранить в файл\n");
-        printf("5. Загрузить из файла\n");
+        printf("\n1. Показать все товары\n");
+        printf("2. Найти отсутствующие товары\n");
+        printf("3. Сохранить в файл\n");
+        printf("4. Загрузить из файла\n");
         printf("0. Выход\n");
         printf("Выбор: ");
         scanf("%d", &choice);
 
         if (choice == 1) {
-            inputProduct(&products[count]);
-            count++;
+            if (count == 0) {
+                printf("Склад пуст. Загрузите данные из файла.\n");
+            }
+            else {
+                printf("\n%-20s %-10s %8s %8s %-12s\n",
+                    "Название", "Ед.изм", "Цена", "Кол-во", "Дата");
+                for (int i = 0; i < count; i++) {
+                    printProduct(products[i]);
+                }
+            }
         }
         else if (choice == 2) {
-            printf("\n%-20s %-10s %8s %8s %-12s\n",
-                "Название", "Ед.изм", "Цена", "Кол-во", "Дата");
-            for (int i = 0; i < count; i++) {
-                printProduct(products[i]);
+            if (count == 0) {
+                printf("Склад пуст. Загрузите данные из файла.\n");
+            }
+            else {
+                Product* missingProducts[100];
+                int resultCount = 0;
+
+                SearchMissingProducts(products, count, missingProducts, &resultCount);
+
+                if (resultCount == 0) {
+                    printf("Все товары есть в наличии\n");
+                }
+                else {
+                    printf("\n=== Отсутствующие товары ===\n");
+                    for (int i = 0; i < resultCount; i++) {
+                        printf("- %s\n", missingProducts[i]->name);
+                    }
+                }
             }
         }
         else if (choice == 3) {
-            SearchMissingProducts(products, count);
-        }
-        else if (choice == 4) {
             FILE* f = fopen(argv[1], "w");
             if (f) {
                 fprintf(f, "%d\n", count);
@@ -68,10 +90,13 @@ int main(int argc, char** argv) {
                         products[i].date);
                 }
                 fclose(f);
-                printf("Сохранено!\n");
+                printf("Сохранено в %s\n", argv[1]);
+            }
+            else {
+                printf("Ошибка сохранения в %s\n", argv[1]);
             }
         }
-        else if (choice == 5) {
+        else if (choice == 4) {
             for (int i = 0; i < count; i++) {
                 free(products[i].name);
                 free(products[i].unit);
@@ -97,7 +122,10 @@ int main(int argc, char** argv) {
                     fscanf(f, "%s\n", products[i].date);
                 }
                 fclose(f);
-                printf("Загружено!\n");
+                printf("Загружено из %s\n", filename);
+            }
+            else {
+                printf("Ошибка загрузки из %s\n", filename);
             }
         }
     } while (choice != 0);
