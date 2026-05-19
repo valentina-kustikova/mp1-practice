@@ -1,5 +1,5 @@
 #include<iostream>
-#include"operations.h"
+#include"struct.h"
 
 
 int main(int argc, char* argv[]) {
@@ -12,19 +12,22 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    std::string pnom_filename = argv[1];
+    std::string filename = argv[1];
 
-    polynom first_pnom;
-    polynom second_pnom;
-    polynom res_pnom;
-
-    get_info(first_pnom, second_pnom, pnom_filename);
+    std::ifstream file(filename);
+    if (!file.is_open()) {
+        std::cerr << "Error opening file" << std::endl;
+        return 1;
+    }
+    polynom first_pnom(file);
+    polynom second_pnom(file);
+    file.close();
 
     std::cout << "=============" << std::endl;
     std::cout << "1st polynom:" << std::endl;
-    printer(first_pnom);
+    first_pnom.print_pnom();
     std::cout << "2nd polynom:" << std::endl;
-    printer(second_pnom);
+    second_pnom.print_pnom();
     std::cout << "=============" << std::endl;
 
     do {
@@ -41,54 +44,45 @@ int main(int argc, char* argv[]) {
         switch (math_choice) {
         case 0:
             std::cout << "Exiting..." << std::endl;
-            free_polynomial(first_pnom);
-            free_polynomial(second_pnom);
             return 0;
 
-        case 1:
-            sum(first_pnom, second_pnom, res_pnom);
+        case 1: {
+            polynom res_pnom = first_pnom + second_pnom;
             std::cout << "Sum: ";
-            printer(res_pnom);
-            free_polynomial(res_pnom);
+            res_pnom.print_pnom();
             break;
-
-        case 2:
-            subtract(first_pnom, second_pnom, res_pnom);
+        }
+        case 2: {
+            polynom res_pnom = first_pnom - second_pnom;
             std::cout << "Subtraction: ";
-            printer(res_pnom);
-            free_polynomial(res_pnom);
+            res_pnom.print_pnom();
             break;
-
-        case 3:
-            multiply(first_pnom, second_pnom, res_pnom);
+        }
+        case 3: {
+            polynom res_pnom = first_pnom * second_pnom;
             std::cout << "Product: ";
-            printer(res_pnom);
-            free_polynomial(res_pnom);
+            res_pnom.print_pnom();
             break;
-
-        case 4:
+        }
+        case 4: {
             std::cout << "Choose polynom (1 or 2): ";
             std::cin >> pnom_choice;
-            switch (pnom_choice) {
-            case 1:
-                diff_pnom(first_pnom, res_pnom);
+            if (pnom_choice == 1) {
+                polynom res_pnom = first_pnom.diff();
                 std::cout << "Diff of 1st: ";
-                printer(res_pnom);
-                free_polynomial(res_pnom);
-                break;
-            case 2:
-                diff_pnom(second_pnom, res_pnom);
+                res_pnom.print_pnom();
+            }
+            else if (pnom_choice == 2) {
+                polynom res_pnom = second_pnom.diff();
                 std::cout << "Diff of 2nd: ";
-                printer(res_pnom);
-                free_polynomial(res_pnom);
-                break;
-            default:
+                res_pnom.print_pnom();
+            }
+            else {
                 std::cout << "Error. Only 2 polynoms exist" << std::endl;
-                break;
             }
             break;
-
-        case 5:
+        }
+        case 5:{
             std::cout << "***************" << std::endl;
             std::cout << "Enter your NUM: ";
             std::cin >> usernum;
@@ -96,28 +90,25 @@ int main(int argc, char* argv[]) {
             std::cin >> pnom_choice;
             switch (pnom_choice) {
             case 1:
-                calculate(first_pnom, usernum);
-                std::cout << "***************" << std::endl;
+                std::cout << "Result: " << first_pnom(usernum) << std::endl;
                 break;
             case 2:
-                calculate(second_pnom, usernum);
-                std::cout << "***************" << std::endl;
+                std::cout << "Result: " << second_pnom(usernum) << std::endl;
                 break;
             default:
                 std::cout << "Error. Only 2 polynoms exist" << std::endl;
                 break;
             }
             break;
-
+        }
         default:
             std::cout << "Error, choose correct number (0-5)." << std::endl;
             break;
         }
+        std::cout << "***************" << std::endl;
 
-    } while (flag);
+    } while (flag); 
 
-    free_polynomial(first_pnom);
-    free_polynomial(second_pnom);
 
     return 0;
 }
