@@ -13,18 +13,12 @@ using namespace std;
 struct Person_data {
     string first_name;
     string last_name; 
-
-  //  Person_data();
-  //  Person_data(const string& ln, const string& fn); 
 }; 
 
 struct Birsday {
-    int day = 0;
+    int day = 0; 
     int month = 0;
     int year = 0;
-
-  //  Birsday();
-  //  Birsday(int d, int m, int y);
 };
 
 enum Gender { M, F };
@@ -42,16 +36,23 @@ struct Person {
     double record;
 
     Person();
-    Person(string line);
+    Person(const string& line);
+    friend ostream& operator << (ostream& out, const Person& person) {
+      out << "\nDiscipline: " << person.discipline << endl;
+      out << "Record: " <<person.record << endl;
+      out << "Name: " << person.name.first_name << " " << person.name.last_name << endl;
+      return out;
+    }
 };
 
 struct PersonsLibrary {
     int count;
     Person* array;
 
-    PersonsLibrary(string filename);
+    PersonsLibrary(const string& filename);
+    ~PersonsLibrary();
+    BestEntries findRecord(const string& input);
 
-    void findRecord(const string input);
 };
 
 struct BestEntry {
@@ -66,20 +67,14 @@ struct BestEntries {
     BestEntry* unique_disciplines;
 
     friend ostream& operator << (ostream& out, const BestEntries& entries) {
+     
       for (int i = 0; i < entries.entryCount; i++) {
-        out << "\nDiscipline: " << entries.unique_disciplines[i].person.discipline << endl;
-        out << "Record: " << entries.unique_disciplines[i].person.record << endl;
-        out << "Name: " << entries.unique_disciplines[i].person.name.first_name <<" "<< entries.unique_disciplines[i].person.name.last_name <<endl;
+        out << entries.unique_disciplines[i].person;
       }
       return out;
     }
 };
 
-
-
-Sport convertSport(const std::string& input_sport);
-
-
-
+Sport convertSport(const std::string& input_sport); 
 
 #endif

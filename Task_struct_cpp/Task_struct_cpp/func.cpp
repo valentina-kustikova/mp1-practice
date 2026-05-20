@@ -20,12 +20,12 @@ Person::Person() {
     city = "";
     sport = Unknown;
     club = "";
-    discipline = "";
+    discipline = ""; 
     record = 0.0;
 }
 
-PersonsLibrary::PersonsLibrary(string filename) { 
-    
+PersonsLibrary::PersonsLibrary(const string& filename) { 
+ 
     ifstream file(filename);  
     if (!file.is_open()) {
       throw "error with opening file";
@@ -51,8 +51,11 @@ PersonsLibrary::PersonsLibrary(string filename) {
     
 }
 
+PersonsLibrary::~PersonsLibrary() {
+  delete[]array;
+}
 
-Person::Person(string line) {
+Person::Person(const string& line) {
     stringstream ss(line);
     string token;
 
@@ -93,13 +96,13 @@ Sport convertSport(const string& input_sport) {
     return Unknown;
 }
 
-void PersonsLibrary::findRecord(const string input) {
+BestEntries PersonsLibrary::findRecord(const string& input) {
   Sport target_sport = convertSport(input);
 
-  if (target_sport == Unknown) {
+ /* if (target_sport == Unknown) {
     cout << "incorrect sport";
-    return;
-  }
+    return ;
+  }*/
 
   BestEntries result;
   result.entryCount = 0;
@@ -134,5 +137,6 @@ void PersonsLibrary::findRecord(const string input) {
       }
   }
   delete[]unique_disciplines;
-  cout << result;
+  return result;
 }
+

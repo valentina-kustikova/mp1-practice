@@ -14,13 +14,13 @@ int main(int argc, char** argv) {
         throw "Error with argc";
         return 1;
     } 
-
+    
     PersonsLibrary personsLibrary(argv[1]); 
-
+    
     cout << "\nEnter name of sport: ";
     getline(cin, input);
 
-    personsLibrary.findRecord(input);
-
+    BestEntries result = personsLibrary.findRecord(input);
+    cout << result;
     return 0;
-}
+} 
