@@ -40,7 +40,7 @@ typedef struct {
 	char* phones;
 	char* special;
 	char* form;
-	timing timings[dayscount];
+	timing *timings;
 } Shop;
 
 typedef struct {

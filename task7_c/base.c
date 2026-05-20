@@ -63,7 +63,7 @@ void timegetter(timing** timings, char* data) {
 			daytimes = strtok_s(data, ",", &token);
 			data = token;
 			if (*daytimes == 'c') {
-				timings[i]->status = close;
+				(*timings)[i].status = close;
 			}
 			else {
 				sscanf(daytimes, "%d.%d-%d.%d",
@@ -71,7 +71,7 @@ void timegetter(timing** timings, char* data) {
 					&(*timings)[i].start.minutes,
 					&(*timings)[i].finish.hours,
 					&(*timings)[i].finish.minutes);
-				getdaystatus(&(*timings[i]));
+				getdaystatus(&(*timings)[i]);
 			}
 		}
 	}
@@ -148,14 +148,15 @@ box findstores(box *base) {
 	generate(&ans);
 	for (i = 0; i < ans.len; i++) {
 		int u;
-		setstring(ans.base[i]->name, base->base[tmp[i]]->name);
-		setstring(ans.base[i]->phones, base->base[tmp[i]]->phones);
-		setstring(ans.base[i]->special, base->base[tmp[i]]->special);
-		setstring(ans.base[i]->form, base->base[tmp[i]]->form);
-		setstring(ans.base[i]->address.street, base->base[tmp[i]]->address.street);
-		setstring(ans.base[i]->address.hnum, base->base[tmp[i]]->address.hnum);
+		setstring(&(ans.base[i]->name), base->base[tmp[i]]->name);
+		setstring(&(ans.base[i]->phones), base->base[tmp[i]]->phones);
+		setstring(&(ans.base[i]->special), base->base[tmp[i]]->special);
+		setstring(&(ans.base[i]->form), base->base[tmp[i]]->form);
+		setstring(&(ans.base[i]->address.street), base->base[tmp[i]]->address.street);
+		setstring(&(ans.base[i]->address.hnum), base->base[tmp[i]]->address.hnum);
+		(*(ans.base)[i]).timings = (timing*)malloc(sizeof(timing) * dayscount);
 		for (u = 0; u < dayscount; u++) {
-			ans.base[i]->timings[u] = base->base[tmp[i]]->timings[u];
+			(*(ans.base)[i]).timings[u] = (*(base->base)[tmp[i]]).timings[u];
 		}
 	}
 	free(tmp);
