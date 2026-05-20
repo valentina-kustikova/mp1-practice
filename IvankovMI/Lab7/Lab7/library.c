@@ -26,7 +26,7 @@
 // создание библиотеки из информации из файла
 void init_library(lib_t* library, char* path) {
 	FILE* source = save_fopen(path, "r");
-	create_library(&(library->library), &(library->lib_size), K);
+	create_library(&(library->library), &(library->lib_size), source);
 	int sz = fill_library(source, &(library->library), &(library->lib_size));
 	printf("»з текстовой базы получено %d книг\n", sz);
 	soft_fclose(source);
@@ -39,7 +39,7 @@ void init_library(lib_t* library, char* path) {
 
 
 // ќсновна€ функци€ поиска, возвращает указатель на массив указателей на книги в куче, измен€ет f_cnt на кол-во найденных книг, завершает массив NULL
-book** find_books(book* lib, size_t size, const char* substr, size_t* f_cnt) {
+static book** find_books_modes(book* lib, size_t size, const char* substr, size_t* f_cnt, bool mode) {
 	// –азделители: пробельные символы и знаки пунктуации
 	const char* delimiters = DELIMS;
 
@@ -51,13 +51,13 @@ book** find_books(book* lib, size_t size, const char* substr, size_t* f_cnt) {
 		return NULL;   // пустой запрос не считаетс€ совпадением
 	}
 
-	book** result = (book**)calloc(K, sizeof(book*)); // чтобы все лишние были нул€ми на вс€кий случай
-	if (!result) {
+	book** result = (mode)? (book**)calloc(*f_cnt, sizeof(book*)) : NULL; // чтобы все лишние были нул€ми на вс€кий случай
+	if (!result && mode) {
 		perror("Ќе удалось выделить пам€ть под список найденных книг (calloc)");
 		soft_exit();
 		return NULL; // чтоб статический не ругалс€
 	}
-	size_t res_l = K;
+	size_t res_l = *f_cnt;
 	size_t res_cnt = 0;
 
 	for (size_t i = 0; i < size; ++i) {
@@ -85,26 +85,34 @@ book** find_books(book* lib, size_t size, const char* substr, size_t* f_cnt) {
 		}
 
 		if (total_ok) {
-			if (i >= res_l) {
-				res_l *= 2;      // увеличим res_l
-				result = (book**)realloc(result, res_l * sizeof(book*)); // и перенесем данные
-				if (result == NULL) {
-					perror("Ќе удалось релоцировать список найденных книг при составлении (realloc)");
+			if (res_cnt >= res_l) {
+				if (mode) {
+					perror("ѕроизошла неопределенна€ ошибка");
 					soft_exit();
 					return NULL; // чтоб статический не ругалс€
 				}
+				else
+					res_l = res_cnt;
 			}
-			result[res_cnt] = &lib[i];
+			if (mode)
+				result[res_cnt] = &lib[i];
 			res_cnt++;
 			//free_tokens(str_tokens);
 			//break;
 		}
 		free_tokens(str_tokens);
 	}
-	*f_cnt = res_cnt;
+	if (!mode)
+		*f_cnt = res_l;
 	free_tokens(query_tokens);
-	//book* DEBB[10] = result; // не получилось
 	return result;
+}
+
+
+// ќсновна€ функци€ поиска, возвращает указатель на массив указателей на книги в куче, измен€ет f_cnt на кол-во найденных книг, завершает массив NULL
+book** find_books(book* lib, size_t size, const char* substr, size_t* f_cnt) {
+	find_books_modes(lib, size, substr, f_cnt, false);  // сначала проходим по массиву дл€ подсчета кол-ва найденных книг
+	return find_books_modes(lib, size, substr, f_cnt, true);   // затем выдел€ем пам€ть и заполн€ем массив указателей на найденные книги
 }
 
 
