@@ -42,22 +42,24 @@ void init_library(lib_t* library, char* path) {
 static book** find_books_modes(book* lib, size_t size, const char* substr, size_t* f_cnt, bool mode) {
 	// Разделители: пробельные символы и знаки пунктуации
 	const char* delimiters = DELIMS;
-
-	// Токенизация запроса
 	int query_cnt;
 	char** query_tokens = tokenize(substr, delimiters, &query_cnt);
 	if (!query_tokens || query_cnt == 0) {
 		if (query_tokens) free_tokens(query_tokens);
-		return NULL;   // пустой запрос не считается совпадением
+		if (!mode) *f_cnt = 0;      // <-- явно возвращаем 0
+		return NULL;
 	}
 
-	book** result = (mode)? (book**)calloc(*f_cnt, sizeof(book*)) : NULL; // чтобы все лишние были нулями на всякий случай
-	if (!result && mode) {
-		perror("Не удалось выделить память под список найденных книг (calloc)");
-		soft_exit();
-		return NULL; // чтоб статический не ругался
+	// В режиме подсчёта не нужен res_l и все эти "res_l = *f_cnt"
+	book** result = NULL;
+	if (mode) {
+		result = (book**)calloc(*f_cnt, sizeof(book*));
+		if (!result) {
+			perror("Не удалось выделить память под список найденных книг (calloc)");
+			soft_exit();
+			return NULL; // чтоб статический не ругался
+		}
 	}
-	size_t res_l = *f_cnt;
 	size_t res_cnt = 0;
 
 	for (size_t i = 0; i < size; ++i) {
@@ -85,25 +87,15 @@ static book** find_books_modes(book* lib, size_t size, const char* substr, size_
 		}
 
 		if (total_ok) {
-			if (res_cnt >= res_l) {
-				if (mode) {
-					perror("Произошла неопределенная ошибка");
-					soft_exit();
-					return NULL; // чтоб статический не ругался
-				}
-				else
-					res_l = res_cnt;
-			}
 			if (mode)
 				result[res_cnt] = &lib[i];
-			res_cnt++;
-			//free_tokens(str_tokens);
-			//break;
+			++res_cnt;
 		}
 		free_tokens(str_tokens);
 	}
+
 	if (!mode)
-		*f_cnt = res_l;
+		*f_cnt = res_cnt;   // <-- просто записываем итоговый счётчик
 	free_tokens(query_tokens);
 	return result;
 }
