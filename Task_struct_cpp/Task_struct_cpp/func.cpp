@@ -96,13 +96,16 @@ Sport convertSport(const string& input_sport) {
     return Unknown;
 }
 
+
 BestEntries PersonsLibrary::findRecord(const string& input) {
   Sport target_sport = convertSport(input);
 
- /* if (target_sport == Unknown) {
+  if (target_sport == Unknown) {
     cout << "incorrect sport";
-    return ;
-  }*/
+    BestEntries mistake;
+    mistake.entryCount = 0;
+    return mistake;
+  }
 
   BestEntries result;
   result.entryCount = 0;
@@ -139,4 +142,3 @@ BestEntries PersonsLibrary::findRecord(const string& input) {
   delete[]unique_disciplines;
   return result;
 }
-

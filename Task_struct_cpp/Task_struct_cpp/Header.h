@@ -45,6 +45,8 @@ struct Person {
     }
 };
 
+struct BestEntries;
+
 struct PersonsLibrary {
     int count;
     Person* array;
@@ -52,7 +54,6 @@ struct PersonsLibrary {
     PersonsLibrary(const string& filename);
     ~PersonsLibrary();
     BestEntries findRecord(const string& input);
-
 };
 
 struct BestEntry {
