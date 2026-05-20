@@ -20,7 +20,8 @@ int main(int argc, char* argv[]) {
 		{
 			return 0;
 		}
-		try {
+		try
+		{
 			quotes.find_quotes_by_key_words(request_word, founded);
 		}
 		catch (const std::exception& ex) {
@@ -30,6 +31,6 @@ int main(int argc, char* argv[]) {
 		std::cout << founded;
 
 	} while (1);
-
+	return 0;
 }
 

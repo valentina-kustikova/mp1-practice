@@ -43,7 +43,8 @@ phrase_library::phrase_library(const std::string& file_name)
 	std::ifstream file(file_name);
 	if (!(file.is_open()))
 	{
-		throw "File reading error";
+		throw std::exception("File reading error");
+		throw std::exception("File reading error");
 	}
 
 	std::string line;
@@ -55,7 +56,7 @@ phrase_library::phrase_library(const std::string& file_name)
 
 	if (n == 0)
 	{
-		throw "No info found in the file";
+		throw std::exception("No info found in the file");
 	}
 
 	phrases = new quote[n];
