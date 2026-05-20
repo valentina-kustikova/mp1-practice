@@ -1,0 +1,36 @@
+#include "list.hpp"
+#include "additional.hpp"
+
+int main(int argc, char* argv[]) {
+	if (argc < 2) {
+		std::cerr << "Not enough arguments" << std::endl;
+		return 1;
+	}
+	phrase_library quotes(argv[1]);
+	phrase_library founded;
+
+	std::string request_word;
+	const std::string exit = "exit";
+
+	do {
+		std::cout<< "\nEnter the key word: ";
+		std::cin >> request_word;
+		
+		if (request_word == exit)
+		{
+			return 0;
+		}
+		try
+		{
+			quotes.find_quotes_by_key_words(request_word, founded);
+		}
+		catch (const std::exception& ex) {
+			std::cout << ex.what() << std::endl;
+			continue;
+		}
+		std::cout << founded;
+
+	} while (1);
+	return 0;
+}
+
