@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{7404def7-706b-40b2-88a0-c4aecc0cfc90}</ProjectGuid>
-    <RootNamespace>BanksCPPclass</RootNamespace>
+    <ProjectGuid>{0ec7b831-c741-4e06-a992-23e0fc6c3d54}</ProjectGuid>
+    <RootNamespace>Container</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -123,13 +123,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="auxiliary.cpp" />
-    <ClCompile Include="banks.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClInclude Include="Container.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="auxiliary.h" />
-    <ClInclude Include="banks.h" />
+    <ClCompile Include="Container.cpp" />
+    <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
