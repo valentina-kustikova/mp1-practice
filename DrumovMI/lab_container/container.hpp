@@ -32,6 +32,8 @@ public:
 	size_t find(const T& elem) const;
 	size_t find(T&& elem) const;
 
+	bool operator==(const container<T>& c);
+
 	template<typename U>
 	friend std::ostream& operator<<(std::ostream& os, const container<U>& c);
 };
@@ -172,6 +174,18 @@ size_t container<T>::find(T&& elem) const {
 }
 
 template<typename T>
+bool container<T>::operator==(const container<T>& c) {
+	if (this == &c)
+		return true;
+	if (size != c.size)
+		return false;
+	for (size_t i = 0; i < size; i++)
+		if (elems[i] != c.elems[i])
+			return false;
+	return true;
+}
+
+template<typename T>
 std::ostream& operator<<(std::ostream& os, const container<T>& c) {
 	os << "{ ";
 	for (size_t i = 0; i < c.size; i++)
@@ -211,6 +225,8 @@ public:
 
 	size_t find(const T& elem) const;
 	size_t find(T&& elem) const;
+
+	bool operator==(const container<T*>& c);
 
 	template<typename U>
 	friend std::ostream& operator<<(std::ostream& os, const container<U*>& c);
@@ -363,6 +379,18 @@ size_t container<T*>::find(T&& elem) const {
 		if (*elems[i] == elem)
 			return i;
 	return std::string::npos;
+}
+
+template<typename T>
+bool container<T*>::operator==(const container<T*>& c) {
+	if (this == &c)
+		return true;
+	if (size != c.size)
+		return false;
+	for (size_t i = 0; i < size; i++)
+		if (*elems[i] != *c.elems[i])
+			return false;
+	return true;
 }
 
 template<typename T>
