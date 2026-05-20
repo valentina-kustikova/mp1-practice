@@ -18,18 +18,18 @@
     <ClCompile Include="Main.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="library.c">
+    <ClCompile Include="Sort.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="auxiliary.c">
+    <ClCompile Include="Work _with_data.c">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="library.h">
+    <ClInclude Include="Sort.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="auxiliary.h">
+    <ClInclude Include="Work_with_data.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

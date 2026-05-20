@@ -1,0 +1,12 @@
+Ivanov;Alexei;Dmitrievich;Male;Russian;182;80;15;05;1990;+79161234567;101000;Russia;Moscow Oblast;Moscow City;Moscow;Tverskaya;15;34
+Petrova;Elena;Sergeevna;Female;Russian;168;58;23;11;1995;+79261234567;630099;Russia;Novosibirsk Oblast;Novosibirsk City;Novosibirsk;Krasny Prospekt;45;12
+Schmidt;Hans;Friedrich;Male;German;180;85;07;03;1985;+491512345678;80331;Germany;Bavaria;Munich City;Munich;Marienplatz;8;3
+Kowalski;Anna;Maria;Female;Polish;165;55;12;09;1993;+48601234567;00-001;Poland;Masovian Voivodeship;Warsaw City;Warsaw;Nowy Swiat;22;7
+Smith;John;William;Male;American;185;90;01;07;1988;+12125551234;10001;USA;New York State;Manhattan;New York City;Broadway;150;5B
+Garcia;Maria;Isabel;Female;Spanish;170;62;20;04;1992;+34612345678;28001;Spain;Community of Madrid;Madrid City;Madrid;Gran Via;30;3A
+Johansson;Erik;Anders;Male;Swedish;190;88;30;01;1983;+46701234567;11120;Sweden;Stockholm County;Stockholm City;Stockholm;Drottninggatan;10;402
+Nakamura;Yuki;Takeshi;Male;Japanese;172;68;14;10;1986;+81901234567;100-0001;Japan;Tokyo Prefecture;Chiyoda Ward;Tokyo;Marunouchi;2-1;901
+Dubois;Sophie;Marie;Female;French;167;57;25;12;1997;+33612345678;75001;France;Ile-de-France Region;Paris District;Paris;Rue de Rivoli;50;22
+Rossi;Marco;Antonio;Male;Italian;178;75;17;06;1990;+393201234567;00186;Italy;Lazio Region;Rome City;Rome;Via del Corso;220;8
+Kim;Minji;Soo;Female;South Korean;163;52;11;02;2000;+82101234567;04524;South Korea;Seoul Capital Area;Gangnam District;Seoul;Teheran-ro;123;1501
+Silva;Isabella;Sofia;Female;Brazilian;165;58;07;06;1999;+5511912345678;01001-000;Brazil;Sao Paulo State;Sao Paulo City;Sao Paulo;Avenida Paulista;1000;507

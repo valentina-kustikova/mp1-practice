@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{0384a992-c9d4-473e-b4d5-5442c8253171}</ProjectGuid>
-    <RootNamespace>TaskLibrary</RootNamespace>
+    <ProjectGuid>{778de636-ff51-4438-8a17-c887bd2aef59}</ProjectGuid>
+    <RootNamespace>Peoplesort</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -124,12 +124,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.c" />
-    <ClCompile Include="library.c" />
-    <ClCompile Include="auxiliary.c" />
+    <ClCompile Include="Sort.c" />
+    <ClCompile Include="Work _with_data.c" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="library.h" />
-    <ClInclude Include="auxiliary.h" />
+    <ClInclude Include="Sort.h" />
+    <ClInclude Include="Work_with_data.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
