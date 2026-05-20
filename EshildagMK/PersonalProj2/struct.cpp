@@ -9,7 +9,7 @@ polynom::polynom(std::ifstream& file) {
 	file >> this->power;
 	coefs = new int[this->power + 1];
 
-	for (int i = 0; i <= this->power; i++) {
+	for (int i = this->power; i >= 0; i--) {
 		file >> this->coefs[i];
 	}
 }
@@ -23,7 +23,7 @@ polynom::polynom(const polynom& other) {
 }
 
 //операторы:
-polynom& polynom::operator=(const polynom& other) {
+const polynom& polynom::operator=(const polynom& other) {
 	if (this != &other) {
 		delete[] coefs;
 		power = other.power;
@@ -53,16 +53,15 @@ polynom polynom::operator+(const polynom& other) const {
 polynom polynom::operator-(const polynom& other) const {
 
 	int max_deg = std::max(this->power, other.power);
-	polynom result(max_deg);
-
-	polynom copied_pnom(other);
-
-	for (int i = 0; i < copied_pnom.power + 1; i++) {
-		copied_pnom.coefs[i] *= -1;
-	}
-
-	result = *this + copied_pnom;
+	polynom result = *this + (-other);
 	return result;
+}
+polynom polynom::operator-() const {
+	polynom temp(*this);
+	for (int i = 0; i <= power; i++) {
+		temp.coefs[i] *= -1;
+	}
+	return temp;
 }
 polynom polynom::operator*(const polynom& other) const {
 	int new_deg = this->power + other.power;
@@ -76,6 +75,34 @@ polynom polynom::operator*(const polynom& other) const {
 		result.power--;
 	}
 	return result;
+}
+std::ostream& operator << (std::ostream& os, const polynom& tmp) {
+	bool first = true;
+	for (int i = tmp.power; i > 0; i--) {
+		if (tmp.coefs[i] == 0) continue;
+
+		if (first) {
+			os << tmp.coefs[i] << "*x^" << i;
+			first = false;
+		}
+		else {
+			os << " ";
+			if (tmp.coefs[i] > 0) os << "+";
+			os << tmp.coefs[i] << "*x^" << i;
+		}
+	}
+
+	if (first) {
+		os << tmp.coefs[0] << std::endl;
+	}
+	else {
+		os << " ";
+		if (tmp.coefs[0] > 0) os << "+";
+		if (tmp.coefs[0]!=0) {
+			os << tmp.coefs[0] << std::endl;
+		}
+	}
+	return os;
 }
 double polynom::operator()(double x)const {
 	double result = coefs[0];
@@ -99,31 +126,6 @@ polynom polynom::diff() const {
 		result.coefs[i] = coefs[i + 1] * (i + 1);
 	}
 	return result;
-}
-void polynom::print_pnom() const {
-	bool first = true;
-	for (int i = power; i > 0; i--) {
-		if (coefs[i] == 0) continue;
-
-		if (first) {
-			std::cout << coefs[i] << "*x^" << i;
-			first = false;
-		}
-		else {
-			std::cout << " ";
-			if (coefs[i] > 0) std::cout << "+";
-			std::cout << coefs[i] << "*x^" << i;
-		}
-	}
-
-	if (first) {
-		std::cout << coefs[0] << std::endl;
-	}
-	else {
-		std::cout << " ";
-		if (coefs[0] > 0) std::cout << "+";
-		std::cout << coefs[0] << std::endl;
-	}
 }
 
 //destr.
