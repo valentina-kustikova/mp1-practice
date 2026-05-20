@@ -4,18 +4,19 @@
 template<typename T>
 class Container {
 private:
-	size_t size, capacity, step;
+	int size, capacity, step;
 	T* elem;
 public:
-	Container(size_t);
-	Container(size_t,  const T&);
+	Container(int);
+	Container(int,  const T&);
 	Container(const Container<T>&);
 	Container(Container<T>&&);
 	void push(T&);
 	void remove(T&);
-	T& operator[](size_t);
-	const T& operator[](size_t) const;
+	T& operator[](int);
+	const T& operator[](int) const;
 	~Container();
+	int find(T&);
 };
 
 #endif
