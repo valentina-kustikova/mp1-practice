@@ -2,30 +2,31 @@
 #define STRUCT_H
 #include<string>
 #include <fstream>
+#include<iostream>
 
 class polynom {
 private:
-		int power;
-		int* coefs;
+	int power;
+	int* coefs;
 public:
-	//конструкторы:
+	//constr
 	polynom();
 	polynom(int deg);
 	polynom(std::ifstream& file);
-	//констр. коп.
+	//copy constr.
 	polynom(const polynom& other);
 
-	//операторы:
-	polynom& operator=(const polynom& other);
-
+	//operators:
+	const polynom& operator=(const polynom& other);
 	polynom operator+(const polynom& other) const;
 	polynom operator-(const polynom& other) const;
+	polynom operator-() const;
 	polynom operator*(const polynom& other) const;
+	friend std::ostream& operator << (std::ostream& os, const polynom& tmp);
 	double operator()(double x)const;
 
 	//methods:
 	polynom diff() const;
-	void print_pnom() const;
 
 	//destr.
 	~polynom();

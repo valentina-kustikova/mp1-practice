@@ -25,9 +25,9 @@ int main(int argc, char* argv[]) {
 
     std::cout << "=============" << std::endl;
     std::cout << "1st polynom:" << std::endl;
-    first_pnom.print_pnom();
+    std::cout << first_pnom;
     std::cout << "2nd polynom:" << std::endl;
-    second_pnom.print_pnom();
+    std::cout << second_pnom;
     std::cout << "=============" << std::endl;
 
     do {
@@ -49,19 +49,19 @@ int main(int argc, char* argv[]) {
         case 1: {
             polynom res_pnom = first_pnom + second_pnom;
             std::cout << "Sum: ";
-            res_pnom.print_pnom();
+            std::cout << res_pnom << std::endl;
             break;
         }
         case 2: {
             polynom res_pnom = first_pnom - second_pnom;
             std::cout << "Subtraction: ";
-            res_pnom.print_pnom();
+            std::cout << res_pnom << std::endl;
             break;
         }
         case 3: {
             polynom res_pnom = first_pnom * second_pnom;
             std::cout << "Product: ";
-            res_pnom.print_pnom();
+            std::cout << res_pnom << std::endl;
             break;
         }
         case 4: {
@@ -70,12 +70,12 @@ int main(int argc, char* argv[]) {
             if (pnom_choice == 1) {
                 polynom res_pnom = first_pnom.diff();
                 std::cout << "Diff of 1st: ";
-                res_pnom.print_pnom();
+                std::cout << res_pnom << std::endl;
             }
             else if (pnom_choice == 2) {
                 polynom res_pnom = second_pnom.diff();
                 std::cout << "Diff of 2nd: ";
-                res_pnom.print_pnom();
+                std::cout << res_pnom << std::endl;
             }
             else {
                 std::cout << "Error. Only 2 polynoms exist" << std::endl;
@@ -91,9 +91,11 @@ int main(int argc, char* argv[]) {
             switch (pnom_choice) {
             case 1:
                 std::cout << "Result: " << first_pnom(usernum) << std::endl;
+                std::cout << "***************" << std::endl;
                 break;
             case 2:
                 std::cout << "Result: " << second_pnom(usernum) << std::endl;
+                std::cout << "***************" << std::endl;
                 break;
             default:
                 std::cout << "Error. Only 2 polynoms exist" << std::endl;
@@ -105,7 +107,6 @@ int main(int argc, char* argv[]) {
             std::cout << "Error, choose correct number (0-5)." << std::endl;
             break;
         }
-        std::cout << "***************" << std::endl;
 
     } while (flag);
 
