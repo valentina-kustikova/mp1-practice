@@ -1,4 +1,4 @@
-#include "roster.h"
+﻿#include "roster.h"
 #include <sstream>
 
 istream& operator>>(istream& in, FullName& a) {
@@ -14,14 +14,42 @@ ostream& operator<<(ostream& out, const FullName& a) {
 }
 
 istream& operator>>(istream& in, Date& a) {
-    string day_str, month_str, year_str;
-    getline(in, day_str, ';');
-    getline(in, month_str, ';');
-    getline(in, year_str, ';');
-    a.day = stoi(day_str);
-    a.month = stoi(month_str);
-    a.year = stoi(year_str);
-    return in;
+	string day_str, month_str, year_str;
+	getline(in, day_str, ';');
+	getline(in, month_str, ';');
+	getline(in, year_str, ';');
+
+	int day = stoi(day_str);
+	int month = stoi(month_str);
+	int year = stoi(year_str);
+
+	bool valid = true;
+
+	if (year < 1900 || year > 2026) valid = false;
+	if (month < 1 || month > 12) valid = false;
+
+	int days_in_month[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+	if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+		days_in_month[1] = 29;
+	}
+
+	if (day < 1 || day > days_in_month[month - 1]) valid = false;
+
+	if (valid) {
+		a.day = day;
+		a.month = month;
+		a.year = year;
+	}
+	else {
+		cerr << "INVALID DATE: " << day << "." << month << "." << year
+			<< " → REPLACED WITH 01.01.2000\n";
+		a.day = 1;
+		a.month = 1;
+		a.year = 2000;
+	}
+
+	return in;
 }
 
 ostream& operator<<(ostream& out, const Date& a) {
@@ -49,45 +77,39 @@ ostream& operator<<(ostream& out, const Address& a) {
         << a.street << ", " << a.house;
     return out;
 }
-
 istream& operator>>(istream& in, Student& a) {
-    string line, gender_str, day_str, month_str, year_str;
+	string line, gender_str;
 
-    getline(in, line);
-    if (line.empty()) return in;
+	getline(in, line);
+	if (line.empty()) return in;
 
-    stringstream ss(line);
+	stringstream ss(line);
 
-    getline(ss, a.full_name.surname, ';');
-    getline(ss, a.full_name.name, ';');
-    getline(ss, a.full_name.patronymic, ';');
-    getline(ss, a.class_name, ';');
-    getline(ss, gender_str, ';');
-    getline(ss, day_str, ';');
-    getline(ss, month_str, ';');
-    getline(ss, year_str, ';');
+	getline(ss, a.full_name.surname, ';');
+	getline(ss, a.full_name.name, ';');
+	getline(ss, a.full_name.patronymic, ';');
+	getline(ss, a.class_name, ';');
+	getline(ss, gender_str, ';');
 
-    a.birth_date.day = stoi(day_str);
-    a.birth_date.month = stoi(month_str);
-    a.birth_date.year = stoi(year_str);
+	ss >> a.birth_date; 
 
-    getline(ss, a.address.postal_code, ';');
-    getline(ss, a.address.country, ';');
-    getline(ss, a.address.region, ';');
-    getline(ss, a.address.district, ';');
-    getline(ss, a.address.city, ';');
-    getline(ss, a.address.street, ';');
-    getline(ss, a.address.house, ';');
-    getline(ss, a.address.apartment);
+	getline(ss, a.address.postal_code, ';');
+	getline(ss, a.address.country, ';');
+	getline(ss, a.address.region, ';');
+	getline(ss, a.address.district, ';');
+	getline(ss, a.address.city, ';');
+	getline(ss, a.address.street, ';');
+	getline(ss, a.address.house, ';');
+	getline(ss, a.address.apartment);
 
-    if (gender_str == "M" || gender_str == "Male")
-        a.gender = male;
-    else if (gender_str == "F" || gender_str == "Female")
-        a.gender = female;
-    else
-        a.gender = unknown;
+	if (gender_str == "M" || gender_str == "Male")
+		a.gender = male;
+	else if (gender_str == "F" || gender_str == "Female")
+		a.gender = female;
+	else
+		a.gender = unknown;
 
-    return in;
+	return in;
 }
 
 ostream& operator<<(ostream& out, const Student& a) {
@@ -105,68 +127,64 @@ ostream& operator<<(ostream& out, const Student& a) {
 }
 
 istream& operator>>(istream& in, ClassGroup& a) {
-    string line;
-    Student* temp_students = nullptr;
-    int temp_count = 0;
+	string line;
+	Student* temp_students = nullptr;
+	int temp_count = 0;
 
-    while (getline(in, line) && !line.empty()) {
-        Student s;
-        stringstream ss(line);
+	while (getline(in, line) && !line.empty()) {
+		Student s;
+		stringstream ss(line);
 
-        getline(ss, s.full_name.surname, ';');
-        getline(ss, s.full_name.name, ';');
-        getline(ss, s.full_name.patronymic, ';');
+		getline(ss, s.full_name.surname, ';');
+		getline(ss, s.full_name.name, ';');
+		getline(ss, s.full_name.patronymic, ';');
 
-        string class_name_from_line;
-        getline(ss, class_name_from_line, ';');
+		string class_name_from_line;
+		getline(ss, class_name_from_line, ';');
 
-        if (class_name_from_line != a.class_name) {
-            continue;
-        }
+		if (class_name_from_line != a.class_name) {
+			continue;
+		}
 
-        s.class_name = class_name_from_line;
+		s.class_name = class_name_from_line;
 
-        string gender_str, day_str, month_str, year_str;
-        getline(ss, gender_str, ';');
-        getline(ss, day_str, ';');
-        getline(ss, month_str, ';');
-        getline(ss, year_str, ';');
+		string gender_str;
+		getline(ss, gender_str, ';');
 
-        s.birth_date.day = stoi(day_str);
-        s.birth_date.month = stoi(month_str);
-        s.birth_date.year = stoi(year_str);
+		ss >> s.birth_date;
 
-        getline(ss, s.address.postal_code, ';');
-        getline(ss, s.address.country, ';');
-        getline(ss, s.address.region, ';');
-        getline(ss, s.address.district, ';');
-        getline(ss, s.address.city, ';');
-        getline(ss, s.address.street, ';');
-        getline(ss, s.address.house, ';');
-        getline(ss, s.address.apartment);
+		getline(ss, s.address.postal_code, ';');
+		getline(ss, s.address.country, ';');
+		getline(ss, s.address.region, ';');
+		getline(ss, s.address.district, ';');
+		getline(ss, s.address.city, ';');
+		getline(ss, s.address.street, ';');
+		getline(ss, s.address.house, ';');
+		getline(ss, s.address.apartment);
 
-        if (gender_str == "M" || gender_str == "Male")
-            s.gender = male;
-        else if (gender_str == "F" || gender_str == "Female")
-            s.gender = female;
-        else
-            s.gender = unknown;
+		if (gender_str == "M" || gender_str == "Male")
+			s.gender = male;
+		else if (gender_str == "F" || gender_str == "Female")
+			s.gender = female;
+		else
+			s.gender = unknown;
 
-        Student* new_temp = new Student[temp_count + 1];
-        for (int i = 0; i < temp_count; i++) {
-            new_temp[i] = temp_students[i];
-        }
-        new_temp[temp_count] = s;
-        delete[] temp_students;
-        temp_students = new_temp;
-        temp_count++;
-    }
+		Student* new_temp = new Student[temp_count + 1];
+		for (int i = 0; i < temp_count; i++) {
+			new_temp[i] = temp_students[i];
+		}
+		new_temp[temp_count] = s;
+		delete[] temp_students;
+		temp_students = new_temp;
+		temp_count++;
+	}
 
-    a.count = temp_count;
-    a.students = temp_students;
+	a.count = temp_count;
+	a.students = temp_students;
 
-    return in;
+	return in;
 }
+
 
 ostream& operator<<(ostream& out, const ClassGroup& a) {
     out << "\n========== Class " << a.class_name
@@ -178,105 +196,100 @@ ostream& operator<<(ostream& out, const ClassGroup& a) {
 }
 
 istream& operator>>(istream& in, School& a) {
-    string line;
-    Student* all_students = nullptr;
-    int student_count = 0;
+	string line;
+	Student* all_students = nullptr;
+	int student_count = 0;
 
-    while (getline(in, line)) {
-        if (line.empty()) continue;
+	while (getline(in, line)) {
+		if (line.empty()) continue;
 
-        Student s;
-        stringstream ss(line);
+		Student s;
+		stringstream ss(line);
 
-        getline(ss, s.full_name.surname, ';');
-        getline(ss, s.full_name.name, ';');
-        getline(ss, s.full_name.patronymic, ';');
-        getline(ss, s.class_name, ';');
+		getline(ss, s.full_name.surname, ';');
+		getline(ss, s.full_name.name, ';');
+		getline(ss, s.full_name.patronymic, ';');
+		getline(ss, s.class_name, ';');
 
-        string gender_str, day_str, month_str, year_str;
-        getline(ss, gender_str, ';');
-        getline(ss, day_str, ';');
-        getline(ss, month_str, ';');
-        getline(ss, year_str, ';');
+		string gender_str;
+		getline(ss, gender_str, ';');
 
-        s.birth_date.day = stoi(day_str);
-        s.birth_date.month = stoi(month_str);
-        s.birth_date.year = stoi(year_str);
+		ss >> s.birth_date;
 
-        getline(ss, s.address.postal_code, ';');
-        getline(ss, s.address.country, ';');
-        getline(ss, s.address.region, ';');
-        getline(ss, s.address.district, ';');
-        getline(ss, s.address.city, ';');
-        getline(ss, s.address.street, ';');
-        getline(ss, s.address.house, ';');
-        getline(ss, s.address.apartment);
+		getline(ss, s.address.postal_code, ';');
+		getline(ss, s.address.country, ';');
+		getline(ss, s.address.region, ';');
+		getline(ss, s.address.district, ';');
+		getline(ss, s.address.city, ';');
+		getline(ss, s.address.street, ';');
+		getline(ss, s.address.house, ';');
+		getline(ss, s.address.apartment);
 
-        if (gender_str == "M" || gender_str == "Male")
-            s.gender = male;
-        else if (gender_str == "F" || gender_str == "Female")
-            s.gender = female;
-        else
-            s.gender = unknown;
+		if (gender_str == "M" || gender_str == "Male")
+			s.gender = male;
+		else if (gender_str == "F" || gender_str == "Female")
+			s.gender = female;
+		else
+			s.gender = unknown;
 
-        Student* new_all = new Student[student_count + 1];
-        for (int i = 0; i < student_count; i++) {
-            new_all[i] = all_students[i];
-        }
-        new_all[student_count] = s;
-        delete[] all_students;
-        all_students = new_all;
-        student_count++;
-    }
+		Student* new_all = new Student[student_count + 1];
+		for (int i = 0; i < student_count; i++) {
+			new_all[i] = all_students[i];
+		}
+		new_all[student_count] = s;
+		delete[] all_students;
+		all_students = new_all;
+		student_count++;
+	}
 
-    if (student_count == 0) {
-        return in;
-    }
+	if (student_count == 0) {
+		return in;
+	}
 
-    string* unique_class_names = new string[student_count];
-    int unique_count = 0;
+	string* unique_class_names = new string[student_count];
+	int unique_count = 0;
 
-    for (int i = 0; i < student_count; i++) {
-        bool found = false;
-        for (int j = 0; j < unique_count; j++) {
-            if (all_students[i].class_name == unique_class_names[j]) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            unique_class_names[unique_count] = all_students[i].class_name;
-            unique_count++;
-        }
-    }
+	for (int i = 0; i < student_count; i++) {
+		bool found = false;
+		for (int j = 0; j < unique_count; j++) {
+			if (all_students[i].class_name == unique_class_names[j]) {
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			unique_class_names[unique_count] = all_students[i].class_name;
+			unique_count++;
+		}
+	}
 
-    a.class_count = unique_count;
-    a.classes = new ClassGroup[unique_count];
+	a.class_count = unique_count;
+	a.classes = new ClassGroup[unique_count];
 
-    for (int i = 0; i < unique_count; i++) {
-        a.classes[i].class_name = unique_class_names[i];
-    }
+	for (int i = 0; i < unique_count; i++) {
+		a.classes[i].class_name = unique_class_names[i];
+	}
 
-    for (int i = 0; i < student_count; i++) {
-        for (int j = 0; j < unique_count; j++) {
-            if (all_students[i].class_name == a.classes[j].class_name) {
-                Student* new_students = new Student[a.classes[j].count + 1];
-                for (int k = 0; k < a.classes[j].count; k++) {
-                    new_students[k] = a.classes[j].students[k];
-                }
-                new_students[a.classes[j].count] = all_students[i];
-                delete[] a.classes[j].students;
-                a.classes[j].students = new_students;
-                a.classes[j].count++;
-                break;
-            }
-        }
-    }
+	for (int i = 0; i < student_count; i++) {
+		for (int j = 0; j < unique_count; j++) {
+			if (all_students[i].class_name == a.classes[j].class_name) {
+				Student* new_students = new Student[a.classes[j].count + 1];
+				for (int k = 0; k < a.classes[j].count; k++) {
+					new_students[k] = a.classes[j].students[k];
+				}
+				new_students[a.classes[j].count] = all_students[i];
+				delete[] a.classes[j].students;
+				a.classes[j].students = new_students;
+				a.classes[j].count++;
+				break;
+			}
+		}
+	}
 
-    delete[] unique_class_names;
-    delete[] all_students;
+	delete[] unique_class_names;
+	delete[] all_students;
 
-    return in;
+	return in;
 }
 
 ostream& operator<<(ostream& out, const School& a) {

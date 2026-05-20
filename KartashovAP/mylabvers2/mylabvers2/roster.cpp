@@ -21,7 +21,7 @@ ClassGroup::~ClassGroup() {
     delete[] students;
 }
 
-ClassGroup& ClassGroup::operator=(const ClassGroup& other) {
+const ClassGroup& ClassGroup::operator=(const ClassGroup& other) {
     if (this != &other) {
         delete[] students;
         class_name = other.class_name;
@@ -57,7 +57,7 @@ School::~School() {
     delete[] classes;
 }
 
-School& School::operator=(const School& other) {
+const School& School::operator=(const School& other) {
     if (this != &other) {
         delete[] classes;
         class_count = other.class_count;

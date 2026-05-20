@@ -27,7 +27,7 @@ struct Date {
     int month;
     int year;
 
-    Date() : day(1), month(1), year(2000) {}
+    Date(int d, int m, int y): day(d), month(m), year(y) {}
 
     friend istream& operator>>(istream& in, Date& a);
     friend ostream& operator<<(ostream& out, const Date& a);
@@ -54,7 +54,7 @@ struct Student {
     Date birth_date;
     Address address;
 
-    Student() : gender(unknown) {}
+    Student() : gender(unknown), birth_date(1,1,2000) {}
 
     friend istream& operator>>(istream& in, Student& a);
     friend ostream& operator<<(ostream& out, const Student& a);
@@ -71,7 +71,7 @@ struct ClassGroup {
     ClassGroup(const ClassGroup& other);
     ~ClassGroup();
 
-    ClassGroup& operator=(const ClassGroup& other);
+    const ClassGroup& operator=(const ClassGroup& other);
     friend istream& operator>>(istream& in, ClassGroup& a);
     friend ostream& operator<<(ostream& out, const ClassGroup& a);
 };
@@ -85,7 +85,7 @@ struct School {
     ~School();
 
     void sortSchool();
-    School& operator=(const School& other);
+    const School& operator=(const School& other);
     friend istream& operator>>(istream& in, School& a);
     friend ostream& operator<<(ostream& out, const School& a);
 };
