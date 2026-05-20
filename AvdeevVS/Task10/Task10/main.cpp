@@ -34,6 +34,9 @@ int main() {
     test1.Push_back(&a, 1);
     cout << "test_2 --->   " << test1 << endl;
 
+    Storage<int*> test2 = test1;
+    cout << "test_3 --->   " << test2 << endl;
+
   }
   catch (const char* error_message) {
     cout << error_message << endl;
