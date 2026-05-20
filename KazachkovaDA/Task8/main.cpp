@@ -1,10 +1,12 @@
 #include "list.hpp"
 #include "additional.hpp"
 
-int main() {
-
-	const std::string file_name = "list.txt"; // argc argv
-	phrase_library quotes(file_name);
+int main(int argc, char* argv[]) {
+	if (argc < 2) {
+		std::cerr << "Not enough arguments" << std::endl;
+		return 1;
+	}
+	phrase_library quotes(argv[1]);
 	phrase_library founded;
 
 	std::string request_word;

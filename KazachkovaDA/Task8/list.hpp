@@ -13,7 +13,7 @@ struct quote{
 	int key_words_count;
 
 	quote();
-	~quote(); // remove key_words
+	~quote() {delete[] this->key_words;}
 	const quote& operator=(const quote&);
 }; 
 
