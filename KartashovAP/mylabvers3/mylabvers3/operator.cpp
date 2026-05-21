@@ -17,49 +17,96 @@ istream& operator>>(istream& in, Date& a) {
     getline(in, ds, ';');
     getline(in, ms, ';');
     getline(in, ys, ';');
-    a.day = stoi(ds);
-    a.month = stoi(ms);
-    a.year = stoi(ys);
+
+    int day = stoi(ds);
+    int month = stoi(ms);
+    int year = stoi(ys);
+
+    bool valid = true;
+
+    if (year < 1900 || year > 2026) valid = false;
+    if (month < 1 || month > 12) valid = false;
+
+    int days_in_month[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+    if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+        days_in_month[1] = 29;
+    }
+
+    if (day < 1 || day > days_in_month[month - 1]) valid = false;
+
+    if (valid) {
+        a.setDay(day);
+        a.setMonth(month);
+        a.setYear(year);
+    }
+    else {
+        cerr << "INVALID DATE: " << day << "." << month << "." << year
+            << " -> REPLACED WITH 01.01.2000\n";
+        a.setDay(1);
+        a.setMonth(1);
+        a.setYear(2000);
+    }
+
     return in;
 }
 
 ostream& operator<<(ostream& out, const Date& a) {
-    out << (a.day < 10 ? "0" : "") << a.day << "."
-        << (a.month < 10 ? "0" : "") << a.month << "."
-        << a.year;
+    out << (a.getDay() < 10 ? "0" : "") << a.getDay() << "."
+        << (a.getMonth() < 10 ? "0" : "") << a.getMonth() << "."
+        << a.getYear();
     return out;
 }
 
 istream& operator>>(istream& in, Address& a) {
-    getline(in, a.postal_code, ';');
-    getline(in, a.country, ';');
-    getline(in, a.region, ';');
-    getline(in, a.district, ';');
-    getline(in, a.city, ';');
-    getline(in, a.street, ';');
-    getline(in, a.house, ';');
-    getline(in, a.apartment);
+    string pc, c, r, d, ct, s, h, ap;
+    getline(in, pc, ';');
+    getline(in, c, ';');
+    getline(in, r, ';');
+    getline(in, d, ';');
+    getline(in, ct, ';');
+    getline(in, s, ';');
+    getline(in, h, ';');
+    getline(in, ap);
+
+    a.setPostalCode(pc);
+    a.setCountry(c);
+    a.setRegion(r);
+    a.setDistrict(d);
+    a.setCity(ct);
+    a.setStreet(s);
+    a.setHouse(h);
+    a.setApartment(ap);
+
     return in;
 }
 
 ostream& operator<<(ostream& out, const Address& a) {
-    out << a.postal_code << ", " << a.country << ", " << a.region
-        << ", " << a.district << ", " << a.city << ", "
-        << a.street << ", " << a.house;
+    out << a.getPostalCode() << ", " << a.getCountry() << ", " << a.getRegion()
+        << ", " << a.getDistrict() << ", " << a.getCity() << ", "
+        << a.getStreet() << ", " << a.getHouse();
     return out;
 }
 
 istream& operator>>(istream& in, Person& p) {
-    in >> p.full_name;
+    FullName fn;
+    in >> fn;
+    p.setFullName(fn);
+
     string gender_str;
     getline(in, gender_str, ';');
+
     if (gender_str == "M" || gender_str == "Male")
-        p.gender = male;
+        p.setGender(male);
     else if (gender_str == "F" || gender_str == "Female")
-        p.gender = female;
+        p.setGender(female);
     else
-        p.gender = unknown;
-    in >> p.birth_date;
+        p.setGender(unknown);
+
+    Date bd;
+    in >> bd;
+    p.setBirthDate(bd);
+
     return in;
 }
 
@@ -77,7 +124,6 @@ istream& operator>>(istream& in, Student& s) {
 
     string surname, name, patronymic, class_name, gender_str;
     string day_str, month_str, year_str;
-
     string postal_code, country, region, district, city, street, house, apartment;
 
     getline(ss, surname, ';');
@@ -97,17 +143,40 @@ istream& operator>>(istream& in, Student& s) {
     getline(ss, house, ';');
     getline(ss, apartment);
 
-    s.full_name = FullName(surname, name, patronymic);
-    s.class_name = class_name;
+    s.setFullName(FullName(surname, name, patronymic));
+    s.setClassName(class_name);
 
     if (gender_str == "M" || gender_str == "Male")
-        s.gender = male;
+        s.setGender(male);
     else if (gender_str == "F" || gender_str == "Female")
-        s.gender = female;
+        s.setGender(female);
     else
-        s.gender = unknown;
+        s.setGender(unknown);
 
-    s.birth_date = Date(stoi(day_str), stoi(month_str), stoi(year_str));
+    Date birth_date(stoi(day_str), stoi(month_str), stoi(year_str));
+
+    int day = stoi(day_str);
+    int month = stoi(month_str);
+    int year = stoi(year_str);
+
+    bool valid = true;
+    if (year < 1900 || year > 2026) valid = false;
+    if (month < 1 || month > 12) valid = false;
+
+    int days_in_month[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+    if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+        days_in_month[1] = 29;
+    }
+    if (day < 1 || day > days_in_month[month - 1]) valid = false;
+
+    if (valid) {
+        s.setBirthDate(Date(day, month, year));
+    }
+    else {
+        cerr << "INVALID DATE: " << day << "." << month << "." << year
+            << " -> REPLACED WITH 01.01.2000\n";
+        s.setBirthDate(Date(1, 1, 2000));
+    }
 
     Address addr;
     addr.setPostalCode(postal_code);
@@ -118,7 +187,7 @@ istream& operator>>(istream& in, Student& s) {
     addr.setStreet(street);
     addr.setHouse(house);
     addr.setApartment(apartment);
-    s.address = addr;
+    s.setAddress(addr);
 
     return in;
 }
@@ -134,10 +203,10 @@ istream& operator>>(istream& in, ClassGroup& a) {
 }
 
 ostream& operator<<(ostream& out, const ClassGroup& a) {
-    out << "\n========== Class " << a.class_name
-        << " (" << a.count << " students) ==========\n";
-    for (int i = 0; i < a.count; i++)
-        out << a.students[i] << "\n\n";
+    out << "\n========== Class " << a.getClassName()
+        << " (" << a.getCount() << " students) ==========\n";
+    for (int i = 0; i < a.getCount(); i++)
+        out << a.getStudents()[i] << "\n\n";
     return out;
 }
 
@@ -182,7 +251,28 @@ istream& operator>>(istream& in, School& school) {
         else
             s.setGender(unknown);
 
-        s.setBirthDate(Date(stoi(day_str), stoi(month_str), stoi(year_str)));
+        int day = stoi(day_str);
+        int month = stoi(month_str);
+        int year = stoi(year_str);
+
+        bool valid = true;
+        if (year < 1900 || year > 2026) valid = false;
+        if (month < 1 || month > 12) valid = false;
+
+        int days_in_month[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+        if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+            days_in_month[1] = 29;
+        }
+        if (day < 1 || day > days_in_month[month - 1]) valid = false;
+
+        if (valid) {
+            s.setBirthDate(Date(day, month, year));
+        }
+        else {
+            cerr << "INVALID DATE: " << day << "." << month << "." << year
+                << " -> REPLACED WITH 01.01.2000\n";
+            s.setBirthDate(Date(1, 1, 2000));
+        }
 
         Address addr;
         addr.setPostalCode(postal_code);

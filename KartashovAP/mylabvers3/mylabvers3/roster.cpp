@@ -113,7 +113,7 @@ ClassGroup::ClassGroup(const string& name) : class_name(name), students(nullptr)
 ClassGroup::ClassGroup(const ClassGroup& other) { copyFrom(other); }
 ClassGroup::~ClassGroup() { free(); }
 
-ClassGroup& ClassGroup::operator=(const ClassGroup& other) {
+const ClassGroup& ClassGroup::operator=(const ClassGroup& other) {
     if (this != &other) {
         free();
         copyFrom(other);
@@ -170,7 +170,7 @@ School::School() : classes(nullptr), class_count(0) {}
 School::School(const School& other) { copyFrom(other); }
 School::~School() { free(); }
 
-School& School::operator=(const School& other) {
+const School& School::operator=(const School& other) {
     if (this != &other) {
         free();
         copyFrom(other);

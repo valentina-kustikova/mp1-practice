@@ -1,32 +1,32 @@
-Sidorov;Maxim;Alekseevich;2A;M;2015;07;03;603000;Russia;Nizhny Novgorod;Nizhegorodsky;Nizhny Novgorod;Bolshaya Pokrovskaya;22;4
-Lebedev;Gleb;Igorevich;3B;M;2014;10;09;302000;Russia;Oryol;Zavodskoy;Oryol;Moskovskaya;18;31
-Morozov;Kirill;Evgenievich;3A;M;2014;03;22;620000;Russia;Sverdlovsk;Leninsky;Yekaterinburg;Malysheva;17;3
-Ivanov;Ivan;Ivanovich;1A;M;2016;05;12;101000;Russia;Moscow;Central;Moscow;Tverskaya;10;25
-Petrova;Anna;Sergeevna;2A;F;2015;11;23;190000;Russia;St. Petersburg;Central;St. Petersburg;Nevsky;15;7
-Kuznetsova;Daria;Andreevna;2B;F;2015;09;18;420000;Russia;Tatarstan;Kazan;Kazan;Bauman;8;12
-Smirnov;Artyom;Pavlovich;2B;M;2015;01;30;344000;Russia;Rostov;Leninsky;Rostov-on-Don;Budyonnovsky;45;8
-Vasilyeva;Polina;Denisovna;3A;F;2014;06;15;630000;Russia;Novosibirsk;Central;Novosibirsk;Krasny;101;56
-Fyodorova;Alisa;Romanovna;3A;F;2014;12;04;660000;Russia;Krasnoyarsk;Central;Krasnoyarsk;Mira;33;9
-Volkov;Nikita;Sergeevich;3B;M;2014;08;19;614000;Russia;Perm;Leninsky;Perm;Komsomolsky;12;14
-Alekseeva;Victoria;Mikhailovna;3B;F;2014;02;27;350000;Russia;Krasnodar;Central;Krasnodar;Krasnaya;5;2
-Abdulov;Zaur;Ruslanovich;1A;M;2016;08;15;367000;Russia;Dagestan;Makhachkala;Makhachkala;Lenina;45;78
-Belova;Ekaterina;Dmitrievna;2A;F;2015;04;22;156000;Russia;Kostroma;Central;Kostroma;Sovetskaya;12;5
-Grigoriev;Dmitry;Alexandrovich;2B;M;2015;07;11;454000;Russia;Chelyabinsk;Central;Chelyabinsk;Kirova;8;34
-Dmitrieva;Olga;Vladimirovna;3A;F;2014;11;05;394000;Russia;Voronezh;Central;Voronezh;Plehanovskaya;22;7
-Egorov;Andrey;Nikolaevich;3B;M;2014;01;28;450000;Russia;Bashkortostan;Ufa;Ufa;Oktyabrya;67;12
-Zharov;Konstantin;Petrovich;1A;M;2016;09;30;241000;Russia;Bryansk;Sovetsky;Bryansk;Lenina;3;56
-Zueva;Svetlana;Igorevna;2A;F;2015;12;14;308000;Russia;Belgorod;Oktyabrsky;Belgorod;Grazhdansky;9;23
-Isaev;Timur;Rinatovich;2B;M;2015;03;19;426000;Russia;Udmurtia;Izhevsk;Izhevsk;Pushkinskaya;14;67
-Kovalchuk;Natalia;Stepanovna;3A;F;2014;10;08;344015;Russia;Rostov;Leninsky;Rostov-on-Don;Voroshilovsky;56;4
-Lazarev;Mikhail;Olegovich;3B;M;2014;06;25;694000;Russia;Sakhalin;Yuzhno-Sakhalinsk;Yuzhno-Sakhalinsk;Sovetskaya;34;12
-Makarova;Elena;Sergeevna;1A;F;2016;02;17;125000;Russia;Moscow;Central;Moscow;Arbat;7;45
-Nikiforov;Denis;Vladimirovich;2A;M;2015;08;09;443000;Russia;Samara;Leninsky;Samara;Molodogvardeyskaya;88;3
-Orlova;Veronika;Alexandrovna;2B;F;2015;05;21;183000;Russia;Murmansk;Leninsky;Murmansk;Lenina;73;9
-Panin;Sergey;Ivanovich;3A;M;2014;12;01;249000;Russia;Kaluga;Leninsky;Kaluga;Kirova;21;6
-Rudakov;Alexey;Viktorovich;3B;M;2014;04;13;236000;Russia;Kaliningrad;Central;Kaliningrad;Prospekt Mira;45;18
-Sokolova;Anastasia;Pavlovna;1A;F;2016;07;24;664000;Russia;Irkutsk;Oktyabrsky;Irkutsk;Karl Marx;67;23
-Titova;Maria;Dmitrievna;2A;F;2015;09;06;392000;Russia;Tambov;Leninsky;Tambov;Internatsionalnaya;12;8
-Ushakov;Vladimir;Sergeevich;2B;M;2015;11;29;214000;Russia;Smolensk;Zadneprovsky;Smolensk;Bolshaya Sovetskaya;5;67
-Filatov;Pavel;Andreevich;3A;M;2014;07;16;156003;Russia;Kostroma;Central;Kostroma;Shagova;4;12
-Chernova;Diana;Evgenievna;3B;F;2014;03;07;167000;Russia;Komi;Syktyvkar;Syktyvkar;Komsomolskaya;23;5
-Shilov;Roman;Alexandrovich;1A;M;2016;10;20;690000;Russia;Primorsky;Vladivostok;Vladivostok;Svetlanskaya;10;9
+Sidorov;Maxim;Alekseevich;2A;M;40;07;2015;603000;Russia;Nizhny Novgorod;Nizhegorodsky;Nizhny Novgorod;Bolshaya Pokrovskaya;22;4
+Lebedev;Gleb;Igorevich;3B;M;09;10;2014;302000;Russia;Oryol;Zavodskoy;Oryol;Moskovskaya;18;31
+Morozov;Kirill;Evgenievich;3A;M;22;03;2014;620000;Russia;Sverdlovsk;Leninsky;Yekaterinburg;Malysheva;17;3
+Ivanov;Ivan;Ivanovich;1A;M;12;05;2016;101000;Russia;Moscow;Central;Moscow;Tverskaya;10;25
+Petrova;Anna;Sergeevna;2A;F;23;11;2015;190000;Russia;St. Petersburg;Central;St. Petersburg;Nevsky;15;7
+Kuznetsova;Daria;Andreevna;2B;F;18;09;2015;420000;Russia;Tatarstan;Kazan;Kazan;Bauman;8;12
+Smirnov;Artyom;Pavlovich;2B;M;30;01;2015;344000;Russia;Rostov;Leninsky;Rostov-on-Don;Budyonnovsky;45;8
+Vasilyeva;Polina;Denisovna;3A;F;15;06;2014;630000;Russia;Novosibirsk;Central;Novosibirsk;Krasny;101;56
+Fyodorova;Alisa;Romanovna;3A;F;04;12;2014;660000;Russia;Krasnoyarsk;Central;Krasnoyarsk;Mira;33;9
+Volkov;Nikita;Sergeevich;3B;M;19;08;2014;614000;Russia;Perm;Leninsky;Perm;Komsomolsky;12;14
+Alekseeva;Victoria;Mikhailovna;3B;F;27;02;2014;350000;Russia;Krasnodar;Central;Krasnodar;Krasnaya;5;2
+Abdulov;Zaur;Ruslanovich;1A;M;15;08;2016;367000;Russia;Dagestan;Makhachkala;Makhachkala;Lenina;45;78
+Belova;Ekaterina;Dmitrievna;2A;F;22;04;2015;156000;Russia;Kostroma;Central;Kostroma;Sovetskaya;12;5
+Grigoriev;Dmitry;Alexandrovich;2B;M;11;07;2015;454000;Russia;Chelyabinsk;Central;Chelyabinsk;Kirova;8;34
+Dmitrieva;Olga;Vladimirovna;3A;F;05;11;2014;394000;Russia;Voronezh;Central;Voronezh;Plehanovskaya;22;7
+Egorov;Andrey;Nikolaevich;3B;M;28;01;2014;450000;Russia;Bashkortostan;Ufa;Ufa;Oktyabrya;67;12
+Zharov;Konstantin;Petrovich;1A;M;30;09;2016;241000;Russia;Bryansk;Sovetsky;Bryansk;Lenina;3;56
+Zueva;Svetlana;Igorevna;2A;F;14;12;2015;308000;Russia;Belgorod;Oktyabrsky;Belgorod;Grazhdansky;9;23
+Isaev;Timur;Rinatovich;2B;M;19;03;2015;426000;Russia;Udmurtia;Izhevsk;Izhevsk;Pushkinskaya;14;67
+Kovalchuk;Natalia;Stepanovna;3A;F;08;10;2014;344015;Russia;Rostov;Leninsky;Rostov-on-Don;Voroshilovsky;56;4
+Lazarev;Mikhail;Olegovich;3B;M;25;06;2014;694000;Russia;Sakhalin;Yuzhno-Sakhalinsk;Yuzhno-Sakhalinsk;Sovetskaya;34;12
+Makarova;Elena;Sergeevna;1A;F;17;02;2016;125000;Russia;Moscow;Central;Moscow;Arbat;7;45
+Nikiforov;Denis;Vladimirovich;2A;M;09;08;2015;443000;Russia;Samara;Leninsky;Samara;Molodogvardeyskaya;88;3
+Orlova;Veronika;Alexandrovna;2B;F;21;05;2015;183000;Russia;Murmansk;Leninsky;Murmansk;Lenina;73;9
+Panin;Sergey;Ivanovich;3A;M;01;12;2014;249000;Russia;Kaluga;Leninsky;Kaluga;Kirova;21;6
+Rudakov;Alexey;Viktorovich;3B;M;13;04;2014;236000;Russia;Kaliningrad;Central;Kaliningrad;Prospekt Mira;45;18
+Sokolova;Anastasia;Pavlovna;1A;F;24;07;2016;664000;Russia;Irkutsk;Oktyabrsky;Irkutsk;Karl Marx;67;23
+Titova;Maria;Dmitrievna;2A;F;06;09;2015;392000;Russia;Tambov;Leninsky;Tambov;Internatsionalnaya;12;8
+Ushakov;Vladimir;Sergeevich;2B;M;29;11;2015;214000;Russia;Smolensk;Zadneprovsky;Smolensk;Bolshaya Sovetskaya;5;67
+Filatov;Pavel;Andreevich;3A;M;16;07;2014;156003;Russia;Kostroma;Central;Kostroma;Shagova;4;12
+Chernova;Diana;Evgenievna;3B;F;07;03;2014;167000;Russia;Komi;Syktyvkar;Syktyvkar;Komsomolskaya;23;5
+Shilov;Roman;Alexandrovich;1A;M;20;10;2016;690000;Russia;Primorsky;Vladivostok;Vladivostok;Svetlanskaya;10;9

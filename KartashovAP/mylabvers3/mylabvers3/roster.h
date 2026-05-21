@@ -148,7 +148,7 @@ public:
     ClassGroup(const ClassGroup& other);
     ~ClassGroup();
 
-    ClassGroup& operator=(const ClassGroup& other);
+    const ClassGroup& operator=(const ClassGroup& other);
 
     void addStudent(const Student& s);
     void sortStudents();
@@ -173,7 +173,7 @@ public:
     School(const School& other);
     ~School();
 
-    School& operator=(const School& other);
+    const School& operator=(const School& other);
     void sortSchool();
 
     friend istream& operator>>(istream& in, School& a);
