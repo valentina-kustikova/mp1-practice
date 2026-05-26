@@ -211,7 +211,7 @@ ostream& operator<<(ostream& out, const ClassGroup& a) {
 }
 
 istream& operator>>(istream& in, School& school) {
-    Student all_students[100];
+    Student all_students[1000];
     int student_count = 0;
     string line;
 

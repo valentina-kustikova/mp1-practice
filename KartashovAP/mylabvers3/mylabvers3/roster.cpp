@@ -4,13 +4,6 @@ FullName::FullName(const string& s, const string& n, const string& p)
     : surname(s), name(n), patronymic(p) {
 }
 
-string FullName::getSurname() const { return surname; }
-string FullName::getName() const { return name; }
-string FullName::getPatronymic() const { return patronymic; }
-void FullName::setSurname(const string& s) { surname = s; }
-void FullName::setName(const string& n) { name = n; }
-void FullName::setPatronymic(const string& p) { patronymic = p; }
-
 bool FullName::operator<(const FullName& other) const {
     if (surname != other.surname) return surname < other.surname;
     if (name != other.name) return name < other.name;
@@ -50,9 +43,6 @@ Person::Person(const FullName& fn, Gender g, const Date& bd)
     : full_name(fn), gender(g), birth_date(bd) {
 }
 
-FullName Person::getFullName() const { return full_name; }
-Gender Person::getGender() const { return gender; }
-Date Person::getBirthDate() const { return birth_date; }
 void Person::setFullName(const FullName& fn) { full_name = fn; }
 void Person::setGender(Gender g) { gender = g; }
 void Person::setBirthDate(const Date& bd) { birth_date = bd; }
@@ -78,7 +68,6 @@ Student::Student(const FullName& fn, Gender g, const Date& bd,
 }
 
 string Student::getClassName() const { return class_name; }
-Address Student::getAddress() const { return address; }
 void Student::setClassName(const string& cls) { class_name = cls; }
 void Student::setAddress(const Address& addr) { address = addr; }
 

@@ -23,13 +23,6 @@ public:
     FullName() = default;
     FullName(const string& s, const string& n, const string& p);
 
-    string getSurname() const;
-    string getName() const;
-    string getPatronymic() const;
-    void setSurname(const string& s);
-    void setName(const string& n);
-    void setPatronymic(const string& p);
-
     friend istream& operator>>(istream& in, FullName& a);
     friend ostream& operator<<(ostream& out, const FullName& a);
     bool operator<(const FullName& other) const;
@@ -100,9 +93,6 @@ public:
     Person(const FullName& fn, Gender g, const Date& bd);
     virtual ~Person() = default;
 
-    FullName getFullName() const;
-    Gender getGender() const;
-    Date getBirthDate() const;
     void setFullName(const FullName& fn);
     void setGender(Gender g);
     void setBirthDate(const Date& bd);
@@ -123,7 +113,6 @@ public:
         const string& cls, const Address& addr);
 
     string getClassName() const;
-    Address getAddress() const;
     void setClassName(const string& cls);
     void setAddress(const Address& addr);
 
