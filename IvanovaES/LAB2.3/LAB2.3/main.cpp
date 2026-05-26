@@ -20,27 +20,10 @@ int main(int argc, char* argv[]) {
     ArtistLibrary libArtists;
     PaintingsLibrary libPaintings;
 
-    /*  ХУДОЖНИКИ  */
+    /*  ЧТЕНИЕ  */
 
-    ifstream fileA(fileArtist);
-    if (!fileA) {
-        cout << "Error: cannot open artists file" << endl;
-        return 1;
-    }
-
-    libArtists.ReadFileArtist(fileA);
-    fileA.close();
-
-    /*  КАРТИНЫ  */
-
-    ifstream fileP(filePaintings);
-    if (!fileP) {
-        cout << "Error: cannot open paintings file" << endl;
-        return 1;
-    }
-
-    libPaintings.ReadFilePaintings(fileP);
-    fileP.close();
+    libArtists.ReadFileArtist(fileArtist);
+    libPaintings.ReadFilePaintings(filePaintings);
 
     /* ПОИСК */
 

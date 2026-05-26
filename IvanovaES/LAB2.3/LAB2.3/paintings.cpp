@@ -104,7 +104,12 @@ float PaintingsLibrary::calculateLocationStats() {
     return (float)privateCount / cnt * 100;
 }
 
-void PaintingsLibrary::ReadFilePaintings(ifstream& file) {
+void PaintingsLibrary::ReadFilePaintings(const string& filePaintings) {
+    ifstream file(filePaintings);
+    if (!file.is_open()) {
+        throw runtime_error("Error: cannot open artists file");
+    }
+    
     string line;
     cnt = 0;
 
@@ -144,13 +149,14 @@ void PaintingsLibrary::ReadFilePaintings(ifstream& file) {
 
         i++;
     }
+    file.close();
 }
 
 ostream& operator<<(ostream& out, const Painting& p) {
 
     out << p.title << " (" << p.year << "), "
-        << genreToString(p.genre) << ", "
-        << locationToString(p.location);
+        << PaintingsLibrary::genreToString(p.genre) << ", "
+        << PaintingsLibrary::locationToString(p.location);
 
     return out;
 }
@@ -162,7 +168,7 @@ ostream& operator<<(ostream& out, const PaintingsLibrary& p) {
     return out;
 }
 
-Genre stringToGenre(const string& str) {
+Genre PaintingsLibrary::stringToGenre(const string& str) {
     if (str == "portrait") return PORTRAIT;
     if (str == "religious") return RELIGIOUS;
     if (str == "drawing") return DRAWING;
@@ -181,7 +187,7 @@ Genre stringToGenre(const string& str) {
     return PORTRAIT;
 }
 
-string genreToString(Genre genre) {
+string PaintingsLibrary::genreToString(Genre genre) {
     switch (genre) {
     case PORTRAIT: return "portrait";
     case RELIGIOUS: return "religious";
@@ -201,13 +207,13 @@ string genreToString(Genre genre) {
     }
 }
 
-Location stringToLocation(const string& str) {
+Location PaintingsLibrary::stringToLocation(const string& str) {
     if (str == "museum") return MUSEUM;
     if (str == "private") return PRIVATE;
     return MUSEUM;
 }
 
-string locationToString(Location location) {
+string PaintingsLibrary::locationToString(Location location) {
     switch (location) {
     case MUSEUM: return "museum";
     case PRIVATE: return "private";

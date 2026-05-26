@@ -46,7 +46,7 @@ struct Painting {
     friend ostream& operator<<(ostream& out, const Painting& p);
 };
 
-struct PaintingsLibrary { //copy?
+struct PaintingsLibrary { 
     Painting* works;
     int cnt;
 
@@ -56,15 +56,15 @@ struct PaintingsLibrary { //copy?
 
     PaintingsLibrary* findPaintings(int artistID);
     float calculateLocationStats();
-    void ReadFilePaintings(ifstream& file);
+    void ReadFilePaintings(const string& filePaintings);
+    Genre stringToGenre(const string& str);
+    static string genreToString(Genre genre);
+
+    Location stringToLocation(const string& str);
+    static string locationToString(Location location);
+
 
     friend ostream& operator<<(ostream& out, const PaintingsLibrary& p);
 };
-
-Genre stringToGenre(const string& str);
-string genreToString(Genre genre);
-
-Location stringToLocation(const string& str);
-string locationToString(Location location);
 
 #endif

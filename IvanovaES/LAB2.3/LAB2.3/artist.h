@@ -41,12 +41,11 @@ struct ArtistLibrary {
     ~ArtistLibrary();
     
     Artist* findArtist(const string& name);
-    void ReadFileArtist(ifstream& file);
+    void ReadFileArtist(const string& fileArtist);
+    Style stringToStyle(const string& str);
+    static string styleToString(Style style);
 
     friend ostream& operator<<(ostream& out, const ArtistLibrary& a);
 };
-
-Style stringToStyle(const string& str);
-string styleToString(Style style);
 
 #endif
