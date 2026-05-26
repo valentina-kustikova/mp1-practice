@@ -29,42 +29,51 @@ enum Location {
     PRIVATE = 2,
 };
 
-struct Painting {
+class Painting {
+
+private:
     int artist_id;
     string title;
     int year;
     Genre genre;
     Location location;
 
+public:
+
     Painting();
-    Painting(int id,const string& t, int y, Genre g, Location l);
+    Painting(int id, const string& t, int y, Genre g, Location l);
     Painting(const Painting& other);
     ~Painting();
 
-    const Painting& operator=(const Painting& other);
+    friend class PaintingsLibrary;
 
+    const Painting& operator=(const Painting& other);
     friend ostream& operator<<(ostream& out, const Painting& p);
 };
 
-struct PaintingsLibrary { //copy?
+class PaintingsLibrary {
+
+private:
     Painting* works;
     int cnt;
 
+public:
     PaintingsLibrary();
     PaintingsLibrary(const PaintingsLibrary& other);
     ~PaintingsLibrary();
 
     PaintingsLibrary* findPaintings(int artistID);
     float calculateLocationStats();
-    void ReadFilePaintings(ifstream& file);
+    void ReadFilePaintings(const string& filePaintings);
+    
+    Genre stringToGenre(const string& str);
+    static string genreToString(Genre genre);
+    Location stringToLocation(const string& str);
+    static string locationToString(Location location);
+
+    int getCount() const;
 
     friend ostream& operator<<(ostream& out, const PaintingsLibrary& p);
 };
-
-Genre stringToGenre(const string& str);
-string genreToString(Genre genre);
-
-Location stringToLocation(const string& str);
-string locationToString(Location location);
 
 #endif

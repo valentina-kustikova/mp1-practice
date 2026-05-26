@@ -1,4 +1,4 @@
-ï»¿#include <iostream>
+#include <iostream>
 #include <fstream>
 #include <string>
 
@@ -20,29 +20,12 @@ int main(int argc, char* argv[]) {
     ArtistLibrary libArtists;
     PaintingsLibrary libPaintings;
 
-    /*  Ğ¥Ğ£Ğ”ĞĞ–ĞĞ˜ĞšĞ˜  */
+    /*  ×ÒÅÍÈÅ  */
 
-    ifstream fileA(fileArtist);
-    if (!fileA) {
-        cout << "Error: cannot open artists file" << endl;
-        return 1;
-    }
+    libArtists.ReadFileArtist(fileArtist);
+    libPaintings.ReadFilePaintings(filePaintings);
 
-    libArtists.ReadFileArtist(fileA);
-    fileA.close();
-
-    /*  ĞšĞĞ Ğ¢Ğ˜ĞĞ«  */
-
-    ifstream fileP(filePaintings);
-    if (!fileP) {
-        cout << "Error: cannot open paintings file" << endl;
-        return 1;
-    }
-
-    libPaintings.ReadFilePaintings(fileP);
-    fileP.close();
-
-    /* ĞŸĞĞ˜Ğ¡Ğš */
+    /* ÏÎÈÑÊ */
 
     string name;
     cout << "Enter artist name - ";
@@ -56,7 +39,7 @@ int main(int argc, char* argv[]) {
         foundArtist = libArtists.findArtist(name);
     }
 
-    PaintingsLibrary* foundPaintings = libPaintings.findPaintings(foundArtist->painter_id);
+    PaintingsLibrary* foundPaintings = libPaintings.findPaintings(foundArtist->getPainterID());
 
     float percent = 0;
 
@@ -64,11 +47,11 @@ int main(int argc, char* argv[]) {
         percent = foundPaintings->calculateLocationStats();
     }
 
-    /* Ğ’Ğ«Ğ’ĞĞ” */
+    /* ÂÛÂÎÄ */
 
     cout << *foundArtist
         << " - "
-        << foundPaintings->cnt
+        << foundPaintings->getCount()
         << " paintings found\n\n";
 
     cout << "Paintings:\n";
@@ -89,5 +72,3 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
-
-

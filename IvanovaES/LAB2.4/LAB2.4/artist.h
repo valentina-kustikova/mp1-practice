@@ -17,36 +17,44 @@ enum Style {
     POP_ART_STYLE = 6,
 };
 
-struct Artist {
+class Artist {
+
+private:
     int painter_id;
     string name;
     int birthYear;
     Style style;
-    
+
+public:
     Artist();
     Artist(int id, const string& n, int year, Style s);
     Artist(const Artist& other);
     ~Artist();
-    
+
+    friend class ArtistLibrary;
+
+    int getPainterID() const;
     const Artist& operator=(const Artist& other);
     friend ostream& operator<<(ostream& out, const Artist& a);
 };
 
-struct ArtistLibrary {
+class ArtistLibrary {
+
+private:
     Artist* persons;
     int cnt;
-    
+
+public:
     ArtistLibrary();
     ArtistLibrary(const ArtistLibrary& other);
     ~ArtistLibrary();
-    
+
     Artist* findArtist(const string& name);
-    void ReadFileArtist(ifstream& file);
+    void ReadFileArtist(const string& fileArtist);
+    Style stringToStyle(const string& str);
+    static string styleToString(Style style);
 
     friend ostream& operator<<(ostream& out, const ArtistLibrary& a);
 };
-
-Style stringToStyle(const string& str);
-string styleToString(Style style);
 
 #endif

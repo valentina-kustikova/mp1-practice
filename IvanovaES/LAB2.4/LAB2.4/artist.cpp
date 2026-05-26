@@ -10,7 +10,7 @@ Artist::Artist() {
     style = RENAISSANCE;
 }
 
-Artist::Artist(int id,const string& n, int year, Style s) {
+Artist::Artist(int id, const string& n, int year, Style s) {
     painter_id = id;
     name = n;
     birthYear = year;
@@ -26,6 +26,10 @@ Artist::Artist(const Artist& other) {
 
 Artist::~Artist() {}
 
+int Artist::getPainterID() const {
+    return painter_id;
+}
+
 const Artist& Artist::operator=(const Artist& other) {
     if (this != &other) {
         painter_id = other.painter_id;
@@ -38,7 +42,7 @@ const Artist& Artist::operator=(const Artist& other) {
 
 ostream& operator<<(ostream& out, const Artist& a) {
     out << a.name << " (" << a.birthYear << ", "
-        << styleToString(a.style) << ")";
+        << ArtistLibrary::styleToString(a.style) << ")";
     return out;
 }
 
@@ -68,7 +72,12 @@ Artist* ArtistLibrary::findArtist(const string& name) {
     return nullptr;
 }
 
-void ArtistLibrary::ReadFileArtist(ifstream& file) {
+void ArtistLibrary::ReadFileArtist(const string& fileArtist) {
+    ifstream file(fileArtist);
+    if (!file.is_open()) {
+        throw runtime_error("Error: cannot open artists file");
+    }
+
     string line;
     cnt = 0;
 
@@ -77,7 +86,7 @@ void ArtistLibrary::ReadFileArtist(ifstream& file) {
     }
     file.clear();
     file.seekg(0);
-    
+
     persons = new Artist[cnt];
 
     int i = 0;
@@ -105,6 +114,7 @@ void ArtistLibrary::ReadFileArtist(ifstream& file) {
 
         i++;
     }
+    file.close();
 }
 
 ostream& operator<<(ostream& out, const ArtistLibrary& a) {
@@ -114,7 +124,7 @@ ostream& operator<<(ostream& out, const ArtistLibrary& a) {
     return out;
 }
 
-Style stringToStyle(const string& str) {
+Style ArtistLibrary::stringToStyle(const string& str) {
     if (str == "Renaissance") return RENAISSANCE;
     if (str == "Baroque") return BAROQUE;
     if (str == "Impressionism") return IMPRESSIONISM;
@@ -125,7 +135,7 @@ Style stringToStyle(const string& str) {
     return RENAISSANCE;
 }
 
-string styleToString(Style style) {
+string ArtistLibrary::styleToString(Style style) {
     switch (style) {
     case RENAISSANCE: return "Renaissance";
     case BAROQUE: return "Baroque";
@@ -137,6 +147,3 @@ string styleToString(Style style) {
     default: return "Unknown";
     }
 }
-
-
-
