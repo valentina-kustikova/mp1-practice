@@ -13,6 +13,7 @@ private:
     int count;
     int step;
 
+    void containerRealloc(int newSize);
 public:
     Container(int, int);
     Container(const Container<T>& other);
@@ -27,7 +28,7 @@ public:
     const Container<T>& operator=(const Container<T>& other);
 
     int getCount() const;
-    void containerRealloc(int newSize);
+
 };
 
 /*   ŒÕ—“–” “Œ–€  */
@@ -68,8 +69,7 @@ void Container<T>::InsertElem(const T& elem) {
     if (count == size) {
         containerRealloc(size + step);
     }
-    elems[count] = elem;
-    count++;
+    elems[count++] = elem;
 }
 
 /*  SEARCH  */
@@ -92,7 +92,7 @@ void Container<T>::DeleteElem(const T& elem) {
     int idx = SearchIdx(elem);
 
     if (idx == -1) {
-        throw exception("Element not found");
+        throw runtime_error("Element not found");
     }
 
     for (int i = idx; i < count - 1; i++) {
@@ -107,7 +107,7 @@ template <typename T>
 T& Container<T>::operator[](int idx) {
 
     if (idx < 0 || idx >= count) {
-        throw exception("Index out of range");
+        throw runtime_error("Index out of range");
     }
     return elems[idx];
 }
@@ -120,13 +120,14 @@ const Container<T>& Container<T>::operator=(const Container<T>& other) {
         return *this;
     }
 
-    delete[] elems;
+    if (size != other.size) {
+        delete[] elems;
+        size = other.size;
+        elems = new T[size];
+    }
 
-    size = other.size;
     count = other.count;
     step = other.step;
-
-    elems = new T[size];
 
     for (int i = 0; i < count; i++) {
         elems[i] = other.elems[i];
@@ -150,7 +151,7 @@ void Container<T>::containerRealloc(int newSize) {
     }
 
     T* newArr = new T[newSize];
-    
+
     for (int i = 0; i < count; i++) {
         newArr[i] = elems[i];
     }
@@ -171,6 +172,7 @@ private:
     int count;
     int step;
 
+    void containerRealloc(int newSize);
 public:
     Container(int startSize = 5, int stepSize = 5);
     Container(const Container<T*>& other);
@@ -185,7 +187,6 @@ public:
     const Container<T*>& operator=(const Container<T*>& other);
 
     int getCount() const;
-    void containerRealloc(int newSize);
 };
 
 /*   ŒÕ—“–” “Œ–€  */
@@ -204,7 +205,7 @@ Container<T*>::Container(const Container<T*>& other) {
     count = other.count;
     step = other.step;
 
-    elems = new T* [size];
+    elems = new T * [size];
     for (int i = 0; i < count; i++) {
         elems[i] = new T(*other.elems[i]);
     }
@@ -225,16 +226,7 @@ Container<T*>::~Container() {
 template <typename T>
 void Container<T*>::InsertElem(T* elem) {
     if (count == size) {
-        int newSize = size + step;
-        T* newArr = new T[newSize];
-
-        for (int i = 0; i < count; i++) {
-            newArr[i] = elems[i];
-        }
-
-        delete[] elems;
-        elems = newArr;
-        size = newSize;
+        containerRealloc(size + step);
     }
     elems[count] = elem;
     count++;
@@ -260,7 +252,7 @@ void Container<T*>::DeleteElem(T* elem) {
     int idx = SearchIdx(elem);
 
     if (idx == -1) {
-        throw exception("Element not found");
+        throw runtime_error("Element not found");
     }
 
     delete elems[idx];
@@ -276,7 +268,7 @@ void Container<T*>::DeleteElem(T* elem) {
 template <typename T>
 T*& Container<T*>::operator[](int idx) {
     if (idx < 0 || idx >= count) {
-        throw exception("Index out of range");
+        throw runtime_error("Index out of range");
     }
     return elems[idx];
 }
@@ -293,18 +285,26 @@ const Container<T*>& Container<T*>::operator=(const Container<T*>& other) {
         delete elems[i];
     }
 
-    delete[] elems;
+    if (size != other.size) {
+        delete[] elems;
+        size = other.size;
+        elems = new T[size];
+    }
 
-    size = other.size;
     count = other.count;
     step = other.step;
-
-    elems = new T* [size];
 
     for (int i = 0; i < count; i++) {
         elems[i] = new T(*other.elems[i]);
     }
     return *this;
+}
+
+/*  GET COUNT  */
+
+template <typename T>
+int Container<T*>::getCount() const {
+    return count;
 }
 
 /* REALLOC */
@@ -315,7 +315,7 @@ void Container<T*>::containerRealloc(int newSize) {
         throw runtime_error("Invalid size");
     }
 
-    T** newArr = new T* [newSize];
+    T** newArr = new T * [newSize];
 
     for (int i = 0; i < count; i++) {
         newArr[i] = elems[i];
