@@ -10,12 +10,12 @@
 using namespace std;
 
 Person::Person() {
-    name.first_name = "";
-    name.last_name = "";
+    name.setFirstName("");
+    name.setLastName("");
     gender = M;
-    date_of_birth.day = 1;
-    date_of_birth.month = 1;
-    date_of_birth.year = 2000;
+    date_of_birth.setDay(1);
+    date_of_birth.setMonth(1);
+    date_of_birth.setYear(2000);
     country = "";
     city = "";
     sport = Unknown;
@@ -24,7 +24,8 @@ Person::Person() {
     record = 0.0;
 }
 
-PersonsLibrary::PersonsLibrary(string filename) {
+
+PersonsLibrary::PersonsLibrary(const string& filename) {
 
     ifstream file(filename);
     if (!file.is_open()) {
@@ -39,36 +40,44 @@ PersonsLibrary::PersonsLibrary(string filename) {
     file.seekg(0);
 
 
-
     for (int i = 0; i < this->count; i++) {
         getline(file, line);
         if (line.empty()) continue;
 
-        this->array[i] = Person(line);
-
+        array[i] = Person(line);
     }
     file.close();
 
 }
 
 
-Person::Person(string line) {
+PersonsLibrary::~PersonsLibrary() {
+    delete[]array;
+}
+
+
+Person::Person(const string& line) {
     stringstream ss(line);
     string token;
-
+    string temp;
+    int year = 2000, month = 1, day = 1;
     getline(ss, token, ';');
     stringstream fio_ss(token);
-    getline(fio_ss, this->name.last_name, ' ');
-    getline(fio_ss, this->name.first_name, ' ');
+    getline(fio_ss, temp, ' ');
+    name.setLastName(temp);
+    getline(fio_ss, temp, ' ');
+    name.setFirstName(temp);
     getline(ss, token, ';');
     this->gender = (token == "M") ? M : F;
 
     getline(ss, token, ';');
-    sscanf(token.c_str(), "%d-%d-%d",
-        &this->date_of_birth.year,
-        &this->date_of_birth.month,
-        &this->date_of_birth.day);
-
+    stringstream date_ss(token);
+    getline(date_ss, temp, '-');
+    date_of_birth.setYear(year);
+    getline(date_ss, temp, '-');
+    date_of_birth.setMonth(month);
+    getline(date_ss, temp, '-');
+    date_of_birth.setDay(day);
     getline(ss, this->country, ';');
 
     getline(ss, this->city, ';');
@@ -93,46 +102,51 @@ Sport convertSport(const string& input_sport) {
     return Unknown;
 }
 
-void PersonsLibrary::findRecord(const string input) {
-    Sport target_sport = convertSport(input);
 
+BestEntries PersonsLibrary::findRecord(const string& input) {
+    Sport target_sport = convertSport(input);
+    int entryCount = 0;
     if (target_sport == Unknown) {
         cout << "incorrect sport";
-        return;
+        BestEntries mistake;
+        mistake.setEntryCount(0);
+        return mistake;
     }
 
     BestEntries result;
-    result.entryCount = 0;
     BestEntry* unique_disciplines = new BestEntry[this->count];
 
     for (int i = 0; i < this->count; i++) {
-        if (this->array[i].sport == target_sport) {
+        if (this->array[i].getSport() == target_sport) {
             bool found = false;
-            for (int j = 0; j < result.entryCount; j++) {
-                if (unique_disciplines[j].discipline == this->array[i].discipline) {
+            for (int j = 0; j < entryCount; j++) {
+                if (unique_disciplines[j].getDiscipline() == array[i].getDiscipline()) {
                     found = true;
                     break;
                 }
             }
-            if (!found) unique_disciplines[result.entryCount++].discipline = this->array[i].discipline;
+            if (!found) {
+                unique_disciplines[entryCount].setDiscipline(array[i].getDiscipline());
+                entryCount++;
+            }
         }
     }
+    result.setEntryCount(entryCount);
+    result.setUniqueDisciplines(new BestEntry[result.getEntryCount()]);
 
-    result.unique_disciplines = new BestEntry[result.entryCount];
 
-
-    for (int i = 0; i < result.entryCount; i++) {
-        result.unique_disciplines[i].best_record = 0;
+    for (int i = 0; i < result.getEntryCount(); i++) {
+        result.getUniqueDisciplines()[i].setBestRecord(0);
         for (int j = 0; j < this->count; j++) {
-            if (unique_disciplines[i].discipline == this->array[j].discipline) {
-                result.unique_disciplines[i].discipline = this->array[j].discipline;
-                if (this->array[j].record > result.unique_disciplines[i].best_record) {
+            if (unique_disciplines[i].getDiscipline() == this->array[j].getDiscipline()) {
+                result.getUniqueDisciplines()[i].setDiscipline(this->array[j].getDiscipline());
+                if (this->array[j].getRecord() > result.getUniqueDisciplines()[i].getBestRecord()) {
 
-                    result.unique_disciplines[i].person = this->array[j];
+                    result.getUniqueDisciplines()[i].setPerson(this->array[j]);
                 }
             }
         }
     }
     delete[]unique_disciplines;
-    cout << result;
+    return result;
 }
