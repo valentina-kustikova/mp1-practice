@@ -144,22 +144,21 @@ void Triangle::print_angle_type() {
 void Triangle::print() {
 
     double ha, hb, hc;
+    cout << A.x << " " << A.y << ";"
+        << B.x << " " << B.y << ";"
+        << C.x << " " << C.y << endl;
 
-    /*cout << A.x << " " << A.y << ";"
-      << B.x << " " << B.y << ";"
-      << C.x << " " << C.y << ";" << endl;*/
     cout << "периметр= " << perimetr() << endl;
     cout << "площадь= " << area() << endl;
 
     hights(&ha, &hb, &hc);
-    cout << "высота ha= " << ha
-        << "высота hb= " << hb
+    cout << "высота ha= " << ha<<","
+        << "высота hb= " << hb<<","
         << "высота hc= " << hc << endl;
 
     cout << "тип по стороне: ";
     print_side_type();
-    cout << endl;
-
+  
     cout << "тип по углу: ";
     print_angle_type();
     cout << endl;
@@ -202,6 +201,7 @@ void TriangleLib::file_open(const char* filename) {
 }
 
 void TriangleLib::show_dots() {
-    for (int i = 0; i < count; i++)
+    for (int i = 0; i < count; i++) {
         triangles[i].print();
+    }
 }

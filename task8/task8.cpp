@@ -7,14 +7,12 @@
 using namespace std;
 #include "funcs.h"
 
-int main(int argc, char** argv) {
+int main() {
   setlocale(LC_ALL, "Russian");
-  if (argc < 2) {
-    printf("incorrect parameters");
-    return 1;
-  }
-  const char* filename = argv[1];
+
+  const char* filename = "triangle.txt";
   TriangleLib lib;
   lib.file_open(filename);
+  lib.show_dots();
   return 0;
 }
