@@ -124,10 +124,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Container.h" />
+    <ClInclude Include="TestCont.h" />
+    <ClInclude Include="TestPointerCont.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Container.cpp" />
     <ClCompile Include="Source.cpp" />
+    <ClCompile Include="TestCont.cpp" />
+    <ClCompile Include="TestPointerCont.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
