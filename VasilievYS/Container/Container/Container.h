@@ -185,7 +185,7 @@ Container<T*>::Container(std::size_t s, T* elem, const std::size_t st) :
 {
 	for (std::size_t i = 0; i < size; i++)
 	{
-		elems[i] = new T(*elem);
+		elems[i] = new T(*elem );
 	}
 }
 
@@ -207,7 +207,7 @@ Container<T*>::Container(Container<T*>&& C):
 {
 	C.elems = nullptr;
 	C.size = 0;
-	C.capacity = 0;
+	C.capacity = C.size;
 }
 
 template<typename T>
