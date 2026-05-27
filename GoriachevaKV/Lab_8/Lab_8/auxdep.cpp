@@ -1,82 +1,51 @@
-#include <iostream>
 #include <fstream>
-#include <string>
 #include <sstream>
+#include <iostream>
 #include "auxdep.h"
+#include "department.h"
 
-using namespace std;
 
-
-int database_r(string filename, int* rows) {
-	ifstream f(filename);
-	if (!f.is_open()) {
-		cout << "Error opening the file.\n" << endl;
-		return 1;
-	}
-	cout << "The database found." << endl << endl;
-	string s;
-	while (getline(f, s)) {
-		(*rows)++;
-	}
-	f.close();
-	return 0;
+int countRowsInFile(const std::string& filename) {
+    std::ifstream f(filename);
+    if (!f.is_open()) return -1;
+    int rows = 0;
+    std::string s;
+    while (std::getline(f, s)) ++rows;
+    return rows;
 }
 
-void put_owners_into_array(string filename, OwnerLib* db) {
-	int i;
-	ifstream f(filename);
-	string s;
-	string sn, nm, pn, y, m, d, auto_n, pass_n, phone_n, dep;
-	
-	for (i = 0; i < db->count; i++) {
-		getline(f, s);
-		stringstream ss(s);
+void fillOwnersArray(std::ifstream& f, Owner* owners, int count) {
+    std::string s, sn, nm, pn, y, m, d, auto_n, pass_n, phone_n, dep;
+    for (int i = 0; i < count; ++i) {
+        std::getline(f, s);
+        std::stringstream ss(s);
 
-		getline(ss, sn, ' ');
-		getline(ss, nm, ' ');
-		getline(ss, pn, ';');
+        std::getline(ss, sn, ' ');
+        std::getline(ss, nm, ' ');
+        std::getline(ss, pn, ';');
 
-		db->owners[i].full_name.surname = sn;
-		db->owners[i].full_name.name = nm;
-		db->owners[i].full_name.patronymic = pn;
+        owners[i].full_name.surname = sn;
+        owners[i].full_name.name = nm;
+        owners[i].full_name.patronymic = pn;
 
-		getline(ss, y, '-');
-		getline(ss, m, '-');
-		getline(ss, d, ';');
+        std::getline(ss, y, '-');
+        std::getline(ss, m, '-');
+        std::getline(ss, d, ';');
 
-		unsigned long ul_tmp = stoul(y);
-		db->owners[i].birth_date.year = static_cast<unsigned int>(ul_tmp);
-		ul_tmp = stoul(m);
-		db->owners[i].birth_date.month = static_cast<unsigned int>(ul_tmp);
-		ul_tmp = stoul(d);
-		db->owners[i].birth_date.day = static_cast<unsigned int>(ul_tmp);
+        unsigned int year = static_cast<unsigned int>(std::stoul(y));
+        unsigned int month = static_cast<unsigned int>(std::stoul(m));
+        unsigned int day = static_cast<unsigned int>(std::stoul(d));
 
-		getline(ss, auto_n, ';');
-		getline(ss, pass_n, ';');
-		getline(ss, phone_n, ';');
-		getline(ss, dep, '\n');
+        owners[i].birth_date = Date(day, month, year);
 
-		db->owners[i].auto_number = auto_n;
-		db->owners[i].pass_number = pass_n;
-		db->owners[i].phone_number = phone_n;
-		db->owners[i].department = dep;
-	}
-	f.close();
-}
+        std::getline(ss, auto_n, ';');
+        std::getline(ss, pass_n, ';');
+        std::getline(ss, phone_n, ';');
+        std::getline(ss, dep, '\n');
 
-void print_list(string requested_department, OwnerLib* found) {
-	int i;
-	if (found->count == 0) {
-		cout << "There is no owners in " << requested_department << "." << endl << endl;
-	}
-	else {
-		cout << "There is " << found->count << " owners in " << requested_department << "." << endl << endl;
-		cout << "-------------------------------------------------------------------------" << endl;
-		cout << "FULL NAME, BIRTH DATE, AUTO NUMBER, PASS NUMBER, PHONE NUMBER, DEPARTMENT" << endl;
-		cout << "-------------------------------------------------------------------------" << endl;
-
-		for (i = 0; i < found->count; i++) {
-			cout << found->owners[i] << endl;
-		}
-	}
+        owners[i].auto_number = auto_n;
+        owners[i].pass_number = pass_n;
+        owners[i].phone_number = phone_n;
+        owners[i].department = dep;
+    }
 }

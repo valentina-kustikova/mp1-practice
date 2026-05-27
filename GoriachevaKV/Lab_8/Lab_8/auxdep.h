@@ -2,10 +2,8 @@
 #define __AUXDEP_H_
 #include "department.h"
 
-using namespace std;
 
+int countRowsInFile(const std::string& filename);
+void fillOwnersArray(std::ifstream& f, Owner* owners, int count);
 
-int database_r(string filename, int* rows);
-void put_owners_into_array(string filename, OwnerLib* db);
-void print_list(string requested_department, OwnerLib* found);
 #endif

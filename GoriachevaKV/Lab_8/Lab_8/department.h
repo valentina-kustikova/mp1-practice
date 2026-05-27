@@ -1,41 +1,53 @@
 #ifndef __DEPARTMENT_H_
 #define __DEPARTMENT_H_
 
-using namespace std;
+#include <string>
+#include <iostream>
 
+struct FullName {
+    std::string surname;
+    std::string name;
+    std::string patronymic;
 
-struct FullName{
-	string surname;
-	string name;
-	string patronymic;
-
-	friend ostream& operator << (ostream& out, const FullName& fn);
+    friend std::ostream& operator<<(std::ostream& out, const FullName& fn);
 };
 
-struct Date{
-	unsigned int day;
-	unsigned int month;
-	unsigned int year;
+struct Date {
+    unsigned int day;
+    unsigned int month;
+    unsigned int year;
 
-	friend ostream& operator << (ostream& out, const Date& fn);
+    Date() : day(1), month(1), year(1900) {}
+    Date(unsigned int d, unsigned int m, unsigned int y);
+
+    friend std::ostream& operator<<(std::ostream& out, const Date& dt);
 };
 
-struct Owner{
-	FullName full_name;
-	Date birth_date;
-	string auto_number;
-	string pass_number;
-	string phone_number;
-	string department;
+struct Owner {
+    FullName full_name;
+    Date birth_date;
+    std::string auto_number;
+    std::string pass_number;
+    std::string phone_number;
+    std::string department;
 
-	friend ostream& operator << (ostream& out, const Owner& fn);
+    friend std::ostream& operator<<(std::ostream& out, const Owner& own);
 };
 
-struct OwnerLib{
-	Owner* owners;
-	int count;
+struct OwnerLib {
+    Owner* owners;
+    int count;
+
+    OwnerLib();
+    explicit OwnerLib(const std::string& filename);
+    OwnerLib(const OwnerLib& other);
+    ~OwnerLib();
+
+    OwnerLib& operator=(const OwnerLib& other);
+
+    OwnerLib filterByDepartment(const std::string& department) const;
+
+    friend std::ostream& operator<<(std::ostream& out, const OwnerLib& lib);
 };
 
-
-void find_owners(string requested_department, OwnerLib* db, OwnerLib* found);
 #endif
