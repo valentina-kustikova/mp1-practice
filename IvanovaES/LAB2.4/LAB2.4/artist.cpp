@@ -63,7 +63,7 @@ ArtistLibrary::~ArtistLibrary() {
     delete[] persons;
 }
 
-Artist* ArtistLibrary::findArtist(const string& name) {
+Artist* ArtistLibrary::findArtist(const string& name) const {
     for (int i = 0; i < cnt; i++) {
         if (persons[i].name.find(name) != string::npos) {
             return &persons[i];

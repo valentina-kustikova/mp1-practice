@@ -57,22 +57,21 @@ private:
     Painting* works;
     int cnt;
 
+    Genre stringToGenre(const string& str);
+    Location stringToLocation(const string& str);
 public:
     PaintingsLibrary();
     PaintingsLibrary(const PaintingsLibrary& other);
     ~PaintingsLibrary();
 
-    PaintingsLibrary* findPaintings(int artistID);
-    float calculateLocationStats();
-    void ReadFilePaintings(const string& filePaintings);
-    
-    Genre stringToGenre(const string& str);
-    static string genreToString(Genre genre);
-    Location stringToLocation(const string& str);
-    static string locationToString(Location location);
+    PaintingsLibrary* findPaintings(int artistID) const;
+    float calculateLocationStats() const;
+    void ReadFilePaintings(const string& filePaintings); 
 
     int getCount() const;
 
+    static string genreToString(Genre genre);
+    static string locationToString(Location location);
     friend ostream& operator<<(ostream& out, const PaintingsLibrary& p);
 };
 

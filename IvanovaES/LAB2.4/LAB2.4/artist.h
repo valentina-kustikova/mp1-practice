@@ -44,16 +44,16 @@ private:
     Artist* persons;
     int cnt;
 
+    Style stringToStyle(const string& str);    
 public:
     ArtistLibrary();
     ArtistLibrary(const ArtistLibrary& other);
     ~ArtistLibrary();
 
-    Artist* findArtist(const string& name);
+    Artist* findArtist(const string& name) const;
     void ReadFileArtist(const string& fileArtist);
-    Style stringToStyle(const string& str);
-    static string styleToString(Style style);
 
+    static string styleToString(Style style);
     friend ostream& operator<<(ostream& out, const ArtistLibrary& a);
 };
 

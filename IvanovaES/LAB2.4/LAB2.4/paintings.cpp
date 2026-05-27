@@ -58,7 +58,7 @@ PaintingsLibrary::~PaintingsLibrary() {
     delete[] works;
 }
 
-PaintingsLibrary* PaintingsLibrary::findPaintings(int artistID) {
+PaintingsLibrary* PaintingsLibrary::findPaintings(int artistID) const {
     int count = 0;
 
     for (int i = 0; i < cnt; i++) {
@@ -87,7 +87,7 @@ PaintingsLibrary* PaintingsLibrary::findPaintings(int artistID) {
     return result;
 }
 
-float PaintingsLibrary::calculateLocationStats() {
+float PaintingsLibrary::calculateLocationStats() const {
 
     if (cnt == 0) {
         return 0;

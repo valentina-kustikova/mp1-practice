@@ -20,54 +20,59 @@ int main(int argc, char* argv[]) {
     ArtistLibrary libArtists;
     PaintingsLibrary libPaintings;
 
-    /*  времхе  */
+    try {
+      /*  времхе  */
 
-    libArtists.ReadFileArtist(fileArtist);
-    libPaintings.ReadFilePaintings(filePaintings);
+      libArtists.ReadFileArtist(fileArtist);
+      libPaintings.ReadFilePaintings(filePaintings);
 
-    /* онхяй */
+      /* онхяй */
 
-    string name;
-    cout << "Enter artist name - ";
-    getline(cin, name);
+      string name;
+      cout << "Enter artist name - ";
+      getline(cin, name);
 
-    Artist* foundArtist = libArtists.findArtist(name);
+      Artist* foundArtist = libArtists.findArtist(name);
 
-    while (foundArtist == NULL) {
+      while (foundArtist == NULL) {
         cout << "Artist not found. Try again: ";
         getline(cin, name);
         foundArtist = libArtists.findArtist(name);
-    }
+      }
 
-    PaintingsLibrary* foundPaintings = libPaintings.findPaintings(foundArtist->getPainterID());
+      PaintingsLibrary* foundPaintings = libPaintings.findPaintings(foundArtist->getPainterID());
 
-    float percent = 0;
+      float percent = 0;
 
-    if (foundPaintings != NULL) {
+      if (foundPaintings != NULL) {
         percent = foundPaintings->calculateLocationStats();
-    }
+      }
 
-    /* бшбнд */
+      /* бшбнд */
 
-    cout << *foundArtist
+      cout << *foundArtist
         << " - "
         << foundPaintings->getCount()
         << " paintings found\n\n";
 
-    cout << "Paintings:\n";
+      cout << "Paintings:\n";
 
-    cout << *foundPaintings;
+      cout << *foundPaintings;
 
-    cout << "\nLocation statistics:\n";
+      cout << "\nLocation statistics:\n";
 
-    cout << "Private: "
+      cout << "Private: "
         << percent
         << "% paintings (museum - "
         << 100 - percent
         << "%)" << endl;
 
-    if (foundPaintings != NULL) {
+      if (foundPaintings != NULL) {
         delete foundPaintings;
+      }
+    }
+    catch (const std::exception& ex) {
+      cout << ex.what() << endl;
     }
 
     return 0;
