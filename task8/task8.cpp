@@ -3,16 +3,21 @@
 #include <cmath>
 #include <fstream> 
 #include <string>
-
-using namespace std;
 #include "funcs.h"
 
-int main() {
-  setlocale(LC_ALL, "Russian");
+using namespace std;
 
-  const char* filename = "triangle.txt";
+
+int main(int argc, char **argv) {
+  setlocale(LC_ALL, "Russian");
+  if (argc < 2)
+  {
+    cout << "incorrect arguments";
+    return 1;
+  }
+  const char* filename = argv[1];
   TriangleLib lib;
   lib.file_open(filename);
-  lib.show_dots();
+  cout << lib;
   return 0;
 }

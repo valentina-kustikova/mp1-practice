@@ -17,53 +17,51 @@ Point::Point() {
   y = 0;
 }
 
-Triangle::Triangle() {
+double dist(const Point& p1, const Point& p2) {
+  return sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
 }
 
-Triangle::Triangle(Point A, Point B, Point C) {
-    this->A = A;
-    this->B = B;
-    this->C = C;
-}
-double Triangle::dist(Point* p1, Point* p2) {
-    return sqrt((p1->x - p2->x) * (p1->x - p2->x) + (p1->y - p2->y) * (p1->y - p2->y));
+Triangle::Triangle(): A(0,0), B(0,0), C(0,0) {
 }
 
-double Triangle:: perimetr() {
+Triangle::Triangle(const Point& A, const Point& B, const Point& C): A(A), B(B), C(C) {
+}
 
-    double a = dist(&A, &B);
-    double b = dist(&B, &C);
-    double c = dist(&A, &C);
+double Triangle:: perimetr() const{
+
+    double a = dist(A, B);
+    double b = dist(B, C);
+    double c = dist(A, C);
 
     return a + b + c;
 }
-double Triangle::area() {
+double Triangle::area() const{
 
-    double a = dist(&A, &B);
-    double b = dist(&B, &C);
-    double c = dist(&A, &C);
+    double a = dist(A, B);
+    double b = dist(B, C);
+    double c = dist(A, C);
 
     double p = (a + b + c) / 2.0;
 
     return sqrt(p * (p - a) * (p - b) * (p - c));
 }
 
-void Triangle::hights(double* ha, double* hb, double* hc) {
+void Triangle::hights(double& ha, double& hb, double& hc) const{
 
-    double a = dist(&A, &B);
-    double b = dist(&B, &C);
-    double c = dist(&A, &C);
+    double a = dist(A, B);
+    double b = dist(B, C);
+    double c = dist(A, C);
 
     double S = area();
-    *ha = 2 * S / a;
-    *hb = 2 * S / b;
-    *hc = 2 * S / c;
+    ha = 2 * S / a;
+    hb = 2 * S / b;
+    hc = 2 * S / c;
 }
-SideType Triangle::side_type() {
+SideType Triangle::side_type() const{
 
-    double a = dist(&A, &B);
-    double b = dist(&B, &C);
-    double c = dist(&A, &C);
+    double a = dist(A, B);
+    double b = dist(B, C);
+    double c = dist(A, C);
 
     if (fabs(a - b) < 1e-6 && fabs(b - c) < 1e-6)
         return EQUILATERAL;
@@ -75,11 +73,11 @@ SideType Triangle::side_type() {
         return  SCALENE;
 }
 
-AngleType Triangle::angle_type() {
+AngleType Triangle::angle_type() const {
 
-    double a = dist(&A, &B);
-    double b = dist(&B, &C);
-    double c = dist(&A, &C);
+    double a = dist(A, B);
+    double b = dist(B, C);
+    double c = dist(A, C);
 
     double a2 = a * a;
     double b2 = b * b;
@@ -109,7 +107,7 @@ AngleType Triangle::angle_type() {
     return OBTUSE;
 }
 
-void Triangle::print_side_type() {
+void Triangle::print_side_type() const {
     SideType s = side_type();
     switch (s) {
 
@@ -125,7 +123,7 @@ void Triangle::print_side_type() {
     }
     cout << endl;
 }
-void Triangle::print_angle_type() {
+void Triangle::print_angle_type() const {
     AngleType a = angle_type();
     switch (a) {
 
@@ -141,28 +139,7 @@ void Triangle::print_angle_type() {
     }
     cout << endl;
 }
-void Triangle::print() {
 
-    double ha, hb, hc;
-    cout << A.x << " " << A.y << ";"
-        << B.x << " " << B.y << ";"
-        << C.x << " " << C.y << endl;
-
-    cout << "периметр= " << perimetr() << endl;
-    cout << "площадь= " << area() << endl;
-
-    hights(&ha, &hb, &hc);
-    cout << "высота ha= " << ha<<","
-        << "высота hb= " << hb<<","
-        << "высота hc= " << hc << endl;
-
-    cout << "тип по стороне: ";
-    print_side_type();
-  
-    cout << "тип по углу: ";
-    print_angle_type();
-    cout << endl;
-}
 
 TriangleLib::TriangleLib() {
     triangles = nullptr;
@@ -200,8 +177,3 @@ void TriangleLib::file_open(const char* filename) {
     file.close();
 }
 
-void TriangleLib::show_dots() {
-    for (int i = 0; i < count; i++) {
-        triangles[i].print();
-    }
-}

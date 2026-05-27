@@ -1,0 +1,2 @@
+C:\Users\Student2023\Desktop\temp2\mp1-practice\task8\x64\Debug\task8.exe
+C:\Users\Student2023\Desktop\temp2\mp1-practice\task8\x64\Debug\task8.pdb
