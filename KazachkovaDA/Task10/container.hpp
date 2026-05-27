@@ -1,6 +1,9 @@
 #ifndef _CONTAINER_H
 #define _CONTAINER_H
 
+#include <iostream>
+#include "container.hpp"
+
 
 template<typename T>
 class Container {
@@ -18,7 +21,16 @@ public:
 	T& operator[](int);
 	const Container <T>& operator = (const Container <T>&);
 	~Container();
-	int find(const T&);
+	int find(const T&) const;
+
+	friend std::ostream& operator<< (std::ostream& out, const Container<T>& c1)
+	{
+		for (int i = 0; i < c1.capacity; i++)
+		{
+			 out << c1.elem[i] << " ";
+		}
+		return out;
+	}
 };
 
 template<typename T>
@@ -32,16 +44,21 @@ public:
 	Container(int, int);
 	Container(int, int, T* const&);
 	Container(const Container<T*>&);
-	void push_back(T* const& elem);
-	void remove(T* const& elem);
+	void push_back(T* const&);
+	void remove(T* const&);
 	T*& operator[](int);
 	const Container <T*>& operator = (const Container <T*>&);
 	~Container();
-	int find(T* const& elem);
+	int find(T* const&) const;
+	friend std::ostream& operator<< (std::ostream& out, const Container<T*>& c1)
+	{
+		for (int i = 0; i < c1.capacity; i++)
+		{
+			out << *c1.elem[i] << " ";
+		}
+		return out;
+	}
 };
-#include <iostream>
-#include "container.hpp"
-
 
 template <typename T>
 Container <T>::Container() :
@@ -128,11 +145,10 @@ void Container <T>::push_back(const T& element)
 	if (size == capacity)
 		reallocation();
 	elem[capacity++] = element;
-	std::cout <<"element " << element << " is in " << (capacity - 1) << std::endl;
 }
 
 template <typename T>
-int Container<T>::find(const T& element)
+int Container<T>::find(const T& element) const
 {
 	for (int i = 0; i < capacity; i++)
 		if (elem[i] == element)
@@ -147,12 +163,6 @@ void Container <T>::remove(const T& element)
 	if (i == -1)
 		throw std::exception("not_found");
 	elem[i] = elem[--capacity];
-	std::cout << "remove "<<element<<": ";
-	for (int j = 0; j < capacity; j++)
-	{
-		std::cout << elem[j] << " ";
-	}
-	std::cout << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////////
@@ -171,10 +181,9 @@ void Container <T*>::reallocation()
 		size += step;
 		T** new_data = new T * [size];
 		for (int i = 0; i < capacity; i++)
-			new_data[i] = new T(*elem[i]);
-		for (int i = 0; i < capacity; i++)
-			delete elem[i];
+			new_data[i] = elem[i];
 		delete[]elem;
+		elem = new_data;
 	}
 }
 
@@ -212,22 +221,18 @@ const Container <T*>& Container <T*>:: operator = (const Container <T*>& c1)
 {
 	if (this == &c1)
 		return *this;
-	if (size != c1.size)
+	for (int i = 0; i < size; i++)
 	{
-		for (int i = 0; i < size; i++)
-		{
-			delete elem[i];
-		}
-		delete[] elem;
+		delete elem[i];
 	}
-	size = c1.size;
+	if (size != c1.size)
+	{		
+		delete[] elem;
+		size = c1.size;
+		elem = new T * [size];
+	}
 	capacity = c1.capacity;
 	step = c1.step;
-	elem = new T * [size];
-
-	for (int i = 0; i < size; i++)
-		elem[i] = nullptr;
-
 	for (int i = 0; i < capacity; i++)
 		elem[i] = new T(*c1.elem[i]);
 
@@ -237,7 +242,7 @@ const Container <T*>& Container <T*>:: operator = (const Container <T*>& c1)
 template <typename T>
 Container <T*>::~Container()
 {
-	for (int i = 0; i < size; i++)
+	for (int i = 0; i < capacity; i++)
 	{
 		delete elem[i];
 	}
@@ -261,10 +266,10 @@ void Container <T*>::push_back(T* const& element)
 }
 
 template <typename T>
-int Container<T*>::find(T* const& element)
+int Container<T*>::find(T* const& element) const
 {
 	for (int i = 0; i < capacity; i++)
-		if (elem[i] == element)
+		if (*elem[i] == *element)
 			return i;
 	return -1;
 }
