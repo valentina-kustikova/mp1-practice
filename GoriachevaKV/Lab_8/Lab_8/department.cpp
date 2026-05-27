@@ -75,6 +75,18 @@ OwnerLib::~OwnerLib() {
     delete[] owners;
 }
 
+const OwnerLib& OwnerLib::operator=(const OwnerLib& other) {
+    if (this == &other) return *this;
+    if (this->count != other.count) {
+        delete[] owners;
+        count = other.count;
+        owners = new Owner[count];
+    }
+    for (int i = 0; i < count; i++)
+        owners[i] = other.owners[i];
+    return *this;
+}
+
 OwnerLib OwnerLib::filterByDepartment(const std::string& department) const {
     OwnerLib result;
     int matchCount = 0;

@@ -42,7 +42,7 @@ struct OwnerLib {
     ~OwnerLib();
 
     OwnerLib filterByDepartment(const std::string& department) const;
-
+    const OwnerLib& operator=(const OwnerLib& other);
     friend std::ostream& operator<<(std::ostream& out, const OwnerLib& lib);
 };
 
