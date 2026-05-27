@@ -9,8 +9,8 @@ int main(int argc, char** argv) {
     int choice;
 
     if (argc < 2) {
-        printf("Ошибка: не указан файл для загрузки!\n");
-        printf("Использование: %s <имя_файла>\n", argv[0]);
+        printf("ERROR: No file specified!\n");
+        printf("Usage: %s <filename>\n", argv[0]);
         return 1;
     }
 
@@ -29,28 +29,29 @@ int main(int argc, char** argv) {
             fscanf(f, "%s\n", products[i].date);
         }
         fclose(f);
-        printf("Загружено %d товаров из %s\n", count, argv[1]);
+        printf("Loaded %d products from %s\n", count, argv[1]);
     }
     else {
-        printf("Файл %s не найден. Склад пуст.\n", argv[1]);
+        printf("File %s not found. Warehouse is empty.\n", argv[1]);
     }
 
     do {
-        printf("\n1. Показать все товары\n");
-        printf("2. Найти отсутствующие товары\n");
-        printf("3. Сохранить в файл\n");
-        printf("4. Загрузить из файла\n");
-        printf("0. Выход\n");
-        printf("Выбор: ");
+        printf("\n=== WAREHOUSE MENU ===\n");
+        printf("1. Show all products\n");
+        printf("2. Find missing products (quantity = 0)\n");
+        printf("3. Save to file\n");
+        printf("4. Load from file\n");
+        printf("0. Exit\n");
+        printf("Choice: ");
         scanf("%d", &choice);
 
         if (choice == 1) {
             if (count == 0) {
-                printf("Склад пуст. Загрузите данные из файла.\n");
+                printf("Warehouse is empty. Load data from file first.\n");
             }
             else {
                 printf("\n%-20s %-10s %8s %8s %-12s\n",
-                    "Название", "Ед.изм", "Цена", "Кол-во", "Дата");
+                    "Name", "Unit", "Price", "Quantity", "Date");
                 for (int i = 0; i < count; i++) {
                     printProduct(products[i]);
                 }
@@ -58,7 +59,7 @@ int main(int argc, char** argv) {
         }
         else if (choice == 2) {
             if (count == 0) {
-                printf("Склад пуст. Загрузите данные из файла.\n");
+                printf("Warehouse is empty. Load data from file first.\n");
             }
             else {
                 Product* missingProducts[100];
@@ -67,10 +68,10 @@ int main(int argc, char** argv) {
                 SearchMissingProducts(products, count, missingProducts, &resultCount);
 
                 if (resultCount == 0) {
-                    printf("Все товары есть в наличии\n");
+                    printf("All products are in stock.\n");
                 }
                 else {
-                    printf("\n=== Отсутствующие товары ===\n");
+                    printf("\n=== MISSING PRODUCTS ===\n");
                     for (int i = 0; i < resultCount; i++) {
                         printf("- %s\n", missingProducts[i]->name);
                     }
@@ -90,10 +91,10 @@ int main(int argc, char** argv) {
                         products[i].date);
                 }
                 fclose(f);
-                printf("Сохранено в %s\n", argv[1]);
+                printf("Saved to %s\n", argv[1]);
             }
             else {
-                printf("Ошибка сохранения в %s\n", argv[1]);
+                printf("ERROR: Cannot save to %s\n", argv[1]);
             }
         }
         else if (choice == 4) {
@@ -103,7 +104,7 @@ int main(int argc, char** argv) {
                 free(products[i].date);
             }
 
-            printf("Введите имя файла: ");
+            printf("Enter filename: ");
             char filename[100];
             scanf("%s", filename);
 
@@ -122,10 +123,10 @@ int main(int argc, char** argv) {
                     fscanf(f, "%s\n", products[i].date);
                 }
                 fclose(f);
-                printf("Загружено из %s\n", filename);
+                printf("Loaded from %s\n", filename);
             }
             else {
-                printf("Ошибка загрузки из %s\n", filename);
+                printf("ERROR: Cannot load from %s\n", filename);
             }
         }
     } while (choice != 0);
