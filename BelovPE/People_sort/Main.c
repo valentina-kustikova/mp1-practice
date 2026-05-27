@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
     rewind(file);
 
 
-    Read_the_File(buffer, file, count, library);
+    Read_the_File(buffer, file, library);
     fclose(file);
     
 

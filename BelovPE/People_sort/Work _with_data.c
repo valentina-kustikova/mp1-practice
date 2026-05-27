@@ -34,9 +34,9 @@ LibraryInfo* Create_the_library(int count) {
 }
 
 
-void Read_the_File(char* buffer, FILE* file, int count, LibraryInfo* library) {
+void Read_the_File(char* buffer, FILE* file, LibraryInfo* library) {
     int i = 0;
-    while (fgets(buffer, 512, file) && i < count) {
+    while (fgets(buffer, 512, file) && i < library->count) {
 
         buffer[strcspn(buffer, "\n")] = '\0';
 
@@ -142,7 +142,7 @@ void Read_the_File(char* buffer, FILE* file, int count, LibraryInfo* library) {
         }
         token = strtok_s(NULL, ";", &context);
         if (token) {
-            pers->address.Apartment = _strdup(token);
+            pers->address.Apartment = atoi(token);
         }
 
 
@@ -166,7 +166,7 @@ void Print_people(LibraryInfo* library) {
         printf("Height: %.2f ; Weight: %.2f\n", pers->height, pers->weight);
         printf("   Birth: %02d.%02d.%d ; Phone: %s\n",
             pers->date.Day, pers->date.Month, pers->date.Year, pers->phone);
-        printf("   Address: %s, %s, %s, %s, %s, %s, %s, %s\n\n\n",
+        printf("   Address: %s, %s, %s, %s, %s, %s, %s, %d\n\n\n",
             pers->address.MailIndex, pers->address.Country,
             pers->address.Region, pers->address.District,
             pers->address.City, pers->address.Street,
@@ -190,7 +190,6 @@ void Cleaning_of_memories(LibraryInfo* library) {
         free(pers->address.City);
         free(pers->address.Street);
         free(pers->address.House);
-        free(pers->address.Apartment);
 
         free(pers);
     }

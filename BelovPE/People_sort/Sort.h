@@ -30,7 +30,7 @@ typedef struct {
     char* City;
     char* Street;
     char* House;
-    char* Apartment;
+    unsigned Apartment;
 } Address;
 
 typedef struct {
