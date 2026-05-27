@@ -11,14 +11,17 @@
 using namespace std;
 
 class Person_data {
-private:
+private: 
     string first_name;
     string last_name;
 public:
+    Person_data(const string&, const string&);
+    Person_data() {
+      first_name = "";
+      last_name = "";
+    }
     string getFirstName() { return first_name; }
     string getLastName() { return last_name; }
-    void setFirstName(const string& temp) { first_name = temp; }
-    void setLastName(const string& temp) { last_name = temp; }
 };
 
 class Birsday {
@@ -27,10 +30,16 @@ private:
     int month = 0;
     int year = 0;
 public:
+    Birsday() {
+      day = 1;
+      month = 1;
+      year = 2000;
+    }
+    Birsday(int, int, int);
     int getDay() const { return day; }
-    void setDay(int temp) { day = temp; }
-    void setMonth(int temp) { month = temp; }
-    void setYear(int temp) { year = temp; }
+    void setDay(int temp) { if ((temp < 32) && (temp > 0)) day = temp; else throw "error"; }
+    void setMonth(int temp) { if ((temp < 13) && (temp > 0)) month = temp; else throw "error"; }
+    void setYear(int temp) { if (temp < 2027) year = temp; else throw "error"; }
 };
 
 enum Gender { M, F };
@@ -58,7 +67,7 @@ public:
         return out;
     }
     string getDiscipline() const { return discipline; }
-    void setDiscipline(string temp) { discipline = temp; }
+    void setDiscipline(const string& temp) { discipline = temp; }
     Sport getSport() const { return sport; }
     double getRecord() const { return record; }
 };
@@ -75,35 +84,26 @@ public:
     BestEntries findRecord(const string& input);
 };
 
-class BestEntry {
-private:
+struct BestEntry { 
     string discipline;
     int best_index;
     double best_record;
     Person person;
-public:
-    Person getPerson() const { return person; }
-    void setPerson(Person temp) { person = temp; }
-    string getDiscipline() const { return discipline; }
-    int getBestRecord() const { return best_record; }
-    void setBestRecord(double temp) { best_record = temp; }
-    void setDiscipline(string temp) { discipline = temp; }
-    void setBestIndex(int temp) { best_index = temp; }
+
 };
 
 class BestEntries {
 private:
-    int entryCount;
-    BestEntry* unique_disciplines;
+    int entryCount{ 0 };
+    BestEntry* unique_disciplines{ NULL };
 public:
+    BestEntries(int count) { entryCount = count; unique_disciplines = new BestEntry[entryCount]; };
     int  getEntryCount() const { return entryCount; }
-    void setEntryCount(int temp) { entryCount = temp; }
     BestEntry* getUniqueDisciplines() const { return unique_disciplines; }
-    void setUniqueDisciplines(BestEntry* temp) { unique_disciplines = temp; }
     friend ostream& operator << (ostream& out, const BestEntries& entries) {
 
         for (int i = 0; i < entries.entryCount; i++) {
-            out << entries.unique_disciplines[i].getPerson();
+            out << entries.unique_disciplines[i].person;
         }
         return out;
     }

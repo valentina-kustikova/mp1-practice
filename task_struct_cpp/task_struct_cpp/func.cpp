@@ -3,19 +3,15 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <vector>
 #include <cstring>
 #include <cstdio>
 
 using namespace std;
 
 Person::Person() {
-    name.setFirstName("");
-    name.setLastName("");
+    Person_data name();
     gender = M;
-    date_of_birth.setDay(1);
-    date_of_birth.setMonth(1);
-    date_of_birth.setYear(2000);
+    Birsday date_of_birth();
     country = "";
     city = "";
     sport = Unknown;
@@ -24,6 +20,16 @@ Person::Person() {
     record = 0.0;
 }
 
+Person_data::Person_data(const string& first, const string& last) {
+  first_name = first;
+  last_name = last;
+}
+
+Birsday::Birsday(int day, int month, int year) {
+  setDay(day);
+  setMonth(month);
+  setYear(year);
+}
 
 PersonsLibrary::PersonsLibrary(const string& filename) {
 
@@ -64,9 +70,10 @@ Person::Person(const string& line) {
     getline(ss, token, ';');
     stringstream fio_ss(token);
     getline(fio_ss, temp, ' ');
-    name.setLastName(temp);
+    string last = temp;
     getline(fio_ss, temp, ' ');
-    name.setFirstName(temp);
+    string first = temp;
+    Person_data name(first, last);
     getline(ss, token, ';');
     this->gender = (token == "M") ? M : F;
 
@@ -108,41 +115,39 @@ BestEntries PersonsLibrary::findRecord(const string& input) {
     int entryCount = 0;
     if (target_sport == Unknown) {
         cout << "incorrect sport";
-        BestEntries mistake;
-        mistake.setEntryCount(0);
-        return mistake;
     }
 
-    BestEntries result;
+    
     BestEntry* unique_disciplines = new BestEntry[this->count];
 
     for (int i = 0; i < this->count; i++) {
         if (this->array[i].getSport() == target_sport) {
             bool found = false;
             for (int j = 0; j < entryCount; j++) {
-                if (unique_disciplines[j].getDiscipline() == array[i].getDiscipline()) {
+                if (unique_disciplines[j].discipline == array[i].getDiscipline()) {
                     found = true;
                     break;
                 }
             }
             if (!found) {
-                unique_disciplines[entryCount].setDiscipline(array[i].getDiscipline());
+                unique_disciplines[entryCount].discipline = array[i].getDiscipline();
                 entryCount++;
             }
         }
     }
-    result.setEntryCount(entryCount);
-    result.setUniqueDisciplines(new BestEntry[result.getEntryCount()]);
+
+    BestEntries result(entryCount);
+
 
 
     for (int i = 0; i < result.getEntryCount(); i++) {
-        result.getUniqueDisciplines()[i].setBestRecord(0);
+        result.getUniqueDisciplines()[i].best_record = 0;
         for (int j = 0; j < this->count; j++) {
-            if (unique_disciplines[i].getDiscipline() == this->array[j].getDiscipline()) {
-                result.getUniqueDisciplines()[i].setDiscipline(this->array[j].getDiscipline());
-                if (this->array[j].getRecord() > result.getUniqueDisciplines()[i].getBestRecord()) {
+            if (unique_disciplines[i].discipline == this->array[j].getDiscipline()) {
+                result.getUniqueDisciplines()[i].discipline = this->array[j].getDiscipline();
+                if (this->array[j].getRecord() > result.getUniqueDisciplines()[i].best_record) {
 
-                    result.getUniqueDisciplines()[i].setPerson(this->array[j]);
+                    result.getUniqueDisciplines()[i].person = this->array[j];
                 }
             }
         }

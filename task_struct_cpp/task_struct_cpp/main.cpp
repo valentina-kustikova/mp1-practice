@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
     string filename;
     string input;
 
-    if (argc < 2) {
+    if (argc < 2) { 
         throw "Error with argc";
         return 1;
     }
