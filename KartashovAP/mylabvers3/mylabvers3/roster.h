@@ -36,91 +36,57 @@ private:
 public:
     Date();
     Date(int d, int m, int y);
-
-    int getDay() const;
-    int getMonth() const;
-    int getYear() const;
-    void setDay(int d);
-    void setMonth(int m);
-    void setYear(int y);
-
     friend istream& operator>>(istream& in, Date& a);
     friend ostream& operator<<(ostream& out, const Date& a);
 };
 
 class Address {
 private:
-    string postal_code;
-    string country;
-    string region;
-    string district;
-    string city;
-    string street;
-    string house;
-    string apartment;
+	string postal_code;
+	string country;
+	string region;
+	string district;
+	string city;
+	string street;
+	string house;
+	string apartment;
 public:
-    Address() = default;
-
-    string getPostalCode() const;
-    string getCountry() const;
-    string getRegion() const;
-    string getDistrict() const;
-    string getCity() const;
-    string getStreet() const;
-    string getHouse() const;
-    string getApartment() const;
-
-    void setPostalCode(const string& pc);
-    void setCountry(const string& c);
-    void setRegion(const string& r);
-    void setDistrict(const string& d);
-    void setCity(const string& c);
-    void setStreet(const string& s);
-    void setHouse(const string& h);
-    void setApartment(const string& a);
-
-    friend istream& operator>>(istream& in, Address& a);
-    friend ostream& operator<<(ostream& out, const Address& a);
+	Address() = default;
+	Address(const string& pc, const string& c, const string& r, 
+		const string& d, const string& ct, const string& s,const string& h, const string& ap);
+	friend istream& operator>>(istream& in, Address& a);
+	friend ostream& operator<<(ostream& out, const Address& a);
 };
 
 class Person {
 protected:
-    FullName full_name;
-    Gender gender;
-    Date birth_date;
+	FullName full_name;
+	Gender gender;
+	Date birth_date;
 public:
-    Person();
-    Person(const FullName& fn, Gender g, const Date& bd);
-    virtual ~Person() = default;
+	Person();
+	Person(const FullName& fn, Gender g, const Date& bd);
+	virtual ~Person() = default;
 
-    void setFullName(const FullName& fn);
-    void setGender(Gender g);
-    void setBirthDate(const Date& bd);
-
-    virtual void print(ostream& out) const;
-    virtual bool operator<(const Person& other) const;
-    friend istream& operator>>(istream& in, Person& p);
-    friend ostream& operator<<(ostream& out, const Person& p);
+	bool operator<(const Person& other) const;
+	friend istream& operator>>(istream& in, Person& p);
+	friend ostream& operator<<(ostream& out, const Person& p);
 };
 
 class Student : public Person {
 private:
-    string class_name;
-    Address address;
+	string class_name;
+	Address address;
 public:
-    Student();
-    Student(const FullName& fn, Gender g, const Date& bd,
-        const string& cls, const Address& addr);
+	Student();
+	Student(const FullName& fn, Gender g, const Date& bd, const string& cls, const Address& addr);
 
-    string getClassName() const;
-    void setClassName(const string& cls);
-    void setAddress(const Address& addr);
+	string getClassName() const;
+	void setClassName(const string& cls);
+	void setAddress(const Address& addr);
 
-    bool operator<(const Student& other) const;
-    void print(ostream& out) const override;
-
-    friend istream& operator>>(istream& in, Student& s);
-    friend ostream& operator<<(ostream& out, const Student& s);
+	friend istream& operator>>(istream& in, Student& s);
+	friend ostream& operator<<(ostream& out, const Student& s);
 };
 
 class ClassGroup {
