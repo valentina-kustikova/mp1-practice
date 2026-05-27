@@ -4,39 +4,177 @@
 using namespace std;
 
 int main() {
-	int step;
-	cin >> step;
 
-	int* a1 = new int(1);
-	int* a2 = new int(2);
-	int* a3 = new int(3);
-	container<int*> b1(1, step);
-	b1.push(a2);
-	b1.push(a1);
+	int mode;
 
-	cout << b1 << endl;
-	cout << b1.find(a3) << "\n";
-	b1.remove(a1);
-	cout << b1 << endl;
+	cout << "Select mode: 1 - Container<int>, 2 - Container<int*>\n";
+	cin >> mode;
 
-	container<int> d(20, step);
-	d.push(42);
-	d.push(45);
-	d.push(78);
-	cout << d << endl;
+	if (mode == 1) {
+		Container<int> c(3, 2);
 
-	container<int> e(4, step + 8);
-	e.push(1);
-	e.push(2);
+		int choice;
 
-	container<container<int>*> B(5, step - 3);
-	B.push(&d);
-	B.push(&e);
-	cout << B << endl;
+		do {
+			cout << "\n MENU: \n";
+			cout << "1. Insert\n";
+			cout << "2. Delete\n";
+			cout << "3. Search\n";
+			cout << "4. Print\n";
+			cout << "5. Copy\n";
+			cout << "0. Exit\n";
+			cout << "Choose: ";
+			cin >> choice;
 
-	delete a1;
-	delete a2;
-	delete a3;
+			switch (choice) {
+
+			case 1: {
+				int val;
+				cout << "Value: ";
+				cin >> val;
+
+				c.InsertElem(val);
+				cout << "Inserted\n";
+				break;
+			}
+
+			case 2: {
+				int val;
+
+				while (true) {
+					try {
+						cout << "Delete value: ";
+						cin >> val;
+
+						c.DeleteElem(val);
+						cout << "Deleted\n";
+						break;
+					}
+					catch (exception & e) {
+						cout << e.what() << endl;
+						cout << "Try another value\n";
+					}
+				}
+				break;
+			}
+
+			case 3: {
+				int val;
+				cout << "Search value: ";
+				cin >> val;
+
+				cout << "Index: " << c.SearchIdx(val) << endl;
+				break;
+			}
+
+			case 4: {
+				for (int i = 0; i < c.getCount(); i++) {
+					cout << c[i] << " ";
+				}
+				cout << endl;
+				break;
+			}
+
+			case 5: {
+				Container<int> copy = c;
+
+				cout << "Copy:\n";
+				for (int i = 0; i < c.getCount(); i++) {
+					cout << copy[i] << " ";
+				}
+				cout << endl;
+				break;
+			}
+
+			}
+
+		} while (choice != 0);
+	}
+
+	if (mode == 2) {
+		Container<int*> c(2, 2);
+
+		int choice;
+
+		do {
+			cout << "\n MENU: \n";
+			cout << "1. Insert\n";
+			cout << "2. Delete\n";
+			cout << "3. Search\n";
+			cout << "4. Print\n";
+			cout << "5. Copy\n";
+			cout << "0. Exit\n";
+			cout << "Choose: ";
+			cin >> choice;
+
+			switch (choice) {
+
+			case 1: {
+				int* val = new int;
+				cout << "Value: ";
+				cin >> *val;
+
+				c.InsertElem(val);
+				cout << "Inserted\n";
+				break;
+			}
+
+			case 2: {
+				int val;
+
+				while (true) {
+					try {
+						cout << "Delete value: ";
+						cin >> val;
+
+						int* temp = new int(val);
+						c.DeleteElem(temp);
+						delete temp;
+						cout << "Deleted\n";
+						break;
+					}
+					catch (exception & e) {
+						cout << e.what() << endl;
+						cout << "Try another value\n";
+					}
+				}
+				break;
+			}
+
+			case 3: {
+				int val;
+				cout << "Search value: ";
+				cin >> val;
+
+				int* temp = new int(val);
+				cout << "Index: " << c.SearchIdx(temp) << endl;
+				delete temp;
+				break;
+			}
+
+			case 4: {
+				for (int i = 0; i < c.getCount(); i++) {
+					cout << *c[i] << " ";
+				}
+				cout << endl;
+				break;
+			}
+
+			case 5: {
+				Container<int*> copy = c;
+
+				cout << "Copy:\n";
+				for (int i = 0; i < c.getCount(); i++) {
+					cout << *copy[i] << " ";
+				}
+				cout << endl;
+				break;
+			}
+
+			}
+
+		} while (choice != 0);
+	}
 
 	return 0;
 }

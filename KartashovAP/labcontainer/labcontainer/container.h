@@ -1,253 +1,295 @@
-#ifndef __CONTAINER_H
-#define __CONTAINER_H
+#ifndef CONTAINER_H
+#define CONTAINER_H
 
 #include <iostream>
-#include <stdexcept>
 
-template<typename T>
-class container {
-	size_t size, capacity, step;
-	T* elem;
-	void reallocate();
+using namespace std;
+
+template <typename T>
+class Container {
+private:
+	T* elems;
+	int size;
+	int count;
+	int step;
+
+	void containerRealloc(int newSize);
 public:
-	container(size_t, size_t);
-	container(size_t, size_t, const T&);
-	container(const container<T>&);
-	container(container<T>&&);
-	container() {};
-	T& operator[](size_t);
-	const T& operator[](size_t) const;
-	const container& operator=(const container&);
-	int find(T&) const;
-	void push(T&);
-	void push(T&&);
-	void remove(T&);
-	void remove(T&&);
-	friend std::ostream& operator<<(std::ostream& out, const container<T>& b) {
-		out << "size = " << b.size << " | capacity = " << b.capacity << " | step = " << b.step << "\n|";
-		for (int i = 0; i < b.size; i++) {
-			out << b.elem[i];
-			if (i + 1 == b.size) break;
-			out << " ";
-		}
-		out << "|";
-		return out;
-	}
-	~container();
+	Container(int, int);
+	Container(const Container<T>& other);
+	~Container();
+
+	void InsertElem(const T& elem);
+	void DeleteElem(const T& elem);
+	int SearchIdx(const T& elem) const;
+
+	T& operator[](int idx);
+
+	const Container<T>& operator=(const Container<T>& other);
+
+	int getCount() const;
+
 };
 
-template<typename T>
-container<T>::~container() {
-	delete[]elem;
+
+template <typename T>
+Container<T>::Container(int startSize, int startStep) {
+	size = startSize;
+	step = startStep;
+	count = 0;
+
+	elems = new T[size];
 }
 
-template<typename T>
-container<T>::container(size_t cp, size_t st) : capacity(cp), size(0), step(st) {
-	this->elem = new T[cp];
-}
+template <typename T>
+Container<T>::Container(const Container<T>& other) {
+	size = other.size;
+	count = other.count;
+	step = other.step;
 
-template<typename T>
-container<T>::container(size_t cp, size_t st, const T& el) : capacity(cp), size(cp), step(st) {
-	this->elem = new T[cp];
-	for (int i = 0; i < cp; i++) this->elem[i] = el;
-}
+	elems = new T[size];
 
-template<typename T>
-container<T>::container(const container<T>& b) : size(b.size), capacity(b.capacity), step(b.step) {
-	this->elem = new T[size];
-	for (int i = 0; i < size; i++) elem[i] = b.elem[i];
-}
-
-template<typename T>
-container<T>::container(container<T>&& b) : size(b.size), capacity(b.capacity), step(b.step) {
-	this->elem = b.elem;
-	b.elem = nullptr;
-	b.size = 0;
-	b.capacity = 0;
-}
-
-template<typename T>
-T& container<T>::operator[](size_t ind) {
-	if (ind > this->size) throw std::out_of_range("Out of range");
-	return this->elem[ind];
-}
-
-template<typename T>
-const T& container<T>::operator[](size_t ind) const {
-	if (ind > this->size) throw std::out_of_range("Out of range");
-	return this->elem[ind];
-}
-
-template<typename T>
-const container<T>& container<T>::operator=(const container<T>& b) {
-	if (this == &b) return *this;
-	if (this->size != b.size) {
-		delete[] this->elem;
-		this->size = b.size;
-		this->capacity = b.capacity;
+	for (int i = 0; i < count; i++) {
+		elems[i] = other.elems[i];
 	}
-	for (int i = 0; i < size; i++) this->elem[i] = b.elem[i];
+}
+
+template <typename T>
+Container<T>::~Container() {
+	delete[] elems;
+}
+
+template <typename T>
+void Container<T>::InsertElem(const T& elem) {
+	if (count == size) {
+		containerRealloc(size + step);
+	}
+	elems[count++] = elem;
+}
+
+template <typename T>
+int Container<T>::SearchIdx(const T& elem) const {
+	for (int i = 0; i < count; i++) {
+
+		if (elems[i] == elem) {
+			return i;
+		}
+	}
+	return -1;
+}
+
+template <typename T>
+void Container<T>::DeleteElem(const T& elem) {
+	int idx = SearchIdx(elem);
+
+	if (idx == -1) {
+		throw runtime_error("Element not found");
+	}
+
+	for (int i = idx; i < count - 1; i++) {
+		elems[i] = elems[i + 1];
+	}
+	count--;
+}
+
+template <typename T>
+T& Container<T>::operator[](int idx) {
+
+	if (idx < 0 || idx >= count) {
+		throw runtime_error("Index out of range");
+	}
+	return elems[idx];
+}
+
+template <typename T>
+const Container<T>& Container<T>::operator=(const Container<T>& other) {
+	if (this == &other) {
+		return *this;
+	}
+
+	if (size != other.size) {
+		delete[] elems;
+		size = other.size;
+		elems = new T[size];
+	}
+
+	count = other.count;
+	step = other.step;
+
+	for (int i = 0; i < count; i++) {
+		elems[i] = other.elems[i];
+	}
 	return *this;
 }
 
-template<typename T>
-int container<T>::find(T& el) const {
-	for (int i = 0; i < this->size; i++)
-		if (this->elem[i] == el)
-			return i;
-	return -1;
+template <typename T>
+int Container<T>::getCount() const {
+	return count;
 }
 
-template<typename T>
-void container<T>::remove(T& el) {
-	int pos = this->find(el);
-	if (pos == -1) throw std::runtime_error("Not found");
-	this->elem[pos] = this->elem[--size];
-}
-
-template<typename T>
-void container<T>::remove(T&& el) {
-	int pos = this->find(el);
-	if (pos == -1) throw std::runtime_error("Not found");
-	this->elem[pos] = this->elem[--size];
-}
-
-template<typename T>
-void container<T>::reallocate() {
-	this->capacity += this->step;
-	T* buff = new T[this->capacity];
-	for (int i = 0; i < size; i++) buff[i] = elem[i];
-	delete[]elem;
-	elem = buff;
-}
-
-template<typename T>
-void container<T>::push(T& el) {
-	if (this->size == this->capacity) reallocate();
-	elem[size++] = el;
-}
-
-template<typename T>
-void container<T>::push(T&& el) {
-	if (this->size == this->capacity) reallocate();
-	elem[size++] = el;
-}
-
-template<typename T>
-class container<T*> {
-	size_t size, capacity, step;
-	T** elem;
-	void reallocate();
-public:
-	container(size_t, size_t);
-	container(size_t, size_t, T*&);
-	container(const container<T*>&);
-	container(container<T*>&&);
-	T*& operator[](size_t);
-	const T*& operator[](size_t) const;
-	const container& operator=(const container&);
-	int find(T*&) const;
-	void push(T*&);
-	void push(T*&&);
-	void remove(T*&);
-	void remove(T*&&);
-	friend std::ostream& operator<<(std::ostream& out, const container<T*>& b) {
-		out << "size = " << b.size << " | capacity = " << b.capacity << " | step = " << b.step << "\n____________\n";
-		for (int i = 0; i < b.size; i++) {
-			out << *b.elem[i] << '\n';
-		}
-		out << "____________";
-		return out;
+template <typename T>
+void Container<T>::containerRealloc(int newSize) {
+	if (newSize <= 0) {
+		throw runtime_error("Invalid size");
 	}
-	~container();
+
+	T* newArr = new T[newSize];
+
+	for (int i = 0; i < count; i++) {
+		newArr[i] = elems[i];
+	}
+	delete[] elems;
+
+	elems = newArr;
+	size = newSize;
+}
+
+
+template <typename T>
+class Container<T*> {
+
+private:
+	T** elems;
+	int size;
+	int count;
+	int step;
+
+	void containerRealloc(int newSize);
+public:
+	Container(int startSize = 5, int stepSize = 5);
+	Container(const Container<T*>& other);
+	~Container();
+
+	void InsertElem(T* elem);
+	void DeleteElem(T* elem);
+	int SearchIdx(T* elem) const;
+
+	T*& operator[](int idx);
+
+	const Container<T*>& operator=(const Container<T*>& other);
+
+	int getCount() const;
 };
 
-template<typename T>
-container<T*>::~container() {
-	for (int i = 0; i < this->size; i++) delete elem[i];
-	delete[]elem;
+
+template <typename T>
+Container<T*>::Container(int startSize, int stepSize) {
+	size = startSize;
+	step = stepSize;
+	count = 0;
+	elems = new T * [size];
 }
 
-template<typename T>
-container<T*>::container(size_t cp, size_t st) : size(0), capacity(cp), step(st) {
-	this->elem = new T * [capacity];
+template <typename T>
+Container<T*>::Container(const Container<T*>& other) {
+	size = other.size;
+	count = other.count;
+	step = other.step;
+
+	elems = new T * [size];
+	for (int i = 0; i < count; i++) {
+		elems[i] = new T(*other.elems[i]);
+	}
 }
 
-template<typename T>
-container<T*>::container(size_t cp, size_t st, T*& el) : capacity(cp), step(st), size(cp) {
-	this->elem = new T * [capacity];
-	for (int i = 0; i < size; i++) elem[i] = new T(*el);
+template <typename T>
+Container<T*>::~Container() {
+	for (int i = 0; i < count; i++) {
+		delete elems[i];
+	}
+	delete[] elems;
 }
 
-template<typename T>
-T*& container<T*>::operator[](size_t ind) {
-	if (ind > this->size) throw std::out_of_range("Out of range");
-	return this->elem[ind];
+template <typename T>
+void Container<T*>::InsertElem(T* elem) {
+	if (count == size) {
+		containerRealloc(size + step);
+	}
+	elems[count] = elem;
+	count++;
 }
 
-template<typename T>
-const T*& container<T*>::operator[](size_t ind) const {
-	if (ind > this->size) throw std::out_of_range("Out of range");
-	return this->elem[ind];
-}
 
-template<typename T>
-int container<T*>::find(T*& el) const {
-	for (int i = 0; i < this->size; i++) {
-		if (*elem[i] == *el) return i;
+template <typename T>
+int Container<T*>::SearchIdx(T* elem) const {
+	for (int i = 0; i < count; i++) {
+
+		if (*elems[i] == *elem) {
+			return i;
+		}
 	}
 	return -1;
 }
 
-template<typename T>
-void container<T*>::remove(T*& el) {
-	int pos = this->find(el);
-	if (pos == -1) throw std::runtime_error("Not found");
-	delete this->elem[pos];
-	this->elem[pos] = this->elem[--size];
+template <typename T>
+void Container<T*>::DeleteElem(T* elem) {
+	int idx = SearchIdx(elem);
+
+	if (idx == -1) {
+		throw runtime_error("Element not found");
+	}
+
+	delete elems[idx];
+
+	for (int i = idx; i < count - 1; i++) {
+		elems[i] = elems[i + 1];
+	}
+	count--;
 }
 
-template<typename T>
-void container<T*>::remove(T*&& el) {
-	int pos = this->find(el);
-	if (pos == -1) throw std::runtime_error("Not found");
-	delete this->elem[pos];
-	this->elem[pos] = this->elem[--size];
+template <typename T>
+T*& Container<T*>::operator[](int idx) {
+	if (idx < 0 || idx >= count) {
+		throw runtime_error("Index out of range");
+	}
+	return elems[idx];
 }
 
-template<typename T>
-void container<T*>::reallocate() {
-	this->capacity += this->step;
-	T** buff = new T * [this->capacity];
-	for (int i = 0; i < size; i++) buff[i] = elem[i];
-	delete[]elem;
-	elem = buff;
+template <typename T>
+const Container<T*>& Container<T*>::operator=(const Container<T*>& other) {
+	if (this == &other) {
+		return *this;
+	}
+
+	for (int i = 0; i < count; i++) {
+		delete elems[i];
+	}
+
+	if (size != other.size) {
+		delete[] elems;
+		size = other.size;
+		elems = new T[size];
+	}
+
+	count = other.count;
+	step = other.step;
+
+	for (int i = 0; i < count; i++) {
+		elems[i] = new T(*other.elems[i]);
+	}
+	return *this;
 }
 
-template<typename T>
-void container<T*>::push(T*& el) {
-	if (this->size == this->capacity) reallocate();
-	elem[size++] = new T(*el);
+template <typename T>
+int Container<T*>::getCount() const {
+	return count;
 }
 
-template<typename T>
-void container<T*>::push(T*&& el) {
-	if (this->size == this->capacity) reallocate();
-	elem[size++] = new T(*el);
-}
+template <typename T>
+void Container<T*>::containerRealloc(int newSize) {
+	if (newSize <= 0) {
+		throw runtime_error("Invalid size");
+	}
 
-template<typename T>
-container<T*>::container(const container<T*>& b) : size(b.size), capacity(b.capacity), step(b.step) {
-	this->elem = new T * [size];
-	for (int i = 0; i < size; i++) elem[i] = new T(*b.elem[i]);
-}
+	T** newArr = new T * [newSize];
 
-template<typename T>
-container<T*>::container(container<T*>&& b) : size(b.size), capacity(b.capacity), step(b.step) {
-	this->elem = b.elem;
-	b.elem = nullptr;
-	b.size = 0;
-	b.capacity = 0;
+	for (int i = 0; i < count; i++) {
+		newArr[i] = elems[i];
+	}
+	delete[] elems;
+
+	elems = newArr;
+	size = newSize;
 }
 
 #endif
