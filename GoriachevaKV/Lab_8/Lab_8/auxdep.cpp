@@ -8,15 +8,16 @@
 int countRowsInFile(const std::string& filename) {
     std::ifstream f(filename);
     if (!f.is_open()) return -1;
+
     int rows = 0;
     std::string s;
-    while (std::getline(f, s)) ++rows;
+    while (std::getline(f, s)) rows++;
     return rows;
 }
 
 void fillOwnersArray(std::ifstream& f, Owner* owners, int count) {
     std::string s, sn, nm, pn, y, m, d, auto_n, pass_n, phone_n, dep;
-    for (int i = 0; i < count; ++i) {
+    for (int i = 0; i < count; i++) {
         std::getline(f, s);
         std::stringstream ss(s);
 

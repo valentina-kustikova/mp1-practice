@@ -71,45 +71,22 @@ OwnerLib::OwnerLib(const std::string& filename) : owners(nullptr), count(0) {
     std::cout << "The database found. " << count << " owners.\n" << std::endl;
 }
 
-OwnerLib::OwnerLib(const OwnerLib& other) : owners(nullptr), count(other.count) {
-    if (count > 0) {
-        owners = new Owner[count];
-        for (int i = 0; i < count; ++i)
-            owners[i] = other.owners[i];
-    }
-}
-
 OwnerLib::~OwnerLib() {
     delete[] owners;
-}
-
-OwnerLib& OwnerLib::operator=(const OwnerLib& other) {
-    if (this == &other) return *this;
-    delete[] owners;
-    count = other.count;
-    if (count > 0) {
-        owners = new Owner[count];
-        for (int i = 0; i < count; ++i)
-            owners[i] = other.owners[i];
-    }
-    else {
-        owners = nullptr;
-    }
-    return *this;
 }
 
 OwnerLib OwnerLib::filterByDepartment(const std::string& department) const {
     OwnerLib result;
     int matchCount = 0;
-    for (int i = 0; i < count; ++i)
+    for (int i = 0; i < count; i++)
         if (owners[i].department == department)
-            ++matchCount;
+            matchCount++;
 
     result.count = matchCount;
     if (matchCount > 0) {
         result.owners = new Owner[matchCount];
         int j = 0;
-        for (int i = 0; i < count; ++i)
+        for (int i = 0; i < count; i++)
             if (owners[i].department == department)
                 result.owners[j++] = owners[i];
     }
@@ -127,7 +104,7 @@ std::ostream& operator<<(std::ostream& out, const OwnerLib& lib) {
         out << "-------------------------------------------------------------------------\n"
             << "FULL NAME, BIRTH DATE, AUTO NUMBER, PASS NUMBER, PHONE NUMBER, DEPARTMENT\n"
             << "-------------------------------------------------------------------------\n";
-        for (int i = 0; i < lib.count; ++i)
+        for (int i = 0; i < lib.count; i++)
             out << lib.owners[i] << std::endl;
     }
     return out;

@@ -1,8 +1,7 @@
 #ifndef __DEPARTMENT_H_
 #define __DEPARTMENT_H_
-
-#include <string>
 #include <iostream>
+
 
 struct FullName {
     std::string surname;
@@ -39,11 +38,8 @@ struct OwnerLib {
     int count;
 
     OwnerLib();
-    explicit OwnerLib(const std::string& filename);
-    OwnerLib(const OwnerLib& other);
+    OwnerLib(const std::string& filename);
     ~OwnerLib();
-
-    OwnerLib& operator=(const OwnerLib& other);
 
     OwnerLib filterByDepartment(const std::string& department) const;
 
