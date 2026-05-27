@@ -13,7 +13,7 @@ void testPointerConstructors() {
         << ", capacity=" << c3.getCapacity() << std::endl;
     std::cout << "elements (values): ";
     for (size_t i = 0; i < c3.getSize(); i++) {
-        std::cout << *c3[i] << " ";
+        std::cout << *c3[i] << " "<<c3[i]<<" ";
     }
     std::cout << std::endl;
     Container<int*> c4(c3);
@@ -21,29 +21,22 @@ void testPointerConstructors() {
         << ", capacity=" << c4.getCapacity() << std::endl;
     std::cout << "elements (values): ";
     for (size_t i = 0; i < c4.getSize(); i++) {
-        std::cout << *c4[i] << " ";
+        std::cout << *c4[i] <<" "<< c4[i]<<" ";
     }
     std::cout << std::endl;
 }
 
 void testPointerIdx() {
     std::cout << "\nPointer operator[]:\n";
-    int value = 0;
+    int value = 0 ;
     Container<int*> c5(5, &value);
-    int a = 10, b = 20, c = 30, d = 40, e = 50;
-    c5[0] = &a;
-    c5[1] = &b;
-    c5[2] = &c;
-    c5[3] = &d;
-    c5[4] = &e;
+    *c5[0] = 10 ;
+    *c5[1] = 20;
+    *c5[2] = 30;
+    *c5[3] = 40;
+    *c5[4] = 50;
     std::cout << "values: ";
-    for (int i = 0; i < 5; i++) {
-        std::cout << *c5[i] << " ";
-    }
-    std::cout << std::endl;
-    *c5[2] = 999;
-    std::cout << "after *c5[2]=999: ";
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < c5.getSize(); i++) {
         std::cout << *c5[i] << " ";
     }
     std::cout << std::endl;

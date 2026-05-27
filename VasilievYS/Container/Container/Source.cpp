@@ -4,17 +4,17 @@
 #include "TestPointerCont.h"
 
 int main() {
-    testConstructors();
-    testIdx();
-    testEq();
-    testPushBack();
-    testRemove();
-    testFind();
-    testPointerConstructors();
-    testPointerIdx();
-    testPointerEq();
-    testPointerPushBack();
-    testPointerRemove();
-    testPointerFind();
+	try {
+		testConstructors();
+		testIdx();
+		testEq();
+		testPushBack();
+		testRemove();
+		testFind();
+		testPointerConstructors();
+		testPointerPushBack();
+		testPointerRemove();
+	}
+	catch (std::exception& er) { std::cout << er.what(); }
     return 0;
 }

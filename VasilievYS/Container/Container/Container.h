@@ -59,7 +59,7 @@ public:
 
 template <typename T>
 Container<T>::Container(std::size_t s, const std::size_t st) :
-	size(s), capacity(s), elems(new T[s]), step(st) {
+	size(0), capacity(s), elems(new T[s]), step(st) {
 }
 
 template<typename T>
@@ -160,9 +160,12 @@ const Container<T>& Container<T>::operator=(const Container<T>& C)
 	if (this != &C)
 	{
 		size = C.size;
-		capacity = C.capacity;
-		delete[]elems;
-		elems = new T[capacity];
+		if (capacity != C.capacity)
+		{
+			capacity = C.capacity;
+			delete[]elems;
+			elems = new T[capacity];
+		}		
 		for (std::size_t i = 0; i < size; i++)
 		{
 			elems[i] = C.elems[i];
@@ -173,7 +176,7 @@ const Container<T>& Container<T>::operator=(const Container<T>& C)
 
 template <typename T>
 Container<T*>::Container(std::size_t s, const std::size_t st) :
-	size(s), capacity(s), elems(new T*[s]), step(st) {
+	size(0), capacity(s), elems(new T*[s]), step(st) {
 }
 
 template<typename T>
@@ -182,7 +185,7 @@ Container<T*>::Container(std::size_t s, T* elem, const std::size_t st) :
 {
 	for (std::size_t i = 0; i < size; i++)
 	{
-		elems[i] = elem;
+		elems[i] = new T(*elem);
 	}
 }
 
@@ -193,7 +196,7 @@ Container<T*>::Container(const Container<T*>& C):
 {
 	for (std::size_t i = 0; i < size; i++)
 	{
-		elems[i] = C.elems[i];
+		elems[i] = new T(*(C.elems[i]));
 	}
 }
 
@@ -210,6 +213,10 @@ Container<T*>::Container(Container<T*>&& C):
 template<typename T>
 Container<T*>::~Container()
 {
+	for (int i = 0; i < size; i++)
+	{
+		delete elems[i];
+	}
 	delete[]elems;
 }
 
@@ -217,8 +224,7 @@ template<typename T>
 void Container<T*>::push_back(T* elem)
 {
 	if (size >= capacity) { reallocate(); }
-	elems[size] = elem;
-	size++;
+	elems[size++] = new T(*elem);
 }
 
 template<typename T>
@@ -226,8 +232,7 @@ void Container<T*>::remove(const T* elem)
 {
 	int i = find(elem);
 	if (i == -1) { throw std::exception("Not found"); }
-	elems[i] = elems[size - 1];
-	size--;
+	elems[i] = elems[--size];
 }
 
 template<typename T>
@@ -235,7 +240,7 @@ int Container<T*>::find(const T* elem) const
 {
 	for (int i = 0; i < size; i++)
 	{
-		if (elems[i] == elem) { return i; }
+		if (*elems[i] == *elem) { return i; }
 	}
 	return -1;
 }
@@ -274,12 +279,15 @@ const Container<T*>& Container<T*>::operator=(const Container<T*>& C)
 	if (this != &C)
 	{
 		size = C.size;
-		capacity = C.capacity;
-		delete[]elems;
-		elems = new T*[capacity];
+		if (capacity != C.capacity)
+		{
+			capacity = C.capacity;
+			delete[]elems;
+			elems = new T*[capacity];
+		}
 		for (std::size_t i = 0; i < size; i++)
 		{
-			elems[i] = C.elems[i];
+			elems[i] = new T(*(C.elems[i])); 
 		}
 	}
 	return *this;
