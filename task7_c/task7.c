@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include "base.h"
+#pragma warning(disable : 4996)
 
 int main(int argc, char*argv[]) {
 	box ans;

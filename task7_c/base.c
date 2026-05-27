@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#pragma warning(disable : 4996)
 
 void generate(box* base) {
 	int i = 0;
@@ -56,23 +57,23 @@ void timegetter(timing** timings, char* data) {
 	*timings = (timing*)malloc(sizeof(timing) * dayscount);
 	if (*timings == NULL) {
 		printf("time memory error");
-	} else {
-		int i = 0;
-		for (i = 0; i < dayscount; i++) {
-			(*timings)[i].day = i;
-			daytimes = strtok_s(data, ",", &token);
-			data = token;
-			if (*daytimes == 'c') {
-				(*timings)[i].status = close;
-			}
-			else {
-				sscanf(daytimes, "%d.%d-%d.%d",
-					&(*timings)[i].start.hours,
-					&(*timings)[i].start.minutes,
-					&(*timings)[i].finish.hours,
-					&(*timings)[i].finish.minutes);
-				getdaystatus(&(*timings)[i]);
-			}
+    return;
+	} 
+	int i = 0;
+	for (i = 0; i < dayscount; i++) {
+		(*timings)[i].day = i;
+		daytimes = strtok_s(data, ",", &token);
+		data = token;
+		if (*daytimes == 'c') {
+			(*timings)[i].status = close;
+		}
+		else {
+			sscanf(daytimes, "%d.%d-%d.%d",
+				&(*timings)[i].start.hours,
+				&(*timings)[i].start.minutes,
+				&(*timings)[i].finish.hours,
+				&(*timings)[i].finish.minutes);
+			getdaystatus(&(*timings)[i]);
 		}
 	}
 }
@@ -167,14 +168,13 @@ void printer(box *base) {
 	int i;
 	if (base->len == 0) {
 		printf("no stores found");
+    return;
 	}
-	else {
-		for (i = 0; i < base->len; i++) {
-			printf("%s \n", base->base[i]->name);
-			printf("	adress: %s, %s\n", base->base[i]->address.street, base->base[i]->address.hnum);
-			printf("	phones: %s \n", base->base[i]->phones);
-			printf("	form:   %s \n", base->base[i]->form);
-		}
+	for (i = 0; i < base->len; i++) {
+		printf("%s \n", base->base[i]->name);
+		printf("	adress: %s, %s\n", base->base[i]->address.street, base->base[i]->address.hnum);
+		printf("	phones: %s \n", base->base[i]->phones);
+		printf("	form:   %s \n", base->base[i]->form);
 	}
 }
 
