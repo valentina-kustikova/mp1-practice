@@ -1,0 +1,9 @@
+Sberbank; State-owned; Demand deposit, 0.01; Time deposit, 4.5; Savings deposit, 7.2; Pension deposit, 6.0; Investment deposit, 3.8;
+VTB; State-owned; Demand deposit, 0.1; Time deposit, 4.8; Savings deposit, 5.5; Pension deposit, 6.2; Accumulative deposit, 4.0; Foreign currency deposit, 1.2;
+Gazprombank; Private; Demand deposit, 0.5; Time deposit, 5.0; Savings deposit, 5.8; Investment deposit, 4.5; Premium deposit, 6.5;
+Alfa-Bank; Private; Demand deposit, 0.5; Time deposit, 5.2; Savings deposit, 6.0; Pension deposit, 6.8; Premium deposit, 7.0; Multicurrency deposit, 3.5;
+Tinkoff; Private; Demand deposit, 1.0; Time deposit, 5.5; Savings deposit, 6.5; Investment deposit, 5.5; Premium deposit, 7.5;
+Rosselkhozbank; State-owned; Demand deposit, 0.1; Time deposit, 4.6; Savings deposit, 5.3; Seasonal deposit, 5.9;
+Moscow Credit Bank; Private; Demand deposit, 0.4; Time deposit, 5.1; Savings deposit, 5.9; Premium deposit, 6.8;
+Sovcombank; Private; Demand deposit, 0.6; Time deposit, 5.3; Savings deposit, 6.2; Pension plus, 6.5; Halva deposit, 7.0;
+Promsvyazbank; State-owned; Demand deposit, 0.2; Time deposit, 8.0; Savings deposit, 5.4; Online deposit, 5.8;
